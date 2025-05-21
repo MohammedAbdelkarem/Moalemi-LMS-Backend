@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Services\Users\Auth;
+
+use App\Constants\ExceptionMessages;
+use App\Exceptions\ApiException;
+use App\Models\JWTPersonalTokens;
+use App\Models\User;
+use App\Models\Users\Profile\ArchivedUser;
+use App\Models\Users\Profile\LoginHistory;
+use App\Services\MainService;
+use Illuminate\Support\Facades\DB;
+use App\Models\Users\Profile\UserDevice;
+use App\Services\JWTTokensService;
+use App\Services\OTPService;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Carbon\Carbon;
+
+/**
+ * Class AuthService.
+ */
+class AuthService extends MainService
+{
+    public function __construct(
+        protected OTPService $OTPService,
+        protected JWTTokensService $jwtService,
+    ) {}
+
+    public function login($validatedData)
+    {
+        //Create the account
+
+        $user = User::query()->firstOrCreate(
+            [
+                "phone_number" => $validatedData["phone_number"],
+            ],
+            [
+                "role_id" => 3, //user role
+                "phone_number" => $validatedData["phone_number"],
+                "language" => config("app.locale"),
+            ]
+        );
+        //Check if the admin is logging in using the users api
+        if ($user->role_id != 3)
+            throw new ApiException(null, trans(ExceptionMessages::MSG_ACCEESS_DENIED), 400);
+
+        //Check for phone number if used to create to many accounts
+        if (ArchivedUser::where('phone_number', $validatedData["phone_number"])->count() >= config("_custom.max_accounts_per_phone_number"))
+            throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
+
+        $user->save();
+        //Send otp
+        $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
+
+        //Generate Token
+        $token = $this->generateLoginToken($user);
+
+        $data = [
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "tokens" => $token,
+            "user"   => [
+                "id" => $user->id,
+                "user_phone_number" => $user->phone_number,
+            ],
+        ];
+
+        return $data;
+    }
+
+    public function activeSessions()
+    {
+        return LoginHistory::where('user_id', auth()->id())
+            ->whereHas('token', function ($q) {
+                $q->where('expire_at', '>', Carbon::now());
+            })
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    public function logoutSessions($ids)
+    {
+        $this->jwtService->invalidateSessionByDevice($ids);
+    }
+
+    public function logout($notiToken)
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = auth()->user();
+
+        $this->jwtService->InvalidateTokenWithRelated(JWTAuth::getToken());
+        if ($notiToken)
+            $user->userDevices()->where('notification_token', $notiToken)->delete();
+    }
+
+    public function logoutAllDevices()
+    {
+        $user = auth()->user();
+
+        $this->jwtService->InvalidateAllTokensByUserID($user->id);
+        UserDevice::where('user_id', $user->id)->delete();
+    }
+
+    public function refresh()
+    {
+        $loginHistoryId = JWTPersonalTokens::where('token', JWTAuth::getToken())
+            ->first()?->access_token()->first()?->login_history;
+
+        $this->jwtService->InvalidateTokenWithRelated(JWTAuth::getToken());
+        $data['tokens'] = $this->generateTokens(auth()->user(), $loginHistoryId);
+        return $data;
+    }
+
+    public function generateTokens($user, $loginHistoryId)
+    {
+        $accessExpireIn = Carbon::now()->addMinutes(config('jwt.ttl'))->timestamp;
+        $refreshExpireIn = Carbon::now()->addMinutes(config('jwt.refresh_ttl'))->timestamp;
+
+        $accessToken  = JWTAuth::customClaims([
+            'exp'               => $accessExpireIn,
+            'api_access'        => true,
+            'refresh_access'    => false,
+        ])->fromUser($user);
+        $refreshToken = JWTAuth::customClaims([
+            'exp'               => $refreshExpireIn,
+            'api_access'        => false,
+            'refresh_access'    => true,
+        ])->fromUser($user);
+
+        //Store Tokens In DB
+        $accessTokenDB  = $this->jwtService->store($accessToken, null, $loginHistoryId);
+        $this->jwtService->store($refreshToken, $accessTokenDB->id);
+
+        return [
+            "access_token"      => $accessToken,
+            "refresh_token"     => $refreshToken,
+            "access_expire_in"  => $accessExpireIn,
+            "refresh_expire_in" => $refreshExpireIn,
+        ];
+    }
+
+    /**
+     * Generate Token for otp request only
+     * No need to store the token into DB because it's only for otp verification
+     */
+    public function generateLoginToken($user)
+    {
+        $accessExpireIn = Carbon::now()->addMinutes(config('jwt.otp_ttl'))->timestamp;
+
+        $accessToken  = JWTAuth::customClaims([
+            'exp'               => $accessExpireIn,
+            'otp_access'        => true,
+            'api_access'        => false,
+            'refresh_access'    => false,
+        ])->fromUser($user);
+
+        return [
+            "access_token"      => $accessToken,
+            "access_expire_in"  => $accessExpireIn,
+        ];
+    }
+}

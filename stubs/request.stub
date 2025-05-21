@@ -1,0 +1,32 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Http\Requests\BaseApiRequest;
+
+class {{ class }} extends BaseApiRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return match ($this->route()->getActionMethod()) {
+            "store" => $this->storeRules(),
+        };
+    }
+
+    public function storeRules()
+    {
+        return [
+            //
+        ];
+    }
+
+    public function messages()
+    {
+        return [];
+    }
+}
