@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Administration\Banner\Banner;
-use App\Models\Users\Reel\Reel;
-use App\Traits\StorageHelper;
 use Carbon\Carbon;
+use App\Models\Banner;
+use App\Traits\StorageHelper;
+use App\Models\Users\Reel\Reel;
 use Illuminate\Console\Command;
 
 class BannerRemoverCommand extends Command

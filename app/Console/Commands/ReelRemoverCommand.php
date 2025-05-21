@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Administration\Reel\Reel;
+use App\Models\Story;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -27,7 +28,7 @@ class ReelRemoverCommand extends Command
      */
     public function handle()
     {
-        $reels = Reel::where('expire_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->get();
+        $reels = Story::where('expire_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->get();
         foreach ($reels as $reel) {
             $this->storageDelete($reel->media_url);
         }
