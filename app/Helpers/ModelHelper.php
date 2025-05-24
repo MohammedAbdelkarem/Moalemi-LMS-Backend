@@ -1,27 +1,11 @@
 <?php
 
+use App\Constants\ApiMessages;
 use App\Constants\ExceptionMessages;
-use App\Constants\Resources;
+
 
 if (!function_exists('findByIdOrFail')) {
-    /**
-     * Find a model instance by ID and return it or throw a not found exception
-     *
-     * @param string $model
-     * @param int $modelId
-     * @param string $resource
-     * @param string $type
-     * @param array $where
-     * @param array $with
-     * @param bool $withTrashed
-     * @param array|null $selectedColumns
-     * @param bool $asQuery
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
-     */
-    function findByIdOrFail($model, $modelId, $resource = Resources::ITEM, $type = 'male', $where = [], $with = [], $withTrashed = false, $selectedColumns = null, $asQuery = false)
+    function findByIdOrFail($model, $modelId, $type = 'male', $resource, $with = [], $withTrashed = false, $selectedColumns = null)
     {
         $modelInstance = null;
         $query = $withTrashed ? $model::withTrashed() : $model::query();
@@ -30,16 +14,8 @@ if (!function_exists('findByIdOrFail')) {
             $query->select($selectedColumns);
         }
 
-        if (!empty($where)) {
-            $query->where($where);
-        }
-
         if (!empty($with)) {
             $query->with($with);
-        }
-
-        if (!empty($queries)) {
-            $query->$queries;
         }
 
         $modelInstance = $query->find($modelId);
@@ -51,16 +27,13 @@ if (!function_exists('findByIdOrFail')) {
             } else {
                 $notFoundMessage = ExceptionMessages::MSG_RESOURCE_NOT_FOUND;
             }
-            notFoundFailure(null, __($notFoundMessage, ['resource' => __($resource)]));
+            return notFoundFailure([], __($notFoundMessage, ['resource' => __($resource)]));
         }
-        if ($asQuery)
-            return $query->where('id', $modelId);
         return $modelInstance;
     }
 }
 
 if (!function_exists('generateUniqueResourceNumber')) {
-
     function generateUniqueResourceNumber($model, $resourceAttribute, $prefix)
     {
         $lastResource = $model::orderBy('id', 'desc')->first();
@@ -85,6 +58,20 @@ if (!function_exists('generateUniqueResourceNumber')) {
     }
 }
 
+if (!function_exists('generateDateBasedSequentialNumber')) {
+    function generateDateBasedSequentialNumber($model, $date, $numberOfPaddedZeros)
+    {
+        // Get the total number of records created today for this model
+        $countToday = $model::whereDate('created_at', $date)->count();
+
+        $sequentialNumber = $countToday + 1;
+
+        $formattedSequentialNumber = str_pad($sequentialNumber, $numberOfPaddedZeros, '0', STR_PAD_LEFT);
+
+        return $date . $formattedSequentialNumber;
+    }
+}
+
 if (!function_exists('getModelInstancesDependingOnIds')) {
     function getModelInstancesDependingOnIds($model, $modelIds)
     {
@@ -97,3 +84,20 @@ if (!function_exists('getModelInstancesDependingOnIds')) {
         return $modelInstances;
     }
 }
+
+// if (!function_exists('updateMediaAssociation')) {
+//     function updateMediaAssociation($fromModelType, $toModelType,  $fromModelId, $toModelId)
+//     {
+//         // Retrieve media records for join request
+//         $fromMedia = Media::where('model_id', $fromModelId)
+//             ->where('model_type', $fromModelType)
+//             ->get();
+
+//         // Update model_id and model_type to reflect new captain model
+//         foreach ($fromMedia as $media) {
+//             $media->model_id = $toModelId;
+//             $media->model_type = $toModelType;
+//             $media->save();
+//         }
+//     }
+// }

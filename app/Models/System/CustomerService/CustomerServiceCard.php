@@ -14,14 +14,7 @@ class CustomerServiceCard extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = "customer_cards";
-    protected $fillable = [
-        "user_id",
-        "title",
-        "description",
-        "type",
-        "status",
-        "deleted_at",
-    ];
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

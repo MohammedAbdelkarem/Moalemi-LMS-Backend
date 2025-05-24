@@ -11,8 +11,7 @@ class ContactUs extends Model
 {
     use HasFactory;
     protected $table = "contact_us";
-    protected $fillable = ['type', 'link', 'is_vip', 'created_by'];
-
+    protected $guarded = ['id'];
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');

@@ -126,6 +126,7 @@ class OTPService extends MainService
             ->orWhere('notification_token', $validatedData["notification_token"])
             ->first();
 
+            // dd($validatedData);
         if ($existingDevice) {
             // Update the existing record
             $existingDevice->update([
@@ -135,6 +136,8 @@ class OTPService extends MainService
             ]);
         } else {
             // Create a new record
+
+            // dd($validatedData);
             UserDevice::create([
                 'notification_token' => $validatedData["notification_token"],
                 'device_id' => $validatedData["device_id"],

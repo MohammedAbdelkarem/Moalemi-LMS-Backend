@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class UserDevice extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'notification_token',
+    protected $guarded = [
+        'id'
     ];
 
     public function user(): BelongsTo

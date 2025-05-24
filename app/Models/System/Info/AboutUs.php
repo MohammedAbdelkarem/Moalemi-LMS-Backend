@@ -11,7 +11,7 @@ class AboutUs extends Model
 {
     use HasFactory;
     protected $table = "about_us";
-    protected $fillable = ["lang", "text", "update_by"];
+    protected $guarded = ['id'];
 
     public function updated_by(): BelongsTo
     {

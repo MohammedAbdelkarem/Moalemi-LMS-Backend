@@ -11,8 +11,7 @@ class UserProfile extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id', 'created_at', 'updated_at'];
-
+    protected $guarded = ['id'];
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, "user_id");

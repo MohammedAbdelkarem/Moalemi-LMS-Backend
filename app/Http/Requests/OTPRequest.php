@@ -23,7 +23,7 @@ class OTPRequest extends BaseApiRequest
         return [
             "otp"                   => ['required', 'string'],
             "notification_token"    => ["present", "nullable", "string"],
-            "device_id"             => ["present", "nullable", "string"],
+            "device_id"             => ["required", "nullable", "string"],
             "device_name"           => ["required", "string"],
         ];
     }

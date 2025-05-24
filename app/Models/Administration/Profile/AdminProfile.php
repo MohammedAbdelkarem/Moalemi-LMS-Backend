@@ -10,11 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AdminProfile extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'password',
-        'created_by',
-    ];
+    protected $guarded = ['id'];
 
     protected $hidden = [
         'password',

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('end_at');
             $table->integer('number_of_days');
             $table->integer('number_of_remaining_days');
-            $table->bool('is_active')->default(0);
+            $table->boolean('is_active')->default(0);
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

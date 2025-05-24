@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Visit extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'doctor_id', 'patient_id', 'reservation_id', 'note'];
-
+    protected $guarded = ['id'];
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);

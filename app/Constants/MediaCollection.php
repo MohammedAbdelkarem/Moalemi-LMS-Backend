@@ -18,5 +18,9 @@ final class MediaCollection
     const ANSWER_COLLECTION             = 'answer_collection';
     const FILE_COLLECTION               = 'file_collection';
     const QUIZ_COLLECTION               = 'quiz_collection';
+    const CATEGORY_COLLECTION               = 'category_collection';
+    const SUB_CATEGORY_COLLECTION               = 'sub_category_collection';
+    const PLAN_COLLECTION               = 'plan_collection';
+    const ARTICLE_COLLECTION               = 'article_collection';
 
 }

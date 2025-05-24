@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Subscription extends Pivot
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function transaction()
     {
         return $this->hasOne(Transaction::class);

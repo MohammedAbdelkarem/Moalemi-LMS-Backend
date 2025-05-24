@@ -5,6 +5,7 @@ namespace App\Constants;
 final class RouteNames
 {
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
+    const PLAN_ADMIN                               = 'plan.admin';
     const LOGIN_HISTORY_List                                   = 'login_history.list';
     const CATEGORY_LIST                                        = 'category.list';
     const SUBCATEGORY_LIST                                     = 'subcategory.list';
@@ -32,4 +33,6 @@ final class RouteNames
     const GUEST_STORY_GET              = 'guest.story.get';
     const ADMIN_BANNER_GET              = 'admin.banner.get';
     const GUEST_BANNER_GET              = 'guest.banner.get';
+    const GET_SUBCATEGORIES              = 'get.subcategories';
+    const GET_CATEGORIES              = 'get.categories';
 }

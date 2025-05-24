@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function doctors()
     {
         return $this->belongsToMany(Doctor::class, 'subscriptions')
@@ -24,6 +25,19 @@ class Plan extends Model
                          'is_active'
                     )
                     ->withTimestamps();
+    }
+
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::FEMALE,
+            Resources::RES_PLAN,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 
 }

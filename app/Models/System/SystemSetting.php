@@ -10,10 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SystemSetting extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "value",
-        "update_by"
-    ];
+    protected $guarded = ['id'];
 
     public function updated_by(): BelongsTo
     {

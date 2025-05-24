@@ -1,6 +1,9 @@
 <?php
 
 use App\Constants\RouteNames;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\Media\MediaController;
@@ -201,8 +204,17 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('media')->controller(MediaController::class)->group(function(){
         Route::delete('delete' , 'delete');
     });
+    Route::prefix('sub_category')->controller(SubCategoryController::class)->group(function(){
+        Route::get('getBycategories' , 'getBycategories');
+    });
+    Route::prefix('plan')->controller(PlanController::class)->group(function(){
+        Route::get('changePublishStatus/{id}' , 'changePublishStatus');
+    });
     
     Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);
     Route::apiResource('/banner', BannerController::class)->name('show' , RouteNames::ADMIN_BANNER_GET);
     Route::apiResource('/media', MediaController::class);
+    Route::apiResource('/category', CategoryController::class)->name('show' , RouteNames::GET_CATEGORIES);
+    Route::apiResource('/sub_category', SubCategoryController::class)->name('show' , RouteNames::GET_SUBCATEGORIES);
+    Route::apiResource('/plan', PlanController::class)->name('show' , RouteNames::PLAN_ADMIN);
 });

@@ -43,4 +43,5 @@ return [
     'cannot_update_this_role'                           => 'لا يمكن تعديل هذا الدور',
     'cannot_delete_this_role'                           => 'لا يمكن حذف هذا الدور',
     'cannot_set_to_active_cuz_has_no_media'             => 'لا يمكن نشر هذا العنصر لانه لا يوجد صورة له',
+    'can_not_delete_cuz_has_related_items'             => 'لا يمكن حذف الخطة لوجود أعضاء مشتركين بها',
 ];

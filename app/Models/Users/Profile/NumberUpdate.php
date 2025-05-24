@@ -10,12 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class NumberUpdate extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "user_id",
-        "phone_number",
-        "otp",
-        "expire_at",
-    ];
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

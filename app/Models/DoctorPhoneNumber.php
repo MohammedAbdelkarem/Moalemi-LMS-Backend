@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DoctorPhoneNumber extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);

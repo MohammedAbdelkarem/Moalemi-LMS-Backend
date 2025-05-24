@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Day extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function shifts()
     {
         return $this->hasMany(Shift::class);

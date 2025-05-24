@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('related_to')->nullable()->unique()->constrained("jwt_personal_tokens")->cascadeOnDelete();
             $table->foreignId('login_history')->nullable()->constrained("login_history")->cascadeOnDelete();
             $table->text('token');
-            $table->bool('steps_calculator')->default(0);
+            $table->boolean('steps_calculator')->default(0);
             $table->json('claims')->nullable();
             $table->dateTime('expire_at')->nullable();
             $table->timestamps();

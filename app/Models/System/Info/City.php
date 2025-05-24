@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class City extends Model
 {
     use HasFactory;
-    protected $fillable = ["name_en", "name_ar"];
-
+    protected $guarded = ['id'];
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'city_id');

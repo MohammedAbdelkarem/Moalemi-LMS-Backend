@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DailyStep extends Model
 {
     use HasFactory;
-    protected $fillable = [];
+    protected $guarded = ['id'];
 
     public function user()
     {

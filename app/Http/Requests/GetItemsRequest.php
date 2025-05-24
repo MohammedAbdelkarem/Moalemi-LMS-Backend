@@ -25,7 +25,7 @@ class GetItemsRequest extends BaseApiRequest
     {
         return [
             'per_page'                  => ['integer'],
-            'page'                      => ['integer']
+            'page'                      => ['integer'],
         ];
     }
 }

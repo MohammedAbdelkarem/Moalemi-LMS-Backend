@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->bool('is_owner')->default(0);
+            $table->boolean('is_owner')->default(0);
             $table->date('birthdate');
             $table->double('weight')->nullable();
-            $table->bool('blood_type')->nullable();
+            $table->boolean('blood_type')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

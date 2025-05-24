@@ -36,5 +36,7 @@ final class Resources
     const BANNER                    = 'resources.banner';
     const RES_COLOR                 = 'resources.color';
     const RES_FABRIC                = 'resources.fabric';
-    const RES_SIZE                  = 'resources.size';
+    const RES_SIZE                   = 'resources.size';
+    const RES_PLAN                   = 'resources.plan';
+    const RES_ARTICLE                   = 'resources.article';
 }

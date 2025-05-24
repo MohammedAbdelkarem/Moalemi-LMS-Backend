@@ -14,14 +14,7 @@ class LoginHistory extends Model
     use HasFactory;
 
     protected $table = "login_history";
-    protected $fillable = [
-        "ip_address",
-        "country_code",
-        "device_name",
-        "country",
-        "city",
-        "user_id",
-    ];
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {

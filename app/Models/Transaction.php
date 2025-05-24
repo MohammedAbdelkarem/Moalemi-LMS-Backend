@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function subscription()
     {
         return $this->belongsTo(Subscription::class);

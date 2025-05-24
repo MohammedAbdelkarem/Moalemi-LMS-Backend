@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TreatmentTime extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function treatment()
     {
         return $this->belongsTo(Treatment::class);

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
             $table->string('license_number')->unique();
-            $table->bool('is_center')->default(0);
+            $table->boolean('is_center')->default(0);
             $table->string('bio');
             $table->string('join_reason');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();

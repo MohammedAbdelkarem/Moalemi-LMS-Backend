@@ -11,8 +11,7 @@ class PrivacyPolicy extends Model
 {
     use HasFactory;
     protected $table = "privacy_policies";
-    protected $fillable = ["lang", "text", "update_by"];
-
+    protected $guarded = ['id'];
     public function updated_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'update_by');

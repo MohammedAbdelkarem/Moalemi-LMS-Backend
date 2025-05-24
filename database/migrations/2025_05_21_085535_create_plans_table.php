@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PublishStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->double('discount_percentage')->default(0);
             $table->date('discount_start_at')->nullable();
             $table->date('discount_end_at')->nullable();
+            $table->enum('publish_status' , PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT);
             $table->timestamps();
         });
     }

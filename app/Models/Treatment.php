@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Treatment extends Model
 {
     use HasFactory;
-    protected $fillable = [];
-
+    protected $guarded = ['id'];
     public function patient()
     {
         return $this->belongsTo(Patient::class);

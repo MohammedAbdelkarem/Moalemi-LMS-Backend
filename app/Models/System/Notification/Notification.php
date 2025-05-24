@@ -15,18 +15,7 @@ class Notification extends Model
     protected $table = "notifications";
     protected $primaryKey = "id";
     protected $timestamp = true;
-    protected $fillable = [
-        'created_by',
-        'title',
-        'body',
-        'type',
-        'clickable',
-        'requested_id',
-        'page',
-        'is_public',
-        'extra_data',
-        'created_at',
-    ];
+    protected $guarded = ['id'];
 
     public function creator(): BelongsTo
     {

@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
-    protected $fillable = ['shift_id', 'patient_id', 'doctor_id'];
-
+    protected $guarded = ['id'];
     public function shift()
     {
         return $this->belongsTo(Shift::class);

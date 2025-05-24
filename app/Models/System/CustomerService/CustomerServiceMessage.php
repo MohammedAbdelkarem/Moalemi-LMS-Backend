@@ -11,8 +11,7 @@ class CustomerServiceMessage extends Model
 {
     use HasFactory;
     protected $table = "customer_card_messages";
-    protected $fillable = ["card_id", "message", "user_id"];
-
+    protected $guarded = ['id'];
     public function card(): BelongsTo
     {
         return $this->belongsTo(CustomerServiceCard::class, "card_id");

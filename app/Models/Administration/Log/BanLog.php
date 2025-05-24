@@ -10,16 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BanLog extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "banned_id",
-        "banned_by_id",
-        "unbanned_by_id",
-        "is_active",
-        "reason",
-        "unban_reason",
-        "unban_by_id",
-        "banned_until"
-    ];
+    protected $guarded = ['id'];
 
     public function bannedUser(): BelongsTo
     {

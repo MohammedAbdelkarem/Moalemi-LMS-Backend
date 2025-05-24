@@ -12,13 +12,7 @@ class FAQ extends Model
 {
     use HasFactory, HasTranslations;
     protected $table = "faq";
-    protected $fillable = [
-        "faq_category_id",
-        "question",
-        "answer",
-        "is_draft",
-        "update_by"
-    ];
+    protected $guarded = ['id'];
     public $translatable = ['question', 'answer'];
 
     public function updater(): BelongsTo

@@ -12,11 +12,7 @@ use Spatie\Translatable\HasTranslations;
 class FaqCategory extends Model
 {
     use HasFactory, HasTranslations;
-    protected $fillable = [
-        "name",
-        "app",
-        "update_by"
-    ];
+    protected $guarded = ['id'];
     public $translatable = ['name'];
 
     public function updater(): BelongsTo
