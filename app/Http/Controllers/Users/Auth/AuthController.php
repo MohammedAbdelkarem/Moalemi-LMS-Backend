@@ -16,10 +16,27 @@ class AuthController extends Controller
         protected AuthService $authService
     ) {}
 
-    public function login(AuthRequest $request): JsonResponse
+    public function registerDoctor(AuthRequest $request): JsonResponse
     {
+        // dd(9);
         return createdSuccess(
-            $this->authService->login($request->validated()),
+            $this->authService->registerForDoctor($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+    public function loginDoctor(AuthRequest $request): JsonResponse
+    {
+        // dd(9);
+        return createdSuccess(
+            $this->authService->loginForDoctor($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+    public function loginPatient(AuthRequest $request): JsonResponse
+    {
+        // dd(9);
+        return createdSuccess(
+            $this->authService->loginForPatient($request->validated()),
             ApiMessages::MSG_SUCCESS,
         );
     }

@@ -9,6 +9,7 @@ use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Constants\MediaCollection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
 
@@ -251,6 +252,23 @@ if (!function_exists('maskString')) {
         $visiblePart = substr($string, 0, $visibleCharsLength);
         $maskedPart = str_repeat($maskChar, strlen($string) - $visibleCharsLength);
         return "$visiblePart$maskedPart";
+    }
+}
+
+if (!function_exists('doctor_id')) {
+    function doctor_id()
+    {
+        $user_id = auth()->id();
+
+        $cacheKey = 'doctor_id_' . $user_id;
+
+        $doctor_id = Cache::get($cacheKey);
+
+        if ($doctor_id === null) {
+            $doctor_id = Cache::forever($cacheKey, User::find($user_id)->Doctor->id);
+        }
+
+        return $doctor_id;
     }
 }
 

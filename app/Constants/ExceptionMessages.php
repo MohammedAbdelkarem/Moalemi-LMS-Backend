@@ -44,4 +44,6 @@ final class ExceptionMessages
     const MSG_CANNOT_SET_TO_ACTIVE_CUZ_HAS_NO_MEDIA               = 'exception_messages.cannot_set_to_active_cuz_has_no_media';
     const MSG_CAN_NOT_DELETE_CUZ_HAS_RELATED_ITEMS               = 'exception_messages.can_not_delete_cuz_has_related_items';
     const MSG_CAN_NOT_DELETE_PLAN_CUZ_HAS_SUBSCRIPED_DOCTORS               = 'exception_messages.can_not_delete_plan_cuz_has_subscribed_doctors';
+    const MSG_CAN_NOT_SUBSCRIBE_TO_DRAFT_PLAN                       = 'exception_messages.can_not_subscribe_to_draft_plan';
+    const MSG_CAN_NOT_REGISTER_WITHOUT_PAYMENT                       = 'exception_messages.can_not_register_without_payment';
 }

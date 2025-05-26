@@ -2,53 +2,136 @@
 
 namespace App\Services\Users\Auth;
 
-use App\Constants\ExceptionMessages;
+use Carbon\Carbon;
+use App\Models\Plan;
+use App\Models\User;
+use App\Services\OTPService;
+use App\Services\MainService;
 use App\Exceptions\ApiException;
 use App\Models\JWTPersonalTokens;
-use App\Models\User;
+use App\Constants\MediaCollection;
+use App\Services\JWTTokensService;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Constants\ExceptionMessages;
+use App\Enums\PublishStatusEnum;
+use App\Services\Doctor\DoctorService;
+use App\Models\Users\Profile\UserDevice;
 use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\LoginHistory;
-use App\Services\MainService;
-use Illuminate\Support\Facades\DB;
-use App\Models\Users\Profile\UserDevice;
-use App\Services\JWTTokensService;
-use App\Services\OTPService;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Carbon\Carbon;
+use App\Services\Base\ContextService;
+use App\Services\Plan\PlanService;
 
 /**
  * Class AuthService.
  */
 class AuthService extends MainService
+
 {
     public function __construct(
         protected OTPService $OTPService,
         protected JWTTokensService $jwtService,
+        protected DoctorService $doctorService,
+        protected ContextService $contextService,
     ) {}
 
-    public function login($validatedData)
+    public function registerForDoctor($validatedData)
     {
-        //Create the account
-
-        $user = User::query()->firstOrCreate(
-            [
-                "phone_number" => $validatedData["phone_number"],
-            ],
-            [
-                "role_id" => 3, //user role
-                "phone_number" => $validatedData["phone_number"],
-                "language" => config("app.locale"),
-            ]
-        );
-        //Check if the admin is logging in using the users api
-        if ($user->role_id != 3)
-            throw new ApiException(null, trans(ExceptionMessages::MSG_ACCEESS_DENIED), 400);
-
         //Check for phone number if used to create to many accounts
+        if (ArchivedUser::where('phone_number', $validatedData["phone_number"])->count() >= config("_custom.max_accounts_per_phone_number"))
+            throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
+        //check if the plan is published
+
+        $plan = Plan::find($validatedData["plan_id"]);
+
+        $this->contextService->checkIfPlanIsPublished($plan);
+
+        if(!$validatedData['has_been_paid'])
+            return unprocessableFailure([] , ExceptionMessages::MSG_CAN_NOT_REGISTER_WITHOUT_PAYMENT);
+
+        $user = User::create([
+            "role_id" => 3, //doctor role
+            "name" => $validatedData["name"],
+            "phone_number" => $validatedData["phone_number"],
+            "email" => $validatedData["email"],
+            "birth_date" => $validatedData["birth_date"],
+            "is_male" => $validatedData["is_male"],
+            "language" => config("app.locale"),  
+        ]);
+
+        //Store Image
+        if (isset($validatedData["avatar"])) {
+            $user->avatar = $this->storeFile(
+                file: $validatedData["avatar"],
+                path: "users/{$user->id}"
+            );
+        }
+
+        $user->save();
+
+        $validatedData['user_id'] = $user->id;
+        //create the doctor info
+        $this->doctorService->storeRegisteredDoctor($validatedData);
+        //Send otp
+        $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
+
+        //Generate Token
+        $token = $this->generateLoginToken($user);
+
+        $data = [
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "tokens" => $token,
+            "user"   => [
+                "id" => $user->id,
+                "user_phone_number" => $user->phone_number,
+            ],
+        ];
+
+        return $data;
+    }
+    public function loginForPatient($validatedData)
+    {
+        //Check for phone number if used to create to many accounts
+
+        $user = User::firstOrCreate(
+            [
+                'phone_number' => $validatedData['phone_number'],
+                'role_id' => 4
+                ],
+            [
+                'phone_number' => $validatedData['phone_number'],
+                'role_id' => 4,
+                'language' => config("app.locale"),
+                ]
+            );
         if (ArchivedUser::where('phone_number', $validatedData["phone_number"])->count() >= config("_custom.max_accounts_per_phone_number"))
             throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
 
         $user->save();
+
+        //Send otp
+        $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
+
+        //Generate Token
+        $token = $this->generateLoginToken($user);
+
+        $data = [
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "tokens" => $token,
+            "user"   => [
+                "id" => $user->id,
+                "user_phone_number" => $user->phone_number,
+            ],
+        ];
+
+        return $data;
+    }
+    public function loginForDoctor($validatedData)
+    {
+
+        $user = User::where('phone_number' , $validatedData['phone_number'])
+                        ->where('role_id' , 3)->first();
+        
         //Send otp
         $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
 

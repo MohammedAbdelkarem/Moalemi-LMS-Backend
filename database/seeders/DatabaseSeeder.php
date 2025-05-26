@@ -20,6 +20,16 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminProfilesTableSeeder::class);
         $this->call(UserProfilesTableSeeder::class);
 
+
+
+
+        $this->call(MainSeeder::class);
+        $this->call(DaySeeder::class);
+
+
+
+
+
         $this->call(AboutUsTableSeeder::class);
         $this->call(PrivacyPoliciesTableSeeder::class);
         $this->call(TosTableSeeder::class);

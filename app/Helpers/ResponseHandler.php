@@ -202,6 +202,17 @@ if (!function_exists('notAllowedFailure')) {
     }
 }
 
+if (!function_exists('unprocessableFailure')) {
+    function unprocessableFailure($data = null, $message = null)
+    {
+        return failure(
+            message: $message,
+            statusCode: Response::HTTP_UNPROCESSABLE_ENTITY,
+            data: $data
+        );
+    }
+}
+
 if (!function_exists('unavailableServiceFailure')) {
     function unavailableServiceFailure($data = null, $message = null)
     {

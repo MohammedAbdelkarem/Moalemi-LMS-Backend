@@ -20,6 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware(['api', 'lang', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api'])
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
+
+            Route::middleware(['api', 'lang', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api'])
+                ->prefix('api/doctor')
+                ->group(base_path('routes/doctor.php'));
+
+            Route::middleware(['api', 'lang', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api'])
+                ->prefix('api/patient')
+                ->group(base_path('routes/patient.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {

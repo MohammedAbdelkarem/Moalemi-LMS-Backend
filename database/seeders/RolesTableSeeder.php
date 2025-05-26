@@ -40,8 +40,17 @@ class RolesTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'name' => 'user',
-                'description' => 'System user.',
+                'name' => 'doctor',
+                'description' => 'System doctor.',
+                'created_at' => '2025-01-12 10:03:49',
+                'updated_at' => '2025-01-12 10:03:49',
+                'created_by' => NULL,
+            ),
+            3 => 
+            array (
+                'id' => 4,
+                'name' => 'patient',
+                'description' => 'System patient.',
                 'created_at' => '2025-01-12 10:03:49',
                 'updated_at' => '2025-01-12 10:03:49',
                 'created_by' => NULL,

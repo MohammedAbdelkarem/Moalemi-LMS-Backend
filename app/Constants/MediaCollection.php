@@ -21,6 +21,10 @@ final class MediaCollection
     const CATEGORY_COLLECTION               = 'category_collection';
     const SUB_CATEGORY_COLLECTION               = 'sub_category_collection';
     const PLAN_COLLECTION               = 'plan_collection';
+    const DOCTOR_COVER_COLLECTION               = 'doctor_cover_collection';
+    const DOCTOR_LOGO_COLLECTION               = 'doctor_logo_collection';
+    const DOCTOR_CERTIFICATES_COLLECTION               = 'doctor_certificates_collection';
     const ARTICLE_COLLECTION               = 'article_collection';
+    const USER_AVATAR_COLLECTION               = 'user_avatar_collection';
 
 }

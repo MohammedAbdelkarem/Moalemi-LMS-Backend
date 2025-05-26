@@ -10,6 +10,8 @@ class Subscription extends Pivot
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $table = 'subscriptions';
+    public $incrementing = true;
     public function transaction()
     {
         return $this->hasOne(Transaction::class);

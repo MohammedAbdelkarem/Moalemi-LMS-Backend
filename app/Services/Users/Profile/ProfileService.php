@@ -74,7 +74,9 @@ class ProfileService extends MainService
             "email"         => $validatedData["email"],
             "city_id"       => $validatedData["city_id"],
         ]);
-        $this->updateProfileImage($validatedData);
+        
+        if (isset($validatedData["avatar"]))
+            $this->updateProfileImage($validatedData);
     }
 
     public function updateProfileImage($validatedData): array

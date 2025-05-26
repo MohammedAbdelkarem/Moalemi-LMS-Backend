@@ -90,7 +90,9 @@ Route::group(['middleware' => ['is_user', 'auth:api', 'token.access_api', 'user.
 Route::group([], function () {
     //Auth
     Route::controller(AuthController::class)->group(function () {
-        Route::post("/login", "login")->middleware('bots')->name('login');
+        Route::post("/register/doctor", "registerDoctor")->middleware('bots')->name('registerDoctor');
+        Route::post("/login/doctor", "loginDoctor")->middleware('bots')->name('loginDoctor');
+        Route::post("/login/patient", "loginPatient")->middleware('bots')->name('loginPatient');
     });
 
     //Profile
@@ -142,8 +144,3 @@ Route::group([], function () {
         Route::get("/home", "home");
     });
 });
-
-Route::get('/messages', [HomeController::class, 'messages'])
-    ->name('messages');
-Route::post('/message', [HomeController::class, 'message'])
-    ->name('message');

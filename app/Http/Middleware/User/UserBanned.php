@@ -21,7 +21,7 @@ class UserBanned
 
         if (
             $profile->banned_until
-            || Carbon::now()->lt(Carbon::parse($profile->banned_until))
+            && Carbon::now()->lt(Carbon::parse($profile->banned_until))
         )
             return failure(
                 ExceptionMessages::MSG_BANNED_ACCOUNT,

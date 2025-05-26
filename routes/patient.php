@@ -1,14 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Doctor\PlanController;
 
 /*
 |--------------------------------------------------------------------------
 | Doctor API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register Doctors API routes for doctors in the system
+| Here is where you can register Patients API routes for patients in the system
 |
 */
 
@@ -19,7 +18,5 @@ Route::middleware([])->group(function () {
 
 //Auth Needed
 Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.active', 'user.verified']], function () {
-    Route::prefix('plan')->controller(PlanController::class)->group(function () {
-        Route::get('subscripe/{id}' , 'subscripe');
-    });
+        
 });

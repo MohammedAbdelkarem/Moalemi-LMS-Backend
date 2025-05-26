@@ -4,36 +4,38 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\Administration\Log\BanLog;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\Administration\Profile\AdminProfile;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use App\Models\System\CustomerService\CustomerServiceCard;
-use App\Models\System\CustomerService\CustomerServiceMessage;
-use App\Models\System\Info\AboutUs;
-use App\Models\System\Info\City;
-use App\Models\System\Info\ContactUs;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use App\Models\System\Info\FAQ;
-use App\Models\System\Info\FaqCategory;
-use App\Models\System\Info\PrivacyPolicy;
 use App\Models\System\Info\Tos;
-use App\Models\System\Notification\Notification;
+use App\Models\System\Info\City;
 use App\Models\System\Role\Role;
+use App\Models\System\Info\AboutUs;
 use App\Models\System\SystemSetting;
+use Illuminate\Support\Facades\Auth;
+use App\Models\System\Info\ContactUs;
+use App\Models\System\Info\FaqCategory;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Users\Profile\UserDevice;
+use Illuminate\Notifications\Notifiable;
+use App\Models\Administration\Log\BanLog;
+use App\Models\System\Info\PrivacyPolicy;
+use App\Models\Users\Profile\UserProfile;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\LoginHistory;
-use App\Models\Users\Profile\UserDevice;
-use App\Models\Users\Profile\UserProfile;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\System\Notification\Notification;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Administration\Profile\AdminProfile;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\System\CustomerService\CustomerServiceCard;
+use App\Models\System\CustomerService\CustomerServiceMessage;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -76,6 +78,39 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(JWTPersonalTokens::class, "user_id");
     }
+
+        /**
+     * Check if user is a regular user (role_id = 3)
+     */
+    public function isRegularUser(): bool
+    {
+        return $this->role_id === 3 || $this->role_id === 4;
+    }
+
+    /**
+     * Check if user is an admin (role_id = 1 or 2)
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role_id !== 3 && $this->role_id !== 4;
+    }
+
+    /**
+     * Check if user is a super admin (role_id = 1)
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role_id === 1;
+    }
+
+    /**
+     * Check if user is a regular admin (role_id = 2)
+     */
+    public function isRegularAdmin(): bool
+    {
+        return $this->role_id === 2;
+    }
+
 
     //Relations
 
@@ -262,5 +297,18 @@ class User extends Authenticatable implements JWTSubject
     public function Doctor()
     {
         return $this->hasOne(Doctor::class);
+    }
+
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_USER,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

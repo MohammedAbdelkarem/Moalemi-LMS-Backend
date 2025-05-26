@@ -55,13 +55,13 @@ class AppServiceProvider extends ServiceProvider
         //Gates If Needed
 
         Gate::define('superAdmin', function ($user): bool {
-            return $user->role_id === 1;
+            return $user->isSuperAdmin();
         });
         Gate::define('admin', function ($user): bool {
-            return !($user->role_id === 3);
+            return $user->isAdmin();
         });
         Gate::define('user', function ($user): bool {
-            return $user->role_id === 3;
+            return $user->isRegularUser();
         });
     }
 

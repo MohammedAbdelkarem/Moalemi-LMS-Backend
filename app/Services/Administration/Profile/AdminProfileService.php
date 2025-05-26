@@ -129,7 +129,7 @@ class AdminProfileService extends MainService
         /**
          * @var \App\Models\User $user
          */
-        $user = findByIdOrFail(User::class, $id, Resources::RES_USER);
+        $user = User::findByIdOrFail($id);
 
         //Delete Tokens so user have to login again to get the new abilities
         if ($user->role_id != $validatedData["role_id"]) {
@@ -147,7 +147,8 @@ class AdminProfileService extends MainService
             "city_id"       => $validatedData["city_id"],
         ]);
         //Update User Image
-        $this->updateProfileImage($validatedData, $id);
+        if (isset($validatedData["avatar"]))
+            $this->updateProfileImage($validatedData, $id);
 
         if (!empty($validatedData["password"]))
             $user->adminProfile()->update([
@@ -160,7 +161,7 @@ class AdminProfileService extends MainService
         /**
          * @var \App\Models\User $user
          */
-        $user = findByIdOrFail(User::class, $id, Resources::RES_USER);
+        $user = User::findByIdOrFail($id);
 
         $user = $this->StoreUpdate(
             file: $validatedData["avatar"],
@@ -179,8 +180,7 @@ class AdminProfileService extends MainService
 
     public function deactivateAccount($id)
     {
-        $user = findByIdOrFail(User::class, $id, Resources::RES_USER);
-
+        $user = User::findByIdOrFail($id);
         /**
          * To not deactive user 1 OR a super admin from other admin || or normal user
          */
