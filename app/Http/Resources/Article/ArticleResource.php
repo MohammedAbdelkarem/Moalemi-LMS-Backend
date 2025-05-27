@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources\Article;
 
-use App\Constants\RouteNames;
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
+use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -19,6 +21,7 @@ class ArticleResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'media' => MediaResource::collection($this->getMedia(MediaCollection::ARTICLE_COLLECTION)),
         ];
 
         $routeName = $request->route()->getName();

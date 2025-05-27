@@ -23,7 +23,9 @@ class PlanResource extends JsonResource
             'number_of_days' => $this->number_of_days,
             'discount_start_at' => $this->discount_start_at,
             'discount_end_at' => $this->discount_end_at,
-            'price_after_discount' => ($this->discount_percentage > 0 && $this->discount_end_at >= now()) ? $this->price - ($this->price * ($this->discount_percentage / 100)) : $this->price,
+            'price_after_discount' => ($this->discount_percentage > 0 && $this->discount_end_at >= now()) 
+                                    ? $this->price - ($this->price * ($this->discount_percentage / 100)) 
+                                    : $this->price,
         ];
 
         $routeName = $request->route()->getName();
@@ -32,7 +34,7 @@ class PlanResource extends JsonResource
         {
             case RouteNames::PLAN_ADMIN:
                 $data['publish_status']   = $this->publish_status;
-                $data['subscriptions']   = $this->doctors;
+                $data['subscriped_doctors']   =  DoctorResouce::collection($this->whenLoaded('subscripedDoctors'));
             break;
         }
 

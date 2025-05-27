@@ -9,12 +9,21 @@ use App\Models\DoctorPhoneNumber;
 use App\Constants\MediaCollection;
 use App\Models\Subscription;
 use App\Models\Transaction;
+use App\Services\Plan\PlanService;
+use App\Services\Transaction\TransactionService;
 
 /**
  * Class DoctorService.
  */
 class DoctorService
 {
+    protected $planService;
+    protected $transactionService;
+    public function __construct(PlanService $planService , TransactionService $transactionService)
+    {
+        $this->planService = $planService;
+        $this->transactionService = $transactionService;
+    }
     public function storeRegisteredDoctor($data)
     {
         //doctor table
@@ -71,25 +80,40 @@ class DoctorService
         {
             $plan = Plan::find($data['plan_id']);
 
-            $price_after_discount = ($plan->discount_end_at > now()) 
-                                        ? $plan->price - ($plan->price * ($plan->discount_percentage / 100)) 
-                                        : $plan->price;
-
-            Subscription::create([
-               'original_price' => $plan->price,
-                'price_after_discount' => $price_after_discount,
-                'discount_percentage' => $plan->discount_percentage,
-                'start_at' => now(),
-                'end_at' => now()->addDays($plan->number_of_days),
-                'number_of_days' => $plan->number_of_days,
-                'is_active' => 1, 
-                'doctor_id' => $doctor->id,
-                'plan_id' => $plan->id,
-            ]);
-
-            
-            
-            
+            $this->planService->subscripe($plan->id , $doctor->id);
         }
+    }
+
+    public function getAll($data)
+    {
+        return getOrPaginate(
+            Doctor::filter($data),
+            $data
+        );
+    }
+
+    public function addPhoneNumbers($data)
+    {
+        foreach($data['phone_numbers'] as $phone_number)
+        {
+            DoctorPhoneNumber::create([
+                'doctor_id' => doctor_id(),
+                'phone_number' => $phone_number
+            ]);
+        }
+    }
+
+    public function deletePhoneNumbers($data)
+    {
+        DoctorPhoneNumber::whereIn('id' , $data['ids'])->delete();
+    }
+
+    public function updatePhoneNumber($id , $data)
+    {
+        $phone_number = DoctorPhoneNumber::findByIdOrFail($id);
+
+        $phone_number->update($data);
+
+        $phone_number->save();
     }
 }

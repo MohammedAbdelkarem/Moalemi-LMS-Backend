@@ -268,6 +268,8 @@ if (!function_exists('doctor_id')) {
             $doctor_id = Cache::forever($cacheKey, User::find($user_id)->Doctor->id);
         }
 
+        // dd($doctor_id);
+
         return $doctor_id;
     }
 }

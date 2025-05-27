@@ -18,4 +18,26 @@ class Transaction extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
+
+    public function scopeDoctorId($query)
+    {
+        return $query->where('doctor_id' , doctor_id());
+    }
+
+    public function scopeFilter($query , $data)
+    {
+        return $query
+
+        ->when(isset($data['start_date']) , function($query) use ($data) {
+            $query->where('created_at' , '>=' , $data['start_date']);
+        })
+
+        ->when(isset($data['end_date']) , function($query) use ($data) {
+            $query->where('created_at' , '<=' , $data['end_date']);
+        })
+
+        ->when(isset($data['doctor_ids']) , function($query) use ($data) {
+            $query->whereIn('doctor_id' , $data['doctor_ids']);
+        });
+    }
 }

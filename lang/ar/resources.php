@@ -8,6 +8,7 @@ return [
     'file'                      => 'الملف',
     'files'                     => 'ملفات',
     'material'                  => 'المادة',
+    'doctor_phone_number'       => 'رقم هاتف الطبيب',
     'Story'                     => 'قصة',
     'article'                     => 'مقال',
     'Teacher'                   => 'معلم',

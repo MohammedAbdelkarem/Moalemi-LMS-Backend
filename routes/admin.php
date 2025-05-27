@@ -2,8 +2,10 @@
 
 use App\Constants\RouteNames;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\Media\MediaController;
@@ -209,6 +211,12 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
     Route::prefix('plan')->controller(PlanController::class)->group(function(){
         Route::get('changePublishStatus/{id}' , 'changePublishStatus');
+    });
+    Route::prefix('transactions')->controller(TransactionController::class)->group(function(){
+        Route::get('get' , 'getTransactions')->name(RouteNames::ADMIN_TRANSACTION_GET);
+    });
+    Route::prefix('doctors')->controller(DoctorController::class)->group(function(){callback: 
+        Route::get('get' , 'getAll');
     });
     
     Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);

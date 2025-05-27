@@ -35,4 +35,6 @@ final class RouteNames
     const GUEST_BANNER_GET              = 'guest.banner.get';
     const GET_SUBCATEGORIES              = 'get.subcategories';
     const GET_CATEGORIES              = 'get.categories';
+    const ADMIN_TRANSACTION_GET              = 'admin.transaction.get';
+    const DOCTOR_TRANSACTION_GET              = 'doctor.transaction.get';
 }

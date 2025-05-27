@@ -54,6 +54,7 @@ class ProfileController extends Controller
         return success(
             $this->profileService->update($request->validated()),
             ApiMessages::MSG_UPDATED,
+            ProfileResource::class
         );
     }
 

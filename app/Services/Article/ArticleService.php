@@ -31,7 +31,7 @@ class ArticleService
 
     public function store($data)
     {
-        $data['doctor_id'] = 1;
+        $data['doctor_id'] = doctor_id();
         
         $item = Article::create($data);
 
@@ -61,7 +61,7 @@ class ArticleService
     public function getMyArticles($data)
     {
         return getOrPaginate(
-            Article::where('doctor_id' , 1),
+            Article::where('doctor_id' , doctor_id()),
             $data
         );
     }

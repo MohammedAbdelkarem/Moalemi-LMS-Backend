@@ -85,4 +85,41 @@ class Doctor extends Model implements HasMedia
             ->using(Favorite::class)
             ->withTimestamps();
     }
+
+    public function scopeFilter($query , $data)
+    {
+        return $query
+
+        ->when(isset($data['name']) , function($query) use ($data) {
+            $query->whereHas('user', function($query) use ($data) {
+                $query->where('name', 'like', '%' . $data['name'] . '%');
+            })
+            ->orWhere('clinic_name', 'like', '%' . $data['name'] . '%');
+        })
+
+        ->when(isset($data['phone_number']) , function($query) use ($data) {
+            $query->whereHas('user', function($query) use ($data) {
+                $query->where('phone_number', 'like', '%' . $data['phone_number'] . '%');
+            })
+            ->orWhereHas('phoneNumbers', function($query) use ($data) {
+                $query->where('phone_number', 'like', '%' . $data['phone_number'] . '%');
+            });
+        })
+
+        ->when(isset($data['sub_category_ids']) , function($query) use ($data) {
+            $query->whereHas('subCategories', function($query) use ($data) {
+                $query->whereIn('sub_categories.id', $data['sub_category_ids']);
+            });
+        })
+
+        ->when(isset($data['category_ids']) , function($query) use ($data) {
+            $query->whereHas('subCategories.category', function($query) use ($data) {
+                $query->whereIn('categories.id', $data['category_ids']);
+            });
+        })
+
+        ->when(isset($data['is_center']) , function($query) use ($data) {
+            $query->where('is_center' , $data['is_center']);
+        });
+    }
 }

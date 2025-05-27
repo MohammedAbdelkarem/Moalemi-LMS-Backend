@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DoctorPhoneNumber extends Model
 {
@@ -12,5 +14,21 @@ class DoctorPhoneNumber extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    /**
+     * @return \App\Models\DoctorPhoneNumber
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            Resources::RES_DOCTOR_PHONE_NUMBER,
+            GenderEnum::MALE,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

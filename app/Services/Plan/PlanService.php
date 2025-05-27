@@ -2,9 +2,12 @@
 
 namespace App\Services\Plan;
 
+use App\Services\Transaction\TransactionService;
 use Carbon\Carbon;
 use App\Models\Plan;
 use App\Models\Doctor;
+use App\Models\Transaction;
+use App\Models\Subscription;
 use App\Constants\ExceptionMessages;
 use App\Services\Base\ContextService;
 
@@ -15,9 +18,11 @@ class PlanService
 {
 
     protected $contextService;
-    public function __construct(ContextService $contextService)
+    protected $transactionService;
+    public function __construct(ContextService $contextService , TransactionService $transactionService)
     {
         $this->contextService = $contextService;
+        $this->transactionService = $transactionService;
     }
     public function getAll($data)
     {
@@ -29,7 +34,7 @@ class PlanService
 
     public function show($id)
     {
-        return plan::findByIdOrFail($id  , ['doctors']);
+        return Plan::findByIdOrFail($id  , ['subscripedDoctors']);
     }
 
     public function store($data)
@@ -67,8 +72,14 @@ class PlanService
 
     public function getLatestSubscripedPlanDate()
     {
-        
-        return Doctor::find(doctor_id())->plans()->orderBy('id', 'desc')->latest()->pivot->end_at;
+        $last_date = Subscription::latest('id')->first()->end_at;
+        // dd($last_date);
+        return $last_date;
+    }
+
+    public function subscripedBefore($doctor_id)
+    {
+        return Subscription::where('doctor_id' , $doctor_id)->exists();
     }
 
     public function getDateToStartNewSubscription()
@@ -78,30 +89,78 @@ class PlanService
         return Carbon::parse($last_subscription_date)->addDay()->format('Y-m-d');
     }
 
-    public function subscripe($plan_id)
+    public function hasActivePlan($doctor_id)
+    {
+        return Subscription::where('doctor_id' , $doctor_id)->active()->exists();
+    }
+
+    public function getDoctorActiveSubscription($doctor_id)
+    {
+        return Subscription::where('doctor_id' , $doctor_id)->active()->first();
+    }
+
+    public function getLatestSubscripedPlanId($doctor_id)
+    {
+        return Subscription::where('doctor_id' , $doctor_id)->latest('id')->first()->id;
+    }
+
+    public function subscripe($plan_id , $doctor_id)
     {
         $plan = Plan::findByIdOrFail($plan_id);
 
         $this->contextService->checkIfPlanIsPublished($plan);
 
-        $doctor = Doctor::find(doctor_id());
-
-        $dateToBegin = $this->getDateToStartNewSubscription();
+        $dateToBegin = now()->format('Y-m-d');
         $dateToEnd = Carbon::parse($dateToBegin)->addDays($plan->number_of_days);
+        
+        if($this->subscripedBefore($doctor_id))
+        {
+            $dateToBegin = $this->getDateToStartNewSubscription();
+            $dateToEnd = Carbon::parse($dateToBegin)->addDays($plan->number_of_days);
+        }
+
+        $doctor = Doctor::find($doctor_id);
+
+
+        $price_after_discount = ($plan->discount_end_at > now()) 
+                                        ? $plan->price - ($plan->price * ($plan->discount_percentage / 100)) 
+                                        : $plan->price;
 
         $doctor->plans()->attach(
                 $plan->id,
                 [
                     'original_price' => $plan->price,
-                    'price_after_discount' => ($plan->discount_end_at > now()) 
-                                        ? $plan->price - ($plan->price * ($plan->discount_percentage / 100)) 
-                                        : $plan->price,
+                    'price_after_discount' => $price_after_discount,
                     'discount_percentage' => $plan->discount_percentage,
                     'start_at' => $dateToBegin,
                     'end_at' => $dateToEnd,
                     'number_of_days' => $plan->number_of_days,
-                    'is_active' => 1,
+                    'is_active' => $this->hasActivePlan($doctor_id) ? 0 : 1,
                 ]
             );
+
+        $subscription_id = $this->getLatestSubscripedPlanId($doctor_id);
+
+        $this->transactionService->generateTransaction(
+              $doctor_id,
+              $subscription_id,
+              $price_after_discount  
+            );
+    }
+
+    public function filterSubscriptions($data)
+    {
+        return getOrPaginate(
+            Subscription::doctorId()->filter($data),
+            $data
+        );
+    }
+
+    public function getPublishedPlans($data)
+    {
+        return getOrPaginate(
+            Plan::published(),
+            $data
+        );
     }
 }
