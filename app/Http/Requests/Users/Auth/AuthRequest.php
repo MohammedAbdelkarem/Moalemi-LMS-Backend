@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Users\Auth;
 
 use App\Rules\PhoneNumberRule;
+use App\Rules\ShiftsOverlappingRule;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseApiRequest;
 
@@ -44,6 +45,7 @@ class AuthRequest extends BaseApiRequest
                'mimes:jpeg,jpg,png,webp',
                'max:4096'
             ],
+            "city_id" => ['required' , 'exists:cities,id'],
             //doctors table
             "clinic_name" => ['required' , Rule::unique('doctors' , 'clinic_name') , 'max:255'],
             "address_text" => ['required' , 'max:255'],
@@ -77,9 +79,7 @@ class AuthRequest extends BaseApiRequest
             "sub_category_ids" => ['required' , 'array'],
             "sub_category_ids.*" => ['required' , 'exists:sub_categories,id'],
             //shifts table
-            "shift_times"       => ['required' , 'array', function ($attribute, $value, $fail) {
-                $this->validateNoOverlappingShifts($value, $fail);
-            }],
+            "shift_times"       => ['required' , 'array', new ShiftsOverlappingRule()],
             "shift_times.*.day_id" => ['required' , 'exists:days,id'],
             "shift_times.*.start_time" => ['required', 'date_format:H:i'],
             "shift_times.*.end_time" => ['required', 'date_format:H:i', 'after:shift_times.*.start_time'],
@@ -99,53 +99,6 @@ class AuthRequest extends BaseApiRequest
         return [
              "phone_number" => ['required', new PhoneNumberRule()],
         ];
-    }
-
-    /**
-     * Validate that shift times don't overlap on the same day
-     */
-    private function validateNoOverlappingShifts($shiftTimes, $fail)
-    {
-        $dayShifts = [];
-
-        foreach ($shiftTimes as $index => $shift) {
-            if (!isset($shift['day_id'], $shift['start_time'], $shift['end_time'])) {
-                continue;
-            }
-
-            $dayId = $shift['day_id'];
-            $startTime = $shift['start_time'];
-            $endTime = $shift['end_time'];
-
-            // Convert times to comparable format
-            $start = strtotime($startTime);
-            $end = strtotime($endTime);
-
-            if ($start >= $end) {
-                $fail("The end time must be after the start time for shift " . ($index + 1));
-                return;
-            }
-
-            // Check for overlaps with existing shifts on the same day
-            if (isset($dayShifts[$dayId])) {
-                foreach ($dayShifts[$dayId] as $existingShift) {
-                    $existingStart = strtotime($existingShift['start_time']);
-                    $existingEnd = strtotime($existingShift['end_time']);
-
-                    // Check if times overlap
-                    if (($start < $existingEnd && $end > $existingStart)) {
-                        $fail("Shift times cannot overlap on the same day. Conflict found between shifts on day {$dayId}.");
-                        return;
-                    }
-                }
-            }
-
-            // Add this shift to the day's shifts
-            if (!isset($dayShifts[$dayId])) {
-                $dayShifts[$dayId] = [];
-            }
-            $dayShifts[$dayId][] = $shift;
-        }
     }
 
     public function messages()

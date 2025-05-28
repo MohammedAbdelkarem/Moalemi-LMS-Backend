@@ -122,7 +122,9 @@ class OTPService extends MainService
 
     public function updateDeviceInfo($user, $validatedData)
     {
-        $existingDevice = UserDevice::where('device_id', $validatedData["device_id"])
+        $existingDevice = UserDevice::when(isset($data['device_id']), function ($query) use ($validatedData) {
+            return $query->where('device_id', $validatedData["device_id"]);
+            })
             ->orWhere('notification_token', $validatedData["notification_token"])
             ->first();
 
@@ -131,7 +133,7 @@ class OTPService extends MainService
             // Update the existing record
             $existingDevice->update([
                 'notification_token' => $validatedData["notification_token"],
-                'device_id' => $validatedData["device_id"],
+                'device_id' => $validatedData["device_id"] ?? null,
                 'user_id' => $user->id,
             ]);
         } else {
@@ -140,7 +142,7 @@ class OTPService extends MainService
             // dd($validatedData);
             UserDevice::create([
                 'notification_token' => $validatedData["notification_token"],
-                'device_id' => $validatedData["device_id"],
+                'device_id' => $validatedData["device_id"] ?? null,
                 'user_id' => $user->id,
             ]);
         }

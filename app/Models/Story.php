@@ -42,8 +42,8 @@ class Story extends Model implements HasMedia
         return findByIdOrFail(
             self::class,
             $id,
-            Resources::RES_STORY,
             GenderEnum::FEMALE,
+            Resources::RES_STORY,
             $with,
             $withTrashed,
             $selectedColumns

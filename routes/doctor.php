@@ -3,6 +3,7 @@
 use App\Constants\RouteNames;
 use App\Http\Controllers\Doctor\ArticleController;
 use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\Doctor\ShiftController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Doctor\PlanController;
 use App\Http\Controllers\Doctor\TransactionController;
@@ -47,4 +48,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
 
     Route::apiResource('/article', ArticleController::class);
+    Route::apiResource('/shift', ShiftController::class)
+        ->name('index' , RouteNames::DOCTOR_SHIFT_GET)
+        ->name('show' , RouteNames::DOCTOR_SHIFT_SHOW);
 });

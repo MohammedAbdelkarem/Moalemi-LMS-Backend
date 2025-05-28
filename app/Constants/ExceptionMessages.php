@@ -6,6 +6,7 @@ final class ExceptionMessages
 {
     const MSG_NOT_ALLOWED                      = 'exception_messages.not_allowed';
     const MSG_INVALID_CREDENTIALS              = 'exception_messages.invalid_credentials';
+    const MSG_CAN_NOT_DELETE_SHIFT_CUZ_RESERVATIONS_EXISTS              = 'exception_messages.can_not_delete_shift_cuz_reservations_exists';
     const MSG_NOT_AUTHORIZED                   = 'exception_messages.not_authorized';
     const MSG_NOT_AUTHENTICATED                = 'exception_messages.unauthenticated';
     const MSG_NO_CONTENT                       = 'exception_messages.no_content';
@@ -46,4 +47,5 @@ final class ExceptionMessages
     const MSG_CAN_NOT_DELETE_PLAN_CUZ_HAS_SUBSCRIPED_DOCTORS               = 'exception_messages.can_not_delete_plan_cuz_has_subscribed_doctors';
     const MSG_CAN_NOT_SUBSCRIBE_TO_DRAFT_PLAN                       = 'exception_messages.can_not_subscribe_to_draft_plan';
     const MSG_CAN_NOT_REGISTER_WITHOUT_PAYMENT                       = 'exception_messages.can_not_register_without_payment';
+    const MSG_SHIFTS_OVERLAPPING                                    = 'exception_messages.shifts_overlapping';
 }

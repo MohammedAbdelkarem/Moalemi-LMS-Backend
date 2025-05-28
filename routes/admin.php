@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\Media\MediaController;
@@ -217,6 +218,9 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
     Route::prefix('doctors')->controller(DoctorController::class)->group(function(){callback: 
         Route::get('get' , 'getAll');
+    });
+    Route::prefix('patients')->controller(UserController::class)->group(function(){callback: 
+        Route::get('get' , 'getPatients');
     });
     
     Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);

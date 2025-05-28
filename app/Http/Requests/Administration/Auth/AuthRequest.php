@@ -26,7 +26,7 @@ class AuthRequest extends BaseApiRequest
             "password"      => ['required', 'string'],
             "device_name"   => ["required", "string"],
             "notification_token" => ["present", "nullable", "string"],
-            "device_id"     => ["required", "nullable", "string"],
+            // "device_id"     => ["required", "nullable", "string"],
         ];
     }
 

@@ -36,7 +36,7 @@ class DoctorService
             'is_center' => $data['is_center'],
             'bio' => $data['bio'],
             'join_reason' => $data['join_reason'],
-            'user_id' => $data['user_id']
+            'user_id' => $data['user_id'],
         ]);
 
         if(isset($data['logo']))

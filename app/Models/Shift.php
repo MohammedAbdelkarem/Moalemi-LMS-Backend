@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
+use App\Enums\ReservationStatusEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shift extends Model
 {
@@ -22,5 +25,26 @@ class Shift extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function comingReservations()
+    {
+        return $this->reservations()->where('status' , ReservationStatusEnum::PENDING);
+    }
+
+    /**
+     * @return \App\Models\Shift
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_SHIFT,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

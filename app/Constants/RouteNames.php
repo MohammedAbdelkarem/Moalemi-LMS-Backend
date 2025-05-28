@@ -6,6 +6,8 @@ final class RouteNames
 {
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';
+    const DOCTOR_SHIFT_GET                               = 'doctor.shift.get';
+    const DOCTOR_SHIFT_SHOW                               = 'doctor.shift.show';
     const LOGIN_HISTORY_List                                   = 'login_history.list';
     const CATEGORY_LIST                                        = 'category.list';
     const SUBCATEGORY_LIST                                     = 'subcategory.list';

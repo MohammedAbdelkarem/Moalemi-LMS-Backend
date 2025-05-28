@@ -5,7 +5,7 @@ use App\Constants\ExceptionMessages;
 
 
 if (!function_exists('findByIdOrFail')) {
-    function findByIdOrFail($model, $modelId, $type = 'male', $resource, $with = [], $withTrashed = false, $selectedColumns = null)
+    function findByIdOrFail($model, $modelId, $type = 'male', $resource, $with = [], $withTrashed = false, $selectedColumns = null , $asQuery = false , $where = [])
     {
         $modelInstance = null;
         $query = $withTrashed ? $model::withTrashed() : $model::query();
@@ -14,8 +14,16 @@ if (!function_exists('findByIdOrFail')) {
             $query->select($selectedColumns);
         }
 
+        if (!empty($where)) {
+            $query->where($where);
+        }
+
         if (!empty($with)) {
             $query->with($with);
+        }
+
+        if (!empty($queries)) {
+            $query->$queries;
         }
 
         $modelInstance = $query->find($modelId);
@@ -27,8 +35,10 @@ if (!function_exists('findByIdOrFail')) {
             } else {
                 $notFoundMessage = ExceptionMessages::MSG_RESOURCE_NOT_FOUND;
             }
-            return notFoundFailure([], __($notFoundMessage, ['resource' => __($resource)]));
+            notFoundFailure(null, __($notFoundMessage, ['resource' => __($resource)]));
         }
+        if ($asQuery)
+            return $query->where('id', $modelId);
         return $modelInstance;
     }
 }

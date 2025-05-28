@@ -51,6 +51,7 @@ class AuthService extends MainService
 
         $user = User::create([
             "role_id" => 3, //doctor role
+            'city_id' => $validatedData['city_id'],
             "name" => $validatedData["name"],
             "phone_number" => $validatedData["phone_number"],
             "email" => $validatedData["email"],

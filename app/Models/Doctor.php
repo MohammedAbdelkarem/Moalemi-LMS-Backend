@@ -120,6 +120,13 @@ class Doctor extends Model implements HasMedia
 
         ->when(isset($data['is_center']) , function($query) use ($data) {
             $query->where('is_center' , $data['is_center']);
+        })
+
+        ->when(isset($data['city_ids']), function($query) use ($data) {
+            $query->whereHas('user', function($query) use ($data) {
+                $query->whereIn('city_id', $data['city_ids']);
+            });
         });
+
     }
 }

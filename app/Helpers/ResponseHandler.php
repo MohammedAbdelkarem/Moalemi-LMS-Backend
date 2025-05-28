@@ -108,7 +108,7 @@ if (!function_exists('failure')) {
             $message = $transable ? trans($message, $messageResource) : $message;
         else
             $message = Response::$statusTexts[$statusCode];
-
+        
         throw new ApiException($data, $message, $statusCode);
     }
 }

@@ -8,6 +8,7 @@ return [
     'no_content'                        => 'لا يوجد محتوى',
     'deleting_failed'                   => 'فشلت عملية الحذف',
     'no_permission'                     => 'لا تملك صلاحيات',
+    'can_not_delete_shift_cuz_reservations_exists'                     => 'لا يمكن حذف الوقت لان تم الحجز فيه',
     'method_not_allowed'                => 'الإجراء غير صالح',
     'resource_not_FoundF'               => ':resource غير موجودة',
     'resource_not_Found'                => ':resource غير موجود',
@@ -46,4 +47,5 @@ return [
     'can_not_delete_cuz_has_related_items'              => 'لا يمكن حذف الخطة لوجود أعضاء مشتركين بها',
     'can_not_subscribe_to_draft_plan'                   => 'لا يمكن الاشتراك بخطة غير منشورة!!',
     'can_not_register_without_payment'                   => 'لا يمكن التسجيل بدون الدفع',
+    'shifts_overlapping'                                => 'بنبنبنبنب',
 ];

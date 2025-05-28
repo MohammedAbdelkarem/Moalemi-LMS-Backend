@@ -279,6 +279,17 @@ class User extends Authenticatable implements JWTSubject
             });
     }
 
+    public function scopeFilter($query, $data)
+    {
+        return $query
+
+        ->when(isset($data['search']) , function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone_number', 'like', '%' . $search . '%');
+        });
+    }
+
     public function messages()
     {
         return $this->hasMany(Message::class);
