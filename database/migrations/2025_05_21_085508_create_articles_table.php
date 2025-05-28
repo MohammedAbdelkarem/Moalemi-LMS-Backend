@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
+            $table->integer('number_of_likes')->default(0);
+            $table->integer('number_of_comments')->default(0);
             $table->timestamps();
         });
     }

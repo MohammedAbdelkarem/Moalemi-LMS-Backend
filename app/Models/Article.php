@@ -24,6 +24,11 @@ class Article extends Model implements HasMedia
         $this->addMediaCollection(MediaCollection::ARTICLE_COLLECTION);
     }
 
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
     /**
      * @return \App\Models\Article
      */

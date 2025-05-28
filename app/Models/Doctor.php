@@ -86,6 +86,11 @@ class Doctor extends Model implements HasMedia
             ->withTimestamps();
     }
 
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactionable');
+    }
+
     public function scopeFilter($query , $data)
     {
         return $query
@@ -127,6 +132,7 @@ class Doctor extends Model implements HasMedia
                 $query->whereIn('city_id', $data['city_ids']);
             });
         });
+
 
     }
 }

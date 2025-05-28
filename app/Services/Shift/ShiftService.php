@@ -113,7 +113,7 @@ class ShiftService
                 // Check if times overlap
                 if (($start < $existingEnd && $end > $existingStart)) 
                 {
-                    return unprocessableFailure([] , ExceptionMessages::MSG_SHIFTS_OVERLAPPING);
+                    return unprocessableFailure([] , ExceptionMessages::MSG_OVERLAPPED_SHIFTS);
                 }
             }
         }

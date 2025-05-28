@@ -105,7 +105,10 @@ if (!function_exists('failure')) {
         }
 
         if (isset($message))
+        {
             $message = $transable ? trans($message, $messageResource) : $message;
+            // dd($message , $transable , trans($message, $messageResource));
+        }
         else
             $message = Response::$statusTexts[$statusCode];
         

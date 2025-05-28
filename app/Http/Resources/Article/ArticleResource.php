@@ -21,6 +21,8 @@ class ArticleResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'number_of_likes' => $this->number_of_likes,
+            'number_of_comments' => $this->number_of_comments,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::ARTICLE_COLLECTION)),
         ];
 

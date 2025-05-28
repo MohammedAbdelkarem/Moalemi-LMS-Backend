@@ -46,6 +46,6 @@ return [
     'cannot_set_to_active_cuz_has_no_media'             => 'لا يمكن نشر هذا العنصر لانه لا يوجد صورة له',
     'can_not_delete_cuz_has_related_items'              => 'لا يمكن حذف الخطة لوجود أعضاء مشتركين بها',
     'can_not_subscribe_to_draft_plan'                   => 'لا يمكن الاشتراك بخطة غير منشورة!!',
-    'can_not_register_without_payment'                   => 'لا يمكن التسجيل بدون الدفع',
-    'shifts_overlapping'                                => 'بنبنبنبنب',
+    'can_not_register_without_payment'                  => 'لا يمكن التسجيل بدون الدفع',
+    'overlapped_shifts'                                 => 'لا يمكن انشاء مواعيد متداخلة',
 ];

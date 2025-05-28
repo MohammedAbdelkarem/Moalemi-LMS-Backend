@@ -4,6 +4,8 @@ namespace App\Services\Base;
 
 use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
+use App\Models\Doctor;
+use App\Models\Patient;
 
 /**
  * Class ContextService.
@@ -24,5 +26,13 @@ class ContextService
     {
         if($plan->publish_status == PublishStatusEnum::DRAFT)
             return unprocessableFailure([] , ExceptionMessages::MSG_CAN_NOT_SUBSCRIBE_TO_DRAFT_PLAN);
+    }
+
+    public function getUserModel($user)
+    {
+        if($user->role_id == 3)
+            return Doctor::class;
+        else
+            return Patient::class;
     }
 }
