@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reaction extends Model
 {
@@ -17,8 +19,24 @@ class Reaction extends Model
         return $this->belongsTo(Article::class);
     }
 
-    public function reactionable()
+    public function user()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \App\Models\Reaction
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_REACTION,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

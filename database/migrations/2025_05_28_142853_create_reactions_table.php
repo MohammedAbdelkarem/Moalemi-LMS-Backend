@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained()->cascadeOnDelete();
-            $table->morphs('reactionable');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->enum('type' , ReactionTypeEnum::values());
             $table->enum('status' , ReactionStatusEnum::values())->default(ReactionStatusEnum::EXIST);
             $table->text('comment')->nullable();

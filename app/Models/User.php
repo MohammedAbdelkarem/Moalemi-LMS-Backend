@@ -96,6 +96,14 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Check if user is an doctor (role_id = 3)
+     */
+    public function isDoctor(): bool
+    {
+        return $this->role_id === 3;
+    }
+
+    /**
      * Check if user is a super admin (role_id = 1)
      */
     public function isSuperAdmin(): bool
@@ -234,6 +242,11 @@ class User extends Authenticatable implements JWTSubject
     public function unbannedByMe(): HasMany
     {
         return $this->hasMany(BanLog::class, "unbanned_by_id");
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
     }
 
     //Scopes

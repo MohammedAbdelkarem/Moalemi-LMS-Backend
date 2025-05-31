@@ -26,6 +26,7 @@ use App\Http\Controllers\System\Info\PrivacyPolicyController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceMessageController;
 
@@ -221,6 +222,10 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
     Route::prefix('patients')->controller(UserController::class)->group(function(){callback: 
         Route::get('get' , 'getPatients');
+    });
+    Route::prefix(prefix: 'article/reactions')->controller(ReactionController::class)->group(function(){callback: 
+        Route::get('likes/{article_id}' , 'getLikes');
+        Route::get('comments/{article_id}' , 'getCommentsForAdmin');
     });
     
     Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);

@@ -14,6 +14,7 @@ return [
     'article'                     => 'مقال',
     'Teacher'                   => 'معلم',
     'Stories'                   => 'قصص',
+    'reaction'                   => 'التفاعل',
     'Question'                  => 'سؤال',
     'Banner'                    => 'بانر',
     'plan'                    => 'خطة',

@@ -86,11 +86,6 @@ class Doctor extends Model implements HasMedia
             ->withTimestamps();
     }
 
-    public function reactions()
-    {
-        return $this->morphMany(Reaction::class, 'reactionable');
-    }
-
     public function scopeFilter($query , $data)
     {
         return $query

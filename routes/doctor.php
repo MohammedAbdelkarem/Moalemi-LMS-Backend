@@ -1,11 +1,12 @@
 <?php
 
 use App\Constants\RouteNames;
-use App\Http\Controllers\Doctor\ArticleController;
-use App\Http\Controllers\Doctor\DoctorController;
-use App\Http\Controllers\Doctor\ShiftController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\Doctor\PlanController;
+use App\Http\Controllers\Doctor\ShiftController;
+use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\Doctor\ArticleController;
 use App\Http\Controllers\Doctor\TransactionController;
 
 /*
@@ -44,6 +45,14 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
     Route::prefix('article')->controller(ArticleController::class)->group(function () {
         Route::get('getMine' , 'getMyArticles');
+    });
+    Route::prefix( 'article/reactions')->controller(ReactionController::class)->group(function(){callback: 
+        Route::get('like/{article_id}' , 'like');
+        Route::get('unLike/{article_id}' , 'unLike');
+        Route::post('comment/{article_id}' , 'comment');
+        Route::get('unComment/{comment_id}' , 'unComment');
+        Route::get('likes/{article_id}' , 'getLikes');
+        Route::get('comments/{article_id}' , 'getCommentsForUser');
     });
 
 

@@ -35,9 +35,4 @@ class Patient extends Model
             ->using(Favorite::class)
             ->withTimestamps();
     }
-    
-    public function reactions()
-    {
-        return $this->morphMany(Reaction::class, 'reactionable');
-    }
 }
