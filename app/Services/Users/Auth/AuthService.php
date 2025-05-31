@@ -93,6 +93,9 @@ class AuthService extends MainService
     public function loginForPatient($validatedData)
     {
         //Check for phone number if used to create to many accounts
+        $userExist = User::where('role_id' , 4)
+                    ->where('phone_number' , $validatedData['phone_number'])
+                    ->exists();
 
         $user = User::firstOrCreate(
             [
@@ -119,6 +122,7 @@ class AuthService extends MainService
         $data = [
             "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
             "tokens" => $token,
+            "is_register" => !$userExist,
             "user"   => [
                 "id" => $user->id,
                 "user_phone_number" => $user->phone_number,

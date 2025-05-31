@@ -52,7 +52,7 @@ class AdminProfileRequest extends BaseApiRequest
             "name"          => ["required", "string", "between:2,100"],
             "birth_date"    => ["present", "nullable", "date", "after_or_equal:1930-01-01"],
             "is_male"       => ["present", "nullable", "boolean"],
-            "email"         => ["required", "email", "unique:users,email"],
+            "email"         => ["required", "email", Rule::unique('users', 'email')->ignore($this->id)],
             "password"      => ["present", "nullable", "string", "min:8", "max:100"],
             "phone_number"  => ["present", "nullable", "string", new PhoneNumberRule(), Rule::unique("users", "phone_number")->ignore($this->id)],
             "city_id"       => ["present", "nullable",  Rule::exists('cities', 'id')],
