@@ -19,6 +19,12 @@ class Patient extends Model
         return $this->hasMany(Reservation::class);
     }
 
+    
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
+
     public function visits()
     {
         return $this->hasMany(Visit::class);

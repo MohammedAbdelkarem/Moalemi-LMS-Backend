@@ -22,11 +22,6 @@ class Shift extends Model
         return $this->belongsTo(Doctor::class);
     }
 
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
     public function comingReservations()
     {
         return $this->reservations()->where('status' , ReservationStatusEnum::PENDING);

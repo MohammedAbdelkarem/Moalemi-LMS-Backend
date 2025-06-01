@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('treatment_times', function (Blueprint $table) {
             $table->id();
             $table->foreignId('treatment_id')->constrained()->cascadeOnDelete();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->time('time')->nullable();
             $table->timestamps();
         });
     }

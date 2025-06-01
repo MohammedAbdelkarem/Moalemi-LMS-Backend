@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('bio');
             $table->string('join_reason');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->double('rate')->default(0);
             $table->timestamps();
         });
     }

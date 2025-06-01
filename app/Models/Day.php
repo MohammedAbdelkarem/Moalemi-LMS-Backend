@@ -13,4 +13,9 @@ class Day extends Model
     {
         return $this->hasMany(Shift::class);
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

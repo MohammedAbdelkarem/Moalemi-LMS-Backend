@@ -9,6 +9,7 @@ use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Constants\MediaCollection;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -271,6 +272,29 @@ if (!function_exists('doctor_id')) {
         // dd($doctor_id);
 
         return $doctor_id;
+    }
+}
+
+if (!function_exists('owner_id')) {
+    function owner_id()
+    {
+        $user_id = auth()->id();
+
+        $cacheKey = 'owner_id_' . $user_id;
+
+        $returned_owner_id = Cache::get($cacheKey);
+
+        if ($returned_owner_id === null)
+        {
+            $owner_id = Patient::where('user_id' , $user_id)
+                        ->where('is_owner' , 1)
+                        ->first()
+                        ->id;
+
+            $returned_owner_id = Cache::forever($cacheKey, $owner_id);
+        }
+
+        return $returned_owner_id;
     }
 }
 

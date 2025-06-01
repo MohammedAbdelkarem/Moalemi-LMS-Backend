@@ -34,6 +34,7 @@ class ProfileController extends Controller
     //TODO:TEMPLATE CHECK FOR ID : If app allow only to see my profile
     public function show($id): JsonResponse
     {
+        // dd($this->profileService->show($id));
         return success(
             $this->profileService->show($id),
             ApiMessages::MSG_SUCCESS,

@@ -12,18 +12,19 @@ class ProfileResource extends JsonResource
     use ImagesHelper;
     public function toArray(Request $request): array
     {
-        if (!$this->phone_number && auth()->user() && auth()->user()->role_id != 3)
+        if (!$this->phone_number && auth()->user() )
             $phone_number = $this->archivedAccount->phone_number;
         else {
             $phone_number = $this->phone_number ?? "";
         }
 
+        // dd(auth()->id() , $this->id);
         $data = [
             "is_me"     => $this->id == auth()->id(),
             "id"        => $this->id,
             "name"      => $this->name,
             "avatar"        => $this->getProfileImage($this),
-            "ban"           => (auth()->id() == $this->id || auth()->user()->role_id != 3) ? $this->getBanData() : null,
+            "ban"           => (auth()->id() == $this->id ) ? $this->getBanData() : null,
             "birth_date"    => $this->birth_date ?? "",
             "is_male"       => !is_null($this->is_male) ? (bool) $this->is_male : null,
             "email"         => $this->email ?? "",
@@ -34,7 +35,7 @@ class ProfileResource extends JsonResource
             "active_notifications" => (bool) $this->active_notifications,
         ];
 
-        if (auth()->user() && auth()->user()->role_id != 3) {
+        if (auth()->user() ) {
             $data += $this->getAdminData();
         }
 

@@ -9,9 +9,9 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function shift()
+    public function day()
     {
-        return $this->belongsTo(Shift::class);
+        return $this->belongsTo(Day::class);
     }
 
     public function patient()

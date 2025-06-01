@@ -46,19 +46,23 @@ class ProfileService extends MainService
 
     public function show($id)
     {
-        return findByIdOrFail(
-            model: User::class,
-            modelId: $id,
-            resource: Resources::RES_USER,
-            type: 'male',
-            where: ['role_id' => 3],
-            with: ['profile', 'city'],
-            asQuery: true,
-        )->usersSearchCriteria(checkBan: false)
-            ->with("bans", function ($query) {
-                $query->where("banned_until", ">=", Carbon::now())->latest()->take(1);
-            })
-            ->first();
+        
+
+
+        return 
+        findByIdOrFail(
+                model: User::class,
+                modelId: $id,
+                resource: Resources::RES_USER,
+                type: 'male',
+                with: ['profile', 'city'],
+                asQuery: true,
+            )
+            // ->usersSearchCriteria(checkBan: false)
+            //     ->with("bans", function ($query) {
+            //         $query->where("banned_until", ">=", Carbon::now())->latest()->take(1);
+            //     })
+                ->first();
     }
 
     public function update($validatedData)

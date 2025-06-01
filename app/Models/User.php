@@ -281,7 +281,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function scopeUsersSearchCriteria(Builder $query, $checkBan = true)
     {
-        $query->where("role_id", 3)
+        $query->whereIn("role_id", [3,4])
             ->whereNotNull(['name', 'account_verified_at'])            //User account is completed and active
             ->whereNull("deactive_at")              //User have an active account
             ->when($checkBan, function (Builder $q) {

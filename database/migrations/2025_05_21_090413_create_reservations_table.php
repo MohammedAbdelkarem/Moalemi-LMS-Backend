@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('other_rejection_reason')->nullable();
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('shift_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('day_id')->constrained()->cascadeOnDelete();
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
         });
     }

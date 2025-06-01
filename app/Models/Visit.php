@@ -19,6 +19,12 @@ class Visit extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    
+    public function rate()
+    {
+        return $this->hasOne(Rate::class);
+    }
+
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);

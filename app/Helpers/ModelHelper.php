@@ -28,6 +28,8 @@ if (!function_exists('findByIdOrFail')) {
 
         $modelInstance = $query->find($modelId);
 
+        // dd($modelInstance);
+
         if (!$modelInstance) {
             $notFoundMessage = '';
             if ($type == 'female') {
@@ -39,6 +41,7 @@ if (!function_exists('findByIdOrFail')) {
         }
         if ($asQuery)
             return $query->where('id', $modelId);
+        // dd($modelInstance);
         return $modelInstance;
     }
 }

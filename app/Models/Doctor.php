@@ -31,6 +31,11 @@ class Doctor extends Model implements HasMedia
         return $this->hasMany(Shift::class);
     }
 
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
+
     public function phoneNumbers()
     {
         return $this->hasMany(DoctorPhoneNumber::class);
