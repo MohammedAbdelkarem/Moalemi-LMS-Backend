@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('about_us', function (Blueprint $table) {
             $table->id();
             $table->tinyText("lang");
-            $table->Text("text");
+            $table->text("text");
             $table->foreignId('update_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

@@ -6,10 +6,8 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Info\AboutUsRequest;
 use App\Http\Resources\System\Info\AboutUsResource;
-use App\Models\System\Info\AboutUs;
 use App\Services\System\Info\AboutUsService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AboutUsController extends Controller
 {

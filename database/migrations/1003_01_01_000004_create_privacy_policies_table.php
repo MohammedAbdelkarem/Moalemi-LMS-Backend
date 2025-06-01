@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('privacy_policies', function (Blueprint $table) {
             $table->id();
             $table->tinyText("lang");
-            $table->Text("text");
+            $table->text("text");
             $table->foreignId('update_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

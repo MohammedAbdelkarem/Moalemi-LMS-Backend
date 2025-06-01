@@ -21,17 +21,6 @@ class AboutUsTableSeeder extends Seeder
         \DB::table('about_us')->insert(array(
             0 =>
             array(
-                'id' => 1,
-                'lang' => 'en',
-                'text' => '<h1>About Us</h1>
-<h4>Name</h4>
-<p>Some Nice Text</p>',
-                'update_by' => NULL,
-                'created_at' => '2024-02-02 02:28:15',
-                'updated_at' => '2024-02-02 02:28:15',
-            ),
-            1 =>
-            array(
                 'id' => 2,
                 'lang' => 'ar',
                 'text' => '<h1>حول</h1>

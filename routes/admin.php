@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::get("/{lang}", "show");
         });
         Route::prefix("faq-category")->controller(FaqCategoryController::class)->group(function () {
-            Route::get("/", "index")->name(RouteNames::FAQ_CATEGORY_LIST);
+            Route::get("/", "index")->name(RouteNames::ADMIN_FAQ_CATEGORY_LIST);
             Route::get("/apps", "apps");
             Route::post("/", "store");
             Route::get("/{id}", "show");
@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::delete("/{id}", "destroy");
         });
         Route::prefix("faq")->controller(FAQController::class)->group(function () {
-            Route::get("/", "index")->name(RouteNames::FAQ_LIST);
+            Route::get("/", "indexAdmin")->name(RouteNames::ADMIN_FAQ_LIST);
             Route::post("/", "store");
             Route::get("/{id}", "show");
             Route::put("/{id}", "update");
@@ -139,15 +139,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::delete("/{id}", "destroy");
         });
         Route::prefix("cities")->controller(CityController::class)->group(function () {
-            Route::get("/", "index")->name(RouteNames::CITIES_SELECTABLE_LIST);
-            Route::post("/", "store");
-            Route::put("/{id}", "update");
+            Route::get("/", "index")->name(RouteNames::ADMIN_CITIES_SELECTABLE_LIST);
             Route::get("/{id}", "show");
-            Route::delete("/{id}", "destroy");
-        });
-        Route::prefix("settings")->controller(SystemSettingController::class)->group(function () {
-            Route::get("/", "index");
-            Route::put("/{id}", "update");
         });
     });
 
@@ -227,6 +220,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::get('likes/{article_id}' , 'getLikes');
         Route::get('comments/{article_id}' , 'getCommentsForAdmin');
     });
+
+    
     
     Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);
     Route::apiResource('/banner', BannerController::class)->name('show' , RouteNames::ADMIN_BANNER_GET);

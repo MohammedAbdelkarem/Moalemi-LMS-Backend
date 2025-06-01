@@ -2,9 +2,8 @@
 
 namespace App\Models\System\Info;
 
-use App\Models\User;
-use App\Models\Users\Product\Product;
-use App\Models\Users\Product\SavedSearch;
+use App\Models\DynamicForm\SavedSearch;
+use App\Models\Users\Store\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,14 +11,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class City extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
-    public function users(): HasMany
+    protected $fillable = ["name"];
+
+    public function stores(): HasMany
     {
-        return $this->hasMany(User::class, 'city_id');
+        return $this->hasMany(Store::class);
     }
 
-    public function setNameEnAttribute($value): void
+    public function searches(): HasMany
     {
-        $this->attributes['name_en'] = ucfirst(strtolower($value));
+        return $this->hasMany(SavedSearch::class, 'city_id');
     }
 }

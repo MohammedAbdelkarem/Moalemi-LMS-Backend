@@ -11,11 +11,10 @@ class FaqCategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->role_id != 3) {
+        if ($user && $user->isSystemAdmin()) {
             return [
                 "id"                => $this->id,
-                "name_en"           => $this->getTranslation('name', 'en'),
-                "name_ar"           => $this->getTranslation('name', 'ar'),
+                "name"              => $this->name,
                 "app_key"           => $this->app,
                 "updated_by_id"     => $this->updated_by,
                 "updated_by_name"   => $this->updater ? $this->updater->name : "",

@@ -11,7 +11,7 @@ class CitySelectResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this["name_" . (app()->getLocale())],
+            "name" => $this->name,
         ];
     }
 }

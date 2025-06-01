@@ -52,7 +52,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'token.access_refresh'   => \App\Http\Middleware\Tokens\CheckRefreshAccess::class,
             'token.access_otp'       => \App\Http\Middleware\Tokens\CheckOTPAccess::class,
         ]);
-        $middleware->append(\App\Http\Middleware\CheckLang::class);
+        // $middleware->append(\App\Http\Middleware\CheckLang::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

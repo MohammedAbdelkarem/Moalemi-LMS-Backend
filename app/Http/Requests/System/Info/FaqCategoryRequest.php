@@ -4,7 +4,6 @@ namespace App\Http\Requests\System\Info;
 
 use App\Enums\AppTypes;
 use App\Http\Requests\BaseApiRequest;
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Validation\Rule;
 
 class FaqCategoryRequest extends BaseApiRequest
@@ -25,8 +24,7 @@ class FaqCategoryRequest extends BaseApiRequest
     public function storeRules()
     {
         return [
-            "name"   => ["required", "array"],
-            "name.*" => ["required", "string", "max:255", UniqueTranslationRule::for("faq_categories", "name")],
+            "name"   => ["required", "string", "max:255", "unique:faq_categories,name"],
             "app"    => ["required", Rule::in(AppTypes::values())],
         ];
     }
@@ -34,8 +32,7 @@ class FaqCategoryRequest extends BaseApiRequest
     public function updateRules()
     {
         return [
-            "name"      => ["required", "array"],
-            "name.*"    => ["required", "string", "max:255", UniqueTranslationRule::for("FAQ", "question")->ignore($this->id)],
+            "name"      => ["required", "string", "max:255", Rule::unique("faq_categories", "name")->ignore($this->id)],
             "app"       => ["required", Rule::in(AppTypes::values())],
         ];
     }

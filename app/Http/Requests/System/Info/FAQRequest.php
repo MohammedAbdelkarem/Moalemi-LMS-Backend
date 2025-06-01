@@ -4,6 +4,7 @@ namespace App\Http\Requests\System\Info;
 
 use App\Http\Requests\BaseApiRequest;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use Illuminate\Validation\Rule;
 
 class FAQRequest extends BaseApiRequest
 {
@@ -23,10 +24,8 @@ class FAQRequest extends BaseApiRequest
     public function storeRules()
     {
         return [
-            "question"      => ["required", "array"],
-            "question.*"    => ["required", "string", "max:255", UniqueTranslationRule::for("FAQ", "question")],
-            "answer"        => ["required", "array"],
-            "answer.*"      => ["required", "string", "max:2000"],
+            "question"      => ["required", "string", "max:255", "unique:FAQ,question"],
+            "answer"        => ["required", "string", "max:2000"],
             "category_id"   => ["required", "exists:faq_categories,id"],
             "is_draft"      => ['required', 'boolean'],
         ];
@@ -35,10 +34,8 @@ class FAQRequest extends BaseApiRequest
     public function updateRules()
     {
         return [
-            "question"      => ["required", "array"],
-            "question.*"    => ["required", "string", "max:255", UniqueTranslationRule::for("FAQ", "question")->ignore($this->id)],
-            "answer"        => ["required", "array"],
-            "answer.*"      => ["required", "string", "max:2000"],
+            "question"      => ["required", "string", "max:255", Rule::unique("faq", "question")->ignore($this->id)],
+            "answer"        => ["required", "string", "max:2000"],
             "category_id"   => ["required", "exists:faq_categories,id"],
             "is_draft"      => ['required', 'boolean'],
         ];

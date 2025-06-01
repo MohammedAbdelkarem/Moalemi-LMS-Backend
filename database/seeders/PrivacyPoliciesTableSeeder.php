@@ -21,17 +21,6 @@ class PrivacyPoliciesTableSeeder extends Seeder
         \DB::table('privacy_policies')->insert(array(
             0 =>
             array(
-                'id' => 1,
-                'lang' => 'en',
-                'text' => '<h1>privacy policy</h1>
-<h4>Name</h4>
-<p>Text</p>',
-                'update_by' => NULL,
-                'created_at' => '2024-02-02 02:36:52',
-                'updated_at' => '2024-02-02 02:36:52',
-            ),
-            1 =>
-            array(
                 'id' => 2,
                 'lang' => 'ar',
                 'text' => '<h1>سياسة الخصوصية</h1>

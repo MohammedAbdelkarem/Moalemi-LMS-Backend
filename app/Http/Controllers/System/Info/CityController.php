@@ -6,7 +6,6 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Info\CityRequest;
 use App\Http\Resources\System\Info\CityResource;
-use App\Models\System\Info\City;
 use App\Services\System\Info\CityService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

@@ -6,10 +6,8 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Info\PrivacyPolicyRequest;
 use App\Http\Resources\System\Info\PrivacyPolicyResource;
-use App\Models\System\Info\PrivacyPolicy;
 use App\Services\System\Info\PrivacyPolicyService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class PrivacyPolicyController extends Controller
 {

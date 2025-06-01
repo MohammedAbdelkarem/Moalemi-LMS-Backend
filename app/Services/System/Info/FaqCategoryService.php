@@ -20,7 +20,7 @@ class FaqCategoryService
     {
         return FaqCategory::query()
             ->when($search, function ($query) use ($search) {
-                $query->whereAny(['name->ar', 'name->en'], 'like', "%" . $search . "%");
+                $query->where('name', 'like', "%" . $search . "%");
             })
             ->when($app, function ($query) use ($app) {
                 $query->where("app", $app);
@@ -31,14 +31,15 @@ class FaqCategoryService
 
     public function store($validatedData)
     {
-        FaqCategory::create([
-            'name' => [
-                'en' => $validatedData["name"]["en"],
-                'ar' => $validatedData["name"]["ar"],
-            ],
+        $cat = FaqCategory::create([
+            'name'      => $validatedData["name"],
             "app"       => $validatedData["app"],
             "update_by" => auth()->id(),
         ]);
+        return [
+            "id"    => $cat->id,
+            "name"  => $cat->name,
+        ];
     }
 
     public function show($id)
@@ -58,10 +59,7 @@ class FaqCategoryService
         $category = FaqCategory::findOrFail($id);
 
         $category->update([
-            'name' => [
-                'en' => $validatedData["name"]["en"],
-                'ar' => $validatedData["name"]["ar"],
-            ],
+            'name'      => $validatedData["name"],
             "app"       => $validatedData["app"],
             "update_by" => auth()->id(),
         ]);

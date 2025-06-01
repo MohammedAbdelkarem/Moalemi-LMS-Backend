@@ -11,7 +11,8 @@ class Tos extends Model
 {
     use HasFactory;
     protected $table = "tos";
-    protected $guarded = ['id'];
+    protected $fillable = ["lang", "text", "update_by"];
+
     public function updated_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'update_by');

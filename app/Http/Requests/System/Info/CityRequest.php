@@ -23,17 +23,11 @@ class CityRequest extends BaseApiRequest
     public function storeRules()
     {
         return [
-            "name_ar" => [
+            "name" => [
                 "required",
                 "string",
                 'between:2,255',
-                'unique:cities,name_ar,'
-            ],
-            "name_en" => [
-                "required",
-                "string",
-                'unique:cities,name_en',
-                'between:2,255'
+                'unique:cities,name'
             ],
         ];
     }
@@ -41,17 +35,11 @@ class CityRequest extends BaseApiRequest
     public function updateRules(): array
     {
         return [
-            "name_ar" => [
+            "name" => [
                 "required",
                 "string",
                 'between:2,255',
-                Rule::unique('cities', 'name_ar')->ignore(request()->id)
-            ],
-            "name_en" => [
-                "required",
-                "string",
-                'between:2,255',
-                Rule::unique('cities', 'name_en')->ignore(request()->id)
+                Rule::unique('cities', 'name')->ignore(request()->id)
             ],
         ];
     }

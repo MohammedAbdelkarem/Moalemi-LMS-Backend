@@ -11,17 +11,16 @@ class CityResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->role_id != 3)
+        if ($user && $user->isSystemAdmin())
             return [
                 "id" => $this->id,
-                "name_ar" => $this->name_ar,
-                "name_en" => $this->name_en,
+                "name" => $this->name,
                 "created_at" => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i A"),
                 "updated_at" => Carbon::parse($this->updated_at)->translatedFormat("Y-m-d g:i A"),
             ];
         return [
             "id" => $this->id,
-            "name" => $this["name_" . (app()->getLocale())],
+            "name" => $this->name,
         ];
     }
 }

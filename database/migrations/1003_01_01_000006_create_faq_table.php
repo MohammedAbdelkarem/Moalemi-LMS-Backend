@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('faq', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faq_category_id')->constrained('faq_categories')->cascadeOnDelete();
-            $table->json("question");
-            $table->json("answer");
+            $table->string("question");
+            $table->string("answer");
             $table->boolean('is_draft');
             $table->foreignId('update_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();

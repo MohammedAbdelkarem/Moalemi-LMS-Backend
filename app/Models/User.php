@@ -119,6 +119,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->role_id === 2;
     }
 
+    public function isSystemAdmin(): bool
+    {
+        return !in_array($this->role_id, [3, 4]);
+    }
+
+    
+
 
     //Relations
 

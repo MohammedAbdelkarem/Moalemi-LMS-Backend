@@ -6,24 +6,26 @@ use App\Constants\Resources;
 use App\Models\System\Info\FAQ;
 use App\Models\System\Info\FaqCategory;
 use App\Services\MainService;
-use Illuminate\Support\Facades\DB;
 
 class FAQService extends MainService
 {
-    public function index($per_page, $search = null)
+    public function index($per_page, $category_id = null, $search = null)
     {
         return FaqCategory::query()
+            ->when($category_id, function ($query) use ($category_id) {
+                $query->where('id', $category_id);
+            })
             ->withWhereHas('faqs', function ($query) use ($search) {
                 $query->when($search, function ($query) use ($search) {
-                    $query->whereAny(['question->ar', 'question->en', 'answer->ar', 'answer->en'], 'like', "%" . $search . "%");
+                    $query->whereAny(['question', 'answer'], 'like', "%" . $search . "%");
                 });
-                if (auth()->user()?->role_id != 3) {
+                if (auth()->user()?->isSystemAdmin()) {
                     $query->with([
                         "category"  => fn($q) => $q->select('id', 'name'),
                         "updater"   => fn($q) => $q->select('id', 'name')
                     ]);
                 }
-                if (auth()->user()?->role_id == 3) {
+                if (!auth()->user()?->isSystemAdmin()) {
                     $query->where('is_draft', 0);
                 }
             })
@@ -35,14 +37,8 @@ class FAQService extends MainService
     {
         FAQ::create(
             [
-                'question' => [
-                    'en' => $validatedData["question"]["en"],
-                    'ar' => $validatedData["question"]["ar"],
-                ],
-                'answer' => [
-                    'en' => $validatedData["answer"]["en"],
-                    'ar' => $validatedData["answer"]["ar"],
-                ],
+                'question'  => $validatedData["question"],
+                'answer'    => $validatedData["answer"],
                 "faq_category_id" => $validatedData["category_id"],
                 "is_draft"  => $validatedData["is_draft"],
                 "update_by" => auth()->id(),
@@ -60,14 +56,8 @@ class FAQService extends MainService
         $faq = findByIdOrFail(FAQ::class, $id);
 
         $faq->update([
-            'question' => [
-                'en' => $validatedData["question"]["en"],
-                'ar' => $validatedData["question"]["ar"],
-            ],
-            'answer' => [
-                'en' => $validatedData["answer"]["en"],
-                'ar' => $validatedData["answer"]["ar"],
-            ],
+            'question'  => $validatedData["question"],
+            'answer'    => $validatedData["answer"],
             "faq_category_id" => $validatedData["category_id"],
             "is_draft"  => $validatedData["is_draft"],
             "update_by" => auth()->id(),

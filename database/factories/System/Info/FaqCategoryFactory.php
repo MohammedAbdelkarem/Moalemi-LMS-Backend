@@ -14,10 +14,7 @@ class FaqCategoryFactory extends Factory
     {
         $arFaker = \Faker\Factory::create('ar_SA');
         return [
-            'name' => [
-                'ar' => $arFaker->unique()->paragraph(1),
-                'en' => $this->faker->unique()->sentence(5),
-            ],
+            'name'      => $arFaker->unique()->paragraph(1),
             'app'       => $this->faker->randomElement(AppTypes::values()),
             "update_by" => $this->faker->randomElement([null, 1]),
         ];

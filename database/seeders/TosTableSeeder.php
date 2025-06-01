@@ -21,17 +21,6 @@ class TosTableSeeder extends Seeder
         \DB::table('tos')->insert(array(
             0 =>
             array(
-                'id' => 1,
-                'lang' => 'en',
-                'text' => '<h1>Terms of services</h1>
-<h4>Name</h4>
-<p>Terms of services in the platform</p>',
-                'update_by' => NULL,
-                'created_at' => '2024-02-02 02:28:15',
-                'updated_at' => '2024-02-02 02:28:15',
-            ),
-            1 =>
-            array(
                 'id' => 2,
                 'lang' => 'ar',
                 'text' => '<h1>شروط الخدمة</h1>

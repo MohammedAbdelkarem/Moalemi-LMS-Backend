@@ -11,7 +11,7 @@ class AboutUsResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->role_id != 3) {
+        if ($user && $user->isSystemAdmin()) {
             $updater = $this->update_by ? $this->updated_by : null;
             return [
                 "id" => $this->id,

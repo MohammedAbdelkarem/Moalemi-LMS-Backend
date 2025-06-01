@@ -4,6 +4,10 @@ namespace App\Constants;
 
 final class RouteNames
 {
+    //Admin admin.php
+    const ADMIN_CITIES_SELECTABLE_LIST                         = 'admin.cities.selectable-list';
+    const ADMIN_FAQ_LIST                                       = 'admin.faq.list';
+    const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';
     const DOCTOR_SHIFT_GET                               = 'doctor.shift.get';

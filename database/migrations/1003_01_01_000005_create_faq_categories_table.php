@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('faq_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('update_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->json("name");
+            $table->string("name");
             $table->enum('app', AppTypes::values());
             $table->timestamps();
         });

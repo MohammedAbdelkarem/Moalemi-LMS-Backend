@@ -6,10 +6,8 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Info\TosRequest;
 use App\Http\Resources\System\Info\TosResource;
-use App\Models\System\Info\Tos;
 use App\Services\System\Info\TosService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TosController extends Controller
 {

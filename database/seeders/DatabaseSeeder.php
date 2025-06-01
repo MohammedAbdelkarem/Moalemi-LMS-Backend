@@ -41,5 +41,12 @@ class DatabaseSeeder extends Seeder
         $this->call(CustomerServiceMessagesTableSeeder::class);
 
         $this->call(NotificationsTableSeeder::class);
+
+        $this->call(CitiesTableSeeder::class);
+        $this->call(AboutUsTableSeeder::class);
+        $this->call(PrivacyPoliciesTableSeeder::class);
+        $this->call(TosTableSeeder::class);
+        $this->call(ContactUsTableSeeder::class);
+        $this->call(FAQTableSeeder::class);
     }
 }

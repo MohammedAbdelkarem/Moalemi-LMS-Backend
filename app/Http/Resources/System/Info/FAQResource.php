@@ -11,13 +11,11 @@ class FAQResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->role_id != 3) {
+        if ($user && $user->isSystemAdmin()) {
             return [
                 "id" => $this->id,
-                "question_en"       => $this->getTranslation('question', 'en'),
-                "question_ar"       => $this->getTranslation('question', 'ar'),
-                "answer_en"         => $this->getTranslation('answer', 'en'),
-                "answer_ar"         => $this->getTranslation('answer', 'ar'),
+                "question"          => $this->question,
+                "answer"            => $this->answer,
                 "category_id"       => $this->faq_category_id,
                 "category_name"     => $this->category->name,
                 "is_draft"          => (bool)$this->is_draft,

@@ -72,7 +72,7 @@ class ContactUsService extends MainService
         } //Phone Number
         elseif ($type == "phone-number" || $type == "whatsApp") {
             $validator = Validator::make(['url' => $url], [
-                'url' => ["required", "string", new PhoneNumberRule()],
+                'url' => ["required", "string", new PhoneNumberRule(true)],
             ]);
             if (!$validator->fails())
                 return true;

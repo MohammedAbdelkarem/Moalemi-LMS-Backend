@@ -6,7 +6,6 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\Info\ContactUsRequest;
 use App\Http\Resources\System\Info\ContactUsResource;
-use App\Models\System\Info\ContactUs;
 use App\Services\System\Info\ContactUsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

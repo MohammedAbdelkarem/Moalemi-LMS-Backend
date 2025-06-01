@@ -2,7 +2,9 @@
 
 namespace App\Services\System\Info;
 
+use App\Constants\ExceptionMessages;
 use App\Constants\Resources;
+use App\Exceptions\ApiException;
 use App\Models\System\Info\City;
 use App\Services\MainService;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,17 +19,15 @@ class CityService extends MainService
     {
         $cities = City::query()
             ->when($search, function (Builder $query) use ($search) {
-                $query->whereAny(['name_en', 'name_ar'], 'like', strtolower($search) . '%');
-            })->orderBy("name_" . (app()->getLocale()));
-
+                $query->where('name', 'like', strtolower($search) . '%');
+            });
         return $per_page > 0 ? $cities->paginate($per_page) : $cities->get();
     }
 
     public function store($validatedData)
     {
         City::create([
-            "name_ar" => $validatedData["name_ar"],
-            "name_en" => $validatedData["name_en"],
+            "name" => $validatedData["name"],
         ]);
     }
 
@@ -39,14 +39,18 @@ class CityService extends MainService
     public function update($validatedData, $id)
     {
         $city = findByIdOrFail(City::class, $id, Resources::CITY, 'female');
-        $city->name_ar = $validatedData["name_ar"];
-        $city->name_en = $validatedData["name_en"];
+        $city->name = $validatedData["name"];
         $city->save();
     }
 
     public function destroy($id)
     {
-        $city = City::withCount('users')->findOrFail($id);
-        $city->users_count > 0 ? false : $city->delete();
+        $city = City::withCount('stores')->findOrFail($id);
+        if ($city->stores_count > 0)
+            throw new ApiException(
+                message: trans(ExceptionMessages::MSG_CANNOT_DELETE_THIS_ITEM),
+                statusCode: 400,
+            );
+        $city->delete();
     }
 }

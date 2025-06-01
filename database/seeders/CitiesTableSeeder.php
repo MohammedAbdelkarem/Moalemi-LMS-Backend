@@ -22,115 +22,102 @@ class CitiesTableSeeder extends Seeder
             0 =>
             array(
                 'id' => 1,
-                'name_en' => 'Damascus',
-                'name_ar' => 'دمشق',
+                'name' => 'دمشق',
                 'created_at' => '2024-02-26 06:07:46',
                 'updated_at' => '2024-02-26 06:07:46',
             ),
             1 =>
             array(
                 'id' => 2,
-                'name_en' => 'Rif Dimashq',
-                'name_ar' => 'ريف دمشق',
+                'name' => 'ريف دمشق',
                 'created_at' => '2024-02-26 06:07:46',
                 'updated_at' => '2024-02-26 06:07:46',
             ),
             2 =>
             array(
                 'id' => 3,
-                'name_en' => 'Aleppo',
-                'name_ar' => 'حلب',
+                'name' => 'حلب',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             3 =>
             array(
                 'id' => 4,
-                'name_en' => 'Homs',
-                'name_ar' => 'حمص',
+                'name' => 'درعا',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             4 =>
             array(
                 'id' => 5,
-                'name_en' => 'Hama',
-                'name_ar' => 'حماة',
+                'name' => 'القنيطرة',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             5 =>
             array(
                 'id' => 6,
-                'name_en' => 'Raqqa',
-                'name_ar' => 'الرقة',
-                'created_at' => '2024-02-26 06:09:02',
-                'updated_at' => '2024-02-26 06:09:02',
+                'name' => 'السويداء',
+                'created_at' => '2024-02-26 06:13:37',
+                'updated_at' => '2024-02-26 06:13:37',
             ),
             6 =>
             array(
                 'id' => 7,
-                'name_en' => 'Deir ez-Zor',
-                'name_ar' => 'دير الزور',
+                'name' => 'حمص',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             7 =>
             array(
                 'id' => 8,
-                'name_en' => 'Quneitra',
-                'name_ar' => 'القنيطرة',
+                'name' => 'حماة',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             8 =>
             array(
                 'id' => 9,
-                'name_en' => 'Tartus',
-                'name_ar' => 'طرطوس',
-                'created_at' => '2024-02-26 06:09:02',
-                'updated_at' => '2024-02-26 06:09:02',
+                'name' => 'اللاذقية',
+                'created_at' => '2024-02-26 06:14:16',
+                'updated_at' => '2024-02-26 06:14:16',
             ),
             9 =>
             array(
                 'id' => 10,
-                'name_en' => 'Daraa',
-                'name_ar' => 'درعا',
+                'name' => 'طرطوس',
                 'created_at' => '2024-02-26 06:09:02',
                 'updated_at' => '2024-02-26 06:09:02',
             ),
             10 =>
             array(
                 'id' => 11,
-                'name_en' => 'As-Suwayda',
-                'name_ar' => 'السويداء',
-                'created_at' => '2024-02-26 06:13:37',
-                'updated_at' => '2024-02-26 06:13:37',
+                'name' => 'دير الزور',
+                'created_at' => '2024-02-26 06:09:02',
+                'updated_at' => '2024-02-26 06:09:02',
             ),
             11 =>
             array(
                 'id' => 12,
-                'name_en' => 'Idlib',
-                'name_ar' => 'إدلب',
+                'name' => 'إدلب',
                 'created_at' => '2024-02-26 06:13:37',
                 'updated_at' => '2024-02-26 06:13:37',
             ),
             12 =>
             array(
                 'id' => 13,
-                'name_en' => 'Al-Hasakah',
-                'name_ar' => 'الحسكة',
-                'created_at' => '2024-02-26 06:14:16',
-                'updated_at' => '2024-02-26 06:14:16',
+                'name' => 'الرقة',
+                'created_at' => '2024-02-26 06:09:02',
+                'updated_at' => '2024-02-26 06:09:02',
             ),
             13 =>
             array(
                 'id' => 14,
-                'name_en' => 'Latakia',
-                'name_ar' => 'اللاذقية',
+                'name' => 'الحسكة',
                 'created_at' => '2024-02-26 06:14:16',
                 'updated_at' => '2024-02-26 06:14:16',
             ),
+
         ));
     }
 }
