@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->foreignId('visit_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->boolean('is_latest')->default(0);
+            $table->boolean('is_latest')->default(1);
             $table->timestamps();
         });
     }

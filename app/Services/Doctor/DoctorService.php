@@ -87,7 +87,8 @@ class DoctorService
     public function getAll($data)
     {
         return getOrPaginate(
-            Doctor::filter($data),
+            Doctor::filter($data)
+            ->with(['subCategories.category' , 'shifts']),
             $data
         );
     }
@@ -117,5 +118,9 @@ class DoctorService
         $phone_number->save();
     }
 
-    public function getDoctorProfile() //rates , location , articles , shifts , title , description , licenses
+    //rates , location , articles , shifts , title , description , licenses
+    public function getDoctorProfile($id)
+    {
+        return Doctor::findByIdOrFail($id , ['subCategories.category' , 'shifts' , 'rates' , 'articles']);
+    } 
 }

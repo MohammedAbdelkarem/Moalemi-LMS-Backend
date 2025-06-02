@@ -8,6 +8,7 @@ use App\Http\Controllers\Doctor\ShiftController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\ArticleController;
 use App\Http\Controllers\Doctor\TransactionController;
+use App\Http\Controllers\Patient\PatientController;
 
 /*
 |--------------------------------------------------------------------------

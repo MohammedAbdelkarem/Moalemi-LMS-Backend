@@ -10,6 +10,8 @@ final class RouteNames
     const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';
+    const DOCTORS_GET_PROFILE                               = 'doctors.get-profile';
+    const DOCTORS_FILTER_USER_SIDE                               = 'doctors.filter.user-side';
     const DOCTOR_SHIFT_GET                               = 'doctor.shift.get';
     const DOCTOR_SHIFT_SHOW                               = 'doctor.shift.show';
     const LOGIN_HISTORY_List                                   = 'login_history.list';

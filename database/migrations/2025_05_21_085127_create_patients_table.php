@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_owner')->default(0);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('full_name')->nullable();
-            $table->date('birthdate')->nullable();
+            $table->date('birth_date')->nullable();
             $table->boolean('is_male')->nullable();
             $table->string('relation')->nullable();
             $table->string('avatar')->nullable();

@@ -24,7 +24,7 @@ class UpdateShiftRequest extends BaseApiRequest
         return [
             "day_id" => ['required' , 'exists:days,id'],
             "start_time" => ['required', 'date_format:H:i'],
-            "end_time" => ['required', 'date_format:H:i', 'after:shift_times.*.start_time'],
+            "end_time" => ['required', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

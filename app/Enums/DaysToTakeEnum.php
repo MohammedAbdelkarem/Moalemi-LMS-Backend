@@ -4,7 +4,9 @@ namespace App\Enums;
 
 enum DaysToTakeEnum: string
 {
-    case FOO    = 'bar';
+    case EVERY_DAY  = 'every_day';
+    case WHEN_NEEDED = 'when_needed';
+    case CUSTOM      = 'custom';
 
     public static function values(): array
     {

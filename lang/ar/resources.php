@@ -9,6 +9,7 @@ return [
     'file'                      => 'الملف',
     'files'                     => 'ملفات',
     'medicine'                     => 'الدواء',
+    'doctor'                     => 'الطبيب',
     'instruction'                     => 'التوصية',
     'material'                  => 'المادة',
     'doctor_phone_number'       => 'رقم هاتف الطبيب',

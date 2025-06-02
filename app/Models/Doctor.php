@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +17,22 @@ class Doctor extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \App\Models\Doctor
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_DOCTOR,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 
     public function registerMediaCollections(): void
@@ -99,6 +117,24 @@ class Doctor extends Model implements HasMedia
                 $query->where('name', 'like', '%' . $data['name'] . '%');
             })
             ->orWhere('clinic_name', 'like', '%' . $data['name'] . '%');
+        })
+
+        ->when(isset($data['address_text']) , function($query) use ($data) {
+            $query->where('address_text', 'like', '%' . $data['address_text'] . '%');
+        })
+
+        ->when(isset($data['rate']) , function($query) use ($data) {
+            $query->whereBetween('total_rate', [$data['rate'] - 1, $data['rate'] + 1]);
+        })
+
+        ->when(isset($data['lat']) && isset($data['lng']) , function($query) use ($data) {
+            $lat = $data['lat'];
+            $lng = $data['lng'];
+            $radius = 4; // Radius in kilometers
+
+            // Haversine formula to calculate distance
+            $query->selectRaw("*, (6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) AS distance", [$lat, $lng, $lat])
+                ->having('distance', '<=', $radius);
         })
 
         ->when(isset($data['phone_number']) , function($query) use ($data) {
