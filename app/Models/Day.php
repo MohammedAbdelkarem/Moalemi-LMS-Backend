@@ -18,4 +18,9 @@ class Day extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function medicine_days()
+    {
+        return $this->hasMany(MedicineDay::class);
+    }
 }

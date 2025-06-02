@@ -29,16 +29,29 @@ class Patient extends Model
     {
         return $this->hasMany(Visit::class);
     }
-
-    public function treatments()
+    
+    public function instructions()
     {
-        return $this->hasMany(Treatment::class);
+        return $this->hasMany(Instruction::class);
+    }
+    public function medicines()
+    {
+        return $this->hasMany(Medicine::class);
     }
 
     public function favorites()
     {
-        return $this->belongsToMany(Doctor::class)
-            ->using(Favorite::class)
-            ->withTimestamps();
+        return $this->hasMany(Favorite::class);
     }
+
+    public function favoriteDoctors()
+    {
+        return $this->favorites()->where('favoritable_type', Doctor::class);
+    }
+
+    public function favoriteArticles()
+    {
+        return $this->favorites()->where('favoritable_type', Article::class);
+    }
+
 }

@@ -15,7 +15,7 @@ class {{ class }} extends Model
 
 
     /**
-     * @return \App\Models\model
+     * @return \App\Models\{{ class }}
      */
     public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
     {

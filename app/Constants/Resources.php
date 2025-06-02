@@ -8,6 +8,8 @@ final class Resources
     const RES_ADMIN                 = 'resources.admin';
     const RES_ADMINS                = 'resources.admins';
     const RES_DOCTOR_PHONE_NUMBER                = 'resources.doctor_phone_number';
+    const RES_MEDICINE                = 'resources.medicine';
+    const RES_INSTRUCTION                = 'resources.instruction';
     const RES_SHIFT                = 'resources.shift';
     const RES_FILE                  = 'resources.file';
     const RES_REACTION                  = 'resources.reaction';

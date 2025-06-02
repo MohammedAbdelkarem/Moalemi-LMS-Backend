@@ -2,10 +2,9 @@
 
 namespace App\Enums;
 
-enum TreatmentTypeEnum: string
+enum DaysToTakeEnum: string
 {
-    case MEDICINE          = 'medicine';
-    case INSTRUCTION       = 'instruction';
+    case FOO    = 'bar';
 
     public static function values(): array
     {

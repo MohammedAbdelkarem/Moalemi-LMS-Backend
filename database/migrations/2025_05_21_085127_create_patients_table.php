@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BloodTypeEnum;
 use App\Enums\SmokeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -29,8 +30,8 @@ return new class extends Migration
             $table->integer('old_weight')->nullable();
             $table->integer('current_weight')->nullable();
 
-            $table->string('old_blood_type')->nullable();
-            $table->string('current_blood_type')->nullable();
+            $table->enum('old_blood_type' , BloodTypeEnum::values())->nullable();
+            $table->enum('current_blood_type' , BloodTypeEnum::values())->nullable();
 
             $table->string('old_chronic_diseases')->nullable();
             $table->string('current_chronic_diseases')->nullable();

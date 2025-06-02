@@ -86,10 +86,9 @@ class Doctor extends Model implements HasMedia
 
     public function favorites()
     {
-        return $this->belongsToMany(Patient::class)
-            ->using(Favorite::class)
-            ->withTimestamps();
+        return $this->morphMany(Favorite::class, 'favoritable');
     }
+
 
     public function scopeFilter($query , $data)
     {

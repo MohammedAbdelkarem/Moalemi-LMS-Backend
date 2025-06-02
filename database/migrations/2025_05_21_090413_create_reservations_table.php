@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('notes')->nullable();
             $table->enum('status' , ReservationStatusEnum::values())->default(ReservationStatusEnum::FOO);
             $table->enum('rejection_reason' , RejectionReasonEnum::values())->nullable();
             $table->string('other_rejection_reason')->nullable();

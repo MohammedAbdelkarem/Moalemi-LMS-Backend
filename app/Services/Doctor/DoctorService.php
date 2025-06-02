@@ -116,4 +116,6 @@ class DoctorService
 
         $phone_number->save();
     }
+
+    public function getDoctorProfile() //rates , location , articles , shifts , title , description , licenses
 }

@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('treatments', function (Blueprint $table) {
+        Schema::create('instructions', function (Blueprint $table) {
             $table->id();
             $table->string('text');
-            $table->enum('type' , TreatmentTypeEnum::values());
             $table->enum('status' , TreatmentStatusEnum::values());
-            $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->string('other_end_date')->nullable();
+            $table->string('notes')->nullable();
             $table->foreignId('visit_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('patient_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->boolean('is_latest')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('treatments');
+        Schema::dropIfExists('instructions');
     }
 };

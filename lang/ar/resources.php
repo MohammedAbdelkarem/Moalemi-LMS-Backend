@@ -8,6 +8,8 @@ return [
     'shift'                   => 'التوقيت',
     'file'                      => 'الملف',
     'files'                     => 'ملفات',
+    'medicine'                     => 'الدواء',
+    'instruction'                     => 'التوصية',
     'material'                  => 'المادة',
     'doctor_phone_number'       => 'رقم هاتف الطبيب',
     'Story'                     => 'قصة',

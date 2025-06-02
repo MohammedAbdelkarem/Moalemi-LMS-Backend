@@ -35,8 +35,12 @@ class Visit extends Model
         return $this->hasMany(VisitInfo::class);
     }
 
-    public function treatments()
+    public function instructions()
     {
-        return $this->hasMany(Treatment::class);
+        return $this->hasMany(Instruction::class);
+    }
+    public function medicines()
+    {
+        return $this->hasMany(Medicine::class);
     }
 }

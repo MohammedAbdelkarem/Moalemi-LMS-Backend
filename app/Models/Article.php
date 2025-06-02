@@ -29,6 +29,11 @@ class Article extends Model implements HasMedia
         return $this->hasMany(Reaction::class);
     }
 
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
     /**
      * @return \App\Models\Article
      */
