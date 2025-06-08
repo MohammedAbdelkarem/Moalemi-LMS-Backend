@@ -7,6 +7,8 @@ final class RouteNames
     //Admin admin.php
     const ADMIN_CITIES_SELECTABLE_LIST                         = 'admin.cities.selectable-list';
     const ADMIN_FAQ_LIST                                       = 'admin.faq.list';
+    const ARTICLES_LIST                                       = 'articles.itme';
+    const ARTICLES_SHOW                                         = 'articles.show';
     const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';

@@ -10,6 +10,7 @@ return [
     'files'                     => 'ملفات',
     'medicine'                     => 'الدواء',
     'doctor'                     => 'الطبيب',
+    'patient'                     => 'المريض',
     'instruction'                     => 'التوصية',
     'material'                  => 'المادة',
     'doctor_phone_number'       => 'رقم هاتف الطبيب',

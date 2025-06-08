@@ -2,13 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Patient extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    /**
+     * @return \App\Models\Patient
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_PATIENT,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -39,11 +57,6 @@ class Patient extends Model
         return $this->hasMany(Medicine::class);
     }
 
-    public function favorites()
-    {
-        return $this->hasMany(Favorite::class);
-    }
-
     public function favoriteDoctors()
     {
         return $this->favorites()->where('favoritable_type', Doctor::class);
@@ -53,5 +66,6 @@ class Patient extends Model
     {
         return $this->favorites()->where('favoritable_type', Article::class);
     }
+
 
 }

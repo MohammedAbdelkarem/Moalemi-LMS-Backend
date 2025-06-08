@@ -25,21 +25,11 @@ return new class extends Migration
             $table->enum('smoking' , SmokeEnum::values())->nullable();
             $table->boolean('alcohol')->nullable();
             //modified columns
-            $table->integer('old_height')->nullable();
-            $table->integer('current_height')->nullable();
-            
-            $table->integer('old_weight')->nullable();
-            $table->integer('current_weight')->nullable();
-
-            $table->enum('old_blood_type' , BloodTypeEnum::values())->nullable();
-            $table->enum('current_blood_type' , BloodTypeEnum::values())->nullable();
-
-            $table->string('old_chronic_diseases')->nullable();
-            $table->string('current_chronic_diseases')->nullable();
-
-            $table->string('old_notes')->nullable();
-            $table->string('current_notes')->nullable();
-
+            $table->integer('height')->nullable();
+            $table->integer('weight')->nullable();
+            $table->enum('blood_type' , BloodTypeEnum::values())->nullable();
+            $table->string('chronic_diseases')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }

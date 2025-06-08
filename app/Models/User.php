@@ -102,6 +102,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->role_id === 3;
     }
+    /**
+     * Check if user is an patient (role_id = 4)
+     */
+    public function isPatient(): bool
+    {
+        return $this->role_id === 4;
+    }
 
     /**
      * Check if user is a super admin (role_id = 1)
@@ -130,6 +137,12 @@ class User extends Authenticatable implements JWTSubject
     //Relations
 
     //Account Relations
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function loginHistory(): HasMany
     {
         return $this->hasMany(LoginHistory::class, "user_id");

@@ -19,14 +19,22 @@ class ArticleService
     public function getAll($data)
     {
         return getOrPaginate(
-            Article::query(),
+            Article::orderByDesc('created_at'),
+            $data
+        );
+    }
+
+    public function search($data)
+    {
+        return getOrPaginate(
+            Article::filter($data),
             $data
         );
     }
 
     public function show($id)
     {
-        return Article::findByIdOrFail($id);
+        return Article::findByIdOrFail($id , ['reactions' , 'reactions.user']);
     }
 
     public function store($data)

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('day_id')->constrained()->cascadeOnDelete();
             $table->time('start_time');
             $table->time('end_time');
+            $table->date('date');
             $table->boolean('visits_available')->default(0);
             $table->timestamps();
         });

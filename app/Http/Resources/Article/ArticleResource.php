@@ -5,7 +5,9 @@ namespace App\Http\Resources\Article;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Enums\ReactionTypeEnum;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Reaction\ReactionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -26,17 +28,19 @@ class ArticleResource extends JsonResource
             'media' => MediaResource::collection($this->getMedia(MediaCollection::ARTICLE_COLLECTION)),
         ];
 
+        if(auth()->user()->isPatient())
+        {
+            $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();
+        }
+
         $routeName = $request->route()->getName();
 
-        // switch ($routeName)
-        // {
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        // }
+        switch ($routeName)
+        {
+            case RouteNames::ARTICLES_SHOW:
+                $data['comments']   = ReactionResource::collection($this->whenLoaded('reactions')->where('type' , ReactionTypeEnum::COMMENT->value));
+            break;
+        }
 
         return $data;
     }

@@ -56,4 +56,14 @@ class Article extends Model implements HasMedia
 
         return parent::delete();
     }
+
+    public function scopeFilter($query , $data)
+    {
+        return $query 
+
+        ->when(isset($data['text']) , function($query) use ($data) {
+            $query->where('title' , 'like' , '%' . $data['text'] . '%')
+                    ->orWhere('body' , 'like' , '%' . $data['text'] . '%');
+        });
+    }
 }

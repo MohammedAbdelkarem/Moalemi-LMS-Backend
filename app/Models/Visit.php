@@ -14,6 +14,11 @@ class Visit extends Model
         return $this->belongsTo(Doctor::class);
     }
 
+    public function patientUpdatedInfo()
+    {
+        return $this->hasOne(PatientUpdatedInfo::class);
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
@@ -28,11 +33,6 @@ class Visit extends Model
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);
-    }
-
-    public function visitInfos()
-    {
-        return $this->hasMany(VisitInfo::class);
     }
 
     public function instructions()

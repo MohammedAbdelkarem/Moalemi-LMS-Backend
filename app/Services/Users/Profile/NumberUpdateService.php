@@ -21,15 +21,16 @@ class NumberUpdateService
     public function updateNumber($validated)
     {
         $otp = $this->generateUniqeNumericKey(NumberUpdate::class,  "otp", min: 110001, max: 990000);
-        NumberUpdate::create([
+        NumberUpdate::updateOrCreate([
             "user_id"       => auth()->id(),
-            "phone_number"  => $validated["phone_number"],
+            "phone_number"  => $validated["phone_number"]
+        ], [
             "otp"           => $otp,
             "expire_at"     => now()->addMinutes(config("_custom.otp_expire_in")),
         ]);
 
         //TODO dispatch Queue
-        // SendSMSOTPJob::dispatch($phone_number, $otp);
+        // SendSMSOTPJob::dispatch($validated["phone_number"], $otp);
     }
 
     public function verifyNumber($validatedData)

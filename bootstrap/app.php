@@ -21,11 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin.php'));
 
-            Route::middleware(['api', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api'])
+            Route::middleware(['api', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api', 'is_doctor'])
                 ->prefix('api/doctor')
                 ->group(base_path('routes/doctor.php'));
 
-            Route::middleware(['api', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api'])
+            Route::middleware(['api', 'xss', 'json', 'per_page', 'db_transaction', 'throttle:api', 'is_patient'])
                 ->prefix('api/patient')
                 ->group(base_path('routes/patient.php'));
         }
@@ -42,6 +42,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_user'        => \App\Http\Middleware\CheckUser::class,
             'is_admin'       => \App\Http\Middleware\CheckAdmin::class,
             'is_super_admin' => \App\Http\Middleware\CheckSuperAdmin::class,
+            'is_doctor' => \App\Http\Middleware\CheckDoctorMiddleware::class,
+            'is_patient' => \App\Http\Middleware\CheckPatientMiddleware::class,
             //User Account Middleware
             'user.active'            => \App\Http\Middleware\User\UserActive::class,
             'user.banned'            => \App\Http\Middleware\User\UserBanned::class,

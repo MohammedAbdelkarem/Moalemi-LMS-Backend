@@ -24,7 +24,6 @@ class SubCategoryResource extends JsonResource
             'bio'  => $this->bio,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::SUB_CATEGORY_COLLECTION)),
             'category_id' => $this->category_id,
-            'doctors' => [],
         ];
 
         // $routeName = $request->route()->getName();

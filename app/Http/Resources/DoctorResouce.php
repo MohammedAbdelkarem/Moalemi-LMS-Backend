@@ -32,6 +32,11 @@ class DoctorResouce extends JsonResource
             'logo' => MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
         ];
 
+        if(auth()->user()->isPatient())
+        {
+            $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();
+        }
+
         $routeName = $request->route()->getName();
 
         switch ($routeName)

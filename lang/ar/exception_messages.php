@@ -8,6 +8,8 @@ return [
     'no_content'                        => 'لا يوجد محتوى',
     'deleting_failed'                   => 'فشلت عملية الحذف',
     'no_permission'                     => 'لا تملك صلاحيات',
+    'this_is_not_your_route'                     => ' غير مخصص لك, قم بتسجيل الدخول كطبيب أو مريض لتتمكن من المتابعة',
+    'medical_profile_already_exist'     => 'لقد قمت بإنشاء ملفك الطبي بالفعل!',
     'can_not_delete_shift_cuz_reservations_exists'                     => 'لا يمكن حذف الوقت لان تم الحجز فيه',
     'method_not_allowed'                => 'الإجراء غير صالح',
     'resource_not_FoundF'               => ':resource غير موجودة',

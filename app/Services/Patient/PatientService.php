@@ -2,6 +2,7 @@
 
 namespace App\Services\Patient;
 
+use App\Constants\ExceptionMessages;
 use App\Enums\TreatmentStatusEnum;
 use App\Models\Instruction;
 use App\Models\Medicine;
@@ -22,6 +23,12 @@ class PatientService
     }
     public function createMyMedicalProfile($data)
     {
+        $hasBeenCreated = Patient::where('user_id', auth()->id())
+                        ->where('is_owner' , 1)
+                        ->exists();
+        if($hasBeenCreated)
+            return forbiddenFailure([] , ExceptionMessages::MSG_MEDICAL_PROFILE_ALREADY_EXIST);
+
         $patientData = [
             'is_owner' => 1,
             'user_id' => auth()->id(),
@@ -32,11 +39,11 @@ class PatientService
             'relation' => 'me',
             'smoking' => $data['smoking'] ?? null,
             'alcohol' => $data['alcohol'] ?? null,
-            'current_height' => $data['height'] ?? null,
-            'current_weight' => $data['weight'] ?? null,
-            'current_blood_type' => $data['blood_type'] ?? null,
-            'current_chronic_diseases' => $data['chronic_diseases'] ?? null,
-            'current_notes' => $data['notes'] ?? null,
+            'height' => $data['height'] ?? null,
+            'weight' => $data['weight'] ?? null,
+            'blood_type' => $data['blood_type'] ?? null,
+            'chronic_diseases' => $data['chronic_diseases'] ?? null,
+            'notes' => $data['notes'] ?? null,
         ];
 
         $patient = $this->storePatientData($patientData);
@@ -49,9 +56,11 @@ class PatientService
         }
 
         if(isset($data['medicines']))
-            $this->storeMedicinesData($data['medicines'] , $patient->id);
+            $this->storeMedicinesData($data , $patient->id);
         if(isset($data['instructions']))
-            $this->storeInstructionsData($data['instructions'] , $patient->id);
+            $this->storeInstructionsData($data , $patient->id);
+
+        $patient->save();
     }
 
     public function createMedicalProfile($data)
@@ -65,11 +74,11 @@ class PatientService
             'relation' => $data['relation'] ?? null,
             'smoking' => $data['smoking'] ?? null,
             'alcohol' => $data['alcohol'] ?? null,
-            'current_height' => $data['height'] ?? null,
-            'current_weight' => $data['weight'] ?? null,
-            'current_blood_type' => $data['blood_type'] ?? null,
-            'current_chronic_diseases' => $data['chronic_diseases'] ?? null,
-            'current_notes' => $data['notes'] ?? null,
+            'height' => $data['height'] ?? null,
+            'weight' => $data['weight'] ?? null,
+            'blood_type' => $data['blood_type'] ?? null,
+            'chronic_diseases' => $data['chronic_diseases'] ?? null,
+            'notes' => $data['notes'] ?? null,
         ];
 
         $patient = $this->storePatientData($patientData);
@@ -82,9 +91,50 @@ class PatientService
         }
 
         if(isset($data['medicines']))
-            $this->storeMedicinesData($data['medicines'] , $patient->id);
+            $this->storeMedicinesData($data , $patient->id);
         if(isset($data['instructions']))
-            $this->storeInstructionsData($data['instructions'] , $patient->id);
+            $this->storeInstructionsData($data , $patient->id);
+
+        $patient->save();
+    }
+
+    public function updatePatientInfo($data , $patient_id)
+    {
+        if($patient_id == owner_id())
+        {
+            $data['relation'] = 'me';
+        }
+
+        $patient = Patient::findByIdOrFail($patient_id);
+
+        $patient->update($data);
+
+        if (isset($data["avatar"])) {
+                $patient = $this->StoreUpdate(
+                file: $data["avatar"],
+                path: "patients/{$patient->id}",
+                model: $patient,
+                column: "avatar",
+                deleteImage: true,
+                singleFilePath: $patient->avatar ?? ""
+            );
+        }
+
+        $patient->save();
+    }
+
+    public function updatePermanentMedicines($data , $patient_id)
+    {
+        Medicine::addeddByPatient($patient_id)->delete();
+
+        $this->storeMedicinesData($data , $patient_id);
+    }
+
+    public function updatePermanentInstructions($data , $patient_id)
+    {
+        Instruction::addeddByPatient($patient_id)->delete();
+
+        $this->storeInstructionsData($data , $patient_id);
     }
 
     private function storePatientData($data)
@@ -96,15 +146,15 @@ class PatientService
 
     private function storeMedicinesData($data , $patient_id = null , $visit_id = null)
     {
-        foreach($data as $medicine)
+        // dd($data);
+        foreach($data['medicines'] as $medicine)
         {
             $medicine['status'] = TreatmentStatusEnum::PERMANENT;
             $medicine['patient_id'] = $patient_id;
             $medicine['visit_id'] = $visit_id;
-
+            // dd($medicine);
             $one_medicine = Medicine::create($medicine);
 
-            // dd($medicine);
             if(isset($medicine['days']))
             {
                 foreach($medicine['days'] as $one_day)
@@ -143,7 +193,7 @@ class PatientService
 
     private function storeInstructionsData($data , $patient_id = null , $visit_id = null)
     {
-        foreach($data as $instruction)
+        foreach($data['instructions'] as $instruction)
         {
             $instruction['status'] = TreatmentStatusEnum::PERMANENT;
             $instruction['patient_id'] = $patient_id;
@@ -153,8 +203,4 @@ class PatientService
         }
     }
 
-    private function updateMedicalProfile($data , $patient_id)
-    {
-
-    }
 }
