@@ -24,6 +24,8 @@ class BannerService
     }
     public function store($data)
     {
+        $data['bannerable_type'] = getModel($data['bannerable_type']);
+
         $banner = Banner::create($data);
 
         //TODO:  store the image or update or delete as you want
@@ -36,6 +38,8 @@ class BannerService
     public function update($data , $id)
     {
         $banner =  Banner::findByIdOrFail($id);
+
+        $data['bannerable_type'] = getModel($data['bannerable_type']);
 
         $banner->update($data);
 

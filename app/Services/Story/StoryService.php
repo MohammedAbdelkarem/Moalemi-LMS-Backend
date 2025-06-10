@@ -26,6 +26,8 @@ class StoryService
     }
     public function store($data)
     {
+        $data['storiable_type'] = getModel($data['storiable_type']);
+
         $story = Story::create($data);
 
 
@@ -42,6 +44,9 @@ class StoryService
     public function update($data , $id)
     {
         $story =  Story::findByIdOrFail($id);
+
+        
+        $data['storiable_type'] = getModel($data['storiable_type']);
 
         $story->update($data);
 

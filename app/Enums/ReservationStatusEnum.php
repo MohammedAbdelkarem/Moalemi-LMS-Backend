@@ -4,8 +4,12 @@ namespace App\Enums;
 
 enum ReservationStatusEnum: string
 {
-    case FOO    = 'bar';
-    case PENDING    = 'pending';
+    case PENDING            = 'pending';
+    case ACCEPTED           = 'accepted';
+    case REJECTED           = 'rejected';
+    case CANCELLED          = 'cancelled';
+    case DONE               = 'done';
+    case DID_NOT_COME       = 'did_not_come';
 
     public static function values(): array
     {

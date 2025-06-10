@@ -29,9 +29,9 @@ class UpdateStoryRequest extends BaseApiRequest
             'description' => ['present' , 'nullable', 'string'],
             'end_at' => ['required', 'date'],
             //can specify the rules for the id and the type depending on the project(exist , unique , ....)
-            'storiable_id' => ['present' ,'nullable', 'min:1' , 'required_without:external_link' , 'required_with:storiable_type'],
-            'storiable_type' => ['present' ,'nullable' , 'required_without:external_link' , 'required_with:storiable_id'],
-            'external_link' => ['present' ,'nullable' , 'max:255' , 'required_without:storiable_id' , 'required_without:storiable_type'],
+            'storiable_id' => ['present' ,'nullable', 'min:1'],
+            'storiable_type' => ['present' ,'nullable'],
+            'external_link' => ['present' ,'nullable' , 'max:255'],
             // 'video'                      => [
             //     'nullable',
             //     'mimes:avi,mpeg,quicktime,mp4,mov,wmv',

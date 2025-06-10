@@ -12,7 +12,7 @@ class UserService
     public function getPatients($data)
     {
         return getOrPaginate(
-            User::where('role_id' , 4)->filter($data),
+            User::where('role_id' , 4)->with(['city', 'profile', 'archivedAccount'])->filter($data),
             $data
         );
     }

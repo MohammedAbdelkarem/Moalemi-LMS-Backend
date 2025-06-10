@@ -6,6 +6,7 @@ use App\Enums\ReactionStatusEnum;
 use App\Models\Article;
 use App\Enums\ReactionTypeEnum;
 use App\Models\Reaction;
+use App\Models\Replay;
 use App\Services\Base\ContextService;
 
 /**
@@ -86,7 +87,7 @@ class ReactionService
 
         $this->updateArticleCounters($article , '-' , 'comments');
 
-        $article->save();
+        $this->updateReplays($article , $comment , '-');
     }
 
     public function getLikes($article_id , $data)
@@ -115,7 +116,7 @@ class ReactionService
         return getOrPaginate(
             Reaction::where('article_id' , $article_id)
                         ->where('type' , $type)
-                        ->with('user')
+                        ->with('user' , 'replaies')
                         ,
             $data
         );
@@ -126,6 +127,23 @@ class ReactionService
         $operation = ($operation == '+' ? 'increment' : 'decrement');
 
         $article->$operation('number_of_' . $type);
+
+        $article->save();
     }
     
+    private function updateReplays($article , $comment , $operation)
+    {
+        if($operation == '-')
+        {
+            $replay = Replay::where('reaction_id' , $comment->id)
+                    ->where('status' , ReactionStatusEnum::EXIST)
+                    ->first();
+
+            $replay->status = ReactionStatusEnum::DELETED;
+
+            $replay->save();
+        }
+
+        $this->updateArticleCounters($article , $operation , 'comments');
+    }
 }

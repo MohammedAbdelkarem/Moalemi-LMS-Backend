@@ -3,13 +3,16 @@
 use App\Models\User;
 use App\Models\Story;
 use App\Models\Banner;
+use App\Models\Doctor;
+use App\Models\Patient;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
+use App\Models\Category;
+use App\Models\SubCategory;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Constants\MediaCollection;
-use App\Models\Patient;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -206,6 +209,9 @@ if (!function_exists('getModel')) {
             // LevelEnum::TEACHER        => Teacher::class,
             LevelEnum::STORY          => Story::class,
             LevelEnum::BANNER         => Banner::class,
+            LevelEnum::DOCTOR         => Doctor::class,
+            LevelEnum::CATEGORY         => Category::class,
+            LevelEnum::SUBCATEGORY         => SubCategory::class,
         ];
 
         return $data[$model_path] ?? null;
@@ -217,16 +223,16 @@ if (!function_exists('getModelName')) {
     function getModelName($model_path)
     {
         $data = [
-            ModelPaths::Specialization => LevelEnum::SPECIALIZATION,
-            ModelPaths::Course         => LevelEnum::COURSE,
-            ModelPaths::Unit           => LevelEnum::UNIT,
-            ModelPaths::SubUnit        => LevelEnum::SUB_UNIT,
-            ModelPaths::Lesson         => LevelEnum::LESSON,
-            ModelPaths::File           => LevelEnum::FILE,
-            ModelPaths::Quiz           => LevelEnum::QUIZ,
-            ModelPaths::Question       => LevelEnum::QUESTION,
-            ModelPaths::Answer         => LevelEnum::ANSWER,
-            ModelPaths::Teacher        => LevelEnum::TEACHER,
+            // ModelPaths::Specialization => LevelEnum::SPECIALIZATION,
+            // ModelPaths::Course         => LevelEnum::COURSE,
+            // ModelPaths::Unit           => LevelEnum::UNIT,
+            // ModelPaths::SubUnit        => LevelEnum::SUB_UNIT,
+            // ModelPaths::Lesson         => LevelEnum::LESSON,
+            // ModelPaths::File           => LevelEnum::FILE,
+            // ModelPaths::Quiz           => LevelEnum::QUIZ,
+            // ModelPaths::Question       => LevelEnum::QUESTION,
+            // ModelPaths::Answer         => LevelEnum::ANSWER,
+            // ModelPaths::Teacher        => LevelEnum::TEACHER,
             ModelPaths::Story          => LevelEnum::STORY,
             ModelPaths::Banner         => LevelEnum::BANNER,
         ];
@@ -241,6 +247,9 @@ if (!function_exists('getModelByPath')) {
         $data = [
             ModelPaths::Story          => Story::class,
             ModelPaths::Banner         => Banner::class,
+            ModelPaths::Doctor         => Doctor::class,
+            ModelPaths::Category         => Category::class,
+            ModelPaths::SubCategory         => SubCategory::class,
         ];
 
         return $data[$model_path] ?? null;

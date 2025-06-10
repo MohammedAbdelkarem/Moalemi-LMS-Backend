@@ -37,6 +37,7 @@ class UserProfileController extends Controller
         $deleted_status = $request->deleted_status;
         $start_date     = $request->start_date;
         $end_date       = $request->end_date;
+        $role_id       = $request->role_id;
 
         return success(
             $this->userProfileService->index(
@@ -48,6 +49,7 @@ class UserProfileController extends Controller
                 $deleted_status,
                 $start_date,
                 $end_date,
+                $role_id
             ),
             ApiMessages::MSG_SUCCESS,
             UserListResource::class,

@@ -28,9 +28,9 @@ class UpdateBannerRequest extends BaseApiRequest
             'title' => ['required', 'string', 'min:4' , 'max:255'],
             'description' => ['present' , 'nullable', 'string'],
             //can specify the rules for the id and the type depending on the project(exist , unique , ....)
-            'bannerable_id' => ['present' ,'nullable', 'min:1' , 'required_without:external_link' , 'required_with:bannerable_type'],
-            'bannerable_type' => ['present' ,'nullable' , 'required_without:external_link' , 'required_with:bannerable_id'],
-            'external_link' => ['present' ,'nullable' , 'max:255' , 'required_without:bannerable_id' , 'required_without:bannerable_type'],
+            'bannerable_id' => ['present' ,'nullable', 'min:1'],
+            'bannerable_type' => ['present' ,'nullable'],
+            'external_link' => ['present' ,'nullable' , 'max:255'],
             // 'image'                      => [
             //     'required',
             //     'mimes:jpeg,jpg,png,webp',

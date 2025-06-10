@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Reservation extends Model
+class Reservation extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory , InteractsWithMedia;
     protected $guarded = ['id'];
-    public function day()
+    public function registerMediaCollections(): void
     {
-        return $this->belongsTo(Day::class);
+        $this->addMediaCollection(MediaCollection::STORY_COLLECTION);
     }
 
     public function patient()

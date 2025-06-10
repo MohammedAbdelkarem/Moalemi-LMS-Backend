@@ -12,16 +12,19 @@ use BenSampo\Enum\Contracts\LocalizedEnum;
  */
 final class LevelEnum extends Enum implements LocalizedEnum
 {
-    const SPECIALIZATION          = 'Specialization';
-    const COURSE                  = 'Course';
-    const UNIT                    = 'Unit';
-    const SUB_UNIT                = 'Sub_Unit';
-    const LESSON                  = 'Lesson';
-    const FILE                    = 'File';
-    const QUIZ                    = 'Quiz';
-    const QUESTION                = 'Question';
-    const ANSWER                  = 'Answer';
-    const TEACHER                  = 'Teacher';
+    // const SPECIALIZATION          = 'Specialization';
+    // const COURSE                  = 'Course';
+    // const UNIT                    = 'Unit';
+    // const SUB_UNIT                = 'Sub_Unit';
+    // const LESSON                  = 'Lesson';
+    // const FILE                    = 'File';
+    // const QUIZ                    = 'Quiz';
+    // const QUESTION                = 'Question';
+    // const ANSWER                  = 'Answer';
+    // const TEACHER                  = 'Teacher';
     const STORY                  = 'Story';
     const BANNER                  = 'Banner';
+    const CATEGORY                  = 'Category';
+    const SUBCATEGORY                  = 'SubCategory';
+    const DOCTOR                  = 'Doctor';
 }

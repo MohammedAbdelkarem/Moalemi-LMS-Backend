@@ -15,18 +15,19 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('notes')->nullable();
-            $table->enum('status' , ReservationStatusEnum::values())->default(ReservationStatusEnum::FOO);
+            $table->text('text');
+            $table->text('notes')->nullable();
+            $table->enum('status' , ReservationStatusEnum::values())->default(ReservationStatusEnum::PENDING);
             $table->enum('rejection_reason' , RejectionReasonEnum::values())->nullable();
             $table->string('other_rejection_reason')->nullable();
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('day_id')->constrained()->cascadeOnDelete();
-            $table->time('start_time');
-            $table->time('end_time');
+            // $table->foreignId('day_id')->constrained()->cascadeOnDelete();
+            $table->time('shift_start_time')->nullable();
+            $table->time('shift_end_time')->nullable();
             $table->date('date');
             $table->boolean('visits_available')->default(0);
+            $table->time('time_to_come')->nullable();
             $table->timestamps();
         });
     }

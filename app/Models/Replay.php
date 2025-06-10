@@ -7,30 +7,22 @@ use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Reaction extends Model
+class Replay extends Model
 {
     use HasFactory;
+    
     protected $guarded = [
         'id'
     ];
 
-    public function article()
-    {
-        return $this->belongsTo(Article::class);
-    }
 
-    public function user()
+    public function reaction()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function replaies()
-    {
-        return $this->hasMany(Reaction::class);
+        return $this->belongsTo(Reaction::class);
     }
 
     /**
-     * @return \App\Models\Reaction
+     * @return \App\Models\Replay
      */
     public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
     {
@@ -44,4 +36,6 @@ class Reaction extends Model
             $selectedColumns
         );
     }
+
+
 }
