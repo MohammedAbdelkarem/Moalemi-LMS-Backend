@@ -40,9 +40,13 @@ class UserProfileService extends MainService
         $deleted_status,
         $start_date,
         $end_date,
-        $role_id,
+        $role_id
     ) {
         return User::query()
+            ->whereIn('role_id' , [3,4])
+            ->when($role_id, function ($query) use ($role_id) {
+                $query->where('role_id', $role_id);
+            })
             //To not get unverified uncompleted accounts
             ->whereNotNull(['name', 'account_verified_at'])
             //Deleted Status
@@ -78,10 +82,6 @@ class UserProfileService extends MainService
             // //Filter By Cities
             ->when($cities, function ($query) use ($cities) {
                 $query->whereIn('city_id', decodeStringToArray($cities));
-            })
-            // //Filter By Role
-            ->when($role_id, function ($query) use ($role_id) {
-                $query->where('role_id', decodeStringToArray($role_id));
             })
             //Filter By Join Date (min)
             ->when($start_date, function ($query) use ($start_date) {
