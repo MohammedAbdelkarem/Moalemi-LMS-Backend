@@ -14,7 +14,7 @@ class Reservation extends Model implements HasMedia
     protected $guarded = ['id'];
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(MediaCollection::STORY_COLLECTION);
+        $this->addMediaCollection(MediaCollection::RESERVATION_COLLECTION);
     }
 
     public function patient()

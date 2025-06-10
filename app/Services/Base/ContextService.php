@@ -6,6 +6,7 @@ use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
 use App\Models\Doctor;
 use App\Models\Patient;
+use App\Models\Reservation;
 
 /**
  * Class ContextService.
@@ -34,5 +35,22 @@ class ContextService
             return Doctor::class;
         else
             return Patient::class;
+    }
+
+    public function checkIfReservationEditorIsValid($reservation_id)
+    {
+        $reservation = Reservation::findebyIdOrFail($reservation_id);
+        
+        $valid = true;
+
+        if(auth()->user()->isDoctor())
+            $valid = doctor_id() == $reservation->doctor_id;
+        else if(auth()->user()->isPatient())
+            $valid = user_id_of_patient($reservation->patient_id) == auth()->id();
+        else
+            $valid = false;
+
+        if(!$valid)
+            return unprocessableFailure([] , ExceptionMessages::MSG_THIS_IS_NOT_YOUR_ROUTE);
     }
 }

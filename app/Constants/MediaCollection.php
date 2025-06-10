@@ -9,6 +9,8 @@ final class MediaCollection
     const STUDENT_COLLECTION            = 'student_collection';
     const TEACHER_COLLECTION            = 'teacher_collection';
     const FATHER_COLLECTION             = 'father_collection';
+    const RESERVATION_COLLECTION        = 'reservation_collection';
+    const VISIT_COLLECTION              = 'visit_collection';
     const SPECIALIZATION_COLLECTION     = 'specialization_collection';
     const COURSE_COLLECTION             = 'course_collection';
     const UNIT_COLLECTION               = 'unit_collection';

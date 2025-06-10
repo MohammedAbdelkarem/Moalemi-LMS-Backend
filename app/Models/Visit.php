@@ -2,13 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Visit extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::VISIT_COLLECTION);
+    }
+    
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);

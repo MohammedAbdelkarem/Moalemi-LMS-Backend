@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
+            $table->text('title');
+            $table->text('description');
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();

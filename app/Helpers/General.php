@@ -174,18 +174,22 @@ if (!function_exists('mediaCollectionByContxt')) {
     function mediaCollectionByContxt($model_path)
     {
         $data = [
-            LevelEnum::SPECIALIZATION => MediaCollection::SPECIALIZATION_COLLECTION,
-            LevelEnum::COURSE         => MediaCollection::COURSE_COLLECTION,
-            LevelEnum::UNIT           => MediaCollection::UNIT_COLLECTION,
-            LevelEnum::SUB_UNIT       => MediaCollection::SUB_UNIT_COLLECTION,
-            LevelEnum::LESSON         => MediaCollection::LESSON_COLLECTION,
-            LevelEnum::FILE           => MediaCollection::FILE_COLLECTION,
-            LevelEnum::QUIZ           => MediaCollection::QUIZ_COLLECTION,
-            LevelEnum::QUESTION       => MediaCollection::QUESTION_COLLECTION,
-            LevelEnum::ANSWER         => MediaCollection::ANSWER_COLLECTION,
-            LevelEnum::TEACHER        => MediaCollection::TEACHER_COLLECTION,
+            // LevelEnum::SPECIALIZATION => MediaCollection::SPECIALIZATION_COLLECTION,
+            // LevelEnum::COURSE         => MediaCollection::COURSE_COLLECTION,
+            // LevelEnum::UNIT           => MediaCollection::UNIT_COLLECTION,
+            // LevelEnum::SUB_UNIT       => MediaCollection::SUB_UNIT_COLLECTION,
+            // LevelEnum::LESSON         => MediaCollection::LESSON_COLLECTION,
+            // LevelEnum::FILE           => MediaCollection::FILE_COLLECTION,
+            // LevelEnum::QUIZ           => MediaCollection::QUIZ_COLLECTION,
+            // LevelEnum::QUESTION       => MediaCollection::QUESTION_COLLECTION,
+            // LevelEnum::ANSWER         => MediaCollection::ANSWER_COLLECTION,
+            // LevelEnum::TEACHER        => MediaCollection::TEACHER_COLLECTION,
             LevelEnum::STORY          => MediaCollection::STORY_COLLECTION,
             LevelEnum::BANNER         => MediaCollection::BANNER_COLLECTION,
+            LevelEnum::DOCTOR_COVER   => MediaCollection::DOCTOR_COVER_COLLECTION,
+            LevelEnum::DOCTOR_LOGO    => MediaCollection::DOCTOR_LOGO_COLLECTION,
+            LevelEnum::CATEGORY       => MediaCollection::CATEGORY_COLLECTION,
+            LevelEnum::SUBCATEGORY    => MediaCollection::SUB_CATEGORY_COLLECTION,
         ];
 
         return $data[$model_path] ?? null;
@@ -207,11 +211,13 @@ if (!function_exists('getModel')) {
             // LevelEnum::QUESTION       => Question::class,
             // LevelEnum::ANSWER         => Answer::class,
             // LevelEnum::TEACHER        => Teacher::class,
-            LevelEnum::STORY          => Story::class,
-            LevelEnum::BANNER         => Banner::class,
-            LevelEnum::DOCTOR         => Doctor::class,
-            LevelEnum::CATEGORY         => Category::class,
-            LevelEnum::SUBCATEGORY         => SubCategory::class,
+            LevelEnum::STORY                => Story::class,
+            LevelEnum::BANNER               => Banner::class,
+            LevelEnum::DOCTOR               => Doctor::class,
+            LevelEnum::DOCTOR_COVER         => Doctor::class,
+            LevelEnum::DOCTOR_LOGO          => Doctor::class,
+            LevelEnum::CATEGORY             => Category::class,
+            LevelEnum::SUBCATEGORY          => SubCategory::class,
         ];
 
         return $data[$model_path] ?? null;
@@ -304,6 +310,14 @@ if (!function_exists('owner_id')) {
         }
 
         return $returned_owner_id;
+    }
+}
+
+//to check if the current authorize user is the reservation owner
+if (!function_exists('user_id_of_patient')) {
+    function user_id_of_patient($patient_id)
+    {
+        return Patient::find($patient_id)->user_id;
     }
 }
 
