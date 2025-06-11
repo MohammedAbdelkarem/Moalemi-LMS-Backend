@@ -9,6 +9,7 @@ final class RouteNames
     const ADMIN_FAQ_LIST                                       = 'admin.faq.list';
     const ARTICLES_LIST                                       = 'articles.itme';
     const ARTICLES_SHOW                                         = 'articles.show';
+    const PATIENT_RELATIONS                                         = 'patient.relations';
     const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';

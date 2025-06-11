@@ -11,6 +11,7 @@ use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Patient\FavoriteController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Patient\ListController;
+use App\Http\Controllers\Patient\ReservationController;
 use App\Http\Controllers\System\Info\CityController;
 
 /*
@@ -33,11 +34,23 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::prefix('medical_profile')->group(function(){
             Route::post('store_mine' , 'createMyMedicalProfile');
             Route::post('store_others' , 'createMedicalProfile');
-            Route::get('relations' , 'getRelations');
+            Route::get('relations' , 'getRelations')->name(RouteNames::PATIENT_RELATIONS);
             Route::prefix('update')->group(function(){
                 Route::post('profile/{id}' , 'updateInfo');
-                Route::post('medicines/{id}' , 'updateMedicines');
-                Route::post('instructions/{id}' , 'updateInstructions');
+            });
+            Route::prefix('medicine')->group(function(){
+                Route::post('add/{patient_id}' , 'addMedicines');
+
+                Route::delete('delete/{medicine_id}' , 'deleteMedicine');
+
+                Route::post('{patient_id}/update/{medicine_id}' , 'updateMedicine');
+            });
+            Route::prefix('instruction')->group(function(){
+                Route::post('add/{patient_id}' , 'addInstructions');
+                
+                Route::delete('delete/{medicine_id}' , 'deleteInstruction');
+                
+                Route::post('{patient_id}/update/{instruction_id}' , 'updateInstruction');
             });
         });
     });
@@ -81,6 +94,13 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::get('categories' , 'categories');
             Route::get('subcategories' , 'subcategories');
             Route::get('cities' , 'cities');
+        });
+    });
+
+    Route::prefix('reservation')->group(function(){
+        Route::controller(ReservationController::class)->group(function(){
+            Route::post('appoint' , 'appoint');
+            Route::get('cancel/{id}' , 'cancel');
         });
     });
 });

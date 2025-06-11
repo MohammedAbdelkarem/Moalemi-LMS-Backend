@@ -39,7 +39,7 @@ class ContextService
 
     public function checkIfReservationEditorIsValid($reservation_id)
     {
-        $reservation = Reservation::findebyIdOrFail($reservation_id);
+        $reservation = Reservation::findbyIdOrFail($reservation_id);
         
         $valid = true;
 

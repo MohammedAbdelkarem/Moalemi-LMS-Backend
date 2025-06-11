@@ -26,6 +26,7 @@ class ArticleResource extends JsonResource
             'number_of_likes' => $this->number_of_likes,
             'number_of_comments' => $this->number_of_comments,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::ARTICLE_COLLECTION)),
+            'created_at'=> $this->created_at,
         ];
 
         if(auth()->user()->isPatient())

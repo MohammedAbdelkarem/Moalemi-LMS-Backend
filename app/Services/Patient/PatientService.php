@@ -19,7 +19,22 @@ class PatientService
     use StorageHelper;
     public function getMyRelations()
     {
-        return Patient::where('user_id', auth()->id())->get();
+        $patients = Patient::where('user_id', auth()->id())->with(['instructions' , 'medicines' , 'medicines.medicine_days', 'medicines.medicine_days.day' , 'medicines.medicine_days.medicine_times' , 'reservations' , 'reservations.doctor'])->get();
+
+        $patients->each(function ($patient) {
+            $patient->medicines->transform(function ($medicine) {
+                // Add the is_able_to_delete attribute
+                $medicine->is_able_to_edit = $medicine->visit_id === null;
+                return $medicine;
+            });
+            $patient->instructions->transform(function ($instruction) {
+                // Define your logic for is_able_to_delete here
+                $instruction->is_able_to_edit = $instruction->visit_id === null; // Replace with actual condition
+                return $instruction;
+            });
+        });
+
+        return $patients;
     }
     public function createMyMedicalProfile($data)
     {
@@ -123,18 +138,50 @@ class PatientService
         $patient->save();
     }
 
-    public function updatePermanentMedicines($data , $patient_id)
+    public function addMedicinesByPatient($data , $patient_id)
     {
-        Medicine::addeddByPatient($patient_id)->delete();
-
         $this->storeMedicinesData($data , $patient_id);
     }
 
-    public function updatePermanentInstructions($data , $patient_id)
+    public function addInstructionsByPatient($data , $patient_id)
     {
-        Instruction::addeddByPatient($patient_id)->delete();
-
         $this->storeInstructionsData($data , $patient_id);
+    }
+
+    public function updateMedicinesByPatient($data , $patient_id , $medicine_id)
+    {
+        $this->deleteMedicineByPateint($medicine_id);
+
+        $finalData['medicines'][0] = $data;
+
+        $this->storeMedicinesData($finalData , $patient_id);
+    }
+
+    public function updateInstructionsByPatient($data , $patient_id , $instruction_id)
+    {
+        $this->deleteInstructionByPateint($instruction_id);
+
+        $finalData['instructions'][0] = $data;
+
+        $this->storeInstructionsData($finalData , $patient_id);
+    }
+
+    public function deleteMedicineByPateint($medicine_id)
+    {
+        $medicine = Medicine::findByIdOrFail($medicine_id);
+
+        $this->checkIfCanEditTreatments($medicine);
+
+        $medicine->delete();
+    }
+
+    public function deleteInstructionByPateint($instruction_id)
+    {
+        $instruction = Instruction::findByIdOrFail($instruction_id);
+
+        $this->checkIfCanEditTreatments($instruction);
+
+        $instruction->delete();
     }
 
     private function storePatientData($data)
@@ -149,10 +196,6 @@ class PatientService
         // dd($data);
         foreach($data['medicines'] as $medicine)
         {
-            $medicine['status'] = (isset($medicine['status'])) 
-            ? $medicine['status'] 
-            : TreatmentStatusEnum::PERMANENT;
-
             $medicine['patient_id'] = $patient_id;
             $medicine['visit_id'] = $visit_id;
             // dd($medicine);
@@ -198,13 +241,18 @@ class PatientService
     {
         foreach($data['instructions'] as $instruction)
         {
-            $instruction['status'] = (isset($instruction['status'])) 
-            ? $instruction['status'] 
-            : TreatmentStatusEnum::PERMANENT;
             $instruction['patient_id'] = $patient_id;
             $instruction['visit_id'] = $visit_id;
             
             Instruction::create($instruction);
+        }
+    }
+
+    private function checkIfCanEditTreatments($context)
+    {
+        if($context->visit_id != null)
+        {
+            return forbiddenFailure([] , ExceptionMessages::MSG_CANT_EDIT_TREATMENTS_IN_VISIT);
         }
     }
 

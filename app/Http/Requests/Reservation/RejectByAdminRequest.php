@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Reservation;
 
+use App\Enums\RejectionReasonEnum;
 use App\Http\Requests\BaseApiRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class RejectByAdminRequest extends BaseApiRequest
 {
@@ -22,7 +24,8 @@ class RejectByAdminRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            
+            'other_rejection_reason' => ['required_without:rejection_reason' , 'string'],
+            'rejection_reason' => ['required_without:other_rejection_reason' , new Enum(RejectionReasonEnum::class)],
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -30,5 +32,21 @@ class Reservation extends Model implements HasMedia
     public function visit()
     {
         return $this->hasOne(Visit::class);
+    }
+
+    /**
+     * @return \App\Models\Shift
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::RES_RESERVATION,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

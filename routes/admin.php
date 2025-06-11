@@ -1,20 +1,22 @@
 <?php
 
 use App\Constants\RouteNames;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DoctorController;
-use App\Http\Controllers\Admin\PlanController;
-use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Media\MediaController;
 use App\Http\Controllers\Media\StoryController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Media\BannerController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\System\Info\FAQController;
 use App\Http\Controllers\System\Info\TosController;
 use App\Http\Controllers\System\Info\CityController;
+use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\System\Info\AboutUsController;
 use App\Http\Controllers\System\SystemSettingController;
 use App\Http\Controllers\System\Info\ContactUsController;
@@ -26,7 +28,6 @@ use App\Http\Controllers\System\Info\PrivacyPolicyController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
-use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceMessageController;
 
@@ -219,6 +220,12 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix(prefix: 'article/reactions')->controller(ReactionController::class)->group(function(){callback: 
         Route::get('likes/{article_id}' , 'getLikes');
         Route::get('comments/{article_id}' , 'getCommentsForAdmin');
+    });
+
+    Route::prefix('reservation')->group(function(){
+        Route::controller(ReservationController::class)->group(function(){
+            Route::post('reject_by_admin/{id}' , 'reject_by_admin');
+        });
     });
 
     

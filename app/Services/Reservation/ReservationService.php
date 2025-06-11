@@ -2,14 +2,15 @@
 
 namespace App\Services\Reservation;
 
-use App\Enums\ReactionStatusEnum;
 use App\Models\Shift;
 use App\Models\Visit;
-use App\Models\Reservation;
-use App\Constants\MediaCollection;
-use App\Enums\ReservationStatusEnum;
 use App\Models\Patient;
+use App\Models\Reservation;
+use App\Enums\ReactionStatusEnum;
+use App\Constants\MediaCollection;
 use App\Models\PatientUpdatedInfo;
+use App\Constants\ExceptionMessages;
+use App\Enums\ReservationStatusEnum;
 use App\Services\Base\ContextService;
 use App\Services\Patient\PatientService;
 
@@ -44,6 +45,8 @@ class ReservationService
         $this->contextService->checkIfReservationEditorIsValid($id);
 
         $reservation = Reservation::findByIdOrFail($id);
+        
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::REJECTED->value);
 
         $reservation->status = ReservationStatusEnum::REJECTED;
 
@@ -59,6 +62,8 @@ class ReservationService
 
         $reservation = Reservation::findByIdOrFail($id);
 
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::REJECTED_BY_ADMIN->value);
+
         $reservation->status = ReservationStatusEnum::REJECTED_BY_ADMIN;
 
         $reservation->rejection_reason = $data['rejection_reason'] ?? null;
@@ -73,6 +78,8 @@ class ReservationService
 
         $reservation = Reservation::findByIdOrFail($id);
 
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::ACCEPTED->value);
+
         $reservation->status = ReservationStatusEnum::ACCEPTED;
 
         $reservation->time_to_come = $data['time_to_come'];
@@ -86,6 +93,8 @@ class ReservationService
 
         $reservation = Reservation::findByIdOrFail($id);
 
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::CANCELLED->value);
+
         $reservation->status = ReservationStatusEnum::CANCELLED;
 
         $reservation->save();
@@ -96,6 +105,8 @@ class ReservationService
         $this->contextService->checkIfReservationEditorIsValid($id);
 
         $reservation = Reservation::findByIdOrFail($id);
+
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::DID_NOT_COME->value);
 
         $reservation->status = ReservationStatusEnum::DID_NOT_COME;
 
@@ -109,13 +120,19 @@ class ReservationService
         //report
         $reservation = Reservation::findByIdOrFail($id);
 
+        $this->checkStatusFlow($reservation->status , ReservationStatusEnum::DONE->value);
+
+        $reservation->status = ReservationStatusEnum::DONE;
+
+        $reservation->save();
+
         $visit = Visit::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'doctor_id' => $reservation->doctor_id,
             'patient_id' => $reservation->patient_id,
             'reservation_id' => $id,
-            'note' => $data['notes']
+            'note' => $data['notes'] ?? null
         ]);
 
         if(isset($data['attachments']))
@@ -173,5 +190,34 @@ class ReservationService
             $this->patientService->storeMedicinesData($data , $patient->id , $visit->id);
         if(isset($data['instructions']))
             $this->patientService->storeInstructionsData($data , $patient->id , $visit->id);
+    }
+
+    private function checkStatusFlow($old_status , $new_status)
+    {
+        if(
+            $old_status == ReservationStatusEnum::PENDING->value &&
+             ($new_status == ReservationStatusEnum::DONE->value || $new_status == ReservationStatusEnum::DID_NOT_COME->value)
+
+            || 
+
+            $new_status == ReservationStatusEnum::DONE->value && $old_status != ReservationStatusEnum::ACCEPTED->value
+
+            ||
+            
+            $old_status == ReservationStatusEnum::ACCEPTED->value && $new_status == ReservationStatusEnum::REJECTED->value
+
+            ||
+
+            (
+                $old_status == ReservationStatusEnum::REJECTED->value
+            || $old_status == ReservationStatusEnum::CANCELLED->value 
+            || $old_status == ReservationStatusEnum::DONE->value 
+            || $old_status == ReservationStatusEnum::DID_NOT_COME->value 
+            || $old_status == ReservationStatusEnum::REJECTED_BY_ADMIN->value 
+            )
+        )
+        {
+            return forbiddenFailure([] , __(ExceptionMessages::MSG_RESERVATION_STATUS_FLOW_ERROR , ['old_status' => $old_status , 'new_status' => $new_status]));
+        }
     }
 }

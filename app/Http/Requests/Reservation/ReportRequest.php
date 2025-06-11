@@ -31,7 +31,7 @@ class ReportRequest extends BaseApiRequest
             'title'                     => ['required' , 'string'],
             'description'               => ['required' , 'string'],
             "attachments"               => ['nullable' , 'array'],
-            "attachments.*.file"        => [
+            "attachments.*.image"        => [
                 'required',
                'mimes:jpeg,jpg,png,webp,pdf',
                'max:4096'
@@ -48,8 +48,8 @@ class ReportRequest extends BaseApiRequest
             //next reservation
             'next_text'                 => ['nullable' , 'string'],
             'next_notes'                => ['nullable' , 'string'],
-            'next_date'                 => ['nullable' , 'date'],
-            'time_to_come'              => ['nullable','required_with:next_date' , 'date_format:H:i'],
+            'next_date'                 => ['required' , 'date'],
+            'time_to_come'              => ['required','required_with:next_date' , 'date_format:H:i'],
             //medicines
             'medicines'                 => ['nullable' , 'array'],
             'medicines.*.text'          => ['required' , 'string' , 'max:255'],

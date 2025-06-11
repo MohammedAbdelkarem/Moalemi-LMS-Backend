@@ -12,6 +12,8 @@ return [
     'doctor'                     => 'الطبيب',
     'patient'                     => 'المريض',
     'instruction'                     => 'التوصية',
+    'reservation'                     => 'الحجز',
+    'visit'                     => 'الزيارة',
     'material'                  => 'المادة',
     'doctor_phone_number'       => 'رقم هاتف الطبيب',
     'Story'                     => 'قصة',

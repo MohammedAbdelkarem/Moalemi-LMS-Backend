@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\MedicalProfile;
 
+use App\Enums\TreatmentStatusEnum;
 use App\Http\Requests\BaseApiRequest;
+use Illuminate\Validation\Rules\Enum;
 
-class UpdateInstructionsRequest extends BaseApiRequest
+class UpdateInstructionRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +24,12 @@ class UpdateInstructionsRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'instructions' => ['nullable' , 'array'],
-            'instructions.*.text' => ['required' , 'string' , 'max:255'],
+            //instruction
+            'text'               => ['required' , 'string' , 'max:255'],
+            'status'             => ['required' , new Enum(TreatmentStatusEnum::class)],
+            'end_date'           => ['nullable' , 'date'],
+            'other_end_date'     => ['nullable' , 'string'],
+            'notes'              => ['nullable' , 'string'],
         ];
     }
 }

@@ -25,7 +25,7 @@ class AppointmentRequest extends BaseApiRequest
             'patient_id' => ['required', 'exists:patients,id'],
             'doctor_id' => ['required', 'exists:doctors,id'],
             'shift_id' => ['required', 'exists:shifts,id'],
-            'date' => ['required', 'date_format:Y-m-d'],
+            'date' => ['required', 'date'],
             'text' => ['required'],
             "images" => ['nullable' , 'array'],
             "images.*.image" => [

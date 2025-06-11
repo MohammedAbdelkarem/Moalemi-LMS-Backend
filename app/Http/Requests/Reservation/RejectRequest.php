@@ -24,8 +24,8 @@ class RejectRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'rejection_reason' => ['required_without:other_rejection_reason'],
-            'other_rejection_reason' => ['required_without:rejection_reason' , new Enum(RejectionReasonEnum::class)],
+            'other_rejection_reason' => ['required_without:rejection_reason' , 'string'],
+            'rejection_reason' => ['required_without:other_rejection_reason' , new Enum(RejectionReasonEnum::class)],
         ];
     }
 }

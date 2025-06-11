@@ -7,8 +7,9 @@ use App\Http\Controllers\Doctor\PlanController;
 use App\Http\Controllers\Doctor\ShiftController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\ArticleController;
-use App\Http\Controllers\Doctor\TransactionController;
 use App\Http\Controllers\Patient\PatientController;
+use App\Http\Controllers\Doctor\ReservationController;
+use App\Http\Controllers\Doctor\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,15 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('unComment/{comment_id}' , 'unComment');
         Route::get('likes/{article_id}' , 'getLikes');
         Route::get('comments/{article_id}' , 'getCommentsForUser');
+    });
+
+    Route::prefix('reservation')->group(function(){
+        Route::controller(ReservationController::class)->group(function(){
+            Route::post('reject/{id}' , 'reject');
+            Route::post('accept/{id}' , 'accept');
+            Route::get('did_not_come/{id}' , 'did_not_come');
+            Route::post('done/{id}' , 'done');
+        });
     });
 
 
