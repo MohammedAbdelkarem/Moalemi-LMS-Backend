@@ -144,12 +144,15 @@ class PatientService
         return $patient;
     }
 
-    private function storeMedicinesData($data , $patient_id = null , $visit_id = null)
+    public function storeMedicinesData($data , $patient_id = null , $visit_id = null)
     {
         // dd($data);
         foreach($data['medicines'] as $medicine)
         {
-            $medicine['status'] = TreatmentStatusEnum::PERMANENT;
+            $medicine['status'] = (isset($medicine['status'])) 
+            ? $medicine['status'] 
+            : TreatmentStatusEnum::PERMANENT;
+
             $medicine['patient_id'] = $patient_id;
             $medicine['visit_id'] = $visit_id;
             // dd($medicine);
@@ -191,11 +194,13 @@ class PatientService
         }
     }
 
-    private function storeInstructionsData($data , $patient_id = null , $visit_id = null)
+    public function storeInstructionsData($data , $patient_id = null , $visit_id = null)
     {
         foreach($data['instructions'] as $instruction)
         {
-            $instruction['status'] = TreatmentStatusEnum::PERMANENT;
+            $instruction['status'] = (isset($instruction['status'])) 
+            ? $instruction['status'] 
+            : TreatmentStatusEnum::PERMANENT;
             $instruction['patient_id'] = $patient_id;
             $instruction['visit_id'] = $visit_id;
             

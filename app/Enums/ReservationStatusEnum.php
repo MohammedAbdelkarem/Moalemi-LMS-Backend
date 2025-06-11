@@ -10,6 +10,7 @@ enum ReservationStatusEnum: string
     case CANCELLED          = 'cancelled';
     case DONE               = 'done';
     case DID_NOT_COME       = 'did_not_come';
+    case REJECTED_BY_ADMIN       = 'rejected_by_admin';
 
     public static function values(): array
     {

@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources\Users\Profile;
 
-use App\Traits\ImagesHelper;
 use Carbon\Carbon;
+use App\Models\Patient;
+use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class ProfileResource extends JsonResource
         // dd(auth()->id() , $this->id);
         $data = [
             "is_me"     => $this->id == auth()->id(),
+            "has_medical_profile"  => Patient::where('user_id' , auth()->id())->where('is_owner' , 1)->exists(),
             "id"        => $this->id,
             "name"      => $this->name,
             "avatar"        => $this->getProfileImage($this),
