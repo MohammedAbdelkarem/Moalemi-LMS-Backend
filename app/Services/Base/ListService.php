@@ -14,7 +14,7 @@ class ListService
     public function categories($data)
     {
         return getOrPaginate(
-            Category::query(),
+            Category::with('subCategories'),
             $data
         );
     }

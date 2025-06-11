@@ -101,6 +101,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::controller(ReservationController::class)->group(function(){
             Route::post('appoint' , 'appoint');
             Route::get('cancel/{id}' , 'cancel');
+            Route::post('rate/{id}' , 'rate');
         });
     });
 });

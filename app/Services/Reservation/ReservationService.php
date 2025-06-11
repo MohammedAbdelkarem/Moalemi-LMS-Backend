@@ -2,8 +2,10 @@
 
 namespace App\Services\Reservation;
 
+use App\Models\Rate;
 use App\Models\Shift;
 use App\Models\Visit;
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Reservation;
 use App\Enums\ReactionStatusEnum;
@@ -192,6 +194,32 @@ class ReservationService
             $this->patientService->storeInstructionsData($data , $patient->id , $visit->id);
     }
 
+    public function rateVisit($visit_id , $data)
+    {
+        $visit = Visit::findByIdOrFail($visit_id);
+
+        $this->checkIfHasBeenRated($visit);
+
+        $rate = Rate::create([
+            'patient_id' => $visit->patient_id,
+            'doctor_id' => $visit->doctor_id,
+            'visit_id' => $visit->id,
+            'rate' => $data['rate'],
+            'comment' => $data['comment'] ?? null,
+        ]);
+
+        if(isset($data['image']))
+            uploadFileOnMedia($data['image'] , $rate , MediaCollection::RATE_COLLECTION);
+
+        $doctor = Doctor::find($visit->doctor_id);
+
+        $doctor->rate_sum += $data['rate'];
+        $doctor->rate_counter++;
+        $doctor->total_rate = $doctor->rate_sum / $doctor->rate_counter;
+
+        $doctor->save();
+    }
+
     private function checkStatusFlow($old_status , $new_status)
     {
         if(
@@ -219,5 +247,11 @@ class ReservationService
         {
             return forbiddenFailure([] , __(ExceptionMessages::MSG_RESERVATION_STATUS_FLOW_ERROR , ['old_status' => $old_status , 'new_status' => $new_status]));
         }
+    }
+
+    private function checkIfHasBeenRated($visit)
+    {
+        if($visit->rate()->exists())
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_RATE_AGAIN);
     }
 }

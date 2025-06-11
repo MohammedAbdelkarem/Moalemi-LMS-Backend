@@ -3,17 +3,21 @@
 namespace App\Models;
 
 use App\Constants\Resources;
+use Spatie\MediaLibrary\HasMedia;
+use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Rate extends Model
+class Rate extends Model implements HasMedia
 {
-    use HasFactory;
-    
-    protected $guarded = [
-        'id'
-    ];
+    use HasFactory , InteractsWithMedia;
+    protected $guarded = ['id'];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::RATE_COLLECTION);
+    }
 
     // /**
     //  * @return \App\Models\Rate

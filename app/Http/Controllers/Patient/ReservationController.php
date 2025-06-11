@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\AppointmentRequest;
+use App\Http\Requests\Reservation\RateVisitRequest;
 use App\Services\Reservation\ReservationService;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,14 @@ class ReservationController extends Controller
         return success(
             $this->reservationService->cancel($id),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function rate(RateVisitRequest $request , $visit_id)
+    {
+        return success(
+            $this->reservationService->rateVisit($visit_id , $request->validated()),
+            ApiMessages::MSG_SUCCESS,
         );
     }
 }

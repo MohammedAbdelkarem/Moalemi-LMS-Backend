@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
+use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Visit extends Model implements HasMedia
 {
@@ -51,5 +53,21 @@ class Visit extends Model implements HasMedia
     public function medicines()
     {
         return $this->hasMany(Medicine::class);
+    }
+
+    /**
+     * @return \App\Models\Visit
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::FEMALE,
+            Resources::RES_VISIT,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
     }
 }

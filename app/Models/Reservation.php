@@ -35,7 +35,7 @@ class Reservation extends Model implements HasMedia
     }
 
     /**
-     * @return \App\Models\Shift
+     * @return \App\Models\Reservation
      */
     public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
     {

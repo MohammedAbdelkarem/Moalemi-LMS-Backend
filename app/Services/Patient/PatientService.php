@@ -23,12 +23,12 @@ class PatientService
 
         $patients->each(function ($patient) {
             $patient->medicines->transform(function ($medicine) {
-                // Add the is_able_to_delete attribute
+                // Add the is_able_to_edit attribute
                 $medicine->is_able_to_edit = $medicine->visit_id === null;
                 return $medicine;
             });
             $patient->instructions->transform(function ($instruction) {
-                // Define your logic for is_able_to_delete here
+                // Define your logic for is_able_to_edit here
                 $instruction->is_able_to_edit = $instruction->visit_id === null; // Replace with actual condition
                 return $instruction;
             });

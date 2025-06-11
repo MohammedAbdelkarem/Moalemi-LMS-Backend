@@ -13,6 +13,7 @@ final class ExceptionMessages
     const MSG_NOT_AUTHORIZED                   = 'exception_messages.not_authorized';
     const MSG_MEDICAL_PROFILE_ALREADY_EXIST                   = 'exception_messages.medical_profile_already_exist';
     const MSG_NOT_AUTHENTICATED                = 'exception_messages.unauthenticated';
+    const MSG_CAN_NOT_RATE_AGAIN                = 'exception_messages.can_not_rate_again';
     const MSG_NO_CONTENT                       = 'exception_messages.no_content';
     const MSG_METHOD_NOT_ALLOWED               = 'exception_messages.method_not_allowed';
     const MSG_LANGUAGE_NOT_SUPPORTED           = 'exception_messages.language_not_supported';
