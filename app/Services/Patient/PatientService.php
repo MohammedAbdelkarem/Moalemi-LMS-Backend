@@ -22,6 +22,8 @@ class PatientService
         $patients = Patient::where('user_id', auth()->id())->with(['instructions' , 'medicines' , 'medicines.medicine_days', 'medicines.medicine_days.day' , 'medicines.medicine_days.medicine_times' , 'reservations' , 'reservations.doctor'])->get();
 
         $patients->each(function ($patient) {
+            $patient->is_owner_medical_profile = $patient->is_owner;
+ 
             $patient->medicines->transform(function ($medicine) {
                 // Add the is_able_to_edit attribute
                 $medicine->is_able_to_edit = $medicine->visit_id === null;
