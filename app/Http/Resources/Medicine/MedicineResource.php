@@ -35,7 +35,11 @@ class MedicineResource extends JsonResource
 
         switch ($routeName)
         {
-            case in_array($routeName, [RouteNames::PATIENT_RELATIONS, RouteNames::RESERVATION_DETAILS]):
+            case in_array($routeName, [
+                RouteNames::PATIENT_RELATIONS,
+                RouteNames::RESERVATION_DETAILS,
+                RouteNames::PATIENT_PERMANENT_PROFILE,
+                ]):
                 $data['medicine_days'] = MedicineDayResource::collection($this->whenLoaded('medicine_days'));
             break;
         }

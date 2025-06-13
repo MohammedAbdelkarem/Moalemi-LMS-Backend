@@ -104,4 +104,13 @@ class PatientController extends Controller
         );
     }
 
+    public function getPermanentProfile($patient_id)
+    {
+        return success(
+            $this->patientService->getProfileForPermanetTreatments($patient_id),
+            ApiMessages::MSG_SUCCESS,
+            PatientResource::class
+        );
+    }
+
 }

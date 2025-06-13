@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
+use App\Enums\TreatmentStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -55,6 +56,14 @@ class Patient extends Model
     public function medicines()
     {
         return $this->hasMany(Medicine::class);
+    }
+    public function permanent_instructions()
+    {
+        return $this->instructions()->where('status' , TreatmentStatusEnum::PERMANENT->value);
+    }
+    public function permanent_medicines()
+    {
+        return $this->medicines()->where('status' , TreatmentStatusEnum::PERMANENT->value);
     }
 
     public function favoriteDoctors()

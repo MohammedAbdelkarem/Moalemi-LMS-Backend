@@ -240,6 +240,14 @@ class PatientService
         }
     }
 
+    public function getProfileForPermanetTreatments($patient_id)
+    {
+        return Patient::findByIdOrFail($patient_id , [
+            'permanent_instructions' , 
+            'permanent_medicines'
+        ]);
+    }
+
     private function checkIfCanEditTreatments($context)
     {
         if($context->visit_id != null)

@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('store_mine' , 'createMyMedicalProfile');
             Route::post('store_others' , 'createMedicalProfile');
             Route::get('relations' , 'getRelations')->name(RouteNames::PATIENT_RELATIONS);
+            Route::get('permanents/{id}' , 'getPermanentProfile')->name(RouteNames::PATIENT_PERMANENT_PROFILE);
             Route::prefix('update')->group(function(){
                 Route::post('profile/{id}' , 'updateInfo');
             });
