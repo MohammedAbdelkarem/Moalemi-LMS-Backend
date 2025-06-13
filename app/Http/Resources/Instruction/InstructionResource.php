@@ -25,20 +25,20 @@ class InstructionResource extends JsonResource
             'notes' => $this->notes,
             'visit_id' => $this->visit_id,
             'patient_id' => $this->patient_id,
-            'is_latest' => (bool) $this->is_latest, // Cast to boolean
+            'is_latest' => $this->is_latest,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'is_able_to_edit' => treatmentAbleToEdit($this),
         ];
 
-        $data['medicine_days'] = MedicineDay::collection($this->whenLoaded('medicineDays'));
-        $routeName = $request->route()->getName();
+        // $routeName = $request->route()->getName();
 
-        switch ($routeName)
-        {
-            case RouteNames::PATIENT_RELATIONS:
-                $data['able_to_edit']   = $this->visit_id == null;
-            break;
-        }
+        // switch ($routeName)
+        // {
+        //     case RouteNames::PATIENT_RELATIONS:
+        //         $data['able_to_edit']   = $this->visit_id == null;
+        //     break;
+        // }
 
         return $data;
     }

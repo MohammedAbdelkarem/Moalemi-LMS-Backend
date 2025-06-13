@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Medicine;
+namespace App\Http\Resources\Day;
 
 use App\Constants\RouteNames;
 use Illuminate\Http\Request;
@@ -17,19 +17,21 @@ class DayResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
+            'name' => $this->name,
+            'created_at' => $this->created_at,
         ];
 
         $routeName = $request->route()->getName();
 
-        switch ($routeName)
-        {
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
-            break;
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
-            break;
-        }
+        // switch ($routeName)
+        // {
+        //     case RouteNames::EXAMPLE:
+        //         $data['foo']   = $this->bar;
+        //     break;
+        //     case RouteNames::EXAMPLE:
+        //         $data['foo']   = $this->bar;
+        //     break;
+        // }
 
         return $data;
     }

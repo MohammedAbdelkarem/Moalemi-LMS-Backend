@@ -327,3 +327,10 @@ if (!function_exists('user_id_of_patient')) {
 //         return $dateTime > now() ? StoryStatusEnum::ACTIVE : StoryStatusEnum::ENDED;
 //     }
 // }
+
+if (!function_exists('treatmentAbleToEdit')) {
+    function treatmentAbleToEdit($treatment)
+    {
+        return $treatment->visit_id == null;
+    }
+}

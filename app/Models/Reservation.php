@@ -49,4 +49,17 @@ class Reservation extends Model implements HasMedia
             $selectedColumns
         );
     }
+
+    public function scopeFilter($query , $data , $doctor_id , $patient_id)
+    {
+        return $query
+        
+        ->when(isset($doctor_id) , function($query) use ($doctor_id) {
+            $query->where('doctor_id' , $doctor_id);
+        })
+        
+        ->when(isset($patient_id) , function($query) use ($patient_id) {
+            $query->where('patient_id' , $patient_id);
+        });
+    }
 }

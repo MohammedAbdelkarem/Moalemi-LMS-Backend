@@ -13,6 +13,8 @@ use App\Constants\MediaCollection;
 use App\Models\PatientUpdatedInfo;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
+use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\Media\MediaResource;
 use App\Services\Base\ContextService;
 use App\Services\Patient\PatientService;
 
@@ -218,6 +220,38 @@ class ReservationService
         $doctor->total_rate = $doctor->rate_sum / $doctor->rate_counter;
 
         $doctor->save();
+    }
+
+    private function getReservations($doctor_id , $patient_id , $data , $with = [])
+    {
+        return getOrPaginate(
+            Reservation::filter([] , $doctor_id , $patient_id)
+            ->with($with),
+            $data
+        );
+    }
+
+    public function getrPateintReservations($patient_id , $data)
+    {
+        return $this->getReservations(null , $patient_id , $data , [
+            'doctor.subCategories',
+            'visit.rate'
+        ]);
+    }
+
+    public function getReservationDetails($reservation_id)
+    {
+        $reservation = Reservation::findByIdOrFail($reservation_id , [
+             'doctor.subCategories' ,
+              'patient' ,
+                'visit.rate' ,
+                 'visit.patientUpdatedInfo' ,
+                  'visit.medicines.medicine_days.day' ,
+                  'visit.medicines.medicine_days.medicine_times' ,
+                   'visit.instructions'
+        ]);
+
+        return $reservation;
     }
 
     private function checkStatusFlow($old_status , $new_status)

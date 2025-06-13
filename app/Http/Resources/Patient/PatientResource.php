@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Patient;
 
+use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -11,6 +12,7 @@ use App\Http\Resources\Reservation\ReservationResource;
 
 class PatientResource extends JsonResource
 {
+    use ImagesHelper;
     /**
      * Transform the resource into an array.
      *
@@ -21,6 +23,7 @@ class PatientResource extends JsonResource
         $data = [
             'id' => $this->id,
             'is_owner' => $this->is_owner,
+            'is_owner_medical_profile' => $this->is_owner,
             'user_id' => $this->user_id,
             'full_name' => $this->full_name,
             'birth_date' => $this->birth_date,

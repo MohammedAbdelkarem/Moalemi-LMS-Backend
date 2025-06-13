@@ -19,22 +19,12 @@ class PatientService
     use StorageHelper;
     public function getMyRelations()
     {
-        $patients = Patient::where('user_id', auth()->id())->with(['instructions' , 'medicines' , 'medicines.medicine_days', 'medicines.medicine_days.day' , 'medicines.medicine_days.medicine_times' , 'reservations' , 'reservations.doctor'])->get();
-
-        $patients->each(function ($patient) {
-            $patient->is_owner_medical_profile = $patient->is_owner;
- 
-            $patient->medicines->transform(function ($medicine) {
-                // Add the is_able_to_edit attribute
-                $medicine->is_able_to_edit = $medicine->visit_id === null;
-                return $medicine;
-            });
-            $patient->instructions->transform(function ($instruction) {
-                // Define your logic for is_able_to_edit here
-                $instruction->is_able_to_edit = $instruction->visit_id === null; // Replace with actual condition
-                return $instruction;
-            });
-        });
+        $patients = Patient::where('user_id', auth()->id())->with([
+            'instructions' ,
+               'medicines.medicine_days.day' ,
+                'medicines.medicine_days.medicine_times' ,
+                  'reservations.doctor.subCategories',
+            ])->get();
 
         return $patients;
     }

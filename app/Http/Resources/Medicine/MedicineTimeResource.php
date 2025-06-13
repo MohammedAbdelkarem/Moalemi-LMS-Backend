@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Resources\SubCategory;
+namespace App\Http\Resources\Medicine;
 
-use Illuminate\Http\Request;
 use App\Constants\RouteNames;
-use App\Constants\MediaCollection;
-use App\Http\Resources\Category\CategoryResource;
-use App\Http\Resources\Media\MediaResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubCategoryResource extends JsonResource
+class MedicineTimeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,14 +17,13 @@ class SubCategoryResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'name' => $this->name,
-            'bio'  => $this->bio,
-            'media' => MediaResource::collection($this->getMedia(MediaCollection::SUB_CATEGORY_COLLECTION)),
-            'category_id' => $this->category_id,
-            // 'category' => $this-
+            'medicine_day_id' => $this->medicine_day_id,
+            'time' => $this->time,
+            'other_time' => $this->other_time,
+            'created_at' => $this->created_at,
         ];
 
-        // $routeName = $request->route()->getName();
+        $routeName = $request->route()->getName();
 
         // switch ($routeName)
         // {

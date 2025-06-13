@@ -44,7 +44,7 @@ class PatientController extends Controller
         return success(
             $this->patientService->getMyRelations(),
             ApiMessages::MSG_SUCCESS,
-            // PatientResource::class
+            PatientResource::class
         );
     }
 

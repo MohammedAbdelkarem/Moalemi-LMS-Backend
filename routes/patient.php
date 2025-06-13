@@ -102,6 +102,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('appoint' , 'appoint');
             Route::get('cancel/{id}' , 'cancel');
             Route::post('rate/{id}' , 'rate');
+            Route::get('get' , 'getReservations')->name(RouteNames::PATIENT_RESERVATIONS);
+            Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
         });
     });
 });

@@ -27,9 +27,6 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
-            'licenses' => MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION)),
-            'cover' => MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION)),
-            'logo' => MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
         ];
 
         if(auth()->user()->isPatient())
@@ -44,9 +41,24 @@ class DoctorResouce extends JsonResource
             case RouteNames::DOCTORS_FILTER_USER_SIDE:
                 $data['sub_categories']   = $this->whenLoaded('subCategories');
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
+                $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
+                // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
+                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
+            break;
+            case in_array($routeName, [
+                RouteNames::PATIENT_RELATIONS,
+                RouteNames::PATIENT_RESERVATIONS,
+                RouteNames::RESERVATION_DETAILS
+                ]):
+                $data['sub_categories']   = $this->whenLoaded('subCategories');
+                // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
+                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
             break;
             case RouteNames::DOCTORS_GET_PROFILE:
                 $data['sub_categories']   = $this->whenLoaded('subCategories');
+                $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
+                $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
+                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
                 $data['rates']   = $this->whenLoaded('rates');
                 $data['articles']   = $this->whenLoaded('articles');

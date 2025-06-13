@@ -2,8 +2,13 @@
 
 namespace App\Http\Resources\Reservation;
 
-use App\Constants\RouteNames;
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
+use App\Constants\MediaCollection;
+use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Patient\PatientResource;
+use App\Http\Resources\Visit\VisitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReservationResource extends JsonResource
@@ -17,17 +22,37 @@ class ReservationResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
+            'text' => $this->text,
+            'notes' => $this->notes,
+            'status' => $this->status,
+            'rejection_reason' => $this->rejection_reason,
+            'other_rejection_reason' => $this->other_rejection_reason,
+            'doctor_id' => $this->doctor_id,
+            'patient_id' => $this->patient_id,
+            'shift_start_time' => $this->shift_start_time,
+            'shift_end_time' => $this->shift_end_time,
+            'date' => $this->date,
+            'visits_available' => $this->visits_available,
+            'time_to_come' => $this->time_to_come,
+            'created_at' => $this->created_at,
         ];
 
         $routeName = $request->route()->getName();
 
         switch ($routeName)
         {
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
+            case RouteNames::PATIENT_RELATIONS:
+                $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
             break;
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
+            case RouteNames::PATIENT_RESERVATIONS:
+                $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
+                $data['visit'] = VisitResource::make($this->whenLoaded('visit'));
+            break;
+            case RouteNames::RESERVATION_DETAILS:
+                $data['media'] = MediaResource::collection($this->getMedia(MediaCollection::RESERVATION_COLLECTION));
+                $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
+                $data['patient'] = PatientResource::make($this->whenLoaded('patient'));
+                $data['visit'] = VisitResource::make($this->whenLoaded('visit'));
             break;
         }
 
