@@ -32,6 +32,7 @@ class ArticleResource extends JsonResource
         if(auth()->user()->isPatient())
         {
             $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();
+            $data['liked'] = $this->reactions()->where('user_id' , auth()->id())->where('type' , ReactionTypeEnum::LIKE->value)->exists();
         }
 
         $routeName = $request->route()->getName();
