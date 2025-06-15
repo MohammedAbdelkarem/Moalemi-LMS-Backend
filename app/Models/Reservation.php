@@ -60,6 +60,10 @@ class Reservation extends Model implements HasMedia
         
         ->when(isset($patient_id) , function($query) use ($patient_id) {
             $query->where('patient_id' , $patient_id);
+        })
+
+        ->when(isset($data['date']) , function($query) use ($data) {
+            $query->whereDate('date' , $data['date']);
         });
     }
 }

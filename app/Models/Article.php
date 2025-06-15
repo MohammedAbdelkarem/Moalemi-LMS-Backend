@@ -34,6 +34,11 @@ class Article extends Model implements HasMedia
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 
+    public function ArticleViews()
+    {
+        return $this->hasMany(ArticleView::class);
+    }
+
     /**
      * @return \App\Models\Article
      */

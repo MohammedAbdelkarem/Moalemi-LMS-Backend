@@ -34,6 +34,8 @@ class ArticleService
 
     public function show($id)
     {
+        $this->increaseArticleView($id);
+        
         return Article::findByIdOrFail($id , ['reactions' , 'reactions.user']);
     }
 
@@ -72,5 +74,21 @@ class ArticleService
             Article::where('doctor_id' , doctor_id()),
             $data
         );
+    }
+
+    private function increaseArticleView($id)
+    {
+        $article = Article::findByIdOrFail($id);
+
+        if(! $article->ArticleViews()->where('user_id' , auth()->id())->exists())
+        {
+            $article->ArticleViews()->create([
+                'user_id' => auth()->id(),
+            ]);
+
+            $article->views++;
+
+            $article->save();
+        }
     }
 }

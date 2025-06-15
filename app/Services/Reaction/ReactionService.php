@@ -87,39 +87,36 @@ class ReactionService
 
         $this->updateArticleCounters($article , '-' , 'comments');
 
-        $this->updateReplays($article , $comment , '-');
+        // $this->updateReplays($article , $comment , '-');
     }
 
     public function getLikes($article_id , $data)
     {
-        return $this->getAllReactions($article_id , ReactionTypeEnum::LIKE , $data);
+        return $this->getAllReactions($article_id , ReactionTypeEnum::LIKE->value);
     }
 
     public function getComments($article_id , $data)
     {
-        return $this->getReactions($article_id , ReactionTypeEnum::COMMENT , $data);
+        return $this->getReactions($article_id , ReactionTypeEnum::COMMENT->value);
     }
 
     public function getAllComments($article_id , $data)
     {
-        return $this->getAllReactions($article_id , ReactionTypeEnum::COMMENT , $data);
+        return $this->getAllReactions($article_id , ReactionTypeEnum::COMMENT->value);
     }
 
-    private function getReactions($article_id , $type , $data)
+    private function getReactions($article_id , $type)
     {
-        return $this->getAllReactions($article_id , $type , $data)
-                    ->where('status' , ReactionStatusEnum::EXIST);
+        
+        return $this->getAllReactions($article_id , $type )
+                    ->where('status' , ReactionStatusEnum::EXIST->value);
     }
 
-    private function getAllReactions($article_id , $type , $data)
+    private function getAllReactions($article_id , $type )
     {
-        return getOrPaginate(
-            Reaction::where('article_id' , $article_id)
+        return Reaction::where('article_id' , $article_id)
                         ->where('type' , $type)
-                        ->with('user' , 'replaies')
-                        ,
-            $data
-        );
+                        ->with('user')->get();
     }
 
     private function updateArticleCounters($article , $operation , $type)
@@ -131,19 +128,19 @@ class ReactionService
         $article->save();
     }
     
-    private function updateReplays($article , $comment , $operation)
-    {
-        if($operation == '-')
-        {
-            $replay = Replay::where('reaction_id' , $comment->id)
-                    ->where('status' , ReactionStatusEnum::EXIST)
-                    ->first();
+    // private function updateReplays($article , $comment , $operation)
+    // {
+    //     if($operation == '-')
+    //     {
+    //         $replay = Replay::where('reaction_id' , $comment->id)
+    //                 ->where('status' , ReactionStatusEnum::EXIST)
+    //                 ->first();
 
-            $replay->status = ReactionStatusEnum::DELETED;
+    //         $replay->status = ReactionStatusEnum::DELETED;
 
-            $replay->save();
-        }
+    //         $replay->save();
+    //     }
 
-        $this->updateArticleCounters($article , $operation , 'comments');
-    }
+    //     $this->updateArticleCounters($article , $operation , 'comments');
+    // }
 }

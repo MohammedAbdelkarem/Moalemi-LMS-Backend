@@ -269,6 +269,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Reaction::class);
     }
 
+    public function ArticleViews()
+    {
+        return $this->hasMany(ArticleView::class);
+    }
+
     //Scopes
 
     /**

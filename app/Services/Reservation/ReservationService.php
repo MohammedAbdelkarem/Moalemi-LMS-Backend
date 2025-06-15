@@ -239,6 +239,14 @@ class ReservationService
         ]);
     }
 
+    public function getrDoctorReservations($patient_id , $data)
+    {
+        return $this->getReservations(null , $patient_id , $data , [
+            'doctor.subCategories',
+            'visit.rate'
+        ]);
+    }
+
     public function getReservationDetails($reservation_id)
     {
         $reservation = Reservation::findByIdOrFail($reservation_id , [
