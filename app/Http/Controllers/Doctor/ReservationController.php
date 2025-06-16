@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Doctor;
 
-use App\Http\Requests\Reservation\ReportRequest;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\AcceptRequest;
 use App\Http\Requests\Reservation\RejectRequest;
+use App\Http\Requests\Reservation\ReportRequest;
 use App\Services\Reservation\ReservationService;
+use App\Http\Resources\Reservation\ReservationResource;
 
 class ReservationController extends Controller
 {
@@ -45,6 +46,25 @@ class ReservationController extends Controller
         return success(
             $this->reservationService->done($id , $request->validated()),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getReservations(Request $request)
+    {
+        return success(
+            $this->reservationService->getrDoctorReservations(null , $request),
+            ApiMessages::MSG_SUCCESS,
+            ReservationResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function getReservationDetails($id)
+    {
+        return success(
+            $this->reservationService->getReservationDetails($id),
+            ApiMessages::MSG_SUCCESS,
+            ReservationResource::class
         );
     }
 }

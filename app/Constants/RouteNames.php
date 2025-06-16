@@ -13,6 +13,7 @@ final class RouteNames
     const PATIENT_PERMANENT_PROFILE                                         = 'patient.permanent-profile';
     const RESERVATION_DETAILS                                         = 'reservation.details';
     const PATIENT_RELATIONS                                         = 'patient.relations';
+    const DOCTOR_RESERVATIONS                                         = 'doctor.reservations';
     const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
     const PLAN_ADMIN                               = 'plan.admin';

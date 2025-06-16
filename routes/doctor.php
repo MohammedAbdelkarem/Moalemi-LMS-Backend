@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('accept/{id}' , 'accept');
             Route::get('did_not_come/{id}' , 'did_not_come');
             Route::post('done/{id}' , 'done');
+            Route::get('get' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
+            Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
         });
     });
 

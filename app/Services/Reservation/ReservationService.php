@@ -225,7 +225,7 @@ class ReservationService
     private function getReservations($doctor_id , $patient_id , $data , $with = [])
     {
         return getOrPaginate(
-            Reservation::filter([] , $doctor_id , $patient_id)
+            Reservation::filter($data , $doctor_id , $patient_id)
             ->with($with),
             $data
         );
@@ -239,11 +239,10 @@ class ReservationService
         ]);
     }
 
-    public function getrDoctorReservations($patient_id , $data)
+    public function getrDoctorReservations($doctor_id , $data)
     {
-        return $this->getReservations(null , $patient_id , $data , [
-            'doctor.subCategories',
-            'visit.rate'
+        return $this->getReservations($doctor_id , null , $data , [
+            'patient',
         ]);
     }
 
