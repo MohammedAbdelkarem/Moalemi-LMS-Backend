@@ -59,7 +59,7 @@ class PatientController extends Controller
     public function addMedicines(AddMedicinesRequest $request , $patient_id)
     {
         return success(
-            $this->patientService->addMedicinesByPatient($request->validated() , $patient_id),
+            $this->patientService->addMedicines($request->validated() , $patient_id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -67,7 +67,7 @@ class PatientController extends Controller
     public function addInstructions(AddInstructionsRequest $request , $patient_id)
     {
         return success(
-            $this->patientService->addInstructionsByPatient($request->validated() , $patient_id),
+            $this->patientService->addInstructions($request->validated() , $patient_id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -75,7 +75,7 @@ class PatientController extends Controller
     public function updateMedicine(UpdateMedicineRequest $request , $patient_id , $medicine_id)
     {
         return success(
-            $this->patientService->updateMedicinesByPatient($request->validated() , $patient_id , $medicine_id),
+            $this->patientService->updateMedicine($request->validated() , $patient_id , $medicine_id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -83,7 +83,7 @@ class PatientController extends Controller
     public function updateInstruction(UpdateInstructionRequest $request , $patient_id , $instruction_id)
     {
         return success(
-            $this->patientService->updateInstructionsByPatient($request->validated() , $patient_id , $instruction_id),
+            $this->patientService->updateInstruction($request->validated() , $patient_id , $instruction_id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -91,7 +91,7 @@ class PatientController extends Controller
     public function deleteMedicine($id)
     {
         return success(
-            $this->patientService->deleteMedicineByPateint($id),
+            $this->patientService->deleteMedicine($id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -99,7 +99,7 @@ class PatientController extends Controller
     public function deleteInstruction($id)
     {
         return success(
-            $this->patientService->deleteInstructionByPateint($id), 
+            $this->patientService->deleteInstruction($id), 
             ApiMessages::MSG_SUCCESS
         );
     }

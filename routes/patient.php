@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComplaintController;
 use App\Models\SubCategory;
 use App\Constants\RouteNames;
 use Illuminate\Support\Facades\Route;
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::prefix('instruction')->group(function(){
                 Route::post('add/{patient_id}' , 'addInstructions');
                 
-                Route::delete('delete/{medicine_id}' , 'deleteInstruction');
+                Route::delete('delete/{instruction_id}' , 'deleteInstruction');
                 
                 Route::post('{patient_id}/update/{instruction_id}' , 'updateInstruction');
             });
@@ -105,6 +106,12 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('rate/{id}' , 'rate');
             Route::get('get' , 'getReservations')->name(RouteNames::PATIENT_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
+        });
+    });
+
+    Route::prefix('complaints')->group(function(){
+        Route::controller(ComplaintController::class)->group(function(){
+            Route::post('store' , 'complaint');
         });
     });
 });

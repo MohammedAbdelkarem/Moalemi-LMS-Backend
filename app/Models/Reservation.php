@@ -28,6 +28,11 @@ class Reservation extends Model implements HasMedia
     {
         return $this->belongsTo(Doctor::class);
     }
+    
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 
     public function visit()
     {

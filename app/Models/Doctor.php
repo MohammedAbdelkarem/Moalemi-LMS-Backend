@@ -53,6 +53,11 @@ class Doctor extends Model implements HasMedia
     {
         return $this->hasMany(Rate::class);
     }
+    
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
 
     public function phoneNumbers()
     {

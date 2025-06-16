@@ -38,6 +38,11 @@ class Patient extends Model
         return $this->hasMany(Reservation::class);
     }
 
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
+
     
     public function rates()
     {

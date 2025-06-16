@@ -130,48 +130,51 @@ class PatientService
         $patient->save();
     }
 
-    public function addMedicinesByPatient($data , $patient_id)
+    public function addMedicines($data , $patient_id , $visit_id = null)
     {
-        $this->storeMedicinesData($data , $patient_id);
+        $this->storeMedicinesData($data , $patient_id , $visit_id);
     }
 
-    public function addInstructionsByPatient($data , $patient_id)
+    public function addInstructions($data , $patient_id , $visit_id = null)
     {
-        $this->storeInstructionsData($data , $patient_id);
+        $this->storeInstructionsData($data , $patient_id , $visit_id);
     }
 
-    public function updateMedicinesByPatient($data , $patient_id , $medicine_id)
+    public function updateMedicine($data , $patient_id , $medicine_id)
     {
-        $this->deleteMedicineByPateint($medicine_id);
+        $this->deleteMedicine($medicine_id);
 
         $finalData['medicines'][0] = $data;
 
         $this->storeMedicinesData($finalData , $patient_id);
     }
 
-    public function updateInstructionsByPatient($data , $patient_id , $instruction_id)
+    public function updateInstruction($data , $patient_id , $instruction_id)
     {
-        $this->deleteInstructionByPateint($instruction_id);
+        $this->deleteInstruction($instruction_id);
 
         $finalData['instructions'][0] = $data;
 
         $this->storeInstructionsData($finalData , $patient_id);
     }
 
-    public function deleteMedicineByPateint($medicine_id)
+    public function deleteMedicine($medicine_id)
     {
         $medicine = Medicine::findByIdOrFail($medicine_id);
 
-        $this->checkIfCanEditTreatments($medicine);
+
+        if(auth()->user()->isPatient())
+            $this->checkIfCanEditTreatments($medicine);
 
         $medicine->delete();
     }
 
-    public function deleteInstructionByPateint($instruction_id)
+    public function deleteInstruction($instruction_id)
     {
         $instruction = Instruction::findByIdOrFail($instruction_id);
 
-        $this->checkIfCanEditTreatments($instruction);
+        if(auth()->user()->isPatient())
+            $this->checkIfCanEditTreatments($instruction);
 
         $instruction->delete();
     }
