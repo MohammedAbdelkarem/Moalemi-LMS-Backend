@@ -6,6 +6,7 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctor\PhoneNumbers\CreatePhoneNumbersRequest;
 use App\Http\Requests\Doctor\PhoneNumbers\UpdatePhoneNumbersRequest;
+use App\Http\Resources\DoctorResouce;
 use App\Services\Doctor\DoctorService;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,15 @@ class DoctorController extends Controller
         return success(
             $this->doctorService->updatePhoneNumber($id , $request->validated()),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getMyProfile()
+    {
+        return success(
+            $this->doctorService->getDoctorProfile(doctor_id()),
+            ApiMessages::MSG_SUCCESS,
+            DoctorResouce::class
         );
     }
 }

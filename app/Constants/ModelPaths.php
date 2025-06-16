@@ -18,7 +18,9 @@ final class ModelPaths
     const Story                    = 'App\Models\Story';
     const Banner                    = 'App\Models\Banner';
     const Doctor                    = 'App\Models\Doctor';
-    const Category                    = 'App\Models\Category';
-    const SubCategory                    = 'App\Models\SubCategory';
+    const Category                 = 'App\Models\Category';
+    const SubCategory              = 'App\Models\SubCategory';
+    const Reservation              = 'App\Models\Reservation';
+    const Visit                    = 'App\Models\Visit';
     
 }

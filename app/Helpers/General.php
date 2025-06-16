@@ -13,6 +13,8 @@ use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Constants\MediaCollection;
+use App\Models\Reservation;
+use App\Models\Visit;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -190,6 +192,8 @@ if (!function_exists('mediaCollectionByContxt')) {
             LevelEnum::DOCTOR_LOGO    => MediaCollection::DOCTOR_LOGO_COLLECTION,
             LevelEnum::CATEGORY       => MediaCollection::CATEGORY_COLLECTION,
             LevelEnum::SUBCATEGORY    => MediaCollection::SUB_CATEGORY_COLLECTION,
+            LevelEnum::RESERVATION    => MediaCollection::RESERVATION_COLLECTION,
+            LevelEnum::VISIT          => MediaCollection::VISIT_COLLECTION,
         ];
 
         return $data[$model_path] ?? null;
@@ -218,6 +222,8 @@ if (!function_exists('getModel')) {
             LevelEnum::DOCTOR_LOGO          => Doctor::class,
             LevelEnum::CATEGORY             => Category::class,
             LevelEnum::SUBCATEGORY          => SubCategory::class,
+            LevelEnum::RESERVATION          => Reservation::class,
+            LevelEnum::VISIT                => Visit::class,
         ];
 
         return $data[$model_path] ?? null;
@@ -256,6 +262,8 @@ if (!function_exists('getModelByPath')) {
             ModelPaths::Doctor         => Doctor::class,
             ModelPaths::Category         => Category::class,
             ModelPaths::SubCategory         => SubCategory::class,
+            ModelPaths::Reservation         => Reservation::class,
+            ModelPaths::Visit         => Visit::class,
         ];
 
         return $data[$model_path] ?? null;

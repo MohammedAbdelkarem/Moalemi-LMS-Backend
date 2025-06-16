@@ -29,4 +29,6 @@ final class LevelEnum extends Enum implements LocalizedEnum
     const DOCTOR                  = 'Doctor';
     const DOCTOR_COVER                  = 'DoctorCover';
     const DOCTOR_LOGO                  = 'DoctorLogo';
+    const RESERVATION                  = 'Reservation';
+    const VISIT                  = 'Visit';
 }

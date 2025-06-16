@@ -48,7 +48,10 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('article')->controller(ArticleController::class)->group(function () {
         Route::get('getMine' , 'getMyArticles');
     });
-    Route::prefix( 'article/reactions')->controller(ReactionController::class)->group(function(){callback: 
+    Route::prefix('profile')->controller(DoctorController::class)->group(function () {
+        Route::get('getMine' , 'getMyProfile')->name(RouteNames::DOCTORS_GET_PROFILE);
+    });
+    Route::prefix( 'article/reactions')->controller(ReactionController::class)->group(function(){ 
         Route::get('like/{article_id}' , 'like');
         Route::get('unLike/{article_id}' , 'unLike');
         Route::post('comment/{article_id}' , 'comment');
@@ -65,6 +68,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('done/{id}' , 'done');
             Route::get('get' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
+            Route::post('update/{visit_id}' , 'updateReport');
         });
     });
 

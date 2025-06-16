@@ -211,13 +211,13 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('transactions')->controller(TransactionController::class)->group(function(){
         Route::get('get' , 'getTransactions')->name(RouteNames::ADMIN_TRANSACTION_GET);
     });
-    Route::prefix('doctors')->controller(DoctorController::class)->group(function(){callback: 
+    Route::prefix('doctors')->controller(DoctorController::class)->group(function(){
         Route::get('get' , 'getAll');
     });
-    Route::prefix('patients')->controller(UserController::class)->group(function(){callback: 
+    Route::prefix('patients')->controller(UserController::class)->group(function(){
         Route::get('get' , 'getPatients');
     });
-    Route::prefix(prefix: 'article/reactions')->controller(ReactionController::class)->group(function(){callback: 
+    Route::prefix(prefix: 'article/reactions')->controller(ReactionController::class)->group(function(){
         Route::get('likes/{article_id}' , 'getLikes');
         Route::get('comments/{article_id}' , 'getCommentsForAdmin');
     });

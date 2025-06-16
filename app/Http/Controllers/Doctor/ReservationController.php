@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\AcceptRequest;
 use App\Http\Requests\Reservation\RejectRequest;
 use App\Http\Requests\Reservation\ReportRequest;
+use App\Http\Requests\Reservation\UpdateReportRequest;
 use App\Services\Reservation\ReservationService;
 use App\Http\Resources\Reservation\ReservationResource;
 
@@ -65,6 +66,14 @@ class ReservationController extends Controller
             $this->reservationService->getReservationDetails($id),
             ApiMessages::MSG_SUCCESS,
             ReservationResource::class
+        );
+    }
+
+    public function updateReport(UpdateReportRequest $request , $visit_id)
+    {
+        return success(
+            $this->reservationService->updateReport($visit_id , $request->validated()),
+            ApiMessages::MSG_SUCCESS
         );
     }
 }

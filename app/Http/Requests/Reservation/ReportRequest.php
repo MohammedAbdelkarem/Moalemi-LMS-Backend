@@ -31,7 +31,7 @@ class ReportRequest extends BaseApiRequest
             'title'                     => ['required' , 'string'],
             'description'               => ['required' , 'string'],
             "attachments"               => ['nullable' , 'array'],
-            "attachments.*.image"        => [
+            "attachments.*.image"       => [
                 'required',
                'mimes:jpeg,jpg,png,webp,pdf',
                'max:4096'

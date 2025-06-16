@@ -148,31 +148,9 @@ class ReservationService
 
         if($data['patient_info_updated'])
         {
-            $visit->patientUpdatedInfo()->create([
-                'old_height' => $patient->height,
-                'old_weight' => $patient->weight,
-                'old_blood_type' => $patient->blood_type,
-                'old_chronic_diseases' => $patient->chronic_diseases,
-                'old_notes' => $patient->notes,
-                
-                'current_height' => $data['new_height'] ?? null,
-                'current_weight' => $data['new_weight'] ?? null,
-                'current_blood_type' => $data['new_blood_type'] ?? null,
-                'current_chronic_diseases' => $data['new_chronic_diseases'] ?? null,
-                'current_notes' => $data['new_notes'] ?? null,
-            ]);
-            $infos = [
-                'height',
-                'weight',
-                'blood_type',
-                'chronic_diseases',
-                'notes'
-            ];
-            
-            foreach($infos as $info)
-                $patient->$info = $data['new_' . $info] ?? $patient->$info;
-
-            $patient->save();
+            $this->storePatientUpdatedInfo($visit , $patient , $data);    
+        
+            $this->updatePatientTableInfo($data , $patient);
         }
 
         //the next reservation
@@ -194,6 +172,70 @@ class ReservationService
             $this->patientService->storeMedicinesData($data , $patient->id , $visit->id);
         if(isset($data['instructions']))
             $this->patientService->storeInstructionsData($data , $patient->id , $visit->id);
+    }
+
+    public function updateReport($visit_id , $data)
+    {
+        $visit = Visit::findByIdOrFail($visit_id);
+
+        $patient = Patient::findByIdOrFail($visit->patient_id);
+
+        $visit->update([
+            'title' => $data['title'] ?? $visit->title,
+            'description' => $data['description'] ?? $visit->description,
+            'note' => $data['notes'] ?? $visit->notes
+        ]);
+
+        if($data['patient_info_updated'])
+        {
+            $recordExist = $visit->patientUpdatedInfo()->where('visit_id' , $visit->id)->exists();
+
+            if(!$recordExist)
+                $this->storePatientUpdatedInfo($visit , $patient , $data);
+            else
+                $visit->patientUpdatedInfo()->update([
+                    'current_height' => $data['new_height'] ?? null,
+                    'current_weight' => $data['new_weight'] ?? null,
+                    'current_blood_type' => $data['new_blood_type'] ?? null,
+                    'current_chronic_diseases' => $data['new_chronic_diseases'] ?? null,
+                    'current_notes' => $data['new_notes'] ?? null,
+                ]);
+            
+            $this->updatePatientTableInfo($data , $patient);
+        }
+    }
+
+    private function storePatientUpdatedInfo($visit , $patient , $data)
+    {
+        $visit->patientUpdatedInfo()->create([
+            'old_height' => $patient->height,
+            'old_weight' => $patient->weight,
+            'old_blood_type' => $patient->blood_type,
+            'old_chronic_diseases' => $patient->chronic_diseases,
+            'old_notes' => $patient->notes,
+            
+            'current_height' => $data['new_height'] ?? null,
+            'current_weight' => $data['new_weight'] ?? null,
+            'current_blood_type' => $data['new_blood_type'] ?? null,
+            'current_chronic_diseases' => $data['new_chronic_diseases'] ?? null,
+            'current_notes' => $data['new_notes'] ?? null,
+        ]);
+    }
+
+    private function updatePatientTableInfo($data , $patient)
+    {
+        $infos = [
+            'height',
+            'weight',
+            'blood_type',
+            'chronic_diseases',
+            'notes'
+        ];
+        
+        foreach($infos as $info)
+            $patient->$info = $data['new_' . $info] ?? $patient->$info;
+
+        $patient->save();
     }
 
     public function rateVisit($visit_id , $data)

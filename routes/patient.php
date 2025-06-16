@@ -30,7 +30,7 @@ Route::middleware([])->group(function () {
 
 //Auth Needed
 Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.active', 'user.verified']], function () {
-    Route::controller(PatientController::class)->group(function(){callback: 
+    Route::controller(PatientController::class)->group(function(){ 
         Route::prefix('medical_profile')->group(function(){
             Route::post('store_mine' , 'createMyMedicalProfile');
             Route::post('store_others' , 'createMedicalProfile');
