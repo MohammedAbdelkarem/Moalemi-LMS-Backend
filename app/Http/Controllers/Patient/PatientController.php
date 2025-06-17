@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Patient;
 
+use App\Models\Visit;
+use App\Models\Reservation;
+use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Services\Patient\PatientService;
 use App\Http\Requests\Media\UpdateMediaRequest;
-use App\Http\Requests\MedicalProfile\AddInstructionsRequest;
+use App\Http\Resources\Patient\PatientResource;
 use App\Http\Requests\MedicalProfile\AddMedicinesRequest;
-use App\Http\Requests\MedicalProfile\CreateMedicalProfileRequest;
+use App\Http\Requests\MedicalProfile\UpdateMedicineRequest;
+use App\Http\Requests\MedicalProfile\AddInstructionsRequest;
+use App\Http\Requests\MedicalProfile\UpdateMedicinesRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionsRequest;
+use App\Http\Requests\MedicalProfile\CreateMedicalProfileRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicalProfileRequest;
-use App\Http\Requests\MedicalProfile\UpdateMedicineRequest;
-use App\Http\Requests\MedicalProfile\UpdateMedicinesRequest;
-use App\Http\Resources\Patient\PatientResource;
-use App\Services\Patient\PatientService;
-use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {

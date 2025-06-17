@@ -9,6 +9,8 @@ final class ExceptionMessages
     const MSG_INVALID_CREDENTIALS              = 'exception_messages.invalid_credentials';
     const MSG_RESERVATION_STATUS_FLOW_ERROR              = 'exception_messages.reservation_status_flow_error';
     const MSG_CANT_EDIT_TREATMENTS_IN_VISIT              = 'exception_messages.can_not_edit_treatments_in_visit';
+    const MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME              = 'exception_messages.can_not_cancel_reservation_cuz_time';
+    const MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER              = 'exception_messages.can_not_edit_or_chat_with_user';
     const MSG_CAN_NOT_DELETE_SHIFT_CUZ_RESERVATIONS_EXISTS              = 'exception_messages.can_not_delete_shift_cuz_reservations_exists';
     const MSG_NOT_AUTHORIZED                   = 'exception_messages.not_authorized';
     const MSG_MEDICAL_PROFILE_ALREADY_EXIST                   = 'exception_messages.medical_profile_already_exist';

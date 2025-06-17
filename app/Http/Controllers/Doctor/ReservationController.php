@@ -11,6 +11,7 @@ use App\Http\Requests\Reservation\ReportRequest;
 use App\Http\Requests\Reservation\UpdateReportRequest;
 use App\Services\Reservation\ReservationService;
 use App\Http\Resources\Reservation\ReservationResource;
+use App\Models\Doctor;
 
 class ReservationController extends Controller
 {
@@ -53,7 +54,7 @@ class ReservationController extends Controller
     public function getReservations(Request $request)
     {
         return success(
-            $this->reservationService->getrDoctorReservations(null , $request),
+            $this->reservationService->getrDoctorReservations(doctor_id() , $request->all()),
             ApiMessages::MSG_SUCCESS,
             ReservationResource::class,
             $request->has('per_page')

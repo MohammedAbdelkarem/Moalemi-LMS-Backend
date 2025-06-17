@@ -55,7 +55,7 @@ class Reservation extends Model implements HasMedia
         );
     }
 
-    public function scopeFilter($query , $data , $doctor_id , $patient_id)
+    public function scopeFilter($query , $data , $doctor_id , $patient_ids)
     {
         return $query
         
@@ -63,8 +63,8 @@ class Reservation extends Model implements HasMedia
             $query->where('doctor_id' , $doctor_id);
         })
         
-        ->when(isset($patient_id) , function($query) use ($patient_id) {
-            $query->where('patient_id' , $patient_id);
+        ->when(isset($patient_ids) , function($query) use ($patient_ids) {
+            $query->whereIn('patient_id' , $patient_ids);
         })
 
         ->when(isset($data['date']) , function($query) use ($data) {

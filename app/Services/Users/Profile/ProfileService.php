@@ -8,6 +8,7 @@ use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\UserDevice;
 use App\Services\JWTTokensService;
 use App\Services\MainService;
+use App\Services\User\UserService;
 use App\Traits\StorageHelper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ class ProfileService extends MainService
 
     public function __construct(
         protected JWTTokensService $jwtService,
+        protected UserService $userService,
     ) {}
 
     public function completeProfile($validatedData)
@@ -79,8 +81,7 @@ class ProfileService extends MainService
             "city_id"       => $validatedData["city_id"],
         ]);
 
-        if (isset($validatedData["avatar"]))
-            $this->updateProfileImage($validatedData);
+        $this->userService->updateOwnerInfo($validatedData);
 
         return $user;
     }

@@ -1,20 +1,22 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Story;
+use App\Models\Visit;
 use App\Models\Banner;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
 use App\Models\Category;
+use App\Models\Reservation;
 use App\Models\SubCategory;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Constants\MediaCollection;
-use App\Models\Reservation;
-use App\Models\Visit;
+use App\Enums\ReservationStatusEnum;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -342,3 +344,32 @@ if (!function_exists('treatmentAbleToEdit')) {
         return $treatment->visit_id == null;
     }
 }
+
+
+if (!function_exists('ableToCancel')) {
+    function ableToCancel($reservation)
+    {
+        if($reservation->status == ReservationStatusEnum::PENDING->value)
+            return true;
+        
+        $reservationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->date . ' ' . $reservation->time_to_come);
+        
+        $now = Carbon::now();
+
+        // dd($reservationDateTime , $now , $reservationDateTime->diffInHours($now) < -10);
+        return $reservationDateTime->diffInHours($now) < -10;
+    }
+}
+
+if (!function_exists('ableToChangeByDoctor')) {
+    function ableToChangeByDoctor($visit)
+    {
+        $visitDateTime = $visit->created_at;
+        
+        $now = Carbon::now();
+        
+        // dd($visitDateTime , $now , $visitDateTime->diffInHours($now) < 24);
+        return $visitDateTime->diffInHours($now) < 24;
+    }
+}
+

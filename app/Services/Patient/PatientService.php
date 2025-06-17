@@ -2,14 +2,15 @@
 
 namespace App\Services\Patient;
 
-use App\Constants\ExceptionMessages;
-use App\Enums\TreatmentStatusEnum;
-use App\Models\Instruction;
+use App\Models\Patient;
 use App\Models\Medicine;
+use App\Models\Instruction;
 use App\Models\MedicineDay;
 use App\Models\MedicineTime;
-use App\Models\Patient;
 use App\Traits\StorageHelper;
+use App\Enums\TreatmentStatusEnum;
+use App\Services\User\UserService;
+use App\Constants\ExceptionMessages;
 
 /**
  * Class PatientService.
@@ -17,6 +18,11 @@ use App\Traits\StorageHelper;
 class PatientService
 {
     use StorageHelper;
+
+    public function __construct(
+        protected UserService $userService,
+    ) {}
+    
     public function getMyRelations()
     {
         $patients = Patient::where('user_id', auth()->id())->with([
@@ -110,6 +116,8 @@ class PatientService
         if($patient_id == owner_id())
         {
             $data['relation'] = 'me';
+
+            $this->userService->updateOwnerInfo($data);
         }
 
         $patient = Patient::findByIdOrFail($patient_id);

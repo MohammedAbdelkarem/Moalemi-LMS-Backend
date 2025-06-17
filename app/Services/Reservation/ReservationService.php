@@ -2,6 +2,7 @@
 
 namespace App\Services\Reservation;
 
+use Carbon\Carbon;
 use App\Models\Rate;
 use App\Models\Shift;
 use App\Models\Visit;
@@ -14,9 +15,9 @@ use App\Models\PatientUpdatedInfo;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
 use App\Http\Resources\DoctorResouce;
-use App\Http\Resources\Media\MediaResource;
 use App\Services\Base\ContextService;
 use App\Services\Patient\PatientService;
+use App\Http\Resources\Media\MediaResource;
 
 /**
  * Class ReservationService.
@@ -99,6 +100,8 @@ class ReservationService
 
         $this->checkStatusFlow($reservation->status , ReservationStatusEnum::CANCELLED->value);
 
+        $this->checkIfPatientCanCancelReservation($reservation);
+        
         $reservation->status = ReservationStatusEnum::CANCELLED;
 
         $reservation->save();
@@ -136,7 +139,7 @@ class ReservationService
             'doctor_id' => $reservation->doctor_id,
             'patient_id' => $reservation->patient_id,
             'reservation_id' => $id,
-            'note' => $data['notes'] ?? null
+            'note' => $data['notes'] ?? null,
         ]);
 
         if(isset($data['attachments']))
@@ -264,18 +267,20 @@ class ReservationService
         $doctor->save();
     }
 
-    private function getReservations($doctor_id , $patient_id , $data , $with = [])
+    private function getReservations($doctor_id , $patient_ids , $data , $with = [])
     {
         return getOrPaginate(
-            Reservation::filter($data , $doctor_id , $patient_id)
+            Reservation::filter($data , $doctor_id , $patient_ids)
             ->with($with),
             $data
         );
     }
 
-    public function getrPateintReservations($patient_id , $data)
+    public function getUserReservations($data)
     {
-        return $this->getReservations(null , $patient_id , $data , [
+        $patient_ids = Patient::where('user_id' , auth()->id())->pluck('id');
+        
+        return $this->getReservations(null  ,$patient_ids , $data , [
             'doctor.subCategories',
             'visit.rate'
         ]);
@@ -336,5 +341,17 @@ class ReservationService
     {
         if($visit->rate()->exists())
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_RATE_AGAIN);
+    }
+
+    private function checkIfPatientCanCancelReservation($reservation)
+    {
+        if(!ableToCancel($reservation))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME);
+    }
+
+    private function checkIfDoctorCanEditOrChatWithPatient($visit)
+    {
+        if(!ableToChangeByDoctor($visit))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
     }
 }
