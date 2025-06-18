@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('visit_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->nullable()->constrained()->cascadeOnDelete();
             $table->boolean('is_latest')->default(1);
+            $table->morphs('userable');
             $table->timestamps();
         });
     }

@@ -69,6 +69,11 @@ class Doctor extends Model implements HasMedia
         return $this->hasMany(Article::class);
     }
 
+    public function userable()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
     public function plans()
     {
         return $this->belongsToMany(Plan::class, 'subscriptions')
@@ -107,9 +112,14 @@ class Doctor extends Model implements HasMedia
         return $this->hasMany(Visit::class);
     }
 
-    public function favorites()
+    public function addedMedicines()
     {
-        return $this->morphMany(Favorite::class, 'favoritable');
+        return $this->morphMany(Medicine::class, 'userable');
+    }
+
+    public function addedInstructions()
+    {
+        return $this->morphMany(Instruction::class, 'userable');
     }
 
 

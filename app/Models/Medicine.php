@@ -47,6 +47,16 @@ class Medicine extends Model
         return $this->hasMany(MedicineDay::class);
     }
 
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
+    public function historyIds()
+    {
+        return $this->morphMany(TreatmentHistory::class , 'itemable');
+    }
+
     public function scopeAddeddByPatient($query , $patient_id)
     {
         return $query->where('patient_id' , $patient_id)->where('visit_id' , null);

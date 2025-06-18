@@ -101,7 +101,7 @@ class ReservationService
         $this->checkStatusFlow($reservation->status , ReservationStatusEnum::CANCELLED->value);
 
         $this->checkIfPatientCanCancelReservation($reservation);
-        
+
         $reservation->status = ReservationStatusEnum::CANCELLED;
 
         $reservation->save();
@@ -349,9 +349,15 @@ class ReservationService
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME);
     }
 
-    private function checkIfDoctorCanEditOrChatWithPatient($visit)
+    private function checkIfDoctorCanEditOrChatWithPatient($visit = null , $patient_id = null)
     {
-        if(!ableToChangeByDoctor($visit))
+        if($visit == null)
+        {
+            $latestVisit = Visit::where('doctor_id' , doctor_id())->where('patient_id' , $patient_id)->latest('id')->first();
+
+            $this->checkIfDoctorCanEditOrChatWithPatient($latestVisit);
+        }
+        else if(!ableToChangeByDoctor($visit))
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
     }
 }
