@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
+use App\Enums\ReactionStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -26,7 +27,12 @@ class Reaction extends Model
 
     public function replaies()
     {
-        return $this->hasMany(Reaction::class);
+        return $this->hasMany(Replay::class);
+    }
+
+    public function existReplays()
+    {
+        return $this->replaies()->where('status' , ReactionStatusEnum::EXIST->value);
     }
 
     /**

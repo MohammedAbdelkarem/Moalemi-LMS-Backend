@@ -44,7 +44,7 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         return Success(
-            $this->authService->logout($request->header('notification_token')),
+            $this->authService->logout($request->notification_token),
             ApiMessages::MSG_LOGOUT_SUCCESSFULLY,
         );
     }

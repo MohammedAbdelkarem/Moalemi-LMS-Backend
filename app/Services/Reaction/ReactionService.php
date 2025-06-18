@@ -2,6 +2,7 @@
 
 namespace App\Services\Reaction;
 
+use App\Constants\ExceptionMessages;
 use App\Enums\ReactionStatusEnum;
 use App\Models\Article;
 use App\Enums\ReactionTypeEnum;
@@ -63,6 +64,8 @@ class ReactionService
     {
         $article = Article::findByIdOrFail($article_id);
 
+        $this->checkIfableToComment($article);
+
         $article->reactions()->create([
             'type' => ReactionTypeEnum::COMMENT,
             'user_id' => auth()->id(),
@@ -87,7 +90,14 @@ class ReactionService
 
         $this->updateArticleCounters($article , '-' , 'comments');
 
-        // $this->updateReplays($article , $comment , '-');
+        if($comment->replaies()->exists())
+        {
+            $comment->replaies()->update([
+                'status' => ReactionStatusEnum::DELETED
+            ]);
+
+            $this->updateArticleCounters($article , '-' , 'comments');
+        }
     }
 
     public function getLikes($article_id , $data)
@@ -103,6 +113,34 @@ class ReactionService
     public function getAllComments($article_id , $data)
     {
         return $this->getAllReactions($article_id , ReactionTypeEnum::COMMENT->value);
+    }
+
+    public function replay($comment_id , $data): void
+    {
+        $comment = Reaction::findByIdOrFail($comment_id);
+
+        $article = Article::findByIdOrFail($comment->article_id);
+
+        $this->checkIfableToReplayOnComment($comment);
+
+        $comment->replaies()->create([
+            'comment' => $data['comment']
+        ]);
+
+        $this->updateArticleCounters($article , '+' , 'comments');
+    }
+
+    public function unReplay($replay_id)
+    {
+        $replay = Replay::findByIdOrFail($replay_id);
+
+        $article = Article::findByIdOrFail($replay->reaction->article_id);
+
+        $replay->status = ReactionStatusEnum::DELETED;
+
+        $replay->save();
+
+        $this->updateArticleCounters($article , '-' , 'comments');
     }
 
     private function getReactions($article_id , $type)
@@ -127,20 +165,18 @@ class ReactionService
 
         $article->save();
     }
+
+    private function checkIfableToComment($article)
+    {
+        if(! ableToComment($article))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_COMMENT);
+    }
+
+    private function checkIfableToReplayOnComment($comment)
+    {
+        if(! ableToReplay($comment))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_REPLAY);
+    }
     
-    // private function updateReplays($article , $comment , $operation)
-    // {
-    //     if($operation == '-')
-    //     {
-    //         $replay = Replay::where('reaction_id' , $comment->id)
-    //                 ->where('status' , ReactionStatusEnum::EXIST)
-    //                 ->first();
-
-    //         $replay->status = ReactionStatusEnum::DELETED;
-
-    //         $replay->save();
-    //     }
-
-    //     $this->updateArticleCounters($article , $operation , 'comments');
-    // }
+    
 }

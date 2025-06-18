@@ -75,4 +75,19 @@ class ReactionController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function replay(CommentRequest $request , $comment_id)
+    {
+        return success(
+            $this->reactionService->replay($comment_id , $request->validated()),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+    public function unReplay($replay_id)
+    {
+        return success(
+            $this->reactionService->unReplay($replay_id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }

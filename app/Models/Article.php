@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use App\Constants\MediaCollection;
+use App\Enums\ReactionStatusEnum;
+use App\Enums\ReactionTypeEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,6 +29,15 @@ class Article extends Model implements HasMedia
     public function reactions()
     {
         return $this->hasMany(Reaction::class);
+    }
+
+    public function existsReactions()
+    {
+        return $this->reactions()->where('status' , ReactionStatusEnum::EXIST->value);
+    }
+    public function existsComments()
+    {
+        return $this->existsReactions()->where('type' , ReactionTypeEnum::COMMENT->value);
     }
 
     public function favorites()

@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
     Route::prefix('article')->controller(ArticleController::class)->group(function () {
         Route::get('getMine' , 'getMyArticles');
+        Route::get('show/{id}' , 'show')->name(RouteNames::ARTICLES_SHOW);
     });
     Route::prefix('profile')->controller(DoctorController::class)->group(function () {
         Route::get('getMine' , 'getMyProfile')->name(RouteNames::DOCTORS_GET_PROFILE);
@@ -58,6 +59,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('unComment/{comment_id}' , 'unComment');
         Route::get('likes/{article_id}' , 'getLikes');
         Route::get('comments/{article_id}' , 'getCommentsForUser');
+        Route::post('replay/{comment_id}' , 'replay');
+        Route::get('unReplay/{replay_id}' , 'unReplay');
     });
 
     Route::prefix('reservation')->group(function(){

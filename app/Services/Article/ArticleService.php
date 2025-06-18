@@ -36,7 +36,12 @@ class ArticleService
     {
         $this->increaseArticleView($id);
         
-        return Article::findByIdOrFail($id , ['reactions' , 'reactions.user']);
+        return Article::findByIdOrFail($id , [
+            'existsReactions.user' ,
+             'existsReactions.existReplays' ,
+              'existsComments.user',
+              'existsComments.existReplays'
+            ]);
     }
 
     public function store($data)

@@ -5,6 +5,7 @@ namespace App\Http\Resources\Reaction;
 use App\Constants\RouteNames;
 use App\Enums\ReactionStatusEnum;
 use App\Enums\ReactionTypeEnum;
+use App\Http\Resources\Users\Profile\UserSugResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -36,9 +37,20 @@ class ReactionResource extends JsonResource
             }
         }
 
-        $data['user'] = ($this->user->role_id == 4)
-            ? $this->user->name
-            : $this->user->Doctor()->first()->clinic_name;
+        $data['user'] = UserSugResource::make($this->whenLoaded('user'));
+        // $data['user'] = ($this->user->role_id == 4)
+        //     ? $this->user->name
+        //     : $this->user->Doctor()->first()->clinic_name;
+
+        if($this->type == ReactionTypeEnum::COMMENT->value)
+        {
+            $data['replay'] = RepalyResource::collection($this->whenLoaded('existReplays'));
+            
+            if(auth()->user()->isDoctor())
+            {
+                $data['is_able_to_replay'] = ableToReplay($this);
+            }
+        }
 
         return $data;
     }

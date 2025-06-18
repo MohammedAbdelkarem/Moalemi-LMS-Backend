@@ -10,13 +10,17 @@ use App\Models\Patient;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
 use App\Models\Category;
+use App\Models\Reaction;
 use App\Models\Reservation;
 use App\Models\SubCategory;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
+use App\Enums\ReactionTypeEnum;
 use App\Constants\MediaCollection;
+use App\Enums\ReactionStatusEnum;
 use App\Enums\ReservationStatusEnum;
+use App\Models\Replay;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -370,6 +374,30 @@ if (!function_exists('ableToChangeByDoctor')) {
         
         // dd($visitDateTime , $now , $visitDateTime->diffInHours($now) < 24);
         return $visitDateTime->diffInHours($now) < 24;
+    }
+}
+
+if (!function_exists('ableToComment')) {
+    function ableToComment($article)
+    {
+        $userCommentExist = Reaction::where('article_id' , $article->id)
+                ->where('user_id' , auth()->id())
+                ->where('type' , ReactionTypeEnum::COMMENT->value)
+                ->where('status' , ReactionStatusEnum::EXIST->value)
+                ->exists();
+        
+        return ! $userCommentExist;
+    }
+}
+
+if (!function_exists('ableToReplay')) {
+    function ableToReplay($comment)
+    {
+        $replayExist = Replay::where('reaction_id' , $comment->id)
+                ->where('status' , ReactionStatusEnum::EXIST->value)
+                ->exists();
+        
+        return ! $replayExist;
     }
 }
 

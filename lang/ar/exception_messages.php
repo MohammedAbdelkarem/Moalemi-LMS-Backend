@@ -15,6 +15,8 @@ return [
     'medical_profile_already_exist'     => 'لقد قمت بإنشاء ملفك الطبي بالفعل!',
     'can_not_delete_shift_cuz_reservations_exists'                     => 'لا يمكن حذف الوقت لان تم الحجز فيه',
     'method_not_allowed'                => 'الإجراء غير صالح',
+    'can_not_comment'                => 'لا يمكن اضافة تعليق أكثر من مرة واحدة',
+    'can_not_replay'                => 'لا يمكن الرد على التعليق أكثر من مرة واحدة',
     'can_not_cancel_reservation_cuz_time'                => 'لا يمكن الغاء الموعد لأنه متبقي له أقل من 10 ساعات',
     'can_not_edit_or_chat_with_user'                => 'لا يمكن تعديل معلومات المريض أو التحدث معه لأنه مضى على كتابة التقرير الطبي أكثر من 24 ساعة',
     'resource_not_FoundF'               => ':resource غير موجودة',

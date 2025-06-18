@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::controller(AuthController::class)->group(function () {
         Route::get("/active-session", "activeSessions");
         Route::post("/logout-session", "logoutSessions");
-        Route::get("/logout", "logout");
+        Route::post("/logout", "logout");
         Route::get("/logout-all", "logoutAll");
         Route::get("/refresh", "refresh")->withoutMiddleware('token.access_api')->withoutMiddleware('token.access_refresh');
     });
