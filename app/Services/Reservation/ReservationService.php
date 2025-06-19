@@ -100,7 +100,7 @@ class ReservationService
 
         $this->checkStatusFlow($reservation->status , ReservationStatusEnum::CANCELLED->value);
 
-        $this->checkIfPatientCanCancelReservation($reservation);
+        $this->contextService->checkIfPatientCanCancelReservation($reservation);
 
         $reservation->status = ReservationStatusEnum::CANCELLED;
 
@@ -183,6 +183,8 @@ class ReservationService
 
         $patient = Patient::findByIdOrFail($visit->patient_id);
 
+        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($patient->id);
+
         $visit->update([
             'title' => $data['title'] ?? $visit->title,
             'description' => $data['description'] ?? $visit->description,
@@ -255,8 +257,8 @@ class ReservationService
             'comment' => $data['comment'] ?? null,
         ]);
 
-        if(isset($data['image']))
-            uploadFileOnMedia($data['image'] , $rate , MediaCollection::RATE_COLLECTION);
+        if(isset($data['images']))
+            uploadFilesOnMedia($data['images'] , $rate , MediaCollection::RATE_COLLECTION);
 
         $doctor = Doctor::find($visit->doctor_id);
 
@@ -265,6 +267,17 @@ class ReservationService
         $doctor->total_rate = $doctor->rate_sum / $doctor->rate_counter;
 
         $doctor->save();
+    }
+
+    public function replayOnRate($rate_id , $data)
+    {
+        $rate = Rate::find($rate_id);
+
+        $this->checkIfHasBeenReplayedOnRate($rate);
+        
+        $rate->doctor_replay = $data['comment'];
+
+        $rate->save();
     }
 
     private function getReservations($doctor_id , $patient_ids , $data , $with = [])
@@ -343,21 +356,10 @@ class ReservationService
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_RATE_AGAIN);
     }
 
-    private function checkIfPatientCanCancelReservation($reservation)
+    private function checkIfHasBeenReplayedOnRate($rate)
     {
-        if(!ableToCancel($reservation))
-            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME);
+        if($rate->doctor_replay != null)
+            return forbiddenFailure([] , ExceptionMessages::MSG_RATE_ALREADY_HAS_REPLAY);
     }
 
-    private function checkIfDoctorCanEditOrChatWithPatient($visit = null , $patient_id = null)
-    {
-        if($visit == null)
-        {
-            $latestVisit = Visit::where('doctor_id' , doctor_id())->where('patient_id' , $patient_id)->latest('id')->first();
-
-            $this->checkIfDoctorCanEditOrChatWithPatient($latestVisit);
-        }
-        else if(!ableToChangeByDoctor($visit))
-            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
-    }
 }

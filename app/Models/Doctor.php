@@ -69,7 +69,7 @@ class Doctor extends Model implements HasMedia
         return $this->hasMany(Article::class);
     }
 
-    public function userable()
+    public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favoritable');
     }

@@ -9,6 +9,10 @@ final class ExceptionMessages
     const MSG_INVALID_CREDENTIALS              = 'exception_messages.invalid_credentials';
     const MSG_RESERVATION_STATUS_FLOW_ERROR              = 'exception_messages.reservation_status_flow_error';
     const MSG_CANT_EDIT_TREATMENTS_IN_VISIT              = 'exception_messages.can_not_edit_treatments_in_visit';
+    const MSG_CAN_NOT_GET_HISTORY_FOR_THE_HISTORY              = 'exception_messages.can_not_get_history_for_the_history';
+    const MSG_RATE_ALREADY_HAS_REPLAY              = 'exception_messages.rate_already_has_replay';
+    const MSG_CAN_NOT_UPDATE_HISTORY              = 'exception_messages.can_not_update_history';
+    const MSG_CAN_NOT_UPDATE_EXPIRED              = 'exception_messages.can_not_update_expired';
     const MSG_CAN_NOT_COMMENT              = 'exception_messages.can_not_comment';
     const MSG_CAN_NOT_REPLAY              = 'exception_messages.can_not_replay';
     const MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME              = 'exception_messages.can_not_cancel_reservation_cuz_time';

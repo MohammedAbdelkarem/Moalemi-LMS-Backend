@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\LatestTreatmentScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Instruction extends Model
@@ -15,6 +16,11 @@ class Instruction extends Model
         'id'
     ];
 
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new LatestTreatmentScope);
+    }
 
     /**
      * @return \App\Models\Instruction
@@ -48,11 +54,11 @@ class Instruction extends Model
         return $this->morphTo();
     }
 
-    public function historyIds()
+    public function treatment_history()
     {
         return $this->morphMany(TreatmentHistory::class , 'itemable');
     }
-    
+
     public function scopeAddeddByPatient($query , $patient_id)
     {
         return $query->where('patient_id' , $patient_id)->where('visit_id' , null);

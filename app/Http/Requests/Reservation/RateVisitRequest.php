@@ -24,7 +24,12 @@ class RateVisitRequest extends BaseApiRequest
         return [
             'rate' => ['required' , 'integer' , 'min:1' , 'max:5'],
             'comment' => ['nullable' , 'string' , 'max:255'],
-            'image' => ['nullable' , 'mimes:jpeg,jpg,png,webp' , 'max:4096']
+            "images"               => ['nullable' , 'array'],
+            "images.*.image"       => [
+                'required',
+               'mimes:jpeg,jpg,png,webp,pdf',
+               'max:4096'
+            ],
         ];
     }
 }

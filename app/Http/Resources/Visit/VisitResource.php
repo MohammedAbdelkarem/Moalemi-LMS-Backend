@@ -32,6 +32,9 @@ class VisitResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
+        if(auth()->user()->isDoctor())
+            $data['is_able_to_edit'] = ableToChangeByDoctor($this);
+
         switch ($routeName)
         {
             case RouteNames::PATIENT_RESERVATIONS:

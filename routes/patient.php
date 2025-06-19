@@ -42,17 +42,17 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             });
             Route::prefix('medicine')->group(function(){
                 Route::post('add/{patient_id}' , 'addMedicines');
+                
+                Route::post('{patient_id}/update/{medicine_id}' , 'updateMedicine');
 
                 Route::delete('delete/{medicine_id}' , 'deleteMedicine');
-
-                Route::post('{patient_id}/update/{medicine_id}' , 'updateMedicine');
             });
             Route::prefix('instruction')->group(function(){
                 Route::post('add/{patient_id}' , 'addInstructions');
+                 
+                Route::post('{patient_id}/update/{instruction_id}' , 'updateInstruction');
                 
                 Route::delete('delete/{instruction_id}' , 'deleteInstruction');
-                
-                Route::post('{patient_id}/update/{instruction_id}' , 'updateInstruction');
             });
         });
     });

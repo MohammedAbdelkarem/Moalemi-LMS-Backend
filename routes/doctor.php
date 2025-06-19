@@ -72,6 +72,24 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::get('get' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::post('update/{visit_id}' , 'updateReport');
+            Route::post('rateReplay/{rate_id}' , 'replayOnRate');
+
+            Route::prefix('medicalReport')->group(function(){
+                Route::prefix('medicine')->group(function(){
+                    Route::post('add/{patient_id}/visit/{visit_id}' , 'addMedicines');
+                    
+                    Route::post('{patient_id}/update/{medicine_id}/visit/{visit_id}' , 'updateMedicine');
+
+                    Route::delete('delete/{medicine_id}/visit/{visit_id}' , 'deleteMedicine');
+                });
+                Route::prefix('instruction')->group(function(){
+                    Route::post('add/{patient_id}/visit/{visit_id}' , 'addInstructions');
+                    
+                    Route::post('{patient_id}/update/{instruction_id}/visit/{visit_id}' , 'updateInstruction');
+                    
+                    Route::delete('delete/{instruction_id}/visit/{visit_id}' , 'deleteInstruction');
+                });
+            });
         });
     });
 

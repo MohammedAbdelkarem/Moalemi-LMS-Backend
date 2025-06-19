@@ -356,12 +356,16 @@ if (!function_exists('ableToCancel')) {
         if($reservation->status == ReservationStatusEnum::PENDING->value)
             return true;
         
-        $reservationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->date . ' ' . $reservation->time_to_come);
-        
-        $now = Carbon::now();
-
-        // dd($reservationDateTime , $now , $reservationDateTime->diffInHours($now) < -10);
-        return $reservationDateTime->diffInHours($now) < -10;
+        else if($reservation->status == ReservationStatusEnum::ACCEPTED->value)
+        {
+            $reservationDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->date . ' ' . $reservation->time_to_come);
+            
+            $now = Carbon::now();
+    
+            // dd($reservationDateTime , $now , $reservationDateTime->diffInHours($now) < -10);
+            return $reservationDateTime->diffInHours($now) < -10;
+        }
+        return false;
     }
 }
 
@@ -398,6 +402,13 @@ if (!function_exists('ableToReplay')) {
                 ->exists();
         
         return ! $replayExist;
+    }
+}
+
+if (!function_exists('hasHistory')) {
+    function hasHistory($context)
+    {
+        return $context->is_latest == 1;
     }
 }
 
