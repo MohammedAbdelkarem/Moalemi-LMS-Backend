@@ -44,6 +44,13 @@ class Doctor extends Model implements HasMedia
                 ->singleFile();
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
+
     public function shifts()
     {
         return $this->hasMany(Shift::class);
@@ -67,6 +74,11 @@ class Doctor extends Model implements HasMedia
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
     }
 
     public function plans()
@@ -107,9 +119,14 @@ class Doctor extends Model implements HasMedia
         return $this->hasMany(Visit::class);
     }
 
-    public function favorites()
+    public function addedMedicines()
     {
-        return $this->morphMany(Favorite::class, 'favoritable');
+        return $this->morphMany(Medicine::class, 'userable');
+    }
+
+    public function addedInstructions()
+    {
+        return $this->morphMany(Instruction::class, 'userable');
     }
 
 

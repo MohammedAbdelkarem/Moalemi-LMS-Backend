@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('visit_id')->constrained()->cascadeOnDelete();
             $table->integer('rate')->default(0);
             $table->string('comment')->nullable();
+            $table->string('doctor_replay')->nullable();
             $table->timestamps();
         });
     }

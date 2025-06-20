@@ -405,3 +405,10 @@ if (!function_exists('ableToReplay')) {
     }
 }
 
+if (!function_exists('hasHistory')) {
+    function hasHistory($context)
+    {
+        return $context->is_latest == 1;
+    }
+}
+

@@ -20,6 +20,13 @@ class Visit extends Model implements HasMedia
         $this->addMediaCollection(MediaCollection::VISIT_COLLECTION);
     }
     
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
+    
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);

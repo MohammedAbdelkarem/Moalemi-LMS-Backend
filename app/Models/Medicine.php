@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
+use App\Models\Scopes\LatestTreatmentScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,6 +16,10 @@ class Medicine extends Model
         'id'
     ];
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new LatestTreatmentScope);
+    }
 
     /**
      * @return \App\Models\Medicine
@@ -45,6 +50,16 @@ class Medicine extends Model
     public function medicine_days()
     {
         return $this->hasMany(MedicineDay::class);
+    }
+
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
+    public function treatment_history()
+    {
+        return $this->morphMany(TreatmentHistory::class , 'itemable');
     }
 
     public function scopeAddeddByPatient($query , $patient_id)

@@ -2,15 +2,19 @@
 
 namespace App\Services\Patient;
 
+use App\Models\Visit;
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Medicine;
 use App\Models\Instruction;
 use App\Models\MedicineDay;
 use App\Models\MedicineTime;
 use App\Traits\StorageHelper;
+use App\Models\TreatmentHistory;
 use App\Enums\TreatmentStatusEnum;
 use App\Services\User\UserService;
 use App\Constants\ExceptionMessages;
+use App\Services\Base\ContextService;
 
 /**
  * Class PatientService.
@@ -21,6 +25,7 @@ class PatientService
 
     public function __construct(
         protected UserService $userService,
+        protected ContextService $contextService,
     ) {}
     
     public function getMyRelations()
@@ -30,6 +35,7 @@ class PatientService
                'medicines.medicine_days.day' ,
                 'medicines.medicine_days.medicine_times' ,
                   'reservations.doctor.subCategories',
+                  'user'
             ])->get();
 
         return $patients;
@@ -68,10 +74,10 @@ class PatientService
             );
         }
 
-        if(isset($data['medicines']))
-            $this->storeMedicinesData($data , $patient->id);
-        if(isset($data['instructions']))
-            $this->storeInstructionsData($data , $patient->id);
+        // if(isset($data['medicines']))
+        //     $this->storeMedicinesData($data , $patient->id);
+        // if(isset($data['instructions']))
+        //     $this->storeInstructionsData($data , $patient->id);
 
         $patient->save();
     }
@@ -103,10 +109,10 @@ class PatientService
             );
         }
 
-        if(isset($data['medicines']))
-            $this->storeMedicinesData($data , $patient->id);
-        if(isset($data['instructions']))
-            $this->storeInstructionsData($data , $patient->id);
+        // if(isset($data['medicines']))
+        //     $this->storeMedicinesData($data , $patient->id);
+        // if(isset($data['instructions']))
+        //     $this->storeInstructionsData($data , $patient->id);
 
         $patient->save();
     }
@@ -140,69 +146,146 @@ class PatientService
 
     public function addMedicines($data , $patient_id , $visit_id = null)
     {
+        if(auth()->user()->isDoctor() && $visit_id != null)
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
+
         $this->storeMedicinesData($data , $patient_id , $visit_id);
     }
 
     public function addInstructions($data , $patient_id , $visit_id = null)
     {
+        if(auth()->user()->isDoctor() && $visit_id != null)
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
+
         $this->storeInstructionsData($data , $patient_id , $visit_id);
     }
 
-    public function updateMedicine($data , $patient_id , $medicine_id)
+    public function updateMedicine($data , $patient_id , $medicine_id , $visit_id = null)
     {
-        $this->deleteMedicine($medicine_id);
+        //the old medicine
+        $medicine = Medicine::findByIdOrFail($medicine_id);
+
+        $this->checkIfExpiredBeforeEditing($medicine);
+
+        if(auth()->user()->isPatient())
+            $this->checkIfCanEditTreatmentsByPatient($medicine);
+        if(auth()->user()->isDoctor())
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
 
         $finalData['medicines'][0] = $data;
 
-        $this->storeMedicinesData($finalData , $patient_id);
+        $this->storeMedicinesData($finalData , $patient_id , $visit_id , $medicine_id);
     }
 
-    public function updateInstruction($data , $patient_id , $instruction_id)
+    public function updateInstruction($data , $patient_id , $instruction_id , $visit_id = null)
     {
-        $this->deleteInstruction($instruction_id);
+        //the old instruction
+        $instruction = Instruction::findByIdOrFail($instruction_id);
+
+        $this->checkIfExpiredBeforeEditing($instruction);
+
+        if(auth()->user()->isPatient())
+            $this->checkIfCanEditTreatmentsByPatient($instruction);
+        if(auth()->user()->isDoctor())
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
 
         $finalData['instructions'][0] = $data;
 
-        $this->storeInstructionsData($finalData , $patient_id);
+        $this->storeInstructionsData($finalData , $patient_id , $visit_id , $instruction_id);
     }
 
-    public function deleteMedicine($medicine_id)
+    public function deleteMedicine($medicine_id , $visit_id = null)
     {
-        $medicine = Medicine::findByIdOrFail($medicine_id);
+        $medicine = Medicine::findByIdOrFail($medicine_id , [
+            'medicine_days.day',
+            'medicine_days.medicine_times',
+        ]);
 
+        $this->checkIfExpiredBeforeEditing($medicine);
 
         if(auth()->user()->isPatient())
-            $this->checkIfCanEditTreatments($medicine);
+            $this->checkIfCanEditTreatmentsByPatient($medicine);
+        if(auth()->user()->isDoctor())
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
 
-        $medicine->delete();
+        $finalData['medicines'][0] = $medicine->toArray();
+
+        $this->storeMedicinesData($finalData , $medicine->patient_id , $visit_id , $medicine_id , true);
     }
 
-    public function deleteInstruction($instruction_id)
+    public function deleteInstruction($instruction_id , $visit_id = null)
     {
         $instruction = Instruction::findByIdOrFail($instruction_id);
 
-        if(auth()->user()->isPatient())
-            $this->checkIfCanEditTreatments($instruction);
+        $this->checkIfExpiredBeforeEditing($instruction);
 
-        $instruction->delete();
+        if(auth()->user()->isPatient())
+            $this->checkIfCanEditTreatmentsByPatient($instruction);
+        if(auth()->user()->isDoctor())
+            $this->checkIfCanEditTreatmentsByDoctor(Visit::findByIdOrFail($visit_id));
+
+        $finalData['instructions'][0] = $instruction->toArray();
+
+        $this->storeInstructionsData($finalData , $instruction->patient_id , $visit_id , $instruction_id , true);
     }
 
     private function storePatientData($data)
     {
         $patient = Patient::create($data);
 
+        if($patient->is_owner == 1)
+            $this->userService->updateOwnerInfo($data);
+
         return $patient;
     }
 
-    public function storeMedicinesData($data , $patient_id = null , $visit_id = null)
+    public function storeMedicinesData($data , $patient_id = null , $visit_id = null , $old_medicine_id = null , $setAsExpired = false)
     {
         // dd($data);
         foreach($data['medicines'] as $medicine)
         {
             $medicine['patient_id'] = $patient_id;
-            $medicine['visit_id'] = $visit_id;
-            // dd($medicine);
+            $medicine['visit_id'] = $visit_id; //could be null
+
+            //added by?
+            $medicine['userable_id'] = (auth()->user()->isDoctor())
+            ? doctor_id()
+            : $patient_id;
+            $medicine['userable_type'] = (auth()->user()->isDoctor())
+            ? Doctor::class
+            : Patient::class;
+
+            $medicine['status'] = ($setAsExpired)
+            ? TreatmentStatusEnum::EXPIRED
+            : $medicine['status'];
+            
+            
             $one_medicine = Medicine::create($medicine);
+
+            $finalHistoryArray = [];
+
+            if($old_medicine_id != null)
+            {
+                $old_medicine = Medicine::findByIdOrFail($old_medicine_id);
+                $old_medicine->is_latest = 0;
+                $old_medicine->save();
+
+                $history_ids = TreatmentHistory::where('itemable_id', $old_medicine->id)
+                        ->where('itemable_type', Medicine::class)
+                        ->first()->history_ids;
+
+                //getting the old history of this medicine
+                $finalHistoryArray = $history_ids;
+            }
+
+            //adding the new medicine id to the history
+            $finalHistoryArray[] = $one_medicine->id;
+
+            TreatmentHistory::create([
+                'itemable_id' => $one_medicine->id,
+                'itemable_type' => Medicine::class,
+                'history_ids' => $finalHistoryArray
+            ]);
 
             if(isset($medicine['days']))
             {
@@ -240,14 +323,51 @@ class PatientService
         }
     }
 
-    public function storeInstructionsData($data , $patient_id = null , $visit_id = null)
+    public function storeInstructionsData($data , $patient_id = null , $visit_id = null , $old_instruction_id = null , $setAsExpired = false)
     {
         foreach($data['instructions'] as $instruction)
         {
             $instruction['patient_id'] = $patient_id;
-            $instruction['visit_id'] = $visit_id;
+            $instruction['visit_id'] = $visit_id; //could be null
+
+            //added by?
+            $instruction['userable_id'] = (auth()->user()->isDoctor())
+            ? doctor_id()
+            : $patient_id;
+            $instruction['userable_type'] = (auth()->user()->isDoctor())
+            ? Doctor::class
+            : Patient::class;
+
+            $instruction['status'] = ($setAsExpired)
+            ? TreatmentStatusEnum::EXPIRED
+            : $instruction['status'];
             
-            Instruction::create($instruction);
+            $instruction = Instruction::create($instruction);
+
+            $finalHistoryArray = [];
+
+            if($old_instruction_id != null)
+            {
+                $old_instruction = Instruction::findByIdOrFail($old_instruction_id);
+                $old_instruction->is_latest = 0;
+                $old_instruction->save();
+
+                $history_ids = TreatmentHistory::where('itemable_id', $old_instruction->id)
+                        ->where('itemable_type', Instruction::class)
+                        ->first()->history_ids;
+
+                //getting the old history of this instruction
+                $finalHistoryArray = $history_ids;
+            }
+
+            //adding the new instruction id to the history
+            $finalHistoryArray[] = $instruction->id;
+
+            TreatmentHistory::create([
+                'itemable_id' => $instruction->id,
+                'itemable_type' => Instruction::class,
+                'history_ids' => $finalHistoryArray
+            ]);
         }
     }
 
@@ -255,16 +375,31 @@ class PatientService
     {
         return Patient::findByIdOrFail($patient_id , [
             'permanent_instructions' , 
-            'permanent_medicines'
+            'permanent_medicines',
+            'user'
         ]);
     }
 
-    private function checkIfCanEditTreatments($context)
+
+    private function checkIfCanEditTreatmentsByPatient($context)
     {
-        if($context->visit_id != null)
+        if(($context->visit_id != null || $context->userable_type != Patient::class))
         {
             return forbiddenFailure([] , ExceptionMessages::MSG_CANT_EDIT_TREATMENTS_IN_VISIT);
         }
+    }
+
+    private function checkIfCanEditTreatmentsByDoctor($visit)
+    {
+        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($visit);
+    }
+
+    private function checkIfExpiredBeforeEditing($context)
+    {
+        if($context->status == TreatmentStatusEnum::EXPIRED->value)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_UPDATE_EXPIRED);
+        if($context->is_latest == 0)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_UPDATE_HISTORY);
     }
 
 }

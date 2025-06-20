@@ -2,11 +2,12 @@
 
 namespace App\Services\Base;
 
-use App\Enums\PublishStatusEnum;
-use App\Constants\ExceptionMessages;
+use App\Models\Visit;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Reservation;
+use App\Enums\PublishStatusEnum;
+use App\Constants\ExceptionMessages;
 
 /**
  * Class ContextService.
@@ -52,5 +53,17 @@ class ContextService
 
         if(!$valid)
             return unprocessableFailure([] , ExceptionMessages::MSG_THIS_IS_NOT_YOUR_ROUTE);
+    }
+
+    public function checkIfPatientCanCancelReservation($reservation)
+    {
+        if(!ableToCancel($reservation))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME);
+    }
+
+    public function checkIfDoctorCanEditOrChatWithPatient($visit)
+    {
+        if(!ableToChangeByDoctor($visit))
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
     }
 }

@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('treatment_logs', function (Blueprint $table) {
+        Schema::create('treatment_histories', function (Blueprint $table) {
             $table->id();
+            $table->morphs('itemable');
+            $table->json('history_ids');
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('treatment_logs');
+        Schema::dropIfExists('treatment_histories');
     }
 };

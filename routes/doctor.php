@@ -10,6 +10,8 @@ use App\Http\Controllers\Doctor\ArticleController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Doctor\ReservationController;
 use App\Http\Controllers\Doctor\TransactionController;
+use App\Http\Controllers\Media\MediaController;
+use App\Http\Controllers\TreatmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +66,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
 
     Route::prefix('reservation')->group(function(){
+        Route::prefix('media')->controller(ReservationController::class)->group(function(){callback: 
+            //visit media endpoints
+            Route::post('add/{visit_id}' , 'store');
+            Route::delete('delete/{visit_id}' , 'delete');
+        });
         Route::controller(ReservationController::class)->group(function(){
             Route::post('reject/{id}' , 'reject');
             Route::post('accept/{id}' , 'accept');
@@ -72,7 +79,31 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::get('get' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::post('update/{visit_id}' , 'updateReport');
+            //rate
+            Route::post('rateReplay/{rate_id}' , 'replayOnRate');
+
+            Route::prefix('medicalReport')->group(function(){
+                Route::prefix('medicine')->group(function(){
+                    Route::post('add/{patient_id}/visit/{visit_id}' , 'addMedicines');
+                    
+                    Route::post('{patient_id}/update/{medicine_id}/visit/{visit_id}' , 'updateMedicine');
+
+                    Route::delete('delete/{medicine_id}/visit/{visit_id}' , 'deleteMedicine');
+                });
+                Route::prefix('instruction')->group(function(){
+                    Route::post('add/{patient_id}/visit/{visit_id}' , 'addInstructions');
+                    
+                    Route::post('{patient_id}/update/{instruction_id}/visit/{visit_id}' , 'updateInstruction');
+                    
+                    Route::delete('delete/{instruction_id}/visit/{visit_id}' , 'deleteInstruction');
+                });
+            });
         });
+    });
+
+    Route::prefix('history')->controller(TreatmentController::class)->group(function(){
+        Route::get('medicine/{medicine_id}' , 'getMedicineHistory');
+        Route::get('instruction/{instruction_id}' , 'getInstructionHistory');
     });
 
 

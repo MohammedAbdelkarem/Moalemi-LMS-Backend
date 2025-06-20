@@ -62,6 +62,17 @@ class Patient extends Model
     {
         return $this->hasMany(Medicine::class);
     }
+
+    public function addedMedicines()
+    {
+        return $this->morphMany(Medicine::class, 'userable');
+    }
+
+    
+    public function addedInstructions()
+    {
+        return $this->morphMany(Instruction::class, 'userable');
+    }
     public function permanent_instructions()
     {
         return $this->instructions()->where('status' , TreatmentStatusEnum::PERMANENT->value);

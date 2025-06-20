@@ -4,7 +4,7 @@ namespace App\Http\Requests\Reservation;
 
 use App\Http\Requests\BaseApiRequest;
 
-class RateVisitRequest extends BaseApiRequest
+class UploadVisitMediaRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,12 @@ class RateVisitRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'rate' => ['required' , 'integer' , 'min:1' , 'max:5'],
-            'comment' => ['nullable' , 'string' , 'max:255'],
-            "images"               => ['nullable' , 'array'],
-            "images.*.image"       => [
+            "image"       => [
                 'required',
                'mimes:jpeg,jpg,png,webp,pdf',
                'max:4096'
             ],
+            "title"       => ['nullable','max:255'],
         ];
     }
 }

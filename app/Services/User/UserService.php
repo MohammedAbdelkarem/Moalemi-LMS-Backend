@@ -23,7 +23,9 @@ class UserService
     public function updateOwnerInfo($data)
     {
         $user = auth()->user();
-        $user->update($data);
+        $user->update($data + [
+            'name' => $data['full_name'] ?? null
+        ]);
 
         $patient=  Patient::where('is_owner' , 1)
                 ->where('user_id' , auth()->id())
@@ -46,7 +48,7 @@ class UserService
                 path: "users/{$user->id}",
                 model: $user,
                 column: "avatar",
-                deleteImage: $data["delete_image"],
+                deleteImage: true,
                 singleFilePath: $user->avatar ?? ""
             );
 
