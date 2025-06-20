@@ -41,8 +41,8 @@ class DoctorService
 
         if(isset($data['logo']))
             uploadFileOnMedia($data['logo'] , $doctor , MediaCollection::DOCTOR_LOGO_COLLECTION);
-        if(isset($data['cover_image']))
-            uploadFileOnMedia($data['cover_image'] , $doctor , MediaCollection::DOCTOR_COVER_COLLECTION);
+        // if(isset($data['cover_image']))
+        //     uploadFileOnMedia($data['cover_image'] , $doctor , MediaCollection::DOCTOR_COVER_COLLECTION);
         if(isset($data['certificates']))
             uploadFilesOnMedia($data['certificates'] , $doctor , MediaCollection::DOCTOR_CERTIFICATES_COLLECTION);
         
