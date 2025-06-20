@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\SubCategory\SubCategoryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DoctorResouce extends JsonResource
@@ -55,7 +56,7 @@ class DoctorResouce extends JsonResource
                 $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
             break;
             case RouteNames::DOCTORS_GET_PROFILE:
-                $data['sub_categories']   = $this->whenLoaded('subCategories');
+                $data['sub_categories']   = SubCategoryResource::collection($this->whenLoaded('subCategories'));
                 $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
                 $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
                 $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));

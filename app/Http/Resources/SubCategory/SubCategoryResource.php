@@ -27,17 +27,14 @@ class SubCategoryResource extends JsonResource
             // 'category' => $this-
         ];
 
-        // $routeName = $request->route()->getName();
+        $routeName = $request->route()->getName();
 
-        // switch ($routeName)
-        // {
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        // }
+        switch ($routeName)
+        {
+            case RouteNames::DOCTORS_GET_PROFILE:
+                $data['category']   = $this->whenLoaded('category');
+            break;
+        }
 
         return $data;
     }
