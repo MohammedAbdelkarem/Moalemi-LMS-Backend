@@ -8,6 +8,7 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Patient\PatientService;
 use App\Http\Requests\Article\CommentRequest;
+use App\Http\Requests\Media\DeleteMediaRequest;
 use App\Http\Requests\Reservation\AcceptRequest;
 use App\Http\Requests\Reservation\RejectRequest;
 use App\Http\Requests\Reservation\ReportRequest;
@@ -18,6 +19,9 @@ use App\Http\Requests\MedicalProfile\AddMedicinesRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicineRequest;
 use App\Http\Requests\MedicalProfile\AddInstructionsRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
+use App\Http\Requests\Reservation\UploadVisitMediaRequest;
+use App\Http\Requests\UpdateReportMediaRequest;
+use App\Http\Requests\UploadReportMediaRequest;
 
 class ReservationController extends Controller
 {
@@ -140,6 +144,22 @@ class ReservationController extends Controller
     {
         return success(
             $this->patientService->deleteInstruction($instruction_id , $visit_id), 
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function store(UploadVisitMediaRequest $request , $visit_id)
+    {
+        return success(
+            $this->reservationService->uploadReportMedia($request->validated() , $visit_id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+    
+    public function delete(DeleteMediaRequest $request , $visit_id)
+    {
+        return success(
+            $this->reservationService->deleteReportMedia($request->validated() , $visit_id),
             ApiMessages::MSG_SUCCESS
         );
     }

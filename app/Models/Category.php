@@ -25,6 +25,7 @@ class Category extends Model implements HasMedia
         $this->addMediaCollection(MediaCollection::CATEGORY_COLLECTION);
     }
 
+    
     /**
      * @return \App\Models\Category
      */

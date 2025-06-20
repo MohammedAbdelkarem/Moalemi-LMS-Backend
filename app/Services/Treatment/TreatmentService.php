@@ -15,11 +15,11 @@ class TreatmentService
     public function getMedicineHistory($medicine_id , $data)
     {
         $medicine = Medicine::findByIdOrFail($medicine_id);
-
+        // dd($medicine , $medicine_id);
         $this->checkIfHasHistory($medicine);
 
-        $history_ids = $medicine->treatment_history->history_ids;
-
+        $history_ids = $medicine->treatment_history()->pluck('history_ids')->first();
+        // dd($history_ids);
         return getOrPaginate(
             Medicine::withoutGlobalScope(LatestTreatmentScope::class)
                 ->whereIn('id', $history_ids)
@@ -36,7 +36,7 @@ class TreatmentService
 
         $this->checkIfHasHistory($instruction);
 
-        $history_ids = $instruction->treatment_history->history_ids;
+        $history_ids = $instruction->treatment_history()->pluck('history_ids')->first();
 
         return getOrPaginate(
             Instruction::withoutGlobalScope(LatestTreatmentScope::class)

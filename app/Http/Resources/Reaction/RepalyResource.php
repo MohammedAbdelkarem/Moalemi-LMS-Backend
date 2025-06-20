@@ -18,6 +18,7 @@ class RepalyResource extends JsonResource
         $data = [
             'id' => $this->id,
             'replay' => $this->comment,
+            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
 
         if(auth()->user()->isAdmin())

@@ -44,6 +44,13 @@ class Doctor extends Model implements HasMedia
                 ->singleFile();
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
+
     public function shifts()
     {
         return $this->hasMany(Shift::class);

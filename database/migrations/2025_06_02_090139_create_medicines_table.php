@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\DaysToTakeEnum;
+use App\Enums\TreatmentOtherEndDateEnum;
 use App\Enums\TreatmentStatusEnum;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->string('text');
             $table->enum('status' , TreatmentStatusEnum::values());
             $table->date('end_date')->nullable();
-            $table->string('other_end_date')->nullable();
+            $table->enum('other_end_date' , TreatmentOtherEndDateEnum::values())->nullable();
             $table->enum('days_to_take' , DaysToTakeEnum::values());
             $table->foreignId('visit_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->nullable()->constrained()->cascadeOnDelete();

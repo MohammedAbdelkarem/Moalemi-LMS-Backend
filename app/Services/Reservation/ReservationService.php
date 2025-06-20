@@ -18,6 +18,7 @@ use App\Http\Resources\DoctorResouce;
 use App\Services\Base\ContextService;
 use App\Services\Patient\PatientService;
 use App\Http\Resources\Media\MediaResource;
+use App\Services\Media\MediaService;
 
 /**
  * Class ReservationService.
@@ -26,7 +27,8 @@ class ReservationService
 {
     public function __construct(
         protected ContextService $contextService,
-        protected PatientService $patientService
+        protected PatientService $patientService,
+        protected MediaService $mediaService,
     )
     {}
     public function appoint($data)
@@ -210,6 +212,25 @@ class ReservationService
         }
     }
 
+    public function uploadReportMedia($data , $visit_id)
+    {
+        $visit = Visit::findByIdOrFail($visit_id);
+
+        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($visit);
+
+        uploadFileOnMedia($data , $visit , MediaCollection::VISIT_COLLECTION);
+    }
+
+    public function deleteReportMedia($data , $visit_id)
+    {
+        $visit = Visit::findByIdOrFail($visit_id);
+
+        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($visit);
+        
+        $this->mediaService->delete($data);
+    }
+
+
     private function storePatientUpdatedInfo($visit , $patient , $data)
     {
         $visit->patientUpdatedInfo()->create([
@@ -274,7 +295,7 @@ class ReservationService
         $rate = Rate::find($rate_id);
 
         $this->checkIfHasBeenReplayedOnRate($rate);
-        
+
         $rate->doctor_replay = $data['comment'];
 
         $rate->save();

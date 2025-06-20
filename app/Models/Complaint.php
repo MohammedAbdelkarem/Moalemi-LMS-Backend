@@ -36,6 +36,13 @@ class Complaint extends Model implements HasMedia
         return $this->belongsTo(Reservation::class);
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
+
     // /**
     //  * @return \App\Models\Complaint
     //  */

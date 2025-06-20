@@ -19,6 +19,13 @@ class Reservation extends Model implements HasMedia
         $this->addMediaCollection(MediaCollection::RESERVATION_COLLECTION);
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

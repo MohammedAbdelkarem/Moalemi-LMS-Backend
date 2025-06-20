@@ -34,6 +34,12 @@ class Banner extends Model implements HasMedia
         return $this->morphTo();
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+
+        return parent::delete();
+    }
     /**
      * @return \App\Models\Story
      */
