@@ -315,12 +315,12 @@ if (!function_exists('owner_id')) {
 
         if ($returned_owner_id === null)
         {
-            $owner_id = Patient::where('user_id' , $user_id)
+            $owner = Patient::where('user_id' , $user_id)
                         ->where('is_owner' , 1)
-                        ->first()
-                        ->id;
+                        ->first();
 
-            $returned_owner_id = Cache::forever($cacheKey, $owner_id);
+            if($owner)
+                $returned_owner_id = Cache::forever($cacheKey, $owner->id);
         }
 
         return $returned_owner_id;
