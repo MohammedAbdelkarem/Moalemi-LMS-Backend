@@ -31,6 +31,11 @@ class Article extends Model implements HasMedia
         return $this->hasMany(Reaction::class);
     }
 
+    public function comments()
+    {
+        return $this->reactions()->where('type' , ReactionTypeEnum::COMMENT->value);
+    }
+
     public function existsReactions()
     {
         return $this->reactions()->where('status' , ReactionStatusEnum::EXIST->value);
@@ -80,6 +85,13 @@ class Article extends Model implements HasMedia
         ->when(isset($data['text']) , function($query) use ($data) {
             $query->where('title' , 'like' , '%' . $data['text'] . '%')
                     ->orWhere('body' , 'like' , '%' . $data['text'] . '%');
+        })
+        ->when(isset($data['category_ids']) , function($query) use ($data) {
+            return $query->whereHas('doctor' , function($query) use ($data) {
+                return $query->whereHas('subCategories' , function($query) use ($data) {
+                    return $query->whereIn('category_id' , $data['category_ids']);
+                });
+            });
         });
     }
 }

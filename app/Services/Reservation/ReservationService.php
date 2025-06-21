@@ -226,7 +226,7 @@ class ReservationService
         $visit = Visit::findByIdOrFail($visit_id);
 
         $this->contextService->checkIfDoctorCanEditOrChatWithPatient($visit);
-        
+
         $this->mediaService->delete($data);
     }
 
@@ -299,6 +299,55 @@ class ReservationService
         $rate->doctor_replay = $data['comment'];
 
         $rate->save();
+    }
+
+    public function deleteRate($id)
+    {
+        $rate = Rate::find($id);
+
+        $rate->delete();
+    }
+
+    public function getReservationAnalysis($doctor_id)
+    {
+        $totalReservationsCount = Reservation::where('doctor_id' , $doctor_id)
+                ->whereIn('status' , [
+                    ReservationStatusEnum::DONE->value,
+                    ReservationStatusEnum::ACCEPTED->value,
+                    ReservationStatusEnum::REJECTED->value,
+                    ReservationStatusEnum::REJECTED_BY_ADMIN->value,
+                ])
+                ->count();
+        $acceptedReservationsCount = Reservation::where('doctor_id' , $doctor_id)
+                ->whereIn('status' , [
+                    ReservationStatusEnum::DONE->value,
+                    ReservationStatusEnum::ACCEPTED->value,
+                ])
+                ->count();
+        $rejectedReservationsCount = Reservation::where('doctor_id' , $doctor_id)
+                ->whereIn('status' , [
+                    ReservationStatusEnum::REJECTED->value,
+                    ReservationStatusEnum::REJECTED_BY_ADMIN->value,
+                ])
+                ->count();
+        
+        // Initialize percentages
+        $acceptedPercentage = 0;
+        $rejectedPercentage = 0;
+
+        // Calculate percentages if total reservations count is greater than zero
+        if ($totalReservationsCount > 0) {
+            $acceptedPercentage = ($acceptedReservationsCount / $totalReservationsCount) * 100;
+            $rejectedPercentage = ($rejectedReservationsCount / $totalReservationsCount) * 100;
+        }
+
+        return [
+            'total_reservations' => $totalReservationsCount,
+            'accepted_reservations' => $acceptedReservationsCount,
+            'rejected_reservations' => $rejectedReservationsCount,
+            'accepted_percentage' => round($acceptedPercentage, 2), // Round to 2 decimal places
+            'rejected_percentage' => round($rejectedPercentage, 2), // Round to 2 decimal places
+        ];
     }
 
     private function getReservations($doctor_id , $patient_ids , $data , $with = [])

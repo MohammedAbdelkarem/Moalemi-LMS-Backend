@@ -45,6 +45,19 @@ class ArticleService
             ]);
     }
 
+    public function showForAdmin($id)
+    {
+        $this->increaseArticleView($id);
+        
+        return Article::findByIdOrFail($id , [
+            'reactions.user' ,
+             'reactions.replaies' ,
+              'comments.user',
+              'comments.replaies',
+              'doctor.subCategories.category'
+            ]);
+    }
+
     public function store($data)
     {
         $data['doctor_id'] = doctor_id();
@@ -78,6 +91,14 @@ class ArticleService
     {
         return getOrPaginate(
             Article::where('doctor_id' , doctor_id()),
+            $data
+        );
+    }
+
+    public function filterArticles($data)
+    {
+        return getOrPaginate(
+            Article::filter($data),
             $data
         );
     }

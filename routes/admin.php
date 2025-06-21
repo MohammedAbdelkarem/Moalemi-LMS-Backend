@@ -213,6 +213,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
     Route::prefix('doctors')->controller(DoctorController::class)->group(function(){
         Route::get('get' , 'getAll');
+        Route::get('profile/{id}' , 'profile')->name(RouteNames::DOCTORS_GET_PROFILE);
+        Route::delete('rate/delete/{id}' , 'deleteRate');
     });
     Route::prefix('patients')->controller(UserController::class)->group(function(){
         Route::get('get' , 'getPatients');
@@ -225,6 +227,9 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('reservation')->group(function(){
         Route::controller(ReservationController::class)->group(function(){
             Route::post('reject_by_admin/{id}' , 'reject_by_admin');
+            Route::get('get/{id}' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
+            Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
+            Route::get('analysis/{id}' , 'getReservationAnalysis');
         });
     });
 

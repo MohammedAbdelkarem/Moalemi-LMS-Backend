@@ -44,7 +44,7 @@ class ArticleResource extends JsonResource
         switch ($routeName)
         {
             case RouteNames::ARTICLES_SHOW:
-                $data['comments']   = ReactionResource::collection($this->whenLoaded('existsComments'));
+                $data['comments']   = ReactionResource::collection($this->whenLoaded('existsComments') ?? $this->whenLoaded('comments'));
             break;
         }
 

@@ -127,7 +127,7 @@ class PatientService
 
             $this->userService->updateOwnerInfo($data);
         }
-
+        
         $patient = Patient::findByIdOrFail($patient_id);
 
         $patient->update($data);

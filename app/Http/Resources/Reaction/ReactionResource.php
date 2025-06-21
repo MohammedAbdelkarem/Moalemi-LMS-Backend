@@ -32,7 +32,7 @@ class ReactionResource extends JsonResource
             }
             else
             {
-                if($this->status == ReactionStatusEnum::EXIST->value)
+                if($this->status == ReactionStatusEnum::EXIST->value && auth()->user()->isRegularUser())
                     $data['comment'] = $this->comment;
                     $data['is_own_comment'] = $this->user_id == auth()->id();
             }
@@ -45,7 +45,7 @@ class ReactionResource extends JsonResource
 
         if($this->type == ReactionTypeEnum::COMMENT->value)
         {
-            $data['replay'] = RepalyResource::collection($this->whenLoaded('existReplays'));
+            $data['replay'] = RepalyResource::collection($this->whenLoaded('existReplays') ?? $this->whenLoaded('replaies'));
             
             if(auth()->user()->isDoctor())
             {
