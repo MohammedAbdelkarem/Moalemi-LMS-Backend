@@ -34,6 +34,7 @@ class ReactionResource extends JsonResource
             {
                 if($this->status == ReactionStatusEnum::EXIST->value)
                     $data['comment'] = $this->comment;
+                    $data['is_own_comment'] = $this->user_id == auth()->id();
             }
         }
 

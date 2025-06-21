@@ -49,7 +49,8 @@ class DoctorResouce extends JsonResource
             case in_array($routeName, [
                 RouteNames::PATIENT_RELATIONS,
                 RouteNames::PATIENT_RESERVATIONS,
-                RouteNames::RESERVATION_DETAILS
+                RouteNames::RESERVATION_DETAILS,
+                RouteNames::ARTICLES_SHOW
                 ]):
                 $data['sub_categories']   = $this->whenLoaded('subCategories');
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));

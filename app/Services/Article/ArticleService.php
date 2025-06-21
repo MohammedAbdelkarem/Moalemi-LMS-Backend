@@ -40,7 +40,8 @@ class ArticleService
             'existsReactions.user' ,
              'existsReactions.existReplays' ,
               'existsComments.user',
-              'existsComments.existReplays'
+              'existsComments.existReplays',
+              'doctor.subCategories.category'
             ]);
     }
 

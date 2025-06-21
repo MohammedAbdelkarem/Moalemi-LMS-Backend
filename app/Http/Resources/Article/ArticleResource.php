@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Enums\ReactionTypeEnum;
+use App\Http\Resources\DoctorResouce;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\Reaction\ReactionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,6 +29,7 @@ class ArticleResource extends JsonResource
             'views' => $this->views,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::ARTICLE_COLLECTION)),
             'created_at'=> $this->created_at,
+            'doctor' => DoctorResouce::make($this->whenLoaded('doctor')),
         ];
 
         if(auth()->user()->isPatient())

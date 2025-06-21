@@ -31,17 +31,20 @@ class UserService
                 ->where('user_id' , auth()->id())
                 ->first();
 
-        $patient->update($data);
+        if($patient)
+            $patient->update($data);
+
 
         if (isset($data["avatar"])) {
+            if($patient)
                 $patient = $this->StoreUpdate(
-                file: $data["avatar"],
-                path: "patients/{$patient->id}",
-                model: $patient,
-                column: "avatar",
-                deleteImage: true,
-                singleFilePath: $patient->avatar ?? ""
-            );
+                    file: $data["avatar"],
+                    path: "patients/{$patient->id}",
+                    model: $patient,
+                    column: "avatar",
+                    deleteImage: true,
+                    singleFilePath: $patient->avatar ?? ""
+                );
 
 
                 $user = $this->StoreUpdate(

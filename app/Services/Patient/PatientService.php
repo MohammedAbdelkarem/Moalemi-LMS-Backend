@@ -66,7 +66,7 @@ class PatientService
         ];
 
         $patientData['avatar'] = $data['avatar'] ?? null;
-        
+
         $patient = $this->storePatientData($patientData);
 
         if (isset($data["avatar"]) && $patient->avatar == null) {
@@ -121,7 +121,7 @@ class PatientService
 
     public function updatePatientInfo($data , $patient_id)
     {
-        if($patient_id == owner_id())
+        if(owner_id() != null && $patient_id == owner_id())
         {
             $data['relation'] = 'me';
 
