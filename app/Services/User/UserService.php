@@ -43,6 +43,7 @@ class UserService
                 singleFilePath: $patient->avatar ?? ""
             );
 
+
                 $user = $this->StoreUpdate(
                 file: $data["avatar"],
                 path: "users/{$user->id}",

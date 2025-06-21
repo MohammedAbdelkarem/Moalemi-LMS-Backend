@@ -65,6 +65,8 @@ class PatientService
             'notes' => $data['notes'] ?? null,
         ];
 
+        $patientData['avatar'] = $data['avatar'] ?? null;
+        
         $patient = $this->storePatientData($patientData);
 
         if (isset($data["avatar"]) && $patient->avatar == null) {
