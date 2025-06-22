@@ -45,7 +45,9 @@ class ReactionResource extends JsonResource
 
         if($this->type == ReactionTypeEnum::COMMENT->value)
         {
-            $data['replay'] = RepalyResource::collection($this->whenLoaded('existReplays') ?? $this->whenLoaded('replaies'));
+            $data['replay'] = (auth()->user()->isAdmin())
+            ? RepalyResource::collection($this->whenLoaded('replaies'))
+            : RepalyResource::collection($this->whenLoaded('existReplays'));
             
             if(auth()->user()->isDoctor())
             {

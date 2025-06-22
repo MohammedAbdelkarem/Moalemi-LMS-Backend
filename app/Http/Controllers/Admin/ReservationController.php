@@ -23,10 +23,30 @@ class ReservationController extends Controller
         );
     }
 
-    public function getReservations(Request $request , $id)
+    public function getReservationsForDoctor(Request $request , $id)
     {
         return success(
             $this->reservationService->getrDoctorReservations($id , $request->all()),
+            ApiMessages::MSG_SUCCESS,
+            ReservationResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function getReservationsForUser(Request $request , $id)
+    {
+        return success(
+            $this->reservationService->getrDoctorReservations($id , $request->all()),
+            ApiMessages::MSG_SUCCESS,
+            ReservationResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function filter(Request $request)
+    {
+        return success(
+            $this->reservationService->filterReservations($request->all()),
             ApiMessages::MSG_SUCCESS,
             ReservationResource::class,
             $request->has('per_page')

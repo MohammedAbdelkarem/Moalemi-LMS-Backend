@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\RouteNames;
+use App\Http\Controllers\Admin\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\ReactionController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Media\StoryController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Media\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\System\Info\FAQController;
 use App\Http\Controllers\System\Info\TosController;
 use App\Http\Controllers\System\Info\CityController;
@@ -219,17 +221,29 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('patients')->controller(UserController::class)->group(function(){
         Route::get('get' , 'getPatients');
     });
-    Route::prefix(prefix: 'article/reactions')->controller(ReactionController::class)->group(function(){
-        Route::get('likes/{article_id}' , 'getLikes');
-        Route::get('comments/{article_id}' , 'getCommentsForAdmin');
+    Route::prefix('article/reactions')->controller(ReactionController::class)->group(function(){
+        Route::delete('deleteComment/{id}' , 'unComment');
+        Route::delete('deleteReplay/{id}' , 'unReplay');
+    });
+    Route::prefix('article')->controller(ArticleController::class)->group(function(){
+        Route::get('filter' , 'filter');
+        Route::delete('delete/{id}' , 'destroy');
+        Route::get('show/{id}' , 'show')->name(RouteNames::ARTICLES_SHOW);
     });
 
     Route::prefix('reservation')->group(function(){
         Route::controller(ReservationController::class)->group(function(){
             Route::post('reject_by_admin/{id}' , 'reject_by_admin');
-            Route::get('get/{id}' , 'getReservations')->name(RouteNames::DOCTOR_RESERVATIONS);
+            Route::get('get/{id}' , 'getReservationsForDoctor')->name(RouteNames::DOCTOR_RESERVATIONS);
+            Route::get('filter' , 'filter')->name(RouteNames::ADMIN_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::get('analysis/{id}' , 'getReservationAnalysis');
+        });
+    });
+
+    Route::prefix('patient')->group(function(){
+        Route::controller(PatientController::class)->group(function(){
+            Route::get('relations/{id}' , 'index')->name(RouteNames::PATIENT_RELATIONS);
         });
     });
 

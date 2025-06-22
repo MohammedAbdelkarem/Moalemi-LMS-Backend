@@ -12,6 +12,7 @@ class AdminProfileResource extends JsonResource
     use ImagesHelper;
     public function toArray(Request $request): array
     {
+        
         return [
             "is_me"         => $this->id == auth()->id(),
             "id"            => $this->id,
@@ -30,7 +31,7 @@ class AdminProfileResource extends JsonResource
             "is_active"     => (bool) !$this->deactive_at,
             "created_at"    => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i a"),
             "updated_at"    => Carbon::parse($this->updated_at)->translatedFormat("Y-m-d g:i a"),
-            "created_by"    => new AdminListResource($this->adminProfile->creator),
+            // "created_by"    => new AdminListResource($this->adminProfile->creator),
         ];
     }
 }

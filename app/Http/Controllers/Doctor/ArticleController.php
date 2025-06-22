@@ -15,7 +15,10 @@ class ArticleController extends Controller
 {
     public function __construct(
         protected ArticleService $articleService,
-    ) {}
+        
+    ) {
+        $this->middleware('user.banned')->only(['store', 'update' , 'destroy']);
+    }
 
     // public function index(GetItemsRequest $request)
     // {

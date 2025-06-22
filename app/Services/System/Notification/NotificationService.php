@@ -22,7 +22,7 @@ class NotificationService extends MainService
     {
         return Notification::query()
             ->whereHas("creator", function ($query) {
-                $query->whereNot("role_id", 3);
+                $query->whereNotIn("role_id", [3,4]);
             })
             ->withCount(['receivers', 'views'])
             ->orderBy('created_at', 'desc')

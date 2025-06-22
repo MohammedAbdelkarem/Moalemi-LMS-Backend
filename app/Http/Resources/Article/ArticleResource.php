@@ -37,14 +37,17 @@ class ArticleResource extends JsonResource
             $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();
             $data['liked'] = $this->reactions()->where('user_id' , auth()->id())->where('type' , ReactionTypeEnum::LIKE->value)->exists();
         }
-        $data['able_to_comment'] = ableToComment($this);
+        if(auth()->user()->isRegularUser())
+            $data['able_to_comment'] = ableToComment($this);
 
         $routeName = $request->route()->getName();
 
         switch ($routeName)
         {
             case RouteNames::ARTICLES_SHOW:
-                $data['comments']   = ReactionResource::collection($this->whenLoaded('existsComments') ?? $this->whenLoaded('comments'));
+                $data['comments']   = (auth()->user()->isAdmin())
+                ? ReactionResource::collection($this->whenLoaded('comments'))
+                : ReactionResource::collection($this->whenLoaded('existsComments'));
             break;
         }
 

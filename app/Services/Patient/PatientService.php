@@ -28,15 +28,21 @@ class PatientService
         protected ContextService $contextService,
     ) {}
     
-    public function getMyRelations()
+    public function getMyRelations($user_id = null)
     {
-        $patients = Patient::where('user_id', auth()->id())->with([
+        $id = $user_id ?? auth()->id();
+
+        $patients = Patient::where('user_id', $id)->with([
             'instructions' ,
                'medicines.medicine_days.day' ,
                 'medicines.medicine_days.medicine_times' ,
                   'reservations.doctor.subCategories',
                   'user'
             ])->get();
+        
+        if($user_id != null)
+            foreach($patients as $patient)
+                $patient->unsetRelation('reservations');
 
         return $patients;
     }
@@ -127,7 +133,7 @@ class PatientService
 
             $this->userService->updateOwnerInfo($data);
         }
-        
+
         $patient = Patient::findByIdOrFail($patient_id);
 
         $patient->update($data);

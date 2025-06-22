@@ -76,6 +76,23 @@ class Reservation extends Model implements HasMedia
 
         ->when(isset($data['date']) , function($query) use ($data) {
             $query->whereDate('date' , $data['date']);
+        })
+
+        ->when(isset($data['search']) , function($query) use ($data) {
+            $query
+            ->whereHas('patient' , function($query) use ($data) {
+                $query->where('full_name' , 'like' , '%' . $data['search'] . '%');
+            })
+            ->orWhereHas('doctor' , function($query) use ($data) {
+                $query->where('clinic_name' , 'like' , '%' . $data['search'] . '%');
+            });
+        })
+        
+        ->when(isset($data['start_time']) , function($query) use ($data) {
+            $query->where('time_to_come' , '>=', $data['start_time']);
+        })
+        ->when(isset($data['end_time']) , function($query) use ($data) {
+            $query->where('time_to_come' , '<=', $data['end_time']);
         });
     }
 }

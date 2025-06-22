@@ -47,7 +47,7 @@ class ArticleService
 
     public function showForAdmin($id)
     {
-        $this->increaseArticleView($id);
+        // $this->increaseArticleView($id);
         
         return Article::findByIdOrFail($id , [
             'reactions.user' ,

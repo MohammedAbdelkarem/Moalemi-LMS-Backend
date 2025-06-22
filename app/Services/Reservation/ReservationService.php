@@ -359,9 +359,11 @@ class ReservationService
         );
     }
 
-    public function getUserReservations($data)
+    public function getUserReservations($data , $user_id = null)
     {
-        $patient_ids = Patient::where('user_id' , auth()->id())->pluck('id');
+        $id = $user_id ?? auth()->id();
+
+        $patient_ids = Patient::where('user_id' , $id)->pluck('id');
         
         return $this->getReservations(null  ,$patient_ids , $data , [
             'doctor.subCategories',
@@ -373,6 +375,14 @@ class ReservationService
     {
         return $this->getReservations($doctor_id , null , $data , [
             'patient',
+        ]);
+    }
+
+    public function filterReservations($data)
+    {
+        return $this->getReservations(null , null , $data ,[
+            'doctor.subCategories',
+            'patient'
         ]);
     }
 

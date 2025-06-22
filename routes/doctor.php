@@ -3,15 +3,16 @@
 use App\Constants\RouteNames;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\Doctor\PlanController;
+use App\Http\Controllers\Media\MediaController;
 use App\Http\Controllers\Doctor\ShiftController;
+use App\Http\Controllers\Patient\ListController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\ArticleController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Doctor\ReservationController;
 use App\Http\Controllers\Doctor\TransactionController;
-use App\Http\Controllers\Media\MediaController;
-use App\Http\Controllers\TreatmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,19 +24,25 @@ use App\Http\Controllers\TreatmentController;
 */
 
 // No Auth Needed
-Route::middleware([])->group(function () {
+Route::middleware([])->withoutMiddleware('is_doctor')->group(function () {
+    Route::prefix('list')->group(function(){
+        Route::controller(ListController::class)->group(function(){
+            Route::get('categories' , 'categories');
+            Route::get('subcategories' , 'subcategories');
+            Route::get('cities' , 'cities');
+        });
+    }); 
     
+    Route::prefix('plans')->controller(PlanController::class)->group(function () {
+        Route::get('get' , 'getPlans');
+    });
 });
 
 //Auth Needed
 Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.active', 'user.verified']], function () {
     Route::prefix('subscription')->controller(PlanController::class)->group(function () {
-        Route::get('subscripe/{id}' , 'subscripe');
+        Route::get('subscripe/{id}' , 'subscripe')->middleware('user.banned');
         Route::get('get' , 'getSubscriptions');
-    });
-
-    Route::prefix('plans')->controller(PlanController::class)->group(function () {
-        Route::get('get' , 'getPlans');
     });
 
     Route::prefix('transactions')->controller(TransactionController::class)->group(function () {

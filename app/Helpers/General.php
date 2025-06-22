@@ -6,6 +6,8 @@ use App\Models\Story;
 use App\Models\Visit;
 use App\Models\Banner;
 use App\Models\Doctor;
+use App\Models\Replay;
+use App\Models\Article;
 use App\Models\Patient;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
@@ -17,10 +19,9 @@ use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\StoryStatusEnum;
 use App\Enums\ReactionTypeEnum;
-use App\Constants\MediaCollection;
 use App\Enums\ReactionStatusEnum;
+use App\Constants\MediaCollection;
 use App\Enums\ReservationStatusEnum;
-use App\Models\Replay;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -400,8 +401,15 @@ if (!function_exists('ableToReplay')) {
         $replayExist = Replay::where('reaction_id' , $comment->id)
                 ->where('status' , ReactionStatusEnum::EXIST->value)
                 ->exists();
+
+        $author_id = Article::find($comment->article_id)->doctor_id;
+        $doctor = Doctor::find($author_id);
+
+        $is_author = auth()->id() == $doctor->user_id;
+
+        $able = !$replayExist && $is_author;
         
-        return ! $replayExist;
+        return $able;
     }
 }
 

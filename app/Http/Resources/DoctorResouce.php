@@ -50,7 +50,8 @@ class DoctorResouce extends JsonResource
                 RouteNames::PATIENT_RELATIONS,
                 RouteNames::PATIENT_RESERVATIONS,
                 RouteNames::RESERVATION_DETAILS,
-                RouteNames::ARTICLES_SHOW
+                RouteNames::ARTICLES_SHOW,
+                RouteNames::ADMIN_RESERVATIONS,
                 ]):
                 $data['sub_categories']   = $this->whenLoaded('subCategories');
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));

@@ -6,6 +6,7 @@ use App\Models\Patient;
 use App\Models\MedicineDay;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
+use App\Http\Resources\AddedByResource;
 use App\Http\Resources\DoctorResouce;
 use App\Http\Resources\Patient\PatientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,7 +21,7 @@ class MedicineResource extends JsonResource
     public function toArray(Request $request): array
     {
         $userable = $this->whenLoaded('userable');
-        
+
         $data = [
             'id' => $this->id,
             'text' => $this->text,
@@ -35,7 +36,7 @@ class MedicineResource extends JsonResource
             'updated_at' => $this->updated_at,
             'is_able_to_edit' => treatmentAbleToEdit($this),
             'has_history' => hasHistory($this),
-            'added_by' => ($this->userable_type == Patient::class) ? PatientResource::make($this->userable) : DoctorResouce::make($userable),
+            'added_by' => AddedByResource::make($this->userable)
         ];
 
         $routeName = $request->route()->getName();

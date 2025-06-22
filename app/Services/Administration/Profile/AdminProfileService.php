@@ -45,7 +45,7 @@ class AdminProfileService extends MainService
         $end_date,
     ) {
         return User::query()
-            ->whereNot('role_id', 3)
+            // ->whereNot('role_id', 3)
             ->when($role_id, function ($query) use ($role_id) {
                 $query->where('role_id', $role_id);
             })
@@ -119,7 +119,7 @@ class AdminProfileService extends MainService
             with: ['city', 'archivedAccount'],
             withTrashed: true,
             asQuery: true,
-        )->whereNot("role_id", 3)
+        )
             ->with('adminProfile.creator')
             ->findOrFail($id);
     }

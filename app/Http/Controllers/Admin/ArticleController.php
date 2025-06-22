@@ -7,11 +7,13 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Article\ArticleService;
 use App\Http\Resources\Article\ArticleResource;
+use App\Services\Reaction\ReactionService;
 
 class ArticleController extends Controller
 {
     public function __construct(
         protected ArticleService $articleService,
+        protected ReactionService $reactionService,
     ) {}
 
     public function filter(Request $request)
@@ -19,7 +21,8 @@ class ArticleController extends Controller
         return success(
             $this->articleService->filterArticles($request->all()),
             ApiMessages::MSG_SUCCESS,
-            ArticleResource::class
+            ArticleResource::class,
+            $request->has('per_page')
         );
     }
     public function show($id)
