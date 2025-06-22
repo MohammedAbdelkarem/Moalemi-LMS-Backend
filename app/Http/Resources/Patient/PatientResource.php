@@ -43,6 +43,8 @@ class PatientResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
+        $data['complaints'] = $this->whenLoaded('complaints');
+
         switch ($routeName)
         {
             case RouteNames::PATIENT_RELATIONS:

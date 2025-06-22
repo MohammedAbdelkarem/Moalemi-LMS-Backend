@@ -17,7 +17,6 @@ use App\Http\Controllers\System\Info\PrivacyPolicyController;
 use App\Http\Controllers\Users\Profile\NumberUpdateController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
-use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,14 +75,16 @@ Route::group(['middleware' => ['is_user', 'auth:api', 'token.access_api', 'user.
     });
 
     //Customer Card
-    Route::prefix("customer-cards/message")->controller(CustomerServiceMessageController::class)->group(function () {
-        Route::post("/", "store");
-    });
     Route::prefix("customer-cards")->controller(CustomerServiceCardController::class)->group(function () {
+        Route::get("/", "indexUser")->name(RouteNames::CUSTOMER_CARD_LIST);
+        Route::get("/types-status", "getTypesStatus");
+        Route::get("/{id}", "showUser");
         Route::post("/", "store");
-        Route::put("/{id}", "update");
+        // Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
     });
+
+
 });
 
 //No Auth Needed
@@ -100,15 +101,6 @@ Route::group([], function () {
         Route::get("/{id}", "show");
     });
 
-    //Customer Card
-    Route::prefix("customer-cards/message")->controller(CustomerServiceMessageController::class)->group(function () {
-        Route::get("/", "index")->name(RouteNames::CUSTOMER_CARD_MESSAGE_LIST);
-    });
-    Route::prefix("customer-cards")->controller(CustomerServiceCardController::class)->group(function () {
-        Route::get("/", "indexUser")->name(RouteNames::CUSTOMER_CARD_LIST);
-        Route::get("/types-status", "getTypesStatus");
-        Route::get("/{id}", "showUser");
-    });
 
     //Notifications
     Route::prefix("notifications")->controller(NotificationController::class)->group(function () {

@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\CustomerServiceCard\CustomerServiceCardStatus;
 use App\Enums\CustomerServiceCard\CustomerServiceCardTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,12 +17,14 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string("title");
             $table->text("description");
+            $table->dateTime('date')->nullable();
+            $table->text('admin_answer')->nullable();
             $table->enum("type", CustomerServiceCardTypes::values());
-            $table->enum("status", CustomerServiceCardStatus::values())->default(CustomerServiceCardStatus::PENDING->value);
             $table->softDeletes();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

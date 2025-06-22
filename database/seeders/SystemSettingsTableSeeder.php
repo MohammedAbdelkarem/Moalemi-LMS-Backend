@@ -47,6 +47,33 @@ class SystemSettingsTableSeeder extends Seeder
                 'created_at' => '2025-02-06 20:56:00',
                 'updated_at' => '2025-02-06 20:56:00',
             ),
+            3 =>
+            array(
+                'id' => 4,
+                'key' => 'Steps Reward Value',
+                'value' => '1',
+                'update_by' => NULL,
+                'created_at' => '2025-02-06 20:56:00',
+                'updated_at' => '2025-02-06 20:56:00',
+            ),
+            4 =>
+            array(
+                'id' => 5,
+                'key' => 'Steps Daily Goal',
+                'value' => '10000',
+                'update_by' => NULL,
+                'created_at' => '2025-02-06 20:56:00',
+                'updated_at' => '2025-02-06 20:56:00',
+            ),
+            5 =>
+            array(
+                'id' => 6,
+                'key' => 'Steps Minimum Balance to Get',
+                'value' => '10',
+                'update_by' => NULL,
+                'created_at' => '2025-02-06 20:56:00',
+                'updated_at' => '2025-02-06 20:56:00',
+            ),
         ));
     }
 }

@@ -121,6 +121,8 @@ return [
     // "time_between_store_service_cards"      => 60,      //Minutes
     "time_between_two_serveic_messages"     => 10,  //Seconds 60 * 5
     // "time_between_two_serveic_messages"     => 60 * 5,  //Seconds 60 * 5
+    "max_media_per_customer_card"           => 3,
+
 
     /*
     |--------------------------------------------------------------------------

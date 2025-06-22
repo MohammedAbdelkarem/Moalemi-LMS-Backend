@@ -37,6 +37,9 @@ class ReservationResource extends JsonResource
             'created_at' => $this->created_at,
         ];
 
+        
+        $data['complaints'] = $this->whenLoaded('complaints');
+
         if(auth()->user()->isPatient())
             $data['able_to_cancel'] = ableToCancel($this);
 

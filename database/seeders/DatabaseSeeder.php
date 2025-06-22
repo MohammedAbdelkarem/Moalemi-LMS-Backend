@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SystemSettingsTableSeeder::class);
 
         $this->call(CustomerCardsTableSeeder::class);
-        $this->call(CustomerServiceMessagesTableSeeder::class);
+        
 
         $this->call(NotificationsTableSeeder::class);
 

@@ -21,4 +21,12 @@ class ComplaintController extends Controller
         );
     }
 
+    public function process($id)
+    {
+        return createdSuccess(
+            $this->complaintService->process($id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
 }

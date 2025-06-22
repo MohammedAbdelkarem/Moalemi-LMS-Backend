@@ -36,7 +36,7 @@ class ReservationController extends Controller
     public function getReservationsForUser(Request $request , $id)
     {
         return success(
-            $this->reservationService->getrDoctorReservations($id , $request->all()),
+            $this->reservationService->getUserReservations($request->all() , $id),
             ApiMessages::MSG_SUCCESS,
             ReservationResource::class,
             $request->has('per_page')

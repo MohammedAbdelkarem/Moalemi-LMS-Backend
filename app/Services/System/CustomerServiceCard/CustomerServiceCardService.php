@@ -30,9 +30,12 @@ class CustomerServiceCardService extends MainService
         $user = auth()->user();
 
         return CustomerServiceCard::query()
-            // ->where("user_id", auth()->id()) //TODO:TEMPLATE IF user can only see his customer cards
+            ->where("user_id", auth()->id())
             ->when($status, function ($query) use ($status) {
-                $query->where("status", $status);
+                if ($status == CustomerServiceCardStatus::PENDING->value)
+                    $query->whereNull('admin_answer');
+                elseif ($status == CustomerServiceCardStatus::CLOSED->value)
+                    $query->whereNotNull('admin_answer');
             })
             ->when($type, function ($query) use ($type) {
                 $query->where("type", $type);
@@ -40,7 +43,10 @@ class CustomerServiceCardService extends MainService
             ->when($search, function ($query) use ($search) {
                 $query->whereAny(['title', 'description'], 'like', '%' . strtolower($search) . '%');
             })
-            ->withCount("messages")
+            ->with([
+                "user" => fn($q) => $q->withTrashed(),
+                'media'
+            ])
             ->orderByDesc("created_at")
             ->paginate($per_page);
     }
@@ -49,7 +55,10 @@ class CustomerServiceCardService extends MainService
     {
         return CustomerServiceCard::query()->withTrashed()
             ->when($status, function ($query) use ($status) {
-                $query->where("status", $status);
+                if ($status == CustomerServiceCardStatus::PENDING->value)
+                    $query->whereNull('admin_answer');
+                elseif ($status == CustomerServiceCardStatus::CLOSED->value)
+                    $query->whereNotNull('admin_answer');
             })
             ->when($type, function ($query) use ($type) {
                 $query->where("type", $type);
@@ -57,64 +66,111 @@ class CustomerServiceCardService extends MainService
             ->when($search, function ($query) use ($search) {
                 $query->whereAny(['title', 'description'], 'like', '%' . strtolower($search) . '%');
             })
-            ->with(["user" => function ($query) {
-                $query->withTrashed()->with('role');
-            }])
-            ->withCount("messages")
+            ->with([
+                "user" => fn($q) => $q->withTrashed(),
+                'media'
+            ])
             ->orderByDesc("created_at")
             ->paginate($per_page);
     }
 
     public function store($validatedData)
     {
-        CustomerServiceCard::create([
+        DB::beginTransaction();
+        $card = CustomerServiceCard::create([
             "user_id"       => auth()->id(),
             "title"         => $validatedData["title"],
             "description"   => $validatedData["description"],
+            "date"          => $validatedData["date"],
             "type"          => $validatedData["type"],
-            "status"        => CustomerServiceCardStatus::PENDING->value,
         ]);
+
+        if (isset($validatedData["media"]))
+            $this->storeMedia($card, $validatedData);
+
+        DB::commit();
+    }
+
+    public function storeMedia($card, $validatedData)
+    {
+        foreach ($validatedData["media"] as $media) {
+            $card->media()->create([
+                "media_url" => $this->storeFile(
+                    file: $media,
+                    path: "customer_card/{$card->id}",
+                ),
+            ]);
+        }
     }
 
     public function showUser($id)
     {
         return CustomerServiceCard::query()
-            // ->where("user_id", auth()->id()) //TODO:TEMPLATE IF user can only see his customer cards
-            ->withCount("messages")
-            ->with(["user" => function ($query) {
-                $query->withTrashed();
-            }])
+            ->where("user_id", auth()->id())
+            ->with([
+                "user" => fn($q) => $q->withTrashed(),
+                'media'
+            ])
             ->findOrFail($id);
     }
+
 
     public function showAdmin($id)
     {
         return CustomerServiceCard::withTrashed()
-            ->with(["user" => function ($query) {
-                $query->withTrashed();
-            }])
-            ->withCount("messages")
+            ->with([
+                "user" => fn($q) => $q->withTrashed(),
+                'media'
+            ])
             ->findOrFail($id);
     }
 
     public function update($id, $validatedData)
     {
         $card = findByIdOrFail(CustomerServiceCard::class, $id, Resources::CARD, 'female', asQuery: true);
-        if (auth()->user()->role_id == 3)
-            $card->whereNot("status", CustomerServiceCardStatus::CLOSED->value)->where("user_id", auth()->id());
-
+        if (auth()->user()->isUser())
+            $card->whereNull('admin_answer')->where("user_id", auth()->id());
         $card = $card->firstOrFail();
+
+        DB::beginTransaction();
         $card->update([
             "title"        => $validatedData["title"],
             "description"  => $validatedData["description"],
             "type"         => $validatedData["type"],
+            "date"         => $validatedData["date"],
         ]);
+
+        $this->updateMedia($card, $validatedData);
+
+        DB::commit();
     }
 
-    public function close($id)
+    public function updateMedia($card, $validatedData)
     {
-        $card = findByIdOrFail(CustomerServiceCard::class, $id, Resources::CARD, 'female');
-        $card->status = CustomerServiceCardStatus::CLOSED->value;
+        //Delete Media
+        if (isset($validatedData["delete_media"]))
+            foreach ($validatedData["delete_media"] as $dm) {
+                $dbMedia = $card->media()->where("id", $dm)->first();
+                $this->storageDelete($dbMedia->media_url ?? "");
+                $dbMedia->delete();
+            }
+
+        //Add New Media
+        if (isset($validatedData["media"]) && auth()->user()->isUser())
+            foreach ($validatedData["media"] as $media) {
+                $card->media()->create([
+                    "media_url" => $this->storeFile(
+                        file: $media,
+                        path: "customer_card/{$card->id}",
+                    ),
+                ]);
+            }
+    }
+
+    public function close($validatedData)
+    {
+        $card = findByIdOrFail(CustomerServiceCard::class, $validatedData['card_id'], Resources::CARD, 'female');
+        $card->admin_answer = $validatedData['answer'];
         $card->save();
 
         $this->sendDirectNotification(

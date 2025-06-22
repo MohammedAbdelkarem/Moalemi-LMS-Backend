@@ -14,15 +14,23 @@ class CustomerServiceCard extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = "customer_cards";
-    protected $guarded = ['id'];
+    protected $fillable = [
+        "user_id",
+        "title",
+        "description",
+        "type",
+        "date",
+        "admin_answer",
+        "deleted_at",
+    ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function messages(): HasMany
+    public function media(): HasMany
     {
-        return $this->hasMany(CustomerServiceMessage::class, "card_id");
+        return $this->hasMany(CustomerServiceMedia::class, "card_id");
     }
 }

@@ -30,6 +30,9 @@ class DoctorResouce extends JsonResource
             'rate' => $this->total_rate,
         ];
 
+        
+        $data['complaints'] = $this->whenLoaded('complaints');
+
         if(auth()->user()->isPatient())
         {
             $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();

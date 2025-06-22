@@ -2,8 +2,8 @@
 
 use App\Constants\RouteNames;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\ComplaintController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OTPController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
@@ -31,7 +31,8 @@ use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
-use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceMessageController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -145,6 +146,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::get("/", "index")->name(RouteNames::ADMIN_CITIES_SELECTABLE_LIST);
             Route::get("/{id}", "show");
         });
+        Route::apiResource('/settings', SystemSettingController::class);
     });
 
     //Logs
@@ -166,18 +168,13 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::delete("/{id}", "destroy");
     });
 
-    //Customer Service
-    Route::prefix("customer-cards/message")->controller(CustomerServiceMessageController::class)->group(function () {
-        Route::get("/", "index")->name(RouteNames::CUSTOMER_CARD_MESSAGE_LIST);
-        Route::post("/", "store");
-        // Route::delete("/{id}", "destroy");
-    });
+    //customer service 
     Route::prefix("customer-cards")->controller(CustomerServiceCardController::class)->group(function () {
-        Route::get("/", "indexAdmin")->name(RouteNames::CUSTOMER_CARD_LIST);
+        Route::get("/", "indexAdmin")->name(RouteNames::ADMIN_CUSTOMER_CARD_LIST);
         Route::get("/types-status", "getTypesStatus");
         Route::put("/{id}", "update");
         Route::get("/{id}", "showAdmin");
-        Route::get("/close/{id}", "close");
+        Route::post("/close", "close");
         Route::delete("/{id}", "destroyByAdmin");
     });
 
@@ -235,6 +232,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::controller(ReservationController::class)->group(function(){
             Route::post('reject_by_admin/{id}' , 'reject_by_admin');
             Route::get('get/{id}' , 'getReservationsForDoctor')->name(RouteNames::DOCTOR_RESERVATIONS);
+            Route::get('getPatient/{id}' , 'getReservationsForUser')->name(RouteNames::PATIENT_RESERVATIONS);
             Route::get('filter' , 'filter')->name(RouteNames::ADMIN_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::get('analysis/{id}' , 'getReservationAnalysis');
@@ -244,6 +242,12 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('patient')->group(function(){
         Route::controller(PatientController::class)->group(function(){
             Route::get('relations/{id}' , 'index')->name(RouteNames::PATIENT_RELATIONS);
+        });
+    });
+
+    Route::prefix('complaints')->group(function(){
+        Route::controller(ComplaintController::class)->group(function(){
+            Route::get('process/{id}' , 'process');
         });
     });
 

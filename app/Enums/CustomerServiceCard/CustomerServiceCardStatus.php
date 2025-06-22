@@ -5,7 +5,6 @@ namespace App\Enums\CustomerServiceCard;
 enum CustomerServiceCardStatus: string
 {
     case PENDING = 'pending';
-    case OPEN = 'open';
     case CLOSED = 'closed';
 
     public static function values(): array

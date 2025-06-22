@@ -367,7 +367,7 @@ class ReservationService
         
         return $this->getReservations(null  ,$patient_ids , $data , [
             'doctor.subCategories',
-            'visit.rate'
+            'visit.rate',
         ]);
     }
 
@@ -395,7 +395,8 @@ class ReservationService
                  'visit.patientUpdatedInfo' ,
                   'visit.medicines.medicine_days.day' ,
                   'visit.medicines.medicine_days.medicine_times' ,
-                   'visit.instructions'
+                   'visit.instructions',
+                   'complaints'
         ]);
 
         return $reservation;

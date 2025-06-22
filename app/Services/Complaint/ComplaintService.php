@@ -2,6 +2,7 @@
 
 namespace App\Services\Complaint;
 
+use App\Enums\ComplaintStatusEnum;
 use App\Models\Complaint;
 
 /**
@@ -22,5 +23,14 @@ class ComplaintService
     public function getForPatient($patient_id)
     {
         return Complaint::where('patient_id' , $patient_id)->with('patient' , 'doctor' , 'reservation')->get();
+    }
+
+    public function process($id)
+    {
+        $complaint = Complaint::find($id);
+
+        $complaint->status = ComplaintStatusEnum::PROCESSED->value;
+
+        $complaint->save();
     }
 }

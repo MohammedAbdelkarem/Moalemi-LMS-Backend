@@ -20,7 +20,7 @@ class PlanController extends Controller
     public function index(GetItemsRequest $request)
     {
         return success(
-            $this->planService->getAll( $request->validated()),
+            $this->planService->getAll($request->validated()),
             ApiMessages::MSG_SUCCESS,
             PlanResource::class,
             $request->has('per_page')
@@ -44,10 +44,10 @@ class PlanController extends Controller
         );
     }
 
-    public function update(UpdatePlanRequest $request , $id)
+    public function update(UpdatePlanRequest $request, $id)
     {
         return success(
-            $this->planService->update($request->validated() , $id),
+            $this->planService->update($request->validated(), $id),
             ApiMessages::MSG_SUCCESS
         );
     }

@@ -35,7 +35,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\System\CustomerService\CustomerServiceCard;
-use App\Models\System\CustomerService\CustomerServiceMessage;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -243,10 +242,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CustomerServiceCard::class, "user_id");
     }
 
-    public function CustomerServiceCardMessages(): HasMany
-    {
-        return $this->hasMany(CustomerServiceMessage::class, "user_id");
-    }
 
     //Ban System
     public function bans(): HasMany

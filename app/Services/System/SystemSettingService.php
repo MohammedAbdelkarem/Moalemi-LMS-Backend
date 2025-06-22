@@ -13,9 +13,7 @@ class SystemSettingService extends MainService
 {
     public function index()
     {
-        return Cache::remember('system-settings', 3600 * 24, function () {
-            return SystemSetting::orderBy('id')->with("updated_by")->get();
-        });
+        return SystemSetting::orderBy('id')->with("updated_by")->get();
     }
 
     public function update($id, $validatedData)
@@ -24,7 +22,5 @@ class SystemSettingService extends MainService
         $feature->value = $validatedData["value"];
         $feature->update_by = auth()->id();
         $feature->save();
-        if (Cache::has("system-settings"))
-            Cache::forget("system-settings");
     }
 }

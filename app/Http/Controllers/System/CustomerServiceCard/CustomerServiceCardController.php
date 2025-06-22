@@ -5,14 +5,10 @@ namespace App\Http\Controllers\System\CustomerServiceCard;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\System\CustomerServiceCard\CustomerServiceCardRequest;
-use App\Http\Resources\System\CustomerServiceCard\CustomerServiceCardListResource;
 use App\Http\Resources\System\CustomerServiceCard\CustomerServiceCardResource;
-use App\Models\System\CustomerService\CustomerServiceCard;
-use App\Policies\System\CustomerService\CustomerServiceCardPolicy;
 use App\Services\System\CustomerServiceCard\CustomerServiceCardService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class CustomerServiceCardController extends Controller
 {
@@ -40,7 +36,7 @@ class CustomerServiceCardController extends Controller
         return success(
             $this->cardService->indexUser($per_page, $search, $type, $status, $my),
             ApiMessages::MSG_SUCCESS,
-            CustomerServiceCardListResource::class,
+            CustomerServiceCardResource::class,
             true
         );
     }
@@ -55,7 +51,7 @@ class CustomerServiceCardController extends Controller
         return success(
             $this->cardService->indexAdmin($per_page, $search, $type, $status),
             ApiMessages::MSG_SUCCESS,
-            CustomerServiceCardListResource::class,
+            CustomerServiceCardResource::class,
             true
         );
     }
@@ -94,10 +90,10 @@ class CustomerServiceCardController extends Controller
         );
     }
 
-    public function close(string $id): JsonResponse
+    public function close(CustomerServiceCardRequest $request): JsonResponse
     {
         return success(
-            $this->cardService->close($id),
+            $this->cardService->close($request->validated()),
             ApiMessages::MSG_SUCCESS
         );
     }
