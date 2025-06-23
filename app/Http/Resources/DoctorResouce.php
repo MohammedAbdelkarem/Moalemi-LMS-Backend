@@ -7,6 +7,8 @@ use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\SubCategory\SubCategoryResource;
+use App\Http\Resources\Users\Profile\UserListResource;
+use App\Http\Resources\Users\Profile\UserSugResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DoctorResouce extends JsonResource
@@ -63,6 +65,7 @@ class DoctorResouce extends JsonResource
             case RouteNames::DOCTORS_GET_PROFILE:
                 $data['sub_categories']   = SubCategoryResource::collection($this->whenLoaded('subCategories'));
                 $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
+                $data['user'] = UserListResource::make($this->whenLoaded('user'));
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
                 $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));

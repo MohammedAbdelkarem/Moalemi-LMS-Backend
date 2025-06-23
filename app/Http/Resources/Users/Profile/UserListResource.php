@@ -13,7 +13,7 @@ class UserListResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        if (!$this->phone_number && auth()->user() && auth()->user()->role_id != 3)
+        if (!$this->phone_number && auth()->user() && auth()->user()->isAdmin())
             $phone_number = $this->archivedAccount->phone_number;
         else {
             $phone_number = $this->phone_number ?? "";
@@ -27,6 +27,7 @@ class UserListResource extends JsonResource
             "city_name"         => $this->city["name_" . app()->getLocale()] ?? "",
             "phone_number"      => $phone_number,
             "created_at"        => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i a"),
+            "is_doctor"         => $this->role_id == 3,
         ];
 
         //Admin Info

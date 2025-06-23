@@ -19,6 +19,7 @@ class ShiftResource extends JsonResource
             'id' => $this->id,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'day_id' => $this->day_id,
         ];
 
         // $routeName = $request->route()->getName();

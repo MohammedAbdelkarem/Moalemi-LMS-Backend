@@ -14,7 +14,7 @@ class UserSugResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        if (!$this->phone_number && auth()->user() && auth()->user()->role_id != 3)
+        if (!$this->phone_number && auth()->user() && auth()->user()->isAdmin())
             $phone_number = $this->archivedAccount->phone_number;
         else {
             $phone_number = $this->phone_number ?? "";
