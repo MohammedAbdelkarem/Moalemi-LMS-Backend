@@ -34,15 +34,15 @@ class ComplaintResource extends JsonResource
         $data['reservation'] = $this->whenLoaded('reservation');
         $routeName = $request->route()->getName();
 
-        switch ($routeName)
-        {
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
-            break;
-            case RouteNames::EXAMPLE:
-                $data['foo']   = $this->bar;
-            break;
-        }
+        // switch ($routeName)
+        // {
+        //     case RouteNames::EXAMPLE:
+        //         $data['foo']   = $this->bar;
+        //     break;
+        //     case RouteNames::EXAMPLE:
+        //         $data['foo']   = $this->bar;
+        //     break;
+        // }
 
         return $data;
     }
