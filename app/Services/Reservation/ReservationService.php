@@ -396,7 +396,9 @@ class ReservationService
                   'visit.medicines.medicine_days.day' ,
                   'visit.medicines.medicine_days.medicine_times' ,
                    'visit.instructions',
-                   'complaints'
+                   'complaints.patient',
+                  'complaints.doctor',
+                  'complaints.reservation',
         ]);
 
         return $reservation;

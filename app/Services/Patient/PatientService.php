@@ -38,7 +38,9 @@ class PatientService
                 'medicines.medicine_days.medicine_times' ,
                   'reservations.doctor.subCategories',
                   'user',
-                  'complaints'
+                  'complaints.patient',
+                  'complaints.doctor',
+                  'complaints.reservation',
             ])->get();
         
         if($user_id != null)

@@ -33,7 +33,7 @@ class DoctorResouce extends JsonResource
         ];
 
         
-        $data['complaints'] = $this->whenLoaded('complaints');
+        $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));
 
         if(auth()->user()->isPatient())
         {

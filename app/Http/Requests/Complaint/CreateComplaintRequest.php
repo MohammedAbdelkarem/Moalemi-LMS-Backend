@@ -28,7 +28,13 @@ class CreateComplaintRequest extends BaseApiRequest
             'patient_id' => ['required' , 'exists:patients,id'],
             'reservation_id' => ['nullable' , 'exists:reservations,id'],
             'value' => ['required_without:other_value' , new Enum(ComplaintEnum::class)],
-            'other_value' => ['required_without:value' , 'string' , 'max:65000']
+            'other_value' => ['required_without:value' , 'string' , 'max:65000'],
+            "images" => ['nullable' , 'array'],
+            "images.*.image" => [
+                'required',
+               'mimes:jpeg,jpg,png,webp',
+               'max:4096'
+            ],
         ];
     }
 }

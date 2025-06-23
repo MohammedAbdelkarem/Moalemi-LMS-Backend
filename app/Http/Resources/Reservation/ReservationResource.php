@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\ComplaintResource;
 use App\Http\Resources\Media\MediaResource;
-use App\Http\Resources\Patient\PatientResource;
 use App\Http\Resources\Visit\VisitResource;
+use App\Http\Resources\Patient\PatientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReservationResource extends JsonResource
@@ -38,7 +39,7 @@ class ReservationResource extends JsonResource
         ];
 
         
-        $data['complaints'] = $this->whenLoaded('complaints');
+        $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));
 
         if(auth()->user()->isPatient())
             $data['able_to_cancel'] = ableToCancel($this);

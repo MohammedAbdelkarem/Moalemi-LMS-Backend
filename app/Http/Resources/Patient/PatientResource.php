@@ -5,6 +5,7 @@ namespace App\Http\Resources\Patient;
 use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
+use App\Http\Resources\ComplaintResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Instruction\InstructionResource;
 use App\Http\Resources\Medicine\MedicineResource;
@@ -43,7 +44,7 @@ class PatientResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
-        $data['complaints'] = $this->whenLoaded('complaints');
+        $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));
 
         switch ($routeName)
         {

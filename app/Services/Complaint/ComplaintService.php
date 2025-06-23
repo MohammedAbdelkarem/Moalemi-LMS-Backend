@@ -2,6 +2,7 @@
 
 namespace App\Services\Complaint;
 
+use App\Constants\MediaCollection;
 use App\Enums\ComplaintStatusEnum;
 use App\Models\Complaint;
 
@@ -12,7 +13,10 @@ class ComplaintService
 {
     public function store($data)
     {
-        Complaint::create($data);
+        $Complaint = Complaint::create($data);
+
+        if(isset($data['images']))
+            uploadFilesOnMedia($data['images'] , $Complaint , MediaCollection::COMPLAINT_COLLECTION);
     }
 
     public function getForDoctor($doctor_id)
