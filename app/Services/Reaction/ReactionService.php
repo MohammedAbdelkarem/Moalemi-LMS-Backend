@@ -154,7 +154,7 @@ class ReactionService
     {
         return Reaction::where('article_id' , $article_id)
                         ->where('type' , $type)
-                        ->with('user')->get();
+                        ->with('user' , 'existReplays')->get();
     }
 
     private function updateArticleCounters($article , $operation , $type)
