@@ -34,11 +34,13 @@ class InstructionResource extends JsonResource
             'is_latest' => $this->is_latest,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'is_able_to_edit' => treatmentAbleToEdit($this),
             'has_history' => hasHistory($this),
             'added_by' => AddedByResource::make($this->userable)
         ];
 
+        
+        if(auth()->user()->isPatient())
+            $data['is_able_to_edit'] = treatmentAbleToEdit($this);
         // $routeName = $request->route()->getName();
 
         // switch ($routeName)
