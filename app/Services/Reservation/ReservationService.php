@@ -201,7 +201,7 @@ class ReservationService
                 $this->storePatientUpdatedInfo($visit , $patient , $data);
             else{
                 if($patient->is_owner == 1 && isset($data['new_weight']) && $patient->weight != $data['new_weight'])
-                $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['new_weight']);
+                    $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['new_weight']);
                 
                 $visit->patientUpdatedInfo()->update([
                     'current_height' => $data['new_height'] ?? null,
@@ -382,6 +382,7 @@ class ReservationService
     {
         return $this->getReservations($doctor_id , null , $data , [
             'patient',
+            'visit'
         ]);
     }
 
@@ -389,7 +390,8 @@ class ReservationService
     {
         return $this->getReservations(null , null , $data ,[
             'doctor.subCategories',
-            'patient'
+            'patient',
+            'visit'
         ]);
     }
 
