@@ -24,6 +24,12 @@ class UpdateArticleRequest extends BaseApiRequest
         return [
             'title' => ['required', 'string','max:255'],
             'body'  => ['required','string'],
+            'images' => ['nullable' , 'array'],
+            'images.*.image' => [
+                'required',
+               'mimes:jpeg,jpg,png,webp',
+               'max:4096'
+            ],
         ];
     }
 }

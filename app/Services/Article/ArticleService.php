@@ -64,9 +64,8 @@ class ArticleService
         
         $item = Article::create($data);
 
-        if(isset($data['image']))
-            uploadFileOnMedia($data['image'] , $item , MediaCollection::ARTICLE_COLLECTION);
-
+        if(isset($data['images']))
+            uploadFilesOnMedia($data['images'] , $item , MediaCollection::ARTICLE_COLLECTION);
 
         $item->save();
     }
@@ -76,6 +75,9 @@ class ArticleService
         $item =  Article::findByIdOrFail($id);
 
         $item->update($data);
+        
+        if(isset($data['images']))
+            updateFilesOnMedia($data['images'] , $item , MediaCollection::ARTICLE_COLLECTION);
 
         $item->save();
     }

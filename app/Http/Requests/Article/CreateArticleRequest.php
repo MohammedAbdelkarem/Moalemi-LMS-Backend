@@ -25,10 +25,11 @@ class CreateArticleRequest extends BaseApiRequest
         return [
             'title' => ['required', 'string','max:255'],
             'body'  => ['required','string'],
-            'image'                      => [
+            'images' => ['nullable' , 'array'],
+            'images.*.image' => [
                 'required',
-                'mimes:jpeg,jpg,png,webp',
-                'max:4096'
+               'mimes:jpeg,jpg,png,webp',
+               'max:4096'
             ],
         ];
     }
