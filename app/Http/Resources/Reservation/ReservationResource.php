@@ -74,7 +74,7 @@ class ReservationResource extends JsonResource
             case RouteNames::RESERVATION_DETAILS_FOR_DOCTOR:
                 $data['media'] = MediaResource::collection($this->getMedia(MediaCollection::RESERVATION_COLLECTION));
                 $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
-                // $data['patient'] = PatientResource::make($this->whenLoaded('patient'));
+                $data['patient'] = PatientResource::make($this->whenLoaded('patient'));
                 $data['visit'] = VisitResource::make($this->whenLoaded('visit'));
             break;
         }
