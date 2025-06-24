@@ -22,7 +22,7 @@ class BannerResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'bannerable_id' => $this->bannerable_id,
-            'bannerable_type' => getModelName($this->bannerable_type),
+            'bannerable_type' => $this->bannerable_type,
             'external_link' => $this->external_link,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::BANNER_COLLECTION)),
         ];

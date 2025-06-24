@@ -19,7 +19,7 @@ return [
     CustomerServiceCardTypes::INQUIRY->value    => 'Inquiry',
     CustomerServiceCardTypes::SUGGESTION->value => 'Suggestion',
 
-    CustomerServiceCardStatus::OPEN->value      => 'Open',
+    // CustomerServiceCardStatus::OPEN->value      => 'Open',
     CustomerServiceCardStatus::CLOSED->value    => 'Closed',
     CustomerServiceCardStatus::PENDING->value   => 'Pending',
 

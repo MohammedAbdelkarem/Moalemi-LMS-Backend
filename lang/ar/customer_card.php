@@ -19,7 +19,7 @@ return [
     CustomerServiceCardTypes::INQUIRY->value    => 'استفسار',
     CustomerServiceCardTypes::SUGGESTION->value => 'اقتراح',
 
-    CustomerServiceCardStatus::OPEN->value      => 'نشطة',
+    // CustomerServiceCardStatus::OPEN->value      => 'نشطة',
     CustomerServiceCardStatus::CLOSED->value    => 'مغلق',
     CustomerServiceCardStatus::PENDING->value   => 'بالانتظار',
 
