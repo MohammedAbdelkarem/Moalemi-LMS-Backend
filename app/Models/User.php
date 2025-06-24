@@ -328,11 +328,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Message::class);
     }
 
-    public function DailySteps()
-    {
-        return $this->hasMany(DailyStep::class);
-    }
-
     public function Patients()
     {
         return $this->hasMany(Patient::class);

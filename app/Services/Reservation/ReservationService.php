@@ -199,7 +199,10 @@ class ReservationService
 
             if(!$recordExist)
                 $this->storePatientUpdatedInfo($visit , $patient , $data);
-            else
+            else{
+                if($patient->is_owner == 1 && isset($data['new_weight']) && $patient->weight != $data['new_weight'])
+                $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['new_weight']);
+                
                 $visit->patientUpdatedInfo()->update([
                     'current_height' => $data['new_height'] ?? null,
                     'current_weight' => $data['new_weight'] ?? null,
@@ -207,6 +210,7 @@ class ReservationService
                     'current_chronic_diseases' => $data['new_chronic_diseases'] ?? null,
                     'current_notes' => $data['new_notes'] ?? null,
                 ]);
+            }
             
             $this->updatePatientTableInfo($data , $patient);
         }
@@ -233,6 +237,9 @@ class ReservationService
 
     private function storePatientUpdatedInfo($visit , $patient , $data)
     {
+        if($patient->is_owner == 1 && isset($data['new_weight']) && $patient->weight != $data['new_weight'])
+            $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['new_weight']);
+        
         $visit->patientUpdatedInfo()->create([
             'old_height' => $patient->height,
             'old_weight' => $patient->weight,

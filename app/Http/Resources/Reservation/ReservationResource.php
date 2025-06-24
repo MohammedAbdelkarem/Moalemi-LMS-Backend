@@ -5,6 +5,7 @@ namespace App\Http\Resources\Reservation;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Enums\ReservationStatusEnum;
 use App\Http\Resources\DoctorResouce;
 use App\Http\Resources\ComplaintResource;
 use App\Http\Resources\Media\MediaResource;
@@ -43,6 +44,9 @@ class ReservationResource extends JsonResource
 
         if(auth()->user()->isPatient())
             $data['able_to_cancel'] = ableToCancel($this);
+
+        if(auth()->user()->isDoctor() && $this->status == ReservationStatusEnum::DONE->value)
+            $data['is_able_to_edit'] = ableToChangeByDoctor($this->visit);
 
         $routeName = $request->route()->getName();
 

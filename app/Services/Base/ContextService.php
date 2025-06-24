@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\Reservation;
 use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
+use App\Models\OwnerPatientWeightHistory;
 
 /**
  * Class ContextService.
@@ -65,5 +66,14 @@ class ContextService
     {
         if(!ableToChangeByDoctor($visit))
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
+    }
+
+    public function createWeightHistory($patient_id , $prev_weight , $current_weight)
+    {
+        OwnerPatientWeightHistory::create([
+            'patient_id' => $patient_id,
+            'prev_weight' => $prev_weight,
+            'current_weight' => $current_weight,
+        ]);
     }
 }

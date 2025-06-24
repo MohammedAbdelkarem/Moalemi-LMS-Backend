@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('steps', function (Blueprint $table) {
+        Schema::create('owner_patient_weight_histories', function (Blueprint $table) {
             $table->id();
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->integer('number_of_steps')->default(0);
-            $table->foreignId('daily_steps_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->integer('prev_weight');
+            $table->integer('current_weight');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('steps');
+        Schema::dropIfExists('owner_patient_weight_histories');
     }
 };

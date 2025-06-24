@@ -33,6 +33,11 @@ class Patient extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function weight_history()
+    {
+        return $this->hasMany(OwnerPatientWeightHistory::class);
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);

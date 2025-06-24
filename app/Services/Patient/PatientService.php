@@ -139,6 +139,9 @@ class PatientService
 
         $patient = Patient::findByIdOrFail($patient_id);
 
+        if($patient->is_owner == 1 && isset($data['weight']) && $patient->weight != $data['weight'])
+            $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['weight']);
+        
         $patient->update($data);
 
         if (isset($data["avatar"])) {
