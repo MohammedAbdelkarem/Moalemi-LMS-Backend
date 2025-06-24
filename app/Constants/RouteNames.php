@@ -10,6 +10,7 @@ final class RouteNames
     const ARTICLES_LIST                                       = 'articles.itme';
     const ARTICLES_SHOW                                         = 'articles.show';
     const PATIENT_RESERVATIONS                                         = 'patient.reservations';
+    const RESERVATION_DETAILS_FOR_DOCTOR                                         = 'reservation.details.for-doctor';
     const ADMIN_CUSTOMER_CARD_LIST                                         = 'admin.customer-card.list';
     const ADMIN_RESERVATIONS                                         = 'admin.reservations';
     const PATIENT_PERMANENT_PROFILE                                         = 'patient.permanent-profile';

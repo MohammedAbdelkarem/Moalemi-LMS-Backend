@@ -30,7 +30,8 @@ class MedicineDayResource extends JsonResource
             case in_array($routeName, [
                 RouteNames::PATIENT_RELATIONS,
                 RouteNames::RESERVATION_DETAILS,
-                RouteNames::PATIENT_PERMANENT_PROFILE
+                RouteNames::PATIENT_PERMANENT_PROFILE,
+                RouteNames::RESERVATION_DETAILS_FOR_DOCTOR,
                 ]):
                 $data['medicine_time'] = MedicineTimeResource::collection($this->whenLoaded('medicine_times'));
                 $data['day'] = DayResource::make($this->whenLoaded('day'));

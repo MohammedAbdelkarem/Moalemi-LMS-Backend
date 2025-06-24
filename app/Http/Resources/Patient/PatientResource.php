@@ -53,6 +53,11 @@ class PatientResource extends JsonResource
                 $data['medicines'] = MedicineResource::collection($this->whenLoaded('medicines'));
                 $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
             break;
+            case RouteNames::RESERVATION_DETAILS_FOR_DOCTOR:
+                $data['instructions'] = InstructionResource::collection($this->whenLoaded('instructions'));
+                $data['medicines'] = MedicineResource::collection($this->whenLoaded('medicines'));
+                $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
+            break;
             case RouteNames::PATIENT_PERMANENT_PROFILE:
                 $data['instructions'] = InstructionResource::collection($this->whenLoaded('permanent_instructions'));
                 $data['medicines'] = MedicineResource::collection($this->whenLoaded('permanent_medicines'));

@@ -41,6 +41,8 @@ class ArticleResource extends JsonResource
             $data['liked'] = $this->reactions()->where('user_id' , auth()->id())->where('type' , ReactionTypeEnum::LIKE->value)->exists();
             $data['able_to_comment'] = ableToComment($this);
         }
+        if(auth()->user()->isDoctor())
+            $data['is_my_article'] = doctor_id() == $this->doctor_id;
 
         $routeName = $request->route()->getName();
 
