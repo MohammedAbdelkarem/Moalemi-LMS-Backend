@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\SubCategory\SubCategoryResource;
 use App\Http\Resources\Users\Profile\UserListResource;
@@ -30,9 +31,10 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
+            'logo' =>  MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
         ];
 
-        
+        $data['sub_categories']   = $this->whenLoaded('subCategories');
         $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));
 
         if(auth()->user()->isPatient())
@@ -70,7 +72,7 @@ class DoctorResouce extends JsonResource
                 $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
                 $data['rates']   = $this->whenLoaded('rates');
-                $data['articles']   = $this->whenLoaded('articles');
+                $data['articles']   = ArticleResource::collection($this->whenLoaded('articles'));
             break;
         }
 

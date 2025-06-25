@@ -15,6 +15,7 @@ return [
     'medical_profile_already_exist'     => 'لقد قمت بإنشاء ملفك الطبي بالفعل!',
     'can_not_delete_shift_cuz_reservations_exists'                     => 'لا يمكن حذف الوقت لان تم الحجز فيه',
     'method_not_allowed'                => 'الإجراء غير صالح',
+    'sleep_already_exist'                => 'لقد قمت بتحديد ساعات نومك , انتظر لليوم القادم',
     'can_not_get_history_for_the_history'                => 'لا يمكن عرض الأرشيف لعنصر مؤرشف ',
     'can_not_update_history'                => 'يمنع تعديل الأدوية أو التوصيات المؤرشفة!',
     'can_not_update_expired'                => 'لا يمكن النعديل لأنها منتهية الوقت',

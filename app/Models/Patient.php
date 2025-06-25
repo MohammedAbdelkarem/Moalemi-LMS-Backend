@@ -33,6 +33,15 @@ class Patient extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function waters()
+    {
+        return $this->hasMany(Water::class);
+    }
+
+    public function sleeps()
+    {
+        return $this->hasMany(sleep::class);
+    }
     public function weight_history()
     {
         return $this->hasMany(OwnerPatientWeightHistory::class);
