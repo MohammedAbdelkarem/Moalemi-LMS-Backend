@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('owner_patient_weight_histories', function (Blueprint $table) {
+        Schema::create('bmi_classifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->double('prev_weight');
-            $table->double('current_weight');
+            $table->string('classification');
+            $table->double('start');
+            $table->double('end')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('owner_patient_weight_histories');
+        Schema::dropIfExists('bmi_classifications');
     }
 };

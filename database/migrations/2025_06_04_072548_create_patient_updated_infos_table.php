@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('visit_id')->constrained()->cascadeOnDelete();
             //modified columns
-            $table->integer('old_height')->nullable();
-            $table->integer('current_height')->nullable();
+            $table->double('old_height')->nullable();
+            $table->double('current_height')->nullable();
             
-            $table->integer('old_weight')->nullable();
-            $table->integer('current_weight')->nullable();
+            $table->double('old_weight')->nullable();
+            $table->double('current_weight')->nullable();
 
             $table->enum('old_blood_type' , BloodTypeEnum::values())->nullable();
             $table->enum('current_blood_type' , BloodTypeEnum::values())->nullable();

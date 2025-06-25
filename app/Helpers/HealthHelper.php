@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 if (!function_exists('BMI')) {
     function BMI($weight , $height)
     {
@@ -15,8 +17,10 @@ if (!function_exists('cm_to_m')) {
 }
 
 if (!function_exists('water_goal')) {
-    function water_goal($weight , $is_male , $age)
+    function water_goal($weight , $is_male , $birth_date)
     {
+        $age = age($birth_date);
+
         $factorial = 0;
 
         if($is_male)
@@ -37,8 +41,10 @@ if (!function_exists('water_goal')) {
 }
 
 if (!function_exists('sleep_goal')) {
-    function sleep_goal($age)
+    function sleep_goal($birth_date)
     {
+        $age = age($birth_date);
+        
         $goal = 0;
         
         if($age < 18)
@@ -63,5 +69,12 @@ if (!function_exists('calories')) {
     function calories($steps)
     {
         return $steps * 0.05;
+    }
+}
+
+if (!function_exists('age')) {
+    function age($birth_date)
+    {
+        return Carbon::parse($birth_date)->age;
     }
 }
