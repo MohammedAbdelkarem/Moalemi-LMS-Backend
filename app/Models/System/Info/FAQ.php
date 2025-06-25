@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class FAQ extends Model
 {
     use HasFactory;
-    protected $table = "faqs";
+    protected $table = "faq";
     protected $fillable = [
         "faq_category_id",
         "question",
