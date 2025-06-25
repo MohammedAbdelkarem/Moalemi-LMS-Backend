@@ -48,12 +48,12 @@ class FAQService extends MainService
 
     public function show($id)
     {
-        return findByIdOrFail(FAQ::class, $id, Resources::ITEM);
+        return findByIdOrFail(FAQ::class, $id, 'male' , Resources::ITEM);
     }
 
     public function update($validatedData, $id)
     {
-        $faq = findByIdOrFail(FAQ::class, $id);
+        $faq = findByIdOrFail(FAQ::class, $id , 'male' , Resources::ITEM);
 
         $faq->update([
             'question'  => $validatedData["question"],
@@ -66,6 +66,6 @@ class FAQService extends MainService
 
     public function destroy($id)
     {
-        findByIdOrFail(FAQ::class, $id)->delete();
+        findByIdOrFail(FAQ::class, $id , 'male' , Resources::ITEM)->delete();
     }
 }
