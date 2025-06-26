@@ -46,7 +46,10 @@ class VisitResource extends JsonResource
                 $data['patientUpdatedInfo'] = $this->whenLoaded('patientUpdatedInfo');
                 $data['medicines'] = MedicineResource::collection($this->whenLoaded('medicines'));
                 $data['instructions'] = InstructionResource::collection($this->whenLoaded('instructions'));
-            case RouteNames::RESERVATION_DETAILS_FOR_DOCTOR:
+            case in_array($routeName, [
+                RouteNames::PATIENT_RELATIONS,
+                RouteNames::RESERVATION_DETAILS_FOR_DOCTOR
+            ]):
                 $data['media'] = MediaResource::collection($this->getMedia(MediaCollection::VISIT_COLLECTION));
                 // $data['rate']   = $this->whenLoaded('rate');
                 $data['patientUpdatedInfo'] = $this->whenLoaded('patientUpdatedInfo');

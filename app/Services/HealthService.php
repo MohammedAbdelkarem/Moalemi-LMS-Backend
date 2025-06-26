@@ -3,14 +3,18 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Models\Step;
 use App\Models\Sleep;
 use App\Models\Water;
 use App\Models\Patient;
+use App\Models\StepTime;
 use App\Models\WaterTime;
+use App\Models\StepProfit;
 use App\Models\BmiClassification;
 use App\Constants\ExceptionMessages;
 use App\Services\Base\ContextService;
 use App\Models\OwnerPatientWeightHistory;
+use App\Models\Users\Profile\LoginHistory;
 
 /**
  * Class HealthService.
@@ -53,7 +57,7 @@ class HealthService
         ];
     }
 
-    public function getClassification($bmi)
+    private function getClassification($bmi)
     {
         return BmiClassification::where('start' , '<=' , $bmi)
                             ->where('end' , '>=' , $bmi)
@@ -71,16 +75,14 @@ class HealthService
     {
         $patient = Patient::findByIdOrFail(owner_id());
 
-        $water['goal'] = water_goal($patient->weight , $patient->is_male , $patient->birth_date);
-
         $water = Water::firstOrCreate(
             [
-                'patient_id' => $patient->id,
+                'user_id' => auth()->id(),
                 'created_at' => date('Y-m-d')
             ],
             [
-                'patient_id' => $patient->id,
-                'goal' => $water['goal'],
+                'user_id' => auth()->id(),
+                'goal' => water_goal($patient->weight , $patient->is_male , $patient->birth_date),
             ]
         );
 
@@ -95,27 +97,104 @@ class HealthService
         ]);
     }
     
-    public function getWaterHistory()
+    public function getWaterHistory($data)
     {
-        
+        return getOrPaginate(
+            Water::where('user_id' , auth()->id())->orderBy('created_at' , 'desc')->with('water_times'),
+            $data
+        );
     }
 
-    public function storeSleep($data)
+    public function storeSleep($amount)
     {
-        $existSleep = Sleep::where('patient_id' , owner_id())->where('created_at' , Carbon::today())->first();
+        $existSleep = Sleep::where('user_id' , auth()->id())->where('created_at' , Carbon::today())->first();
 
         if($existSleep)
             return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
 
+        $patient = Patient::findByIdOrFail(owner_id());
+
         Sleep::create([
-            'patient_id' => owner_id(),
-            'goal' => $data['goal'],
-            'total_amount' => $data['total_amount']
+            'user_id' => auth()->id(),
+            'goal' => sleep_goal($patient->birth_date),
+            'total_amount' => $amount
         ]);
     }
 
-    public function getSleepHistory()
+    public function getSleepHistory($data)
     {
-
+        return getOrPaginate(
+            Sleep::where('user_id' , auth()->id())->orderBy('created_at' , 'desc'),
+            $data
+        );
     }
+
+    public function setStepCalcAsActive($loginHistoryId)
+    {
+        LoginHistory::where('user_id', auth()->id())
+            ->whereHas('token', function ($q) {
+                $q->where('expire_at', '>', Carbon::now());
+            })
+            ->update([
+                'steps_calculator' => 0
+            ]);
+        
+        LoginHistory::where('id', $loginHistoryId)
+            ->update([
+                'steps_calculator' => 1
+            ]);
+    }
+
+    public function storeStep($data)
+    {
+        $patient = Patient::findByIdOrFail(owner_id());
+
+        $step = Step::firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'created_at' => date('Y-m-d')
+            ],
+            [
+                'user_id' => auth()->id(),
+                'goal' => steps_daily_goal(),
+                'goal_reward' => step_reward_value(),
+            ]
+        );
+
+        $step->total_amount += $data['amount'];
+
+        $step->distance = distance($step->total_amount);
+
+        $step->calories = calories($step->total_amount);
+
+        $step->save();
+
+        if($step->total_amount > $step->goal)
+        {
+            $profitExists = StepProfit::where('step_id' , $step->id)->exists();
+
+            if(!$profitExists)
+            {
+                StepProfit::create([
+                    'step_id' => $step->id,
+                    'balance' => $step->goal_reward,
+                ]);
+            }
+        }
+
+        StepTime::create([
+            'water_id' => $step->id,
+            'amount' => $data['amount'],
+            'time' => $data['time'],
+        ]);
+    }
+
+    public function getStepsHistory($data)
+    {
+        return getOrPaginate(
+            Step::where('user_id' , auth()->id())->orderBy('created_at' , 'desc')->with('steps_times'),
+            $data
+        );
+    }
+    
 }

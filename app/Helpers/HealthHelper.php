@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Services\System\SystemSettingService;
 
 if (!function_exists('BMI')) {
     function BMI($weight , $height)
@@ -76,5 +77,26 @@ if (!function_exists('age')) {
     function age($birth_date)
     {
         return Carbon::parse($birth_date)->age;
+    }
+}
+
+if (!function_exists('step_reward_value')) {
+    function step_reward_value()
+    {
+        return (new SystemSettingService)->index()[3]["value"];
+    }
+}
+
+if (!function_exists('steps_daily_goal')) {
+    function steps_daily_goal()
+    {
+        return (new SystemSettingService)->index()[4]["value"];
+    }
+}
+
+if (!function_exists('stpes_minimum_balance_to_get')) {
+    function stpes_minimum_balance_to_get()
+    {
+        return (new SystemSettingService)->index()[5]["value"];
     }
 }

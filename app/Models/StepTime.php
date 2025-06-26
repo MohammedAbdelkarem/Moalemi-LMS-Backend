@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Water extends Model
+class StepTime extends Model
 {
     use HasFactory;
     
@@ -13,19 +13,15 @@ class Water extends Model
         'id'
     ];
 
-
-    public function user()
+    public function step()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Step::class);
     }
 
-    public function water_times()
-    {
-        return $this->hasMany(WaterTime::class);
-    }
+
 
     // /**
-    //  * @return \App\Models\Water
+    //  * @return \App\Models\StepTime
     //  */
     // public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
     // {

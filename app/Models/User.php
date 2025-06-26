@@ -137,6 +137,22 @@ class User extends Authenticatable implements JWTSubject
 
     //Account Relations
 
+    
+    public function waters()
+    {
+        return $this->hasMany(Water::class);
+    }
+
+    public function sleeps()
+    {
+        return $this->hasMany(sleep::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasMany(Step::class);
+    }
+
     public function favorites()
     {
         return $this->hasMany(Favorite::class);

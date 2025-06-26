@@ -54,6 +54,7 @@ class ReservationResource extends JsonResource
         {
             case RouteNames::PATIENT_RELATIONS:
                 $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
+                $data['visit'] = VisitResource::make($this->whenLoaded('visit'));
             break;
             case RouteNames::DOCTOR_RESERVATIONS:
                 $data['patient'] = PatientResource::make($this->whenLoaded('patient'));

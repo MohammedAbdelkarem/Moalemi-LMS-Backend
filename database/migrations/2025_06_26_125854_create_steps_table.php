@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('waters', function (Blueprint $table) {
+        Schema::create('steps', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('total_amount')->default(0);
             $table->double('goal');
+            $table->double('goal_reward');
+            $table->double('distance')->default(0);
+            $table->double('calories')->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('waters');
+        Schema::dropIfExists('steps');
     }
 };

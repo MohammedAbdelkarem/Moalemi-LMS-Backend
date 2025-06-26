@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sleeps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('total_amount')->default(0);
             $table->double('goal');
             $table->timestamps();
