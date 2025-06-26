@@ -46,7 +46,7 @@ class AuthController extends Controller
         return Success(
             $this->authService->activeSessions(),
             ApiMessages::MSG_SUCCESS,
-            LoginHistoryResource::class,
+            // LoginHistoryResource::class,
         );
     }
 

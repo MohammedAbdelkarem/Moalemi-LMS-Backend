@@ -20,7 +20,7 @@ class LoginHistoryService extends MainService
             ->paginate($per_page);
     }
 
-    public function store(int $user_id, string $device, $ip)
+    public function store(int $user_id, string $device, $ip , $device_id)
     {
         $loginHistory = LoginHistory::create([
             "ip_address" => $ip ? $ip->ip : "0.0.0.0",
@@ -29,6 +29,7 @@ class LoginHistoryService extends MainService
             "city" => $ip ? $ip->cityName : "N/A",
             "user_id" => $user_id,
             "device_name" => $device,
+            "device_id" => $device_id,
         ]);
         $this->sendLoginNotification($device, $ip, $user_id);
         return $loginHistory;

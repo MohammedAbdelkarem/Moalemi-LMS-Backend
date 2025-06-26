@@ -103,7 +103,8 @@ class OTPService extends MainService
             $loginHistory = $this->loginHistoryService->store(
                 $user->id,
                 $validatedData["device_name"],
-                $ip
+                $ip,
+                $validatedData['device_id'],
             );
 
             //invalidate the token

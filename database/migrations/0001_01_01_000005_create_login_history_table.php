@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string("device_name");
             $table->string("country")->nullable();
             $table->string("city")->nullable();
+            $table->boolean('steps_calculator')->default(0);
+            $table->string("device_id")->nullable();
             $table->timestamps();
         });
     }

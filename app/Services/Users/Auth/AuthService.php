@@ -156,6 +156,7 @@ class AuthService extends MainService
                 $q->where('expire_at', '>', Carbon::now());
             })
             ->orderByDesc('created_at')
+            ->with('token')
             ->get();
     }
 
