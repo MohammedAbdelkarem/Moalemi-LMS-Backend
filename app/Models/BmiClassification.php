@@ -12,6 +12,7 @@ class BmiClassification extends Model
     protected $guarded = [
         'id'
     ];
+    // protected $table = 'bmi_classifications';
 
 
     // /**

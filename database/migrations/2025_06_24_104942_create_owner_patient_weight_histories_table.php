@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('owner_patient_weight_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->double('prev_weight');
+            $table->double('prev_weight')->default(0);
             $table->double('current_weight');
             $table->timestamps();
         });

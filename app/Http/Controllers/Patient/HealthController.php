@@ -14,6 +14,7 @@ class HealthController extends Controller
         protected HealthService $healthService
     ){}
 
+    //weight
     public function getWeightHistory(Request $request)
     {
         return success(
@@ -32,6 +33,7 @@ class HealthController extends Controller
         );
     }
 
+    //bmi
     public function getBMI()
     {
         return success(
@@ -40,6 +42,7 @@ class HealthController extends Controller
         );
     }
 
+    //water
     public function getWaterGoal()
     {
         return success(
@@ -66,6 +69,7 @@ class HealthController extends Controller
         );
     }
 
+    //sleep
     public function getSleepHistory(Request $request)
     {
         return success(
@@ -84,6 +88,7 @@ class HealthController extends Controller
         );
     }
 
+    //steps
     public function getStepHistory(Request $request)
     {
         return success(
@@ -97,7 +102,7 @@ class HealthController extends Controller
     public function storeStep(TimeRequest $request)
     {
         return success(
-            $this->healthService->storeSleep($request->validated()),
+            $this->healthService->storeStep($request->validated()),
             ApiMessages::MSG_SUCCESS,
         );
     }

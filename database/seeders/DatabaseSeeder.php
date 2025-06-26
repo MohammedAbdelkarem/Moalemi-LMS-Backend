@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BmiClassification;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MainSeeder::class);
         $this->call(DaySeeder::class);
+        $this->call(BmiClassificationSeeder::class);
 
 
 

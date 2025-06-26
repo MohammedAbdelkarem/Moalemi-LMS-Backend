@@ -251,7 +251,10 @@ class PatientService
         $patient = Patient::create($data);
 
         if($patient->is_owner == 1)
+        {
             $this->userService->updateOwnerInfo($data);
+            $this->contextService->createWeightHistory($patient->id , 0 , $data['weight']);
+        }
 
         return $patient;
     }

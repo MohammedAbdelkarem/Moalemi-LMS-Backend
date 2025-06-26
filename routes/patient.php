@@ -11,6 +11,7 @@ use App\Http\Controllers\Patient\ArticleController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Patient\FavoriteController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Patient\HealthController;
 use App\Http\Controllers\Patient\ListController;
 use App\Http\Controllers\Patient\ReservationController;
 use App\Http\Controllers\System\Info\CityController;
@@ -114,4 +115,31 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('store' , 'complaint');
         });
     });
+
+    Route::prefix('health')->group(function(){
+        Route::controller(HealthController::class)->group(function(){
+            Route::prefix('weight')->group(function(){
+                Route::get('history' , 'getWeightHistory');
+                Route::get('store/{current_weight}' , 'updateWeight');
+            });
+            Route::prefix('bmi')->group(function(){
+                Route::get('get' , 'getBMI');
+            });
+            Route::prefix('water')->group(function(){
+                Route::get('history' , 'getWaterHistory');
+                Route::get('goal' , 'getWaterGoal');
+                Route::post('store' , 'storeWater');
+            });
+            Route::prefix('sleep')->group(function(){
+                Route::get('history' , 'getSleepHistory');
+                Route::get('store/{amount}' , 'storeSleep');
+            });
+            Route::prefix('step')->group(function(){
+                Route::get('history' , 'getStepHistory');
+                Route::post('store' , 'storeStep');
+                Route::get('activate/{id}' , 'setStepCalcAsActive');
+            });
+        });
+    });
+
 });

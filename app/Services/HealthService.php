@@ -25,6 +25,7 @@ class HealthService
         protected ContextService $contextService,
     )
     {}
+    // weight
     public function updateWeight($current_weight)
     {
         $patient = Patient::findByIdOrFail(owner_id());
@@ -44,6 +45,7 @@ class HealthService
         );
     }
 
+    // bmi
     public function BMI()
     {
         $patient = Patient::findByIdOrFail(owner_id());
@@ -59,11 +61,13 @@ class HealthService
 
     private function getClassification($bmi)
     {
+        // dd($bmi > 18.5 );
         return BmiClassification::where('start' , '<=' , $bmi)
                             ->where('end' , '>=' , $bmi)
                             ->first();
     }
 
+    // water
     public function getWaterGoal()
     {
         $patient = Patient::findByIdOrFail(owner_id());
@@ -105,9 +109,13 @@ class HealthService
         );
     }
 
+    // sleep
     public function storeSleep($amount)
     {
-        $existSleep = Sleep::where('user_id' , auth()->id())->where('created_at' , Carbon::today())->first();
+        $existSleep = Sleep::where('user_id' , auth()->id())
+        ->whereDate('created_at' , Carbon::today())
+        ->exists();
+        // dd($existSleep);
 
         if($existSleep)
             return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
@@ -129,6 +137,7 @@ class HealthService
         );
     }
 
+    // steps
     public function setStepCalcAsActive($loginHistoryId)
     {
         LoginHistory::where('user_id', auth()->id())
@@ -169,6 +178,7 @@ class HealthService
 
         $step->save();
 
+
         if($step->total_amount > $step->goal)
         {
             $profitExists = StepProfit::where('step_id' , $step->id)->exists();
@@ -176,14 +186,14 @@ class HealthService
             if(!$profitExists)
             {
                 StepProfit::create([
-                    'step_id' => $step->id,
+                    'steps_id' => $step->id,
                     'balance' => $step->goal_reward,
                 ]);
             }
         }
 
         StepTime::create([
-            'water_id' => $step->id,
+            'step_id' => $step->id,
             'amount' => $data['amount'],
             'time' => $data['time'],
         ]);
