@@ -32,6 +32,7 @@ class MedicineDayResource extends JsonResource
                 RouteNames::RESERVATION_DETAILS,
                 RouteNames::PATIENT_PERMANENT_PROFILE,
                 RouteNames::RESERVATION_DETAILS_FOR_DOCTOR,
+                RouteNames::TREATMENT_DETAILS,
                 ]):
                 $data['medicine_time'] = MedicineTimeResource::collection($this->whenLoaded('medicine_times'));
                 $data['day'] = DayResource::make($this->whenLoaded('day'));

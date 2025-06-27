@@ -185,7 +185,7 @@ class ReservationService
 
         $patient = Patient::findByIdOrFail($visit->patient_id);
 
-        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($patient->id);
+        $this->contextService->checkIfDoctorCanEditOrChatWithPatient($visit);
 
         $visit->update([
             'title' => $data['title'] ?? $visit->title,
@@ -374,6 +374,7 @@ class ReservationService
         
         return $this->getReservations(null  ,$patient_ids , $data , [
             'doctor.subCategories',
+            'doctor.user',
             'visit.rate',
         ]);
     }
@@ -399,12 +400,14 @@ class ReservationService
     {
         $reservation = Reservation::findByIdOrFail($reservation_id , [
              'doctor.subCategories' ,
+             'doctor.user' ,
               'patient.medicines.medicine_days.medicine_times' ,
               'patient.instructions' ,
               'patient.reservations.doctor' ,
               'patient.reservations.visit.medicines.medicine_days.day' ,
               'patient.reservations.visit.medicines.medicine_days.medicine_times' ,
               'patient.reservations.visit.instructions' ,
+              'patient.reservations.visit.patientUpdatedInfo' ,
                 'visit.rate' ,
                  'visit.patientUpdatedInfo' ,
                   'visit.medicines.medicine_days.day' ,

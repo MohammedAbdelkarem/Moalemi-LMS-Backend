@@ -35,6 +35,7 @@ class DoctorResouce extends JsonResource
         ];
 
         $data['sub_categories']   = $this->whenLoaded('subCategories');
+        $data['user']   = $this->whenLoaded('user');
         $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));
 
         if(auth()->user()->isPatient())

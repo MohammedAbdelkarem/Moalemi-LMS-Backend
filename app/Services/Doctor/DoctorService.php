@@ -88,7 +88,7 @@ class DoctorService
     {
         return getOrPaginate(
             Doctor::filter($data)
-            ->with(['subCategories.category' , 'shifts']),
+            ->with(['subCategories.category' , 'shifts' , 'user']),
             $data
         );
     }

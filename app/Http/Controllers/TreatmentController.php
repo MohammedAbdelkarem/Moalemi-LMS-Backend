@@ -33,4 +33,23 @@ class TreatmentController extends Controller
             $request->has('per_page')
         );
     }
+    public function getExpiredMedicine(Request $request , $patient_id)
+    {
+        return success(
+            $this->treatmentService->getExpiredTreatments($patient_id , 'medicine' , ['userable' , 'medicine_days.day' , 'medicine_days.medicine_times'] , $request->all()),
+            ApiMessages::MSG_SUCCESS,
+            MedicineResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function getExpiredInstruction(Request $request , $patient_id)
+    {
+        return success(
+            $this->treatmentService->getExpiredTreatments($patient_id , 'instruction' , ['userable'] , $request->all()),
+            ApiMessages::MSG_SUCCESS,
+            InstructionResource::class,
+            $request->has('per_page')
+        );
+    }
 }

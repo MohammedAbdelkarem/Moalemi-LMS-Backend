@@ -3,8 +3,9 @@
 namespace App\Services\Treatment;
 
 use App\Models\Medicine;
-use App\Constants\ExceptionMessages;
 use App\Models\Instruction;
+use App\Enums\TreatmentStatusEnum;
+use App\Constants\ExceptionMessages;
 use App\Models\Scopes\LatestTreatmentScope;
 
 /**
@@ -23,7 +24,7 @@ class TreatmentService
         return getOrPaginate(
             Medicine::withoutGlobalScope(LatestTreatmentScope::class)
                 ->whereIn('id', $history_ids)
-                ->with([
+                ->with(relations: [
                     'medicine_days.day',
                     'medicine_days.medicine_times'
                 ]),
@@ -43,6 +44,22 @@ class TreatmentService
                 ->whereIn('id', $history_ids),
                 $data
             );
+    }
+
+    public function getExpiredTreatments($patient_id , $type , $with , $data)
+    {
+        $model = ($type == 'medicine')
+        ? Medicine::class
+        : Instruction::class;
+
+        return getOrPaginate(
+            $model::withoutGlobalScope(LatestTreatmentScope::class)
+                ->where('patient_id' , $patient_id)
+                ->where('status' , TreatmentStatusEnum::EXPIRED->value)
+                ->where('is_latest' , 1)
+                ->with($with),
+                $data
+        );
     }
 
     private function checkIfHasHistory($context)

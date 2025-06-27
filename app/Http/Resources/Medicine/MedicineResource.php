@@ -50,6 +50,7 @@ class MedicineResource extends JsonResource
                 RouteNames::RESERVATION_DETAILS,
                 RouteNames::PATIENT_PERMANENT_PROFILE,
                 RouteNames::RESERVATION_DETAILS_FOR_DOCTOR,
+                RouteNames::TREATMENT_DETAILS,
                 ]):
                 $data['medicine_days'] = MedicineDayResource::collection($this->whenLoaded('medicine_days'));
             break;

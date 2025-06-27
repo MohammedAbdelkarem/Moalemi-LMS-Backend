@@ -2,9 +2,10 @@
 
 namespace App\Models\Scopes;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\TreatmentStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 class LatestTreatmentScope implements Scope
 {
@@ -13,6 +14,8 @@ class LatestTreatmentScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('is_latest', 1)->with('userable');
+        $builder->where('is_latest', 1)
+        ->where('status' , '!=' , TreatmentStatusEnum::EXPIRED->value)
+        ->with('userable');
     }
 }

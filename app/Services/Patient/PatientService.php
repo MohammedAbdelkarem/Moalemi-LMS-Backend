@@ -40,6 +40,7 @@ class PatientService
                     'reservations.visit.medicines.medicine_days.day' ,
                     'reservations.visit.medicines.medicine_days.medicine_times' ,
                     'reservations.visit.instructions' ,
+                    'reservations.visit.patientUpdatedInfo' ,
                   'user',
                   'complaints.patient',
                   'complaints.doctor',
@@ -399,7 +400,6 @@ class PatientService
             'user'
         ]);
     }
-
 
     private function checkIfCanEditTreatmentsByPatient($context)
     {
