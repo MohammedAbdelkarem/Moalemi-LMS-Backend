@@ -26,7 +26,8 @@ class TreatmentService
                 ->whereIn('id', $history_ids)
                 ->with(relations: [
                     'medicine_days.day',
-                    'medicine_days.medicine_times'
+                    'medicine_days.medicine_times',
+                    'userable'
                 ]),
                 $data
             );
@@ -41,7 +42,10 @@ class TreatmentService
 
         return getOrPaginate(
             Instruction::withoutGlobalScope(LatestTreatmentScope::class)
-                ->whereIn('id', $history_ids),
+                ->whereIn('id', $history_ids)
+                ->with([
+                    'userable'
+                ]),
                 $data
             );
     }

@@ -41,6 +41,7 @@ class DoctorResouce extends JsonResource
         if(auth()->user()->isPatient())
         {
             $data['is_favorite'] = $this->favorites()->where('user_id' , auth()->id())->exists();
+            $data['able_to']
         }
 
         $routeName = $request->route()->getName();

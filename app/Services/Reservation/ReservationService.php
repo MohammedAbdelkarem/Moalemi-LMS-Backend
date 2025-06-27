@@ -421,6 +421,14 @@ class ReservationService
         return $reservation;
     }
 
+    public function getNextReservation($patient_id , $doctor_id)
+    {
+        return Reservation::where('patient_id' , $patient_id)
+            ->where('doctor_id' , $doctor_id)
+            ->latest('id')
+            ->first();
+    }
+
     private function checkStatusFlow($old_status , $new_status)
     {
         if(

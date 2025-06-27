@@ -57,4 +57,13 @@ class ReservationController extends Controller
             ReservationResource::class
         );
     }
+
+    public function getNextReservation($patient_id , $doctor_id)
+    {
+        return success(
+            $this->reservationService->getNextReservation($patient_id , $doctor_id),
+            ApiMessages::MSG_SUCCESS,
+            ReservationResource::class
+        );
+    }
 }

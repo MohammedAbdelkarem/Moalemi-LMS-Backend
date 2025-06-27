@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('rate/{id}' , 'rate');
             Route::get('get' , 'getReservations')->name(RouteNames::PATIENT_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
+            Route::get('next/{patient_id}/{doctor_id}' , 'getNextReservation');
         });
     });
 
@@ -147,5 +148,6 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('medicine/{patient_id}' , 'getExpiredMedicine')->name(RouteNames::TREATMENT_DETAILS);
         Route::get('instruction/{patient_id}' , 'getExpiredInstruction')->name(RouteNames::TREATMENT_DETAILS);
     });
+
 
 });

@@ -89,6 +89,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             //rate
             Route::post('rateReplay/{rate_id}' , 'replayOnRate');
 
+            Route::get('next/{patient_id}/{doctor_id}' , 'getNextReservation');
+
             Route::prefix('medicalReport')->group(function(){
                 Route::prefix('medicine')->group(function(){
                     Route::post('add/{patient_id}/visit/{visit_id}' , 'addMedicines');
