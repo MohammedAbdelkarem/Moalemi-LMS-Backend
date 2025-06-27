@@ -403,6 +403,7 @@ class ReservationService
              'doctor.user' ,
               'patient.medicines.medicine_days.medicine_times' ,
               'patient.instructions' ,
+              'patient.user' ,
               'patient.reservations.doctor' ,
               'patient.reservations.visit.medicines.medicine_days.day' ,
               'patient.reservations.visit.medicines.medicine_days.medicine_times' ,

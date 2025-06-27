@@ -54,6 +54,7 @@ class PatientResource extends JsonResource
                 $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
             break;
             case RouteNames::RESERVATION_DETAILS_FOR_DOCTOR:
+                $data['user'] = $this->whenLoaded('user');
                 $data['instructions'] = InstructionResource::collection($this->whenLoaded('instructions'));
                 $data['medicines'] = MedicineResource::collection($this->whenLoaded('medicines'));
                 $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
