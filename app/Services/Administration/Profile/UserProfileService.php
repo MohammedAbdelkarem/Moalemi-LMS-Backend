@@ -103,7 +103,7 @@ class UserProfileService extends MainService
             modelId: $id,
             resource: Resources::RES_USER,
             type: 'male',
-            where: ['role_id' => 3],
+            // where: ['role_id' => 3],
             with: ['profile', 'city', 'archivedAccount'],
             withTrashed: true,
             asQuery: true,
