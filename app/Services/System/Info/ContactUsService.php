@@ -2,13 +2,14 @@
 
 namespace App\Services\System\Info;
 
-use App\Constants\ExceptionMessages;
-use App\Exceptions\ApiException;
-use App\Services\MainService;
 use App\Enums\ContactTypes;
-use App\Models\System\Info\ContactUs;
+use App\Constants\Resources;
+use App\Services\MainService;
 use App\Rules\PhoneNumberRule;
+use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\DB;
+use App\Constants\ExceptionMessages;
+use App\Models\System\Info\ContactUs;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -38,12 +39,12 @@ class ContactUsService extends MainService
 
     public function show($id)
     {
-        return findByIdOrFail(ContactUs::class, $id);
+        return findByIdOrFail(ContactUs::class, $id , 'male' , Resources::ITEM);
     }
 
     public function update($validatedData, $id)
     {
-        $contact = findByIdOrFail(ContactUs::class, $id);
+        $contact = findByIdOrFail(ContactUs::class, $id, 'male' , Resources::ITEM);
 
         if (!$this->validateURL($validatedData["link"] ?? $contact->link, $validatedData["type"] ?? $contact->type))
             throw new ApiException(null, trans(ExceptionMessages::MSG_INVALID_URL), 400);
@@ -57,7 +58,7 @@ class ContactUsService extends MainService
 
     public function destroy($id)
     {
-        findByIdOrFail(ContactUs::class, $id)->delete();
+        findByIdOrFail(ContactUs::class, $id, 'male' , Resources::ITEM)->delete();
     }
 
     public function validateURL($url, $type)
