@@ -115,10 +115,9 @@ class HealthService
         $existSleep = Sleep::where('user_id' , auth()->id())
         ->whereDate('created_at' , Carbon::today())
         ->exists();
-        // dd($existSleep);
 
-        if($existSleep)
-            return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
+        // if($existSleep)
+        //     return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
 
         $patient = Patient::findByIdOrFail(owner_id());
 

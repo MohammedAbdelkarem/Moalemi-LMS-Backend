@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use Spatie\MediaLibrary\HasMedia;
@@ -191,5 +192,16 @@ class Doctor extends Model implements HasMedia
         });
 
 
+    }
+
+    public function scopeNotBanned($query)
+    {
+        return 
+        $query->whereHas('user', function($query) {
+            $query->whereHas('profile', function($query) {
+                $query->whereNull('banned_until')
+                    ->orWhere('banned_until', '<', now());
+            });
+        });
     }
 }

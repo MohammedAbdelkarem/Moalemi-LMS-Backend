@@ -86,9 +86,13 @@ class DoctorService
 
     public function getAll($data)
     {
+        $records = Doctor::filter($data)
+            ->with(['subCategories.category' , 'shifts' , 'user']);
+
+        if(auth()->user()->isRegularUser())
+            $records = $records->notBanned();
         return getOrPaginate(
-            Doctor::filter($data)
-            ->with(['subCategories.category' , 'shifts' , 'user']),
+            $records,
             $data
         );
     }
