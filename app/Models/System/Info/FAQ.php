@@ -10,13 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class FAQ extends Model
 {
     use HasFactory;
-    protected $table = "faq";
-    protected $fillable = [
-        "faq_category_id",
-        "question",
-        "answer",
-        "is_draft",
-        "update_by"
+    public $table = "faq";
+    protected $guarded = [
+        "id",
     ];
 
     public function updater(): BelongsTo

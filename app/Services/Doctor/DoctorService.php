@@ -121,6 +121,6 @@ class DoctorService
     //rates , location , articles , shifts , title , description , licenses
     public function getDoctorProfile($id)
     {
-        return Doctor::findByIdOrFail($id , ['subCategories.category' , 'shifts' , 'rates.patient.user' , 'articles' , 'complaints.doctor' , 'complaints.patient' , 'complaints.reservation' , 'user']);
+        return Doctor::findByIdOrFail($id , ['subCategories.category' , 'shifts.day' , 'rates.patient.user' , 'articles' , 'complaints.doctor' , 'complaints.patient' , 'complaints.reservation' , 'user']);
     } 
 }

@@ -399,12 +399,13 @@ class ReservationService
     public function getReservationDetails($reservation_id)
     {
         $reservation = Reservation::findByIdOrFail($reservation_id , [
-             'doctor.subCategories' ,
+             'doctor.subCategories.category' ,
              'doctor.user' ,
               'patient.medicines.medicine_days.medicine_times' ,
               'patient.instructions' ,
               'patient.user' ,
-              'patient.reservations.doctor' ,
+              'patient.reservations.doctor.user' ,
+              'patient.reservations.doctor.subCategories.category' ,
               'patient.reservations.visit.medicines.medicine_days.day' ,
               'patient.reservations.visit.medicines.medicine_days.medicine_times' ,
               'patient.reservations.visit.instructions' ,

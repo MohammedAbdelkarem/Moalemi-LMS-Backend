@@ -22,17 +22,14 @@ class ShiftResource extends JsonResource
             'day_id' => $this->day_id,
         ];
 
-        // $routeName = $request->route()->getName();
+        $routeName = $request->route()->getName();
 
-        // switch ($routeName)
-        // {
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        //     case RouteNames::EXAMPLE:
-        //         $data['foo']   = $this->bar;
-        //     break;
-        // }
+        switch ($routeName)
+        {
+            case RouteNames::DOCTORS_GET_PROFILE:
+                $data['day']   = $this->whenLoaded('day');
+            break;
+        }
 
         return $data;
     }
