@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
+use App\Enums\MediaStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -54,5 +55,11 @@ class Banner extends Model implements HasMedia
             $withTrashed,
             $selectedColumns
         );
+    }
+    
+    public function scopeActive($query)
+    {
+        return $query
+            ->where('status' , MediaStatusEnum::ACTIVE);
     }
 }

@@ -31,6 +31,7 @@ class ProfileResource extends JsonResource
             "is_male"       => !is_null($this->is_male) ? (bool) $this->is_male : null,
             "email"         => $this->email ?? "",
             "phone_number"  => $phone_number,
+            "role_id"  => $this->role_id,
             "city_id"       => $this->city_id,
             "city_name"     => $this->city["name_" . app()->getLocale()] ?? "",
             "created_at"           => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i a"),

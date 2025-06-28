@@ -115,4 +115,12 @@ class PatientController extends Controller
         );
     }
 
+    public function home()
+    {
+        return success(
+            $this->patientService->home(),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
 }

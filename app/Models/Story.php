@@ -6,6 +6,7 @@ use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
+use App\Enums\MediaStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -48,5 +49,12 @@ class Story extends Model implements HasMedia
             $withTrashed,
             $selectedColumns
         );
+    }
+
+    public function scopeActive($query)
+    {
+        return $query
+            ->where('end_at' , '>' , now())
+            ->where('status' , MediaStatusEnum::ACTIVE);
     }
 }

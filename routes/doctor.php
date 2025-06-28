@@ -10,6 +10,7 @@ use App\Http\Controllers\Doctor\ShiftController;
 use App\Http\Controllers\Patient\ListController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\ArticleController;
+use App\Http\Controllers\Doctor\PatientController as DoctorPatientController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Doctor\ReservationController;
 use App\Http\Controllers\Doctor\TransactionController;
@@ -73,7 +74,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
 
     Route::prefix('reservation')->group(function(){
-        Route::prefix('media')->controller(ReservationController::class)->group(function(){callback: 
+        Route::prefix('media')->controller(ReservationController::class)->group(function(){
             //visit media endpoints
             Route::post('add/{visit_id}' , 'store');
             Route::delete('delete/{visit_id}' , 'delete');
@@ -118,6 +119,10 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('expired')->controller(TreatmentController::class)->group(function(){
         Route::get('medicine/{patient_id}' , 'getExpiredMedicine')->name(RouteNames::TREATMENT_DETAILS);
         Route::get('instruction/{patient_id}' , 'getExpiredInstruction')->name(RouteNames::TREATMENT_DETAILS);
+    });
+    
+    Route::prefix('home')->controller(DoctorController::class)->group(function(){
+        Route::get('' , 'home');
     });
     
 

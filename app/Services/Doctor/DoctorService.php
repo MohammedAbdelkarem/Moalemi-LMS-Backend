@@ -4,11 +4,14 @@ namespace App\Services\Doctor;
 
 use App\Models\Plan;
 use App\Models\Shift;
+use App\Models\Story;
 use App\Models\Doctor;
+use App\Models\Article;
+use App\Models\Reservation;
+use App\Models\Transaction;
+use App\Models\Subscription;
 use App\Models\DoctorPhoneNumber;
 use App\Constants\MediaCollection;
-use App\Models\Subscription;
-use App\Models\Transaction;
 use App\Services\Plan\PlanService;
 use App\Services\Transaction\TransactionService;
 
@@ -127,4 +130,22 @@ class DoctorService
     {
         return Doctor::findByIdOrFail($id , ['subCategories.category' , 'shifts.day' , 'rates.patient.user' , 'articles' , 'complaints.doctor' , 'complaints.patient' , 'complaints.reservation' , 'user']);
     } 
+
+    public function home()
+    {
+        $stories = Story::active()->get();
+
+        $reservations = Reservation::where('doctor_id' , doctor_id())
+            ->with(['patient' , 'visit'])
+            ->orderBy('created_at' , 'desc')
+            ->get();
+
+        $articles = Article::inRandomOrder()->get();
+
+        return [
+            'stories' => $stories,
+            'reservations' => $reservations,
+            'articles' => $articles,
+        ];
+    }
 }

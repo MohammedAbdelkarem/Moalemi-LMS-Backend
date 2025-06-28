@@ -2,18 +2,24 @@
 
 namespace App\Services\Patient;
 
+use App\Models\Step;
+use App\Models\Story;
 use App\Models\Visit;
 use App\Models\Doctor;
+use App\Models\Article;
 use App\Models\Patient;
 use App\Models\Medicine;
 use App\Models\Instruction;
 use App\Models\MedicineDay;
+use App\Models\Reservation;
 use App\Models\MedicineTime;
 use App\Traits\StorageHelper;
 use App\Models\TreatmentHistory;
 use App\Enums\TreatmentStatusEnum;
 use App\Services\User\UserService;
 use App\Constants\ExceptionMessages;
+use App\Enums\ReservationStatusEnum;
+use App\Models\Banner;
 use App\Services\Base\ContextService;
 
 /**
@@ -426,6 +432,64 @@ class PatientService
 
     public function home()
     {
-        
+        $stories = Story::active()->get();
+
+        $banners = Banner::active()->get();
+
+        // $patient = Patient::findByIdOrFail(owner_id());
+
+        $step = Step::where('user_id' , auth()->id())
+            ->with(['steps_times'])
+            ->latest('id')
+            ->first();
+
+        $medicine = Medicine::where('patient_id' , owner_id())
+            ->with([
+                'medicine_days.day',
+                'medicine_days.medicine_times',
+            ])
+            ->latest('id')
+            ->first();
+
+        $instruction = Instruction::where('patient_id' , owner_id())
+            ->latest('id')
+            ->first();
+
+        $latestReservation = Reservation::whereIn('status' , [
+                ReservationStatusEnum::ACCEPTED->value,
+            ])
+            ->with([
+                'doctor.subCategories.category' ,
+                'doctor.user' ,
+            ])
+            ->latest('id')
+            ->first();
+
+        $reservations = Reservation::where('patient_id' , owner_id())
+            ->with([
+                'doctor.subCategories',
+                'doctor.user',
+                'visit.rate',
+            ])
+            ->latest('id')
+            ->first();
+
+        $doctors = Doctor::notBanned()
+                ->where('rate_sum' , '>' , 3)
+                ->get();
+            
+        $articles = Article::inRandomOrder()->get();
+
+        return [
+            'stories' => $stories,
+            'banners' => $banners,
+            'step' => $step,
+            'medicine' => $medicine,
+            'instruction' => $instruction,
+            'latestReservation' => $latestReservation,
+            'reservations' => $reservations,
+            'doctors' => $doctors,
+            'articles' => $articles
+        ];
     }
 }

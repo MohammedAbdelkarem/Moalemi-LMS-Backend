@@ -48,4 +48,12 @@ class DoctorController extends Controller
             DoctorResouce::class
         );
     }
+
+    public function home()
+    {
+        return success(
+            $this->doctorService->home(),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }
