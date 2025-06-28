@@ -24,7 +24,7 @@ class FAQRequest extends BaseApiRequest
     public function storeRules()
     {
         return [
-            "question"      => ["required", "string", "max:255", "unique:FAQ,question"],
+            "question"      => ["required", "string", "max:255", "unique:faq,question"],
             "answer"        => ["required", "string", "max:2000"],
             "category_id"   => ["required", "exists:faq_categories,id"],
             "is_draft"      => ['required', 'boolean'],
