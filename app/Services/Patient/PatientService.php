@@ -135,17 +135,18 @@ class PatientService
 
     public function updatePatientInfo($data , $patient_id)
     {
+        $patient = Patient::findByIdOrFail($patient_id);
+
         if(owner_id() != null && $patient_id == owner_id())
         {
             $data['relation'] = 'me';
 
+            if(isset($data['weight']) && $patient->weight != $data['weight'])
+                $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['weight']);
+            // dd($patient->is_owner , $data['weight'] , $patient->weight);
+        
             $this->userService->updateOwnerInfo($data);
         }
-
-        $patient = Patient::findByIdOrFail($patient_id);
-
-        if($patient->is_owner == 1 && isset($data['weight']) && $patient->weight != $data['weight'])
-            $this->contextService->createWeightHistory($patient->id , $patient->weight , $data['weight']);
         
         $patient->update($data);
 
