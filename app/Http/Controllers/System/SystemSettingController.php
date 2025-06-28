@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\System;
 
 use App\Constants\ApiMessages;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\System\SystemSettingRequest;
-use App\Http\Resources\System\SystemSettingResource;
 use App\Models\System\SystemSetting;
 use App\Services\System\SystemSettingService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use App\Http\Requests\System\SystemSettingRequest;
+use App\Http\Resources\System\SystemSettingResource;
 
 class SystemSettingController extends Controller
 {
@@ -25,10 +26,10 @@ class SystemSettingController extends Controller
         );
     }
 
-    public function update(SystemSettingRequest $request, string $id): JsonResponse
+    public function update(Request $request,$id)
     {
         return success(
-            $this->systemSettingService->update($id, $request->validated()),
+            $this->systemSettingService->update($id, $request->all()),
             ApiMessages::MSG_UPDATED
         );
     }

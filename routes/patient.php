@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::prefix('article/reactions')->group(function(){
             Route::get('like/{article_id}' , 'like');
             Route::get('unLike/{article_id}' , 'unLike');
-            Route::post('comment/{article_id}' , 'comment');
+            Route::post('comment/{article_id}' , 'comment')->middleware('user.banned');
             Route::get('unComment/{comment_id}' , 'unComment');
             Route::get('likes/{article_id}' , 'getLikes');
             Route::get('comments/{article_id}' , 'getCommentsForUser');
@@ -103,9 +103,9 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
     Route::prefix('reservation')->group(function(){
         Route::controller(ReservationController::class)->group(function(){
-            Route::post('appoint' , 'appoint');
+            Route::post('appoint' , 'appoint')->middleware('user.banned');
             Route::get('cancel/{id}' , 'cancel');
-            Route::post('rate/{id}' , 'rate');
+            Route::post('rate/{id}' , 'rate')->middleware('user.banned');;
             Route::get('get' , 'getReservations')->name(RouteNames::PATIENT_RESERVATIONS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::get('next/{patient_id}/{doctor_id}' , 'getNextReservation');

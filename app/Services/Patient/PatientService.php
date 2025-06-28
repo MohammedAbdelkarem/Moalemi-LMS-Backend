@@ -424,4 +424,8 @@ class PatientService
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_UPDATE_HISTORY);
     }
 
+    public function home()
+    {
+        
+    }
 }
