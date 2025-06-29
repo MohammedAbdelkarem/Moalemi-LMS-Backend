@@ -30,6 +30,9 @@ class StoryResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
+        if(auth()->user()->isAdmin())
+            $data['storiable'] = $this->whenLoaded('storiable');
+
         switch ($routeName) 
         {
             case RouteNames::ADMIN_STORY_GET:

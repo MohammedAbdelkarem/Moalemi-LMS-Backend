@@ -14,13 +14,14 @@ class BannerService
     public function getAll($data)
     {
         return getOrPaginate(
-            Banner::query(),
+            Banner::query()->orderBy('created_at' , 'desc')
+                    ->with('bannerable'),
             $data
         );
     }
     public function show($id)
     {
-        return Banner::findByIdOrFail($id);
+        return Banner::findByIdOrFail($id , ['bannerable']);
     }
     public function store($data)
     {

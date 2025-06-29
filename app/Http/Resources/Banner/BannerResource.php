@@ -27,6 +27,10 @@ class BannerResource extends JsonResource
             'media' => MediaResource::collection($this->getMedia(MediaCollection::BANNER_COLLECTION)),
         ];
 
+        if(auth()->user()->isAdmin())
+            $data['bannerable'] = $this->whenLoaded('bannerable');
+
+
         $routeName = $request->route()->getName();
 
         switch ($routeName) 

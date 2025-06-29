@@ -254,6 +254,7 @@ if (!function_exists('getModelName')) {
             // ModelPaths::Teacher        => LevelEnum::TEACHER,
             ModelPaths::Story          => LevelEnum::STORY,
             ModelPaths::Banner         => LevelEnum::BANNER,
+            ModelPaths::Doctor         => LevelEnum::DOCTOR,
         ];
 
         return $data[$model_path] ?? null;

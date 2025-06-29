@@ -16,13 +16,14 @@ class StoryService
     public function getAll($data)
     {
         return getOrPaginate(
-            Story::orderBy('created_at', 'desc'),
+            Story::orderBy('created_at', 'desc')
+                    ->with('storiable'),
             $data
         );
     }
     public function show($id)
     {
-        return Story::findByIdOrFail($id);
+        return Story::findByIdOrFail($id , ['storiable']);
     }
     public function store($data)
     {
