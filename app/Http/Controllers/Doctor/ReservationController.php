@@ -148,7 +148,7 @@ class ReservationController extends Controller
         );
     }
 
-    public function store(UploadVisitMediaRequest $request , $visit_id)
+    public function storeMedia(UploadVisitMediaRequest $request , $visit_id)
     {
         return success(
             $this->reservationService->uploadReportMedia($request->validated() , $visit_id),
@@ -156,7 +156,7 @@ class ReservationController extends Controller
         );
     }
     
-    public function delete(DeleteMediaRequest $request , $visit_id)
+    public function deleteMedia(DeleteMediaRequest $request , $visit_id)
     {
         return success(
             $this->reservationService->deleteReportMedia($request->validated() , $visit_id),

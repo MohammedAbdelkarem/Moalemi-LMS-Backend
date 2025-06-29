@@ -46,7 +46,7 @@ class BanLogRequest extends BaseApiRequest
     public function unbanRules()
     {
         return [
-            "user_id"       => ["required", Rule::exists('users', 'id')->where('role_id', 3)->whereNull('deleted_at')],
+            "user_id"       => ["required", Rule::exists('users', 'id')->whereIn('role_id', [3 , 4])->whereNull('deleted_at')],
             "unban_reason"  => ["present", "nullable", "string", "between:1,2000"],
         ];
     }

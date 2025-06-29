@@ -61,6 +61,10 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
     Route::prefix('profile')->controller(DoctorController::class)->group(function () {
         Route::get('getMine' , 'getMyProfile')->name(RouteNames::DOCTORS_GET_PROFILE);
+        Route::prefix('certificate')->group(function(){
+            Route::post('store' , 'storeCertificate');
+            Route::delete('delete' , 'deleteCertificate');
+        });
     });
     Route::prefix( 'article/reactions')->controller(ReactionController::class)->group(function(){ 
         Route::get('like/{article_id}' , 'like');
@@ -76,8 +80,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('reservation')->group(function(){
         Route::prefix('media')->controller(ReservationController::class)->group(function(){
             //visit media endpoints
-            Route::post('add/{visit_id}' , 'store');
-            Route::delete('delete/{visit_id}' , 'delete');
+            Route::post('add/{visit_id}' , 'storeMedia');
+            Route::delete('delete/{visit_id}' , 'deleteMedia');
         });
         Route::controller(ReservationController::class)->group(function(){
             Route::post('reject/{id}' , 'reject');

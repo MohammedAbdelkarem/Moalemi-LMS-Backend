@@ -13,6 +13,7 @@ use App\Models\Subscription;
 use App\Models\DoctorPhoneNumber;
 use App\Constants\MediaCollection;
 use App\Services\Plan\PlanService;
+use App\Services\Media\MediaService;
 use App\Services\Transaction\TransactionService;
 
 /**
@@ -20,13 +21,12 @@ use App\Services\Transaction\TransactionService;
  */
 class DoctorService
 {
-    protected $planService;
-    protected $transactionService;
-    public function __construct(PlanService $planService , TransactionService $transactionService)
-    {
-        $this->planService = $planService;
-        $this->transactionService = $transactionService;
-    }
+    public function __construct(
+        protected PlanService $planService,
+        protected TransactionService $transactionService,
+        protected MediaService $mediaService,
+    )
+    {}
     public function storeRegisteredDoctor($data)
     {
         //doctor table
@@ -130,6 +130,18 @@ class DoctorService
     {
         return Doctor::findByIdOrFail($id , ['subCategories.category' , 'shifts.day' , 'rates.patient.user' , 'articles' , 'complaints.doctor' , 'complaints.patient' , 'complaints.reservation' , 'user']);
     } 
+
+    public function uploadCertificateMedia($data)
+    {
+        $doctor = Doctor::findByIdOrFail(doctor_id());
+
+        uploadFileOnMedia($data , $doctor , MediaCollection::DOCTOR_CERTIFICATES_COLLECTION);
+    }
+
+    public function deleteCertificateMedia($data)
+    {
+        $this->mediaService->delete($data);
+    }
 
     public function home()
     {
