@@ -22,7 +22,7 @@ class StoryResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'storiable_id' => $this->storiable_id,
-            'storiable_type' => $this->storiable_type,
+            'storiable_type' => getModelName($this->storiable_type),
             'external_link' => $this->external_link,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::STORY_COLLECTION)),
             
