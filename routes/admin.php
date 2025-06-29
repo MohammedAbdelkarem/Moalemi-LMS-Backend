@@ -253,7 +253,9 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
 
     
     
-    Route::apiResource('/story', StoryController::class)->name('show' , RouteNames::ADMIN_STORY_GET);
+    Route::apiResource('/story', StoryController::class)
+        ->name('show' , RouteNames::ADMIN_STORY_GET)
+        ->name('index' , RouteNames::ADMIN_STORY_GET);
     Route::apiResource('/banner', BannerController::class)->name('show' , RouteNames::ADMIN_BANNER_GET);
     Route::apiResource('/media', MediaController::class);
     Route::apiResource('/category', CategoryController::class)->name('show' , RouteNames::GET_CATEGORIES);

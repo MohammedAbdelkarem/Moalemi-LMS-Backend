@@ -34,7 +34,7 @@ class StoryResource extends JsonResource
         {
             case RouteNames::ADMIN_STORY_GET:
                 $data['ended_at'] = $this->end_at;
-                $data['status'] = $this->status;
+                // $data['status'] = $this->status;
             break;
         }
 

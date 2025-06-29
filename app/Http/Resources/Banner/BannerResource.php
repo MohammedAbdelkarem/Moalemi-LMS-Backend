@@ -33,7 +33,7 @@ class BannerResource extends JsonResource
         {
             case RouteNames::ADMIN_BANNER_GET:
                 $data['created_at'] = $this->created_at;
-                $data['status'] = $this->status;
+                // $data['status'] = $this->status;
             break;
         }
 
