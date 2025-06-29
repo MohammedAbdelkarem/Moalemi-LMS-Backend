@@ -145,6 +145,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         });
     });
 
+    Route::prefix('history')->controller(TreatmentController::class)->group(function(){
+        Route::get('medicine/{medicine_id}' , 'getMedicineHistory')->name(RouteNames::TREATMENT_DETAILS);
+        Route::get('instruction/{instruction_id}' , 'getInstructionHistory')->name(RouteNames::TREATMENT_DETAILS);
+    });
+
     Route::prefix('expired')->controller(TreatmentController::class)->group(function(){
         Route::get('medicine/{patient_id}' , 'getExpiredMedicine')->name(RouteNames::TREATMENT_DETAILS);
         Route::get('instruction/{patient_id}' , 'getExpiredInstruction')->name(RouteNames::TREATMENT_DETAILS);
