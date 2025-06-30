@@ -31,7 +31,7 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
-            'logo' =>  MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
+            'logo' =>  MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
         ];
 
         $data['sub_categories']   = $this->whenLoaded('subCategories');

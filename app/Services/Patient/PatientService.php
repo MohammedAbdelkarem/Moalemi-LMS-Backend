@@ -472,8 +472,7 @@ class PatientService
                 'doctor.user',
                 'visit.rate',
             ])
-            ->latest('id')
-            ->first();
+            ->get();
 
         $doctors = Doctor::notBanned()
                 ->where('rate_sum' , '>' , 3)
