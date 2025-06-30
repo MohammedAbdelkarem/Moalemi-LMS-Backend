@@ -20,6 +20,8 @@ use App\Services\User\UserService;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
 use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\Reservation\ReservationResource;
 use App\Models\Banner;
 use App\Services\Base\ContextService;
 
@@ -466,17 +468,17 @@ class PatientService
             ->latest('id')
             ->first();
 
-        $reservations = Reservation::where('patient_id' , owner_id())
+        $reservations = ReservationResource::collection(Reservation::where('patient_id' , owner_id())
             ->with([
                 'doctor.subCategories',
                 'doctor.user',
                 'visit.rate',
             ])
-            ->get();
+            ->get());
 
-        $doctors = Doctor::notBanned()
+        $doctors = DoctorResouce::collection(Doctor::notBanned()
                 ->where('rate_sum' , '>' , 3)
-                ->get();
+                ->get());
             
         $articles = ArticleResource::collection(Article::inRandomOrder()->with(
             [

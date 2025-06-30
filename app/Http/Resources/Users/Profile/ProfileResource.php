@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Patient;
 use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
+use App\Http\Resources\DoctorResouce;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource
@@ -18,6 +19,7 @@ class ProfileResource extends JsonResource
         else {
             $phone_number = $this->phone_number ?? "";
         }
+
 
         // dd(auth()->id() , $this->id);
         $data = [
@@ -40,6 +42,12 @@ class ProfileResource extends JsonResource
 
         if (auth()->user() ) {
             $data += $this->getAdminData();
+        }
+
+        if($this->role_id == 3)
+        {
+            // dd($this->whenLoaded('Doctor'));
+            $data['doctor'] = DoctorResouce::make($this->whenLoaded('Doctor'));
         }
 
         return $data;

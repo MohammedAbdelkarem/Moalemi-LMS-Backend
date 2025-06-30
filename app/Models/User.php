@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\System\Notification\Notification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Administration\Profile\AdminProfile;
+use App\Models\Scopes\DoctorUserScope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,6 +64,10 @@ class User extends Authenticatable implements JWTSubject
     }
 
     //JWT
+    protected static function booted()
+    {
+        static::addGlobalScope(new DoctorUserScope);
+    }
     public function getJWTIdentifier()
     {
         return $this->getKey();

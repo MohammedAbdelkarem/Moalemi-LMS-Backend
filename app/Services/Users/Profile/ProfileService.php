@@ -59,7 +59,7 @@ class ProfileService extends MainService
                 modelId: $id,
                 resource: Resources::RES_USER,
                 type: 'male',
-                with: ['profile', 'city'],
+                with: ['profile', 'city' ],
                 asQuery: true,
             )
             // ->usersSearchCriteria(checkBan: false)
@@ -91,16 +91,16 @@ class ProfileService extends MainService
                 if(isset($validatedData["logo"]))
                     updateFileOnMedia($validatedData["logo"] , $doctor , MediaCollection::DOCTOR_LOGO_COLLECTION);
 
-                $user = $this->StoreUpdate(
-                    file: $validatedData["logo"],
-                    path: "users/{$user->id}",
-                    model: $user,
-                    column: "avatar",
-                    deleteImage: true,
-                    singleFilePath: $user->avatar ?? ""
-                );
+                // $user = $this->StoreUpdate(
+                //     file: $validatedData["logo"],
+                //     path: "users/{$user->id}",
+                //     model: $user,
+                //     column: "avatar",
+                //     deleteImage: true,
+                //     singleFilePath: $user->avatar ?? ""
+                // );
 
-                $user->save();
+                // $user->save();
             }
 
         return $user;

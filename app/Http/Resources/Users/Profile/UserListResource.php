@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Users\Profile;
 
-use App\Traits\ImagesHelper;
 use Carbon\Carbon;
+use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
+use App\Http\Resources\DoctorResouce;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserListResource extends JsonResource
@@ -17,6 +18,10 @@ class UserListResource extends JsonResource
             $phone_number = $this->archivedAccount->phone_number;
         else {
             $phone_number = $this->phone_number ?? "";
+        }
+        if($this->role_id == 3)
+        {
+            $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
         }
 
         $data = [

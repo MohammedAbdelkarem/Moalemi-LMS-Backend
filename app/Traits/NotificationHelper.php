@@ -39,7 +39,7 @@ trait NotificationHelper
         string $body,
         string $type,
         $createdBy,
-        string $local = null,
+        string $local = 'ar',
         bool $public = false,
         string $page = "/home",
         bool $clickable = false,

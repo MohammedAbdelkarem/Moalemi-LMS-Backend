@@ -3,10 +3,13 @@
 namespace App\Http\Resources\Users\Profile;
 
 use App\Constants\ApiMessages;
+use App\Http\Resources\DoctorResouce;
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use PhpParser\Comment\Doc;
 
 class UserSugResource extends JsonResource
 {
@@ -21,6 +24,10 @@ class UserSugResource extends JsonResource
         }
         $patient_owner = Patient::where('user_id' , $this->id)->where('is_owner' , 1)->first();
 
+        if($this->role_id == 3)
+        {
+            $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
+        }
         return [
             "id"            => $this->id,
             "name"          => $this->name,
