@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'fcm' => [
+        'project_id' => env('FCM_PROJECT_ID'),
+        'credentialsPath' => storage_path(env('FCM_CREDENTIALS_PATH')),
+    ],
+
 
 ];

@@ -13,6 +13,7 @@
         "bensampo/laravel-enum": "^6.12",
         "codezero/laravel-unique-translation": "*",
         "guzzlehttp/guzzle": "*",
+        "kreait/laravel-firebase": "^5.8",
         "laravel/framework": "^11.31",
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",

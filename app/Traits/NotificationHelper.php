@@ -6,6 +6,10 @@ use App\Models\System\Notification\Notification;
 use App\Models\Users\Profile\UserDevice;
 use Illuminate\Support\Facades\DB;
 
+use Kreait\Firebase\Factory;
+use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Messaging\CloudMessage;
+
 trait NotificationHelper
 {
     /**
@@ -27,6 +31,7 @@ trait NotificationHelper
      * @param bool $shouldCreate Whether to create a new notification in the database
      * @param array $additionalData Any additional data to be sent with the notification
      * @return Notification|bool The created notification if $shouldCreate is true, or true if $shouldCreate is false
+     * @param bool $shouldTranslate Check if the notification should be from translation files
      */
     protected function sendDirectNotification(
         int $targeted_user_id,
@@ -42,6 +47,7 @@ trait NotificationHelper
         array $extraData = null,
         bool $shouldCreate = true,
         array $additionalData = [],
+        bool $shouldTranslate = true,
     ) {
         DB::beginTransaction();
         if (!$clickable) $requestedID = "";
@@ -60,24 +66,45 @@ trait NotificationHelper
             $notification->receivers()->attach($targeted_user_id);
         }
 
+        $additionalData += [
+            'id' => $notification->requested_id,
+        ];
+
         $this->sendNotification(
-            UserDevice::query()->where('user_id', $targeted_user_id)
-                ->whereHas("user", function ($query) {
-                    $query->where('active_notifications', true);
-                })
-                ->pluck('notification_token')
-                ->toArray(),
+            $this->getTokens($targeted_user_id),
             $title,
             $body,
             $page,
-            $local ?? app()->getLocale(),
-            $additionalData
+            $additionalData,
+            $local,
+            $shouldTranslate,
         );
         DB::commit();
 
         if ($shouldCreate)
             return $notification;
         return true;
+    }
+
+    public function getTokens($targeted_user_id): array
+    {
+        $tokens = UserDevice::query()->where('user_id', $targeted_user_id)
+            ->whereHas("user", function ($query) {
+                $query->where('active_notifications', true);
+            })
+            ->pluck('notification_token')
+            ->toArray();
+
+        if (request()->route()->getActionMethod() == 'userVerify') {
+            // Filter out the token from the result
+            $tokens = array_filter($tokens, function ($token) {
+                return $token !== request()->notification_token;
+            });
+        }
+
+        // Optional: Reindex array if needed
+        $tokens = array_values($tokens);
+        return $tokens;
     }
 
     public function notificationMessage($message, $attributes = [])
@@ -117,118 +144,6 @@ trait NotificationHelper
         return $notification;
     }
 
-    // protected function sendNotification2(array $tokens = [], string $title, string $body, $page = '/home', $additionalData = null)
-    // {
-    //     $div = 500; //between 1 -> 1000
-    //     $start = 0;
-    //     $size = sizeof($tokens);
-    //     if ($size != 0)
-    //         for ($i = 0; $i < ceil($size / $div); $i++) {
-    //             $tokensSubArray = array_slice($tokens, $start, 200);
-    //             // $SERVER_API_KEY = env('Server_Key');
-    //             $credentialsFilePath = Storage::path('json/kafo-platform-firebase.json');
-    //             $client = new GoogleClient();
-    //             $client->setAuthConfig($credentialsFilePath);
-    //             $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-    //             $client->fetchAccessTokenWithAssertion();
-    //             $token = $client->getAccessToken();
-    //             $SERVER_API_KEY = $token['access_token'];
-    //             // $data["registration_ids"] = $tokensSubArray;
-    //             // $data["token"] = ["fTl5O-olJEBW3yI6geobdm:APA91bHn41uXRh8GROfOs41Ry9dem5XNfoj2LWV8KaGePugMc3yE93D3ko80rWAFvKHQ2KPhOJazdfHNRy_b3JbINKGnYXF-LXzEUgEcKz3amDgpk0OUUDqTPtHTzsODxMxZuQD626_Y"];
-    //             $data["message"] = [
-    //                 "token" => "dn5rDIYCfrl_bZs-ji_mrN:APA91bFqrXcjuZ8iIjOKGThDeEIwTLciKUramZm0Efb8HGdRtw-78QUJuSGGC8KzODKppEtBoU0jzikNwI8p5vLisJVsSkay3z__MZZZ5dtkX0-Qus4xddnQAYo6uusJzhazaYX6v1kz",
-    //                 "notification" => [
-    //                     "title" => $title,
-    //                     "body" => $body,
-    //                     // "sound" => "default",
-    //                 ],
-    //                 "data" => [
-    //                     "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-    //                     "page" => $page,
-    //                 ],
-    //             ];
-    //             // $data["data"] = [
-    //             //     "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-    //             //     "page" => $page,
-    //             // ];
-    //             $dataString = json_encode($data);
-    //             $headers = [
-    //                 'X-CSRF-TOKEN' => csrf_token(),
-    //                 'Authorization: Bearer ' . $SERVER_API_KEY,
-    //                 'Content-Type: application/json',
-    //             ];
-    //             $ch = curl_init();
-    //             curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/v1/projects/kafo-platform/messages:send');
-    //             curl_setopt($ch, CURLOPT_POST, true);
-    //             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    //             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    //             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //             curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-    //             $response = curl_exec($ch);
-    //             //
-    //             sleep(1);
-    //             $start += $div;
-    //         }
-    //     return true;
-    // }
-
-    // protected function sendFireBaseNotification(array $tokens = [], string $title, string $body, $page = '/home', $additionalData = null)
-    // {
-    //     // $div = 500; //between 1 -> 1000
-    //     // $start = 0;
-    //     // $size = sizeof($tokens);
-    //     // if ($size != 0)
-    //     // for ($i = 0; $i < ceil($size / $div); $i++) {
-    //     // $tokensSubArray = array_slice($tokens, $start, 200);
-    //     // $SERVER_API_KEY = env('Server_Key');
-    //     foreach ($tokens as $token) {
-    //         $credentialsFilePath = Storage::path('json/kafo-platform-firebase.json');
-    //         $client = new GoogleClient();
-    //         $client->setAuthConfig($credentialsFilePath);
-    //         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-    //         $client->fetchAccessTokenWithAssertion();
-    //         $token = $client->getAccessToken();
-    //         $SERVER_API_KEY = $token['access_token'];
-    //         // $data["registration_ids"] = $tokensSubArray;
-    //         // $data["token"] = ["fTl5O-olJEBW3yI6geobdm:APA91bHn41uXRh8GROfOs41Ry9dem5XNfoj2LWV8KaGePugMc3yE93D3ko80rWAFvKHQ2KPhOJazdfHNRy_b3JbINKGnYXF-LXzEUgEcKz3amDgpk0OUUDqTPtHTzsODxMxZuQD626_Y"];
-    //         $data["message"] = [
-    //             "token" => $token,
-    //             "notification" => [
-    //                 "title" => $title,
-    //                 "body" => $body,
-    //                 // "sound" => "default",
-    //             ],
-    //             "data" => [
-    //                 "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-    //                 "page" => $page,
-    //             ],
-    //         ];
-    //         // $data["data"] = [
-    //         //     "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-    //         //     "page" => $page,
-    //         // ];
-    //         $dataString = json_encode($data);
-    //         $headers = [
-    //             'X-CSRF-TOKEN' => csrf_token(),
-    //             'Authorization: Bearer ' . $SERVER_API_KEY,
-    //             'Content-Type: application/json',
-    //         ];
-    //         $ch = curl_init();
-    //         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/v1/projects/kafo-platform-801dc/messages:send');
-    //         curl_setopt($ch, CURLOPT_POST, true);
-    //         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    //         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-    //         $response = curl_exec($ch);
-    //         //
-    //         // sleep(1);
-    //         // $start += $div;
-    //         // }
-    //         return true;
-    //     }
-    // }
-
     /**
      * Send a notification to given tokens.
      *
@@ -237,11 +152,61 @@ trait NotificationHelper
      * @param string $body The body of the notification.
      * @param string $page The page to open when the notification is clicked.
      * @param array $additionalData Additional data to send with the notification.
+     * @param string $loacl The lang of the notification to be send in
+     * @param bool $shouldTranslate Check if the notification should be from translation files
      *
      * @return void
      */
-    public function sendNotification(array $tokens = [], string $title, string $body, $page = '/home', $local, $additionalData = null)
+    public function sendNotification(array $tokens = [], string $title, string $body, $page = '/home', $additionalData = [], string $local = 'en', bool $shouldTranslate = true)
     {
-        //TODO
+        try {
+            $div = 500; //between 1 -> 1000
+            $start = 0;
+            $size = sizeof($tokens);
+
+            $additionalData += [
+                'page' => $page,
+            ];
+            // Path to the service account key JSON file
+            $serviceAccountPath = config('services.fcm.credentialsPath');
+
+            // Initialize the Firebase Factory with the service account
+            $factory = (new Factory)->withServiceAccount($serviceAccountPath);
+
+            // Create the Messaging instance
+            $messaging = $factory->createMessaging();
+
+            $title = json_decode($title);
+            $body  = json_decode($body);
+
+            if ($shouldTranslate)
+                $message = [
+                    'title'     => __("notifications." . $title->message, (array)$title->attributes, $local),
+                    'body'      => __("notifications." . $body->message, (array)$body->attributes, $local),
+                ];
+            else
+                $message = [
+                    'title'     =>  $title->message,
+                    'body'      =>  $body->message,
+                ];
+
+            for ($i = 0; $i < ceil($size / $div); $i++) {
+                $tokensSubArray = array_slice($tokens, $start, $div);
+
+                if (!empty($tokensSubArray)) {
+                    $finalmessage = CloudMessage::new()
+                        ->withNotification($message);
+
+                    if (!empty($additionalData))
+                        $finalmessage = $finalmessage->withData($additionalData);
+                    $sendReport = $messaging->sendMulticast($finalmessage, $tokensSubArray);
+                }
+                //Cooldown time to not be banned by the service
+                sleep(1);
+                $start += $div;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

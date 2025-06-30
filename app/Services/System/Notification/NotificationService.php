@@ -22,7 +22,7 @@ class NotificationService extends MainService
     {
         return Notification::query()
             ->whereHas("creator", function ($query) {
-                $query->whereNotIn("role_id", [3,4]);
+                $query->whereNotIn("role_id", [3, 4]);
             })
             ->withCount(['receivers', 'views'])
             ->orderBy('created_at', 'desc')
@@ -45,6 +45,7 @@ class NotificationService extends MainService
          * ids_list have higher priority than trageted users thats why there is this condition
          */
 
+        DB::beginTransaction();
         $ids_list = [];
         //Get By ids_list
         if (!empty($validatedData["ids_list"])) {
@@ -59,7 +60,7 @@ class NotificationService extends MainService
         $tokens_list = UserDevice::query()
             ->whereIn('user_id', $ids_list)
             ->whereHas("user", function ($query) {
-                $query->where('active_notifications', true);
+                $query->whereNull("deactive_at")->where('active_notifications', true);
             })
             ->pluck('notification_token')
             ->toArray();
@@ -78,10 +79,13 @@ class NotificationService extends MainService
             "is_read" => false,
         ]);
 
+        DB::commit();
+
         //Dispatch Job To Send Notification
         dispatch(new SendNotificationsJob(
-            $tokens_list,
-            $notification,
+            tokens: $tokens_list,
+            notification: $notification,
+            shouldTranslate: false,
         ));
     }
 
@@ -98,11 +102,12 @@ class NotificationService extends MainService
 
         //Dispatch Job To Send Notification
         dispatch(new SendNotificationsJob(
-            UserDevice::query()
+            tokens: UserDevice::query()
                 ->whereIn('user_id', User::query()->whereNull("deactive_at")->where('active_notifications', true)->pluck('id')->toArray())
                 ->pluck('notification_token')
                 ->toArray(),
-            $notification,
+            notification: $notification,
+            shouldTranslate: false,
         ));
     }
 

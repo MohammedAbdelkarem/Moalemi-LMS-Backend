@@ -2,16 +2,18 @@
 
 namespace App\Services\Users\Profile;
 
-use App\Constants\Resources;
 use App\Models\User;
-use App\Models\Users\Profile\ArchivedUser;
-use App\Models\Users\Profile\UserDevice;
-use App\Services\JWTTokensService;
+use App\Models\Doctor;
+use App\Constants\Resources;
 use App\Services\MainService;
-use App\Services\User\UserService;
 use App\Traits\StorageHelper;
 use Illuminate\Support\Carbon;
+use App\Constants\MediaCollection;
+use App\Services\JWTTokensService;
+use App\Services\User\UserService;
 use Illuminate\Support\Facades\DB;
+use App\Models\Users\Profile\UserDevice;
+use App\Models\Users\Profile\ArchivedUser;
 
 class ProfileService extends MainService
 {
@@ -81,7 +83,25 @@ class ProfileService extends MainService
             "city_id"       => $validatedData["city_id"],
         ]);
 
-        $this->userService->updateOwnerInfo($validatedData);
+        if($user->role_id == 4)
+            $this->userService->updateOwnerInfo($validatedData);
+        else if($user->role_id == 3)
+            {
+                $doctor = Doctor::find(doctor_id());
+                if(isset($validatedData["logo"]))
+                    updateFileOnMedia($validatedData["logo"] , $doctor , MediaCollection::DOCTOR_LOGO_COLLECTION);
+
+                $user = $this->StoreUpdate(
+                    file: $validatedData["logo"],
+                    path: "users/{$user->id}",
+                    model: $user,
+                    column: "avatar",
+                    deleteImage: true,
+                    singleFilePath: $user->avatar ?? ""
+                );
+
+                $user->save();
+            }
 
         return $user;
     }

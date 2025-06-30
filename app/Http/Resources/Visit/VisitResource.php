@@ -39,6 +39,8 @@ class VisitResource extends JsonResource
         {
             case RouteNames::PATIENT_RESERVATIONS:
                 $data['rate']   = $this->whenLoaded('rate');
+            case RouteNames::PATIENT_HOME:
+                $data['rate']   = $this->whenLoaded('rate');
             break;
             case RouteNames::RESERVATION_DETAILS:
                 $data['media'] = MediaResource::collection($this->getMedia(MediaCollection::VISIT_COLLECTION));

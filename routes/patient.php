@@ -156,7 +156,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
 
     Route::prefix('home')->controller(PatientController::class)->group(function(){
-        Route::get('' , 'home');
+        Route::get('' , 'home')->name(RouteNames::PATIENT_HOME);
     });
 
 
