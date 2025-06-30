@@ -458,7 +458,7 @@ class PatientService
             ->latest('id')
             ->first();
 
-        $latestReservation = ReservationResource::make(Reservation::whereIn('status' , [
+        $latestReservation = Reservation::whereIn('status' , [
                 ReservationStatusEnum::ACCEPTED->value,
             ])
             ->with([
@@ -466,7 +466,7 @@ class PatientService
                 'doctor.user' ,
             ])
             ->latest('id')
-            ->first());
+            ->first();
 
         $reservations = ReservationResource::collection(Reservation::where('patient_id' , owner_id())
             ->with([
