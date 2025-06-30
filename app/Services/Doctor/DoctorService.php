@@ -14,6 +14,7 @@ use App\Models\DoctorPhoneNumber;
 use App\Constants\MediaCollection;
 use App\Services\Plan\PlanService;
 use App\Services\Media\MediaService;
+use App\Http\Resources\Article\ArticleResource;
 use App\Services\Transaction\TransactionService;
 
 /**
@@ -152,7 +153,15 @@ class DoctorService
             ->orderBy('created_at' , 'desc')
             ->get();
 
-        $articles = Article::inRandomOrder()->get();
+        $articles = ArticleResource::collection(Article::inRandomOrder()->with(
+            [
+                'existsReactions.user' ,
+             'existsReactions.existReplays' ,
+              'existsComments.user',
+              'existsComments.existReplays',
+              'doctor.subCategories.category'
+            ]
+        )->get());
 
         return [
             'stories' => $stories,

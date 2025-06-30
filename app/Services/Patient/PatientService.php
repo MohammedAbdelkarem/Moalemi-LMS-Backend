@@ -19,6 +19,7 @@ use App\Enums\TreatmentStatusEnum;
 use App\Services\User\UserService;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
+use App\Http\Resources\Article\ArticleResource;
 use App\Models\Banner;
 use App\Services\Base\ContextService;
 
@@ -478,7 +479,15 @@ class PatientService
                 ->where('rate_sum' , '>' , 3)
                 ->get();
             
-        $articles = Article::inRandomOrder()->get();
+        $articles = ArticleResource::collection(Article::inRandomOrder()->with(
+            [
+                'existsReactions.user' ,
+             'existsReactions.existReplays' ,
+              'existsComments.user',
+              'existsComments.existReplays',
+              'doctor.subCategories.category'
+            ]
+        )->get());
 
         return [
             'stories' => $stories,
