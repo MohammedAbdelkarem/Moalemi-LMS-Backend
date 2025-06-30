@@ -82,6 +82,14 @@ class ProfileRequest extends BaseApiRequest
                 "dimensions:min_width=100,min_height=100,max_width=2048,max_height=2048",
                 "mimes:png,jpg,jpeg,webpm"
             ],
+            "logo" => [
+                "nullable",
+                "file",
+                "image",
+                "max:1024",
+                "dimensions:min_width=100,min_height=100,max_width=2048,max_height=2048",
+                "mimes:png,jpg,jpeg,webpm"
+            ],
         ];
     }
 
