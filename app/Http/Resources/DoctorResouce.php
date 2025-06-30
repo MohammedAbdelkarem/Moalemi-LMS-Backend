@@ -52,7 +52,7 @@ class DoctorResouce extends JsonResource
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
                 $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
-                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
+                // $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
             break;
             case in_array($routeName, [
                 RouteNames::PATIENT_RELATIONS,
@@ -63,14 +63,14 @@ class DoctorResouce extends JsonResource
                 ]):
                 $data['sub_categories']   = $this->whenLoaded('subCategories');
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
-                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
+                // $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
             break;
             case RouteNames::DOCTORS_GET_PROFILE:
                 $data['sub_categories']   = SubCategoryResource::collection($this->whenLoaded('subCategories'));
                 $data['licenses'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_CERTIFICATES_COLLECTION));
                 $data['user'] = UserListResource::make($this->whenLoaded('user'));
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
-                $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
+                // $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
                 $data['rates']   = $this->whenLoaded('rates');
                 $data['articles']   = ArticleResource::collection($this->whenLoaded('articles'));
