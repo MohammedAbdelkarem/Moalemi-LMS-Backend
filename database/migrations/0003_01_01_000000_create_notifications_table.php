@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            // $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->json('title');
             $table->json('body');
-            $table->enum('type', NotificationTypes::values())->default(NotificationTypes::PUBLIC->value);
-            $table->enum('page', NotificationScreens::values())->default(NotificationScreens::HOME->value);
+            $table->enum('type', NotificationTypes::values())->nullable();
+            // $table->enum('page', NotificationScreens::values())->default(NotificationScreens::HOME->value);
             $table->boolean("clickable")->default(false);
             $table->string("requested_id")->nullable();     //String instead of unsignedBigInteger because it may be account_name /slug/ email not integer id only
-            $table->boolean('is_public')->default(false);
+            // $table->boolean('is_public')->default(false);
             $table->json("extra_data")->nullable();
             $table->timestamps();
         });

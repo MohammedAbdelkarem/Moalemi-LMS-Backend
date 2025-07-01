@@ -107,7 +107,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('appoint' , 'appoint')->middleware('user.banned');
             Route::get('cancel/{id}' , 'cancel');
             Route::post('rate/{id}' , 'rate')->middleware('user.banned');;
-            Route::get('get' , 'getReservations')->name(RouteNames::PATIENT_RESERVATIONS);
+            Route::get('get' , 'getReservations')->name(RouteNames::RESERVATION_DETAILS);
             Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
             Route::get('next/{patient_id}/{doctor_id}' , 'getNextReservation');
         });

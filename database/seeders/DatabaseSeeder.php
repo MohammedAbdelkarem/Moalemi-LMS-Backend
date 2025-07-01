@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CustomerCardsTableSeeder::class);
         
 
-        $this->call(NotificationsTableSeeder::class);
+        // $this->call(NotificationsTableSeeder::class);
 
         $this->call(CitiesTableSeeder::class);
         $this->call(AboutUsTableSeeder::class);

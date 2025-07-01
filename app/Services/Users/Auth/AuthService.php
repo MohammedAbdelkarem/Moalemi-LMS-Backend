@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Constants\ExceptionMessages;
 use App\Enums\PublishStatusEnum;
+use App\Models\NotificationManagement;
 use App\Services\Doctor\DoctorService;
 use App\Models\Users\Profile\UserDevice;
 use App\Models\Users\Profile\ArchivedUser;
@@ -107,6 +108,13 @@ class AuthService extends MainService
             throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
 
         $user->save();
+
+        // NotificationManagement::firstOrCreate([
+        //     'user_id' => $user->id
+        // ],
+        // [
+        //     'user_id' => $user->id
+        // ]);
 
         //Send otp
         $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);

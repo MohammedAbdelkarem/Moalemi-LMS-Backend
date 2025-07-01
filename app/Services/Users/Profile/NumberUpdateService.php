@@ -23,10 +23,10 @@ class NumberUpdateService
         $otp = $this->generateUniqeNumericKey(NumberUpdate::class,  "otp", min: 110001, max: 990000);
         NumberUpdate::updateOrCreate([
             "user_id"       => auth()->id(),
-            "phone_number"  => $validated["phone_number"]
         ], [
             "otp"           => $otp,
             "expire_at"     => now()->addMinutes(config("_custom.otp_expire_in")),
+            "phone_number"  => $validated["phone_number"],
         ]);
 
         //TODO dispatch Queue

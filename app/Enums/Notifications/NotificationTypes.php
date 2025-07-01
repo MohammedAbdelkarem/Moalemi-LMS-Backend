@@ -4,9 +4,17 @@ namespace App\Enums\Notifications;
 
 enum NotificationTypes: string
 {
-    case PUBLIC = 'public';
-    case PRODUCT = 'product';
-    case ACCOUNT = 'account';
+    case AUTH = 'auth';
+    case RESERVATIONS = 'reservations';
+    case MEDICAL_PROFILE = 'medical_profile';
+    case RATE = 'rate';
+    case COMPLAINTS = 'complaints';
+    case STEPS = 'steps';
+    case WATER = 'water';
+    case SLEEP = 'sleep';
+    case WEIGHT = 'weight';
+    case GENERAL  = 'general';
+    case ARTICLES  = 'articles';
 
     public static function values(): array
     {

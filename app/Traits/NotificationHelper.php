@@ -38,13 +38,10 @@ trait NotificationHelper
         string $title,
         string $body,
         string $type,
-        $createdBy,
         string $local = 'ar',
-        bool $public = false,
-        string $page = "/home",
         bool $clickable = false,
         string $requestedID = "",
-        array $extraData = null,
+        array $extraData ,
         bool $shouldCreate = true,
         array $additionalData = [],
         bool $shouldTranslate = true,
@@ -56,9 +53,6 @@ trait NotificationHelper
                 $title,
                 $body,
                 $type,
-                $createdBy,
-                $public,
-                $page,
                 $clickable,
                 $requestedID,
                 $extraData
@@ -74,7 +68,6 @@ trait NotificationHelper
             $this->getTokens($targeted_user_id),
             $title,
             $body,
-            $page,
             $additionalData,
             $local,
             $shouldTranslate,
@@ -126,16 +119,13 @@ trait NotificationHelper
      * @param array $extraData
      * @return Notification
      */
-    protected function createNotification(string $title, string $body, string $type, $createdBy, bool $public = false, string $page = "/home", bool $clickable = false, string $requestedID = "", $extraData = null)
+    protected function createNotification(string $title, string $body, string $type, bool $clickable = false, string $requestedID = "", $extraData = null)
     {
         DB::beginTransaction();
         $notification = Notification::create([
             "title"         => $title,
             "body"          => $body,
             "type"          => $type,
-            "created_by"    => $createdBy,
-            "is_public"     => $public,
-            "page"          => $page,
             "clickable"     => $clickable,
             "requested_id"  => $requestedID,
             "extra_data"    => $extraData
@@ -157,16 +147,13 @@ trait NotificationHelper
      *
      * @return void
      */
-    public function sendNotification(array $tokens = [], string $title, string $body, $page = '/home', $additionalData = [], string $local = 'en', bool $shouldTranslate = true)
+    public function sendNotification(array $tokens = [], string $title, string $body, $additionalData = [], string $local = 'en', bool $shouldTranslate = true)
     {
         try {
             $div = 500; //between 1 -> 1000
             $start = 0;
             $size = sizeof($tokens);
 
-            $additionalData += [
-                'page' => $page,
-            ];
             // Path to the service account key JSON file
             $serviceAccountPath = config('services.fcm.credentialsPath');
 

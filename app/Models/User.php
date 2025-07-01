@@ -290,6 +290,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(ArticleView::class);
     }
 
+    public function notification_management()
+    {
+        return $this->hasOne(NotificationManagement::class);
+    }
+
     //Scopes
 
     /**

@@ -5,6 +5,7 @@ namespace App\Services\Patient;
 use App\Models\Step;
 use App\Models\Story;
 use App\Models\Visit;
+use App\Models\Banner;
 use App\Models\Doctor;
 use App\Models\Article;
 use App\Models\Patient;
@@ -17,20 +18,22 @@ use App\Traits\StorageHelper;
 use App\Models\TreatmentHistory;
 use App\Enums\TreatmentStatusEnum;
 use App\Services\User\UserService;
+use App\Traits\NotificationHelper;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
-use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\DoctorResouce;
-use App\Http\Resources\Reservation\ReservationResource;
-use App\Models\Banner;
 use App\Services\Base\ContextService;
+use App\Constants\NotificationMessages;
+use App\Enums\Notifications\NotificationTypes;
+use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Reservation\ReservationResource;
 
 /**
  * Class PatientService.
  */
 class PatientService
 {
-    use StorageHelper;
+    use StorageHelper , NotificationHelper;
 
     public function __construct(
         protected UserService $userService,
@@ -353,6 +356,28 @@ class PatientService
                 }
             }
         }
+        if(auth()->user()->isDoctor())
+        {
+            $doctor = Doctor::find(doctor_id());
+            $this->sendDirectNotification(
+                user_id_of_patient($patient_id),
+                NotificationMessages::NEW_PRESCRIPTION_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::NEW_PRESCRIPTION_BODY,
+                    [
+                        'name' => $doctor->clinic_name,
+                    ]
+                ),
+                NotificationTypes::MEDICAL_PROFILE->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                false
+            );
+        }
     }
 
     public function storeInstructionsData($data , $patient_id = null , $visit_id = null , $old_instruction_id = null , $setAsExpired = false)
@@ -400,6 +425,29 @@ class PatientService
                 'itemable_type' => Instruction::class,
                 'history_ids' => $finalHistoryArray
             ]);
+        }
+
+        if(auth()->user()->isDoctor())
+        {
+            $doctor = Doctor::find(doctor_id());
+            $this->sendDirectNotification(
+                user_id_of_patient($patient_id),
+                NotificationMessages::NEW_RECOMMENDATION_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::NEW_RECOMMENDATION_BODY,
+                    [
+                        'name' => $doctor->clinic_name,
+                    ]
+                ),
+                NotificationTypes::MEDICAL_PROFILE->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                false
+            );
         }
     }
 

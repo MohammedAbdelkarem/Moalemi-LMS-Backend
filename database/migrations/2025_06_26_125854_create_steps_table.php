@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('goal_reward');
             $table->double('distance')->default(0);
             $table->double('calories')->default(0);
+            $table->boolean('goal_notified')->default(0);
             $table->timestamps();
         });
     }

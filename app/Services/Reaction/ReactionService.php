@@ -2,19 +2,23 @@
 
 namespace App\Services\Reaction;
 
-use App\Constants\ExceptionMessages;
-use App\Enums\ReactionStatusEnum;
-use App\Models\Article;
-use App\Enums\ReactionTypeEnum;
-use App\Models\Reaction;
 use App\Models\Replay;
+use App\Models\Article;
+use App\Models\Reaction;
+use App\Enums\ReactionTypeEnum;
+use App\Enums\ReactionStatusEnum;
+use App\Traits\NotificationHelper;
+use App\Constants\ExceptionMessages;
 use App\Services\Base\ContextService;
+use App\Constants\NotificationMessages;
+use App\Enums\Notifications\NotificationTypes;
 
 /**
  * Class ReactionService.
  */
 class ReactionService
 {
+    use NotificationHelper;
     protected $contextService;
 
     public function __construct(ContextService $contextService)
@@ -128,6 +132,28 @@ class ReactionService
         ]);
 
         $this->updateArticleCounters($article , '+' , 'comments');
+
+        if(active_articles_notification($comment->user_id))
+        {
+            $this->sendDirectNotification(
+                $comment->user_id,
+                NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::ARTICLE_COMMENT_REPLY_BODY,
+                    [
+                        'name' => $article->doctor->clinic_name,
+                    ]
+                ),
+                NotificationTypes::ARTICLES->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                false
+            );
+        }
     }
 
     public function unReplay($replay_id)

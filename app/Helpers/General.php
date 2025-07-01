@@ -351,7 +351,6 @@ if (!function_exists('treatmentAbleToEdit')) {
     }
 }
 
-
 if (!function_exists('ableToCancel')) {
     function ableToCancel($reservation)
     {
@@ -421,3 +420,44 @@ if (!function_exists('hasHistory')) {
     }
 }
 
+if (!function_exists('active_steps_notification')) {
+    function active_steps_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->steps_notification == 1;
+    }
+}
+
+if (!function_exists('active_water_notification')) {
+    function active_water_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->water_notification == 1;
+    }
+}
+
+if (!function_exists('active_sleep_notification')) {
+    function active_sleep_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->sleep_notification == 1;
+    }
+}
+
+if (!function_exists('active_weight_notification')) {
+    function active_weight_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->weight_notification == 1;
+    }
+}
+
+if (!function_exists('active_general_notification')) {
+    function active_general_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->general_notification == 1;
+    }
+}
+
+if (!function_exists('active_articles_notification')) {
+    function active_articles_notification($user_id)
+    {
+        return User::find($user_id)->notification_management->articles_notification == 1;
+    }
+}

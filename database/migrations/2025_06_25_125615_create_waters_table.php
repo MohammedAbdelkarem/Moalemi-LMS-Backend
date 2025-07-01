@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('total_amount')->default(0);
             $table->double('goal');
+            $table->boolean('goal_notified')->default(0);
             $table->timestamps();
         });
     }

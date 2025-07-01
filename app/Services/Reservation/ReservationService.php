@@ -12,19 +12,23 @@ use App\Models\Reservation;
 use App\Enums\ReactionStatusEnum;
 use App\Constants\MediaCollection;
 use App\Models\PatientUpdatedInfo;
+use App\Traits\NotificationHelper;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
+use App\Services\Media\MediaService;
 use App\Http\Resources\DoctorResouce;
 use App\Services\Base\ContextService;
+use App\Constants\NotificationMessages;
 use App\Services\Patient\PatientService;
 use App\Http\Resources\Media\MediaResource;
-use App\Services\Media\MediaService;
+use App\Enums\Notifications\NotificationTypes;
 
 /**
  * Class ReservationService.
  */
 class ReservationService
 {
+    use NotificationHelper;
     public function __construct(
         protected ContextService $contextService,
         protected PatientService $patientService,
@@ -45,6 +49,27 @@ class ReservationService
 
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $reservation , MediaCollection::RESERVATION_COLLECTION);
+
+        $this->sendDirectNotification(
+            auth()->id(),
+            NotificationMessages::APPOINTMENT_BOOKED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_BOOKED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'date' => $reservation->date,
+                    'time' => $reservation->time_to_come
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
     }
 
     public function reject($id , $data)
@@ -61,6 +86,26 @@ class ReservationService
         $reservation->other_rejection_reason = $data['other_rejection_reason'] ?? null;
 
         $reservation->save();
+
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_REJECTED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_REJECTED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
     }
 
     public function reject_by_admin($id , $data)
@@ -77,6 +122,26 @@ class ReservationService
         $reservation->other_rejection_reason = $data['other_rejection_reason'] ?? null;
 
         $reservation->save();
+
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
     }
 
     public function accept($id , $data)
@@ -92,6 +157,27 @@ class ReservationService
         $reservation->time_to_come = $data['time_to_come'];
 
         $reservation->save();
+
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_CONFIRMED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_CONFIRMED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'date' => $reservation->date,
+                    'time' => $reservation->time_to_come
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
     }
 
     public function cancel($id)
@@ -107,6 +193,25 @@ class ReservationService
         $reservation->status = ReservationStatusEnum::CANCELLED;
 
         $reservation->save();
+
+        $this->sendDirectNotification(
+            auth()->id(),
+            NotificationMessages::APPOINTMENT_CANCELLED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_CANCELLED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
     }
 
     public function did_not_come($id)
@@ -177,6 +282,26 @@ class ReservationService
             $this->patientService->storeMedicinesData($data , $patient->id , $visit->id);
         if(isset($data['instructions']))
             $this->patientService->storeInstructionsData($data , $patient->id , $visit->id);
+
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::MEDICAL_REPORT_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::MEDICAL_REPORT_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::MEDICAL_PROFILE->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            false
+        );
+
     }
 
     public function updateReport($visit_id , $data)
@@ -373,9 +498,25 @@ class ReservationService
         $patient_ids = Patient::where('user_id' , $id)->pluck('id');
         
         return $this->getReservations(null  ,$patient_ids , $data , [
-            'doctor.subCategories',
-            'doctor.user',
-            'visit.rate',
+            'doctor.subCategories.category' ,
+             'doctor.user' ,
+            //   'patient.medicines.medicine_days.medicine_times' ,
+            //   'patient.instructions' ,
+              'patient.user' ,
+            //   'patient.reservations.doctor.user' ,
+            //   'patient.reservations.doctor.subCategories.category' ,
+            //   'patient.reservations.visit.medicines.medicine_days.day' ,
+            //   'patient.reservations.visit.medicines.medicine_days.medicine_times' ,
+            //   'patient.reservations.visit.instructions' ,
+            //   'patient.reservations.visit.patientUpdatedInfo' ,
+                'visit.rate' ,
+                 'visit.patientUpdatedInfo' ,
+                  'visit.medicines.medicine_days.day' ,
+                  'visit.medicines.medicine_days.medicine_times' ,
+                   'visit.instructions',
+                   'complaints.patient',
+                  'complaints.doctor',
+                //   'complaints.reservation',
         ]);
     }
 

@@ -89,27 +89,27 @@ class NotificationService extends MainService
         ));
     }
 
-    public function storePublic($validatedData)
-    {
-        //Create Notiification
-        $notification = $this->createNotification(
-            title: json_encode(["message" => $validatedData["title"], "attributes" => []]),
-            body: json_encode(["message" => $validatedData["body"], "attributes" => []]),
-            type: NotificationTypes::PUBLIC->value,
-            createdBy: auth()->id(),
-            public: true,
-        );
+    // public function storePublic($validatedData)
+    // {
+    //     //Create Notiification
+    //     $notification = $this->createNotification(
+    //         title: json_encode(["message" => $validatedData["title"], "attributes" => []]),
+    //         body: json_encode(["message" => $validatedData["body"], "attributes" => []]),
+    //         type: NotificationTypes::PUBLIC->value,
+    //         createdBy: auth()->id(),
+    //         public: true,
+    //     );
 
-        //Dispatch Job To Send Notification
-        dispatch(new SendNotificationsJob(
-            tokens: UserDevice::query()
-                ->whereIn('user_id', User::query()->whereNull("deactive_at")->where('active_notifications', true)->pluck('id')->toArray())
-                ->pluck('notification_token')
-                ->toArray(),
-            notification: $notification,
-            shouldTranslate: false,
-        ));
-    }
+    //     //Dispatch Job To Send Notification
+    //     dispatch(new SendNotificationsJob(
+    //         tokens: UserDevice::query()
+    //             ->whereIn('user_id', User::query()->whereNull("deactive_at")->where('active_notifications', true)->pluck('id')->toArray())
+    //             ->pluck('notification_token')
+    //             ->toArray(),
+    //         notification: $notification,
+    //         shouldTranslate: false,
+    //     ));
+    // }
 
     public function show($id)
     {
@@ -198,22 +198,22 @@ class NotificationService extends MainService
         $notification->delete();
     }
 
-    protected function getNotificationPage(string $type) // TODO Replace with real path
-    {
-        $page = NotificationScreens::HOME->value;
-        switch ($type) { // Values are same to what used in NotificationTypes enum
-            case NotificationTypes::PUBLIC->value:
-                $page = NotificationScreens::HOME->value;
-                break;
-            case NotificationTypes::ACCOUNT->value:
-                $page = NotificationScreens::PROFILE_SCREEN->value;
-                break;
-            case NotificationTypes::PRODUCT->value:
-                $page = NotificationScreens::PRODUCTS->value;
-                break;
-            default:
-                break;
-        }
-        return $page;
-    }
+    // protected function getNotificationPage(string $type) // TODO Replace with real path
+    // {
+    //     $page = NotificationScreens::HOME->value;
+    //     switch ($type) { // Values are same to what used in NotificationTypes enum
+    //         case NotificationTypes::PUBLIC->value:
+    //             $page = NotificationScreens::HOME->value;
+    //             break;
+    //         case NotificationTypes::ACCOUNT->value:
+    //             $page = NotificationScreens::PROFILE_SCREEN->value;
+    //             break;
+    //         case NotificationTypes::PRODUCT->value:
+    //             $page = NotificationScreens::PRODUCTS->value;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     return $page;
+    // }
 }

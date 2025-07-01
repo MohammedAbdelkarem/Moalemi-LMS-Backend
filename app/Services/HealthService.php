@@ -11,16 +11,20 @@ use App\Models\StepTime;
 use App\Models\WaterTime;
 use App\Models\StepProfit;
 use App\Models\BmiClassification;
+use App\Traits\NotificationHelper;
 use App\Constants\ExceptionMessages;
 use App\Services\Base\ContextService;
+use App\Constants\NotificationMessages;
 use App\Models\OwnerPatientWeightHistory;
 use App\Models\Users\Profile\LoginHistory;
+use App\Enums\Notifications\NotificationTypes;
 
 /**
  * Class HealthService.
  */
 class HealthService
 {
+    use NotificationHelper;
     public function __construct(
         protected ContextService $contextService,
     )
@@ -99,6 +103,28 @@ class HealthService
             'amount' => $data['amount'],
             'time' => $data['time'],
         ]);
+
+        if(! $water->goal_notified && $water->total_amount >= $water->goal && active_water_notification(auth()->id()))
+        {
+            $water->goal_notified = 1;
+            $water->save();
+
+            $this->sendDirectNotification(
+                auth()->id(),
+                NotificationMessages::WATER_GOAL_ACHIEVED_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::WATER_GOAL_ACHIEVED_BODY,
+                ),
+                NotificationTypes::WATER->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                false
+            );
+        }
     }
     
     public function getWaterHistory($data)
@@ -178,7 +204,7 @@ class HealthService
         $step->save();
 
 
-        if($step->total_amount > $step->goal)
+        if($step->total_amount >= $step->goal)
         {
             $profitExists = StepProfit::where('step_id' , $step->id)->exists();
 
@@ -189,6 +215,32 @@ class HealthService
                     'balance' => $step->goal_reward,
                 ]);
             }
+
+            if(! $step->goal_notified && active_steps_notification(auth()->id()))
+            {
+                $step->goal_notified = 1;
+                $step->save();
+
+                $this->sendDirectNotification(
+                    auth()->id(),
+                    NotificationMessages::STEP_GOAL_ACHIEVED_TITLE,
+                    $this->notificationMessage(
+                        NotificationMessages::STEP_GOAL_ACHIEVED_BODY,
+                        [
+                            'goal' => $step->goal,
+                            'points' => $step->goal_reward
+                        ]
+                    ),
+                    NotificationTypes::STEPS->value,
+                    'ar',
+                    false,
+                    "",
+                    [],
+                    true,
+                    [],
+                    false
+                );
+            }
         }
 
         StepTime::create([
@@ -196,6 +248,28 @@ class HealthService
             'amount' => $data['amount'],
             'time' => $data['time'],
         ]);
+
+        if(active_steps_notification(auth()->id()))
+        {
+            $this->sendDirectNotification(
+                auth()->id(),
+                NotificationMessages::DAILY_PROGRESS_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::DAILY_PROGRESS_BODY,
+                    [
+                        'steps' => $data['amount']
+                    ]
+                ),
+                NotificationTypes::STEPS->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                false
+            );
+        }
     }
 
     public function getStepsHistory($data)
