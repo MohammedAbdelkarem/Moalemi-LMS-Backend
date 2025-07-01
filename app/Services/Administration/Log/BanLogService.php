@@ -98,15 +98,15 @@ class BanLogService extends MainService
             ]
         );
 
-        $this->sendDirectNotification(
-            targeted_user_id: $user->id,
-            title: $this->notificationMessage(NotificationMessages::BAN_TITLE),
-            body: $this->notificationMessage(NotificationMessages::BAN_BODY, ["bannedUntil" => $profile->banned_until, "reason" => $valdatedData["reason"]]),
-            type: NotificationTypes::ACCOUNT->value,
-            createdBy: auth()->id(),
-            page: NotificationScreens::PROFILE_SCREEN->value,
-            local: $user->language,
-        );
+        // $this->sendDirectNotification(
+        //     targeted_user_id: $user->id,
+        //     title: $this->notificationMessage(NotificationMessages::BAN_TITLE),
+        //     body: $this->notificationMessage(NotificationMessages::BAN_BODY, ["bannedUntil" => $profile->banned_until, "reason" => $valdatedData["reason"]]),
+        //     type: NotificationTypes::ACCOUNT->value,
+        //     createdBy: auth()->id(),
+        //     page: NotificationScreens::PROFILE_SCREEN->value,
+        //     local: $user->language,
+        // );
     }
 
     public function unBan($validatedData)
@@ -140,14 +140,14 @@ class BanLogService extends MainService
             "unbanned_by_id" => auth()->id(),
         ]);
 
-        $this->sendDirectNotification(
-            targeted_user_id: $user->id,
-            title: $this->notificationMessage(NotificationMessages::UNBAN_TITLE),
-            body: $this->notificationMessage(NotificationMessages::UNBAN_BODY),
-            type: NotificationTypes::ACCOUNT->value,
-            createdBy: auth()->id(),
-            page: NotificationScreens::PROFILE_SCREEN->value,
-            local: $user->language,
-        );
+        // $this->sendDirectNotification(
+        //     targeted_user_id: $user->id,
+        //     title: $this->notificationMessage(NotificationMessages::UNBAN_TITLE ),
+        //     body: $this->notificationMessage(NotificationMessages::UNBAN_BODY),
+        //     type: NotificationTypes::ACCOUNT->value,
+        //     createdBy: auth()->id(),
+        //     page: NotificationScreens::PROFILE_SCREEN->value,
+        //     local: $user->language,
+        // );
     }
 }

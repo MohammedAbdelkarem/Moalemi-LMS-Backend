@@ -359,24 +359,24 @@ class PatientService
         if(auth()->user()->isDoctor())
         {
             $doctor = Doctor::find(doctor_id());
-            $this->sendDirectNotification(
-                user_id_of_patient($patient_id),
-                NotificationMessages::NEW_PRESCRIPTION_TITLE,
-                $this->notificationMessage(
-                    NotificationMessages::NEW_PRESCRIPTION_BODY,
-                    [
-                        'name' => $doctor->clinic_name,
-                    ]
-                ),
-                NotificationTypes::MEDICAL_PROFILE->value,
-                'ar',
-                false,
-                "",
-                [],
-                true,
-                [],
-                false
-            );
+            // $this->sendDirectNotification(
+            //     user_id_of_patient($patient_id),
+            //     NotificationMessages::NEW_PRESCRIPTION_TITLE,
+            //     $this->notificationMessage(
+            //         NotificationMessages::NEW_PRESCRIPTION_BODY,
+            //         [
+            //             'name' => $doctor->clinic_name,
+            //         ]
+            //     ),
+            //     NotificationTypes::MEDICAL_PROFILE->value,
+            //     'ar',
+            //     false,
+            //     "",
+            //     [],
+            //     true,
+            //     [],
+            //     false
+            // );
         }
     }
 
@@ -430,24 +430,24 @@ class PatientService
         if(auth()->user()->isDoctor())
         {
             $doctor = Doctor::find(doctor_id());
-            $this->sendDirectNotification(
-                user_id_of_patient($patient_id),
-                NotificationMessages::NEW_RECOMMENDATION_TITLE,
-                $this->notificationMessage(
-                    NotificationMessages::NEW_RECOMMENDATION_BODY,
-                    [
-                        'name' => $doctor->clinic_name,
-                    ]
-                ),
-                NotificationTypes::MEDICAL_PROFILE->value,
-                'ar',
-                false,
-                "",
-                [],
-                true,
-                [],
-                false
-            );
+            // $this->sendDirectNotification(
+            //     user_id_of_patient($patient_id),
+            //     NotificationMessages::NEW_RECOMMENDATION_TITLE,
+            //     $this->notificationMessage(
+            //         NotificationMessages::NEW_RECOMMENDATION_BODY,
+            //         [
+            //             'name' => $doctor->clinic_name,
+            //         ]
+            //     ),
+            //     NotificationTypes::MEDICAL_PROFILE->value,
+            //     'ar',
+            //     false,
+            //     "",
+            //     [],
+            //     true,
+            //     [],
+            //     false
+            // );
         }
     }
 

@@ -25,6 +25,6 @@ class ReservationDailyReminderCommand extends Command
      */
     public function handle()
     {
-        //
+        
     }
 }

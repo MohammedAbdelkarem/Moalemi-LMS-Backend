@@ -46,6 +46,7 @@ trait NotificationHelper
         array $additionalData = [],
         bool $shouldTranslate = true,
     ) {
+        // dd()
         DB::beginTransaction();
         if (!$clickable) $requestedID = "";
         if ($shouldCreate) {

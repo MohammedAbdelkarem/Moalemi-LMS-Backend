@@ -114,7 +114,7 @@ return [
 
     // Activity & Steps
 
-    //StepsReminderCommand
+    //StepsReminderCommand //6 pm
     // NotificationMessages::INACTIVITY_TITLE         => "عدم تقدم",
     // NotificationMessages::INACTIVITY_BODY          => "خطواتك تصنع فرقًا صغيرًا كل يوم! ما رأيك بنزهة قصيرة الآن؟ 🚶‍♂️",
 
@@ -128,28 +128,28 @@ return [
     // NotificationMessages::STEP_WITHDRAWAL_TITLE    => "سحب رصيد الخطوات",
     // NotificationMessages::STEP_WITHDRAWAL_BODY     => "تم سحب مبلغ من رصيدك بقيمة :withdrawal. تبقى في رصيدك :remaining.",
 
-    // WaterReminderCommand
+    // WaterReminderCommand // 9 to 9 , every hour
     // NotificationMessages::WATER_REMINDER_TITLE     => "تذكير بالشرب",
     // NotificationMessages::WATER_REMINDER_BODY      => "هل شربت كوب ماء اليوم؟ ابقَ منتعشًا 💧",
 
     NotificationMessages::WATER_GOAL_ACHIEVED_TITLE=> "تحقق الهدف",
     NotificationMessages::WATER_GOAL_ACHIEVED_BODY => "أحسنت! وصلت إلى هدفك اليومي من شرب الماء 💦",
 
-    // SleepReminderCommand
+    // SleepReminderCommand     // 9 pm
     // NotificationMessages::SLEEP_REMINDER_TITLE     => "تذكير بالنوم",
     // NotificationMessages::SLEEP_REMINDER_BODY      => "اقترب وقت النوم. خذ قسطًا من الراحة 💤",
 
-    // SleepReportCommand
+    // SleepReportCommand       // 9 am
     // NotificationMessages::SLEEP_REVIEW_TITLE       => "مراجعة نوم",
     // NotificationMessages::SLEEP_REVIEW_BODY        => "نمت :hours ساعة الليلة الماضية. تابع هذا النمط الجيد! 🌙",
 
     // Weight
 
-    //UpdateMedicalInfoReminderCommand
+    //UpdateMedicalInfoReminderCommand // every month
     // NotificationMessages::WEIGHT_UPDATE_REQUEST_TITLE => "طلب تحديث الوزن",
     // NotificationMessages::WEIGHT_UPDATE_REQUEST_BODY  => "📊 حدّث بيانات وزنك وطولك لتحصل على تحليلات أدق",
 
-    // MotivationalCommand
+    // MotivationalCommand 
     // NotificationMessages::PERFORMANCE_IMPROVED_TITLE  => "تحسّن في الأداء",
     // NotificationMessages::PERFORMANCE_IMPROVED_BODY   => "💪 بنية جسمك في تحسّن! استمر على هذا الأداء الرائع.",
 

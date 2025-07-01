@@ -173,15 +173,15 @@ class CustomerServiceCardService extends MainService
         $card->admin_answer = $validatedData['answer'];
         $card->save();
 
-        $this->sendDirectNotification(
-            targeted_user_id: $card->user_id,
-            title: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_CLOSE_TITLE),
-            body: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_CLOSE_BODY, ["name" => $card->title]),
-            type: NotificationTypes::ACCOUNT->value,
-            createdBy: auth()->id(),
-            page: NotificationScreens::HOME->value,
-            local: $card->user->language,
-        );
+        // $this->sendDirectNotification(
+        //     targeted_user_id: $card->user_id,
+        //     title: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_CLOSE_TITLE),
+        //     body: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_CLOSE_BODY, ["name" => $card->title]),
+        //     type: NotificationTypes::ACCOUNT->value,
+        //     createdBy: auth()->id(),
+        //     page: NotificationScreens::HOME->value,
+        //     local: $card->user->language,
+        // );
     }
 
     public function destroy($id) //Soft delete
@@ -206,14 +206,14 @@ class CustomerServiceCardService extends MainService
 
         $card->delete();
 
-        $this->sendDirectNotification(
-            targeted_user_id: $card->user_id,
-            title: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_DELETE_TITLE),
-            body: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_DELETE_BODY, ["name" => $card->title]),
-            type: NotificationTypes::ACCOUNT->value,
-            createdBy: auth()->id(),
-            page: NotificationScreens::HOME->value,
-            local: $card->user->language,
-        );
+        // $this->sendDirectNotification(
+        //     targeted_user_id: $card->user_id,
+        //     title: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_DELETE_TITLE),
+        //     body: $this->notificationMessage(NotificationMessages::CUSTOMER_SERVICE_CARD_DELETE_BODY, ["name" => $card->title]),
+        //     type: NotificationTypes::ACCOUNT->value,
+        //     createdBy: auth()->id(),
+        //     page: NotificationScreens::HOME->value,
+        //     local: $card->user->language,
+        // );
     }
 }
