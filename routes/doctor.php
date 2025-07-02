@@ -9,11 +9,12 @@ use App\Http\Controllers\Media\MediaController;
 use App\Http\Controllers\Doctor\ShiftController;
 use App\Http\Controllers\Patient\ListController;
 use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Doctor\ArticleController;
-use App\Http\Controllers\Doctor\PatientController as DoctorPatientController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Doctor\ReservationController;
 use App\Http\Controllers\Doctor\TransactionController;
+use App\Http\Controllers\Doctor\PatientController as DoctorPatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +113,12 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
                     Route::delete('delete/{instruction_id}/visit/{visit_id}' , 'deleteInstruction');
                 });
             });
+        });
+    });
+
+    Route::prefix('category')->group(function(){
+        Route::controller(CategoryController::class)->group(function(){callback: 
+            Route::get('show/{id}' , 'show');
         });
     });
 
