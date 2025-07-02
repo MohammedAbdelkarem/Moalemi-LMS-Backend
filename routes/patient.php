@@ -102,6 +102,12 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         });
     });
 
+    Route::prefix('category')->group(function(){
+        Route::controller(CategoryController::class)->group(function(){callback: 
+            Route::get('show/{id}' , 'show');
+        });
+    });
+
     Route::prefix('reservation')->group(function(){
         Route::controller(ReservationController::class)->group(function(){
             Route::post('appoint' , 'appoint')->middleware('user.banned');
