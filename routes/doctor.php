@@ -38,6 +38,12 @@ Route::middleware([])->withoutMiddleware('is_doctor')->group(function () {
     Route::prefix('plans')->controller(PlanController::class)->group(function () {
         Route::get('get' , 'getPlans');
     });
+
+    Route::prefix('category')->group(function(){
+        Route::controller(CategoryController::class)->group(function(){callback: 
+            Route::get('show/{id}' , 'show');
+        });
+    });
 });
 
 //Auth Needed
@@ -116,11 +122,6 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         });
     });
 
-    Route::prefix('category')->group(function(){
-        Route::controller(CategoryController::class)->group(function(){callback: 
-            Route::get('show/{id}' , 'show');
-        });
-    });
 
     Route::prefix('history')->controller(TreatmentController::class)->group(function(){
         Route::get('medicine/{medicine_id}' , 'getMedicineHistory')->name(RouteNames::TREATMENT_DETAILS);

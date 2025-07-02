@@ -163,6 +163,8 @@ class DoctorService
             ]
         )->get());
 
+        $this->planService->processSubscriptionsData();
+
         return [
             'stories' => $stories,
             'reservations' => $reservations,

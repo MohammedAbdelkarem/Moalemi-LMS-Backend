@@ -12,6 +12,7 @@ final class ExceptionMessages
     const MSG_CAN_NOT_GET_HISTORY_FOR_THE_HISTORY              = 'exception_messages.can_not_get_history_for_the_history';
     const MSG_RATE_ALREADY_HAS_REPLAY              = 'exception_messages.rate_already_has_replay';
     const MSG_SLEEP_ALREADY_EXIST              = 'exception_messages.sleep_already_exist';
+    const MSG_NO_ACTIVE_SUBSCRIPTION              = 'exception_messages.no_active_subscription';
     const MSG_CAN_NOT_UPDATE_HISTORY              = 'exception_messages.can_not_update_history';
     const MSG_CAN_NOT_UPDATE_EXPIRED              = 'exception_messages.can_not_update_expired';
     const MSG_CAN_NOT_COMMENT              = 'exception_messages.can_not_comment';
