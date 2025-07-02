@@ -7,6 +7,7 @@ use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Rate\RateResource;
 use App\Http\Resources\SubCategory\SubCategoryResource;
 use App\Http\Resources\Users\Profile\UserListResource;
 use App\Http\Resources\Users\Profile\UserSugResource;
@@ -72,7 +73,7 @@ class DoctorResouce extends JsonResource
                 // $data['cover'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_COVER_COLLECTION));
                 // $data['logo'] = MediaResource::collection($this->getMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
                 $data['shifts']   = ShiftResource::collection($this->whenLoaded('shifts'));
-                $data['rates']   = $this->whenLoaded('rates');
+                $data['rates']   = RateResource::collection($this->whenLoaded('rates'));
                 $data['articles']   = ArticleResource::collection($this->whenLoaded('articles'));
             break;
         }

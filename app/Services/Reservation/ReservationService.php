@@ -50,17 +50,20 @@ class ReservationService
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $reservation , MediaCollection::RESERVATION_COLLECTION);
 
+        //     dd($this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY));
         // $this->sendDirectNotification(
         //     auth()->id(),
-        //     NotificationMessages::APPOINTMENT_BOOKED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::APPOINTMENT_BOOKED_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //             'date' => $reservation->date,
-        //             'time' => $reservation->time_to_come
-        //         ]
-        //     ),
+        //     $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_TITLE),
+            
+        //         $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY),
+        //     // $this->notificationMessage(
+        //     //     NotificationMessages::APPOINTMENT_BOOKED_BODY,
+        //     //     [
+        //     //         'name' => $reservation->doctor->clinic_name,
+        //     //         'date' => $reservation->date,
+        //     //         'time' => $reservation->time_to_come
+        //     //     ]
+        //     // ),
         //     NotificationTypes::RESERVATIONS->value,
         //     'ar',
         //     false,

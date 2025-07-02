@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('end_at');
             $table->nullableMorphs('storiable');
             $table->string('external_link')->nullable();
-            $table->enum('status', MediaStatusEnum::getValues())->default(MediaStatusEnum::INACTIVE);
+            $table->enum('status', MediaStatusEnum::getValues())->default(MediaStatusEnum::ACTIVE);
             $table->timestamps();
         });
     }

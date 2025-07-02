@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('description')->nullable();
             $table->nullableMorphs('bannerable');
             $table->string('external_link')->nullable();
-            $table->enum('status' , MediaStatusEnum::getValues())->default(MediaStatusEnum::INACTIVE);
+            $table->enum('status' , MediaStatusEnum::getValues())->default(MediaStatusEnum::ACTIVE);
             $table->timestamps();
         });
     }

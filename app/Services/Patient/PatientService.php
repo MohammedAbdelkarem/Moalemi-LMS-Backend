@@ -26,7 +26,9 @@ use App\Services\Base\ContextService;
 use App\Constants\NotificationMessages;
 use App\Enums\Notifications\NotificationTypes;
 use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Reservation\ReservationResource;
+use App\Http\Resources\Story\StoryResource;
 
 /**
  * Class PatientService.
@@ -483,9 +485,9 @@ class PatientService
 
     public function home()
     {
-        $stories = Story::active()->get();
+        $stories = StoryResource::collection(Story::active()->get());
 
-        $banners = Banner::active()->get();
+        $banners = BannerResource::collection(Banner::active()->get());
 
         // $patient = Patient::findByIdOrFail(owner_id());
 
@@ -513,7 +515,7 @@ class PatientService
                 'doctor.subCategories.category' ,
                 'doctor.user' ,
             ])
-            ->latest('id')
+            ->orderBy('updated_at' , 'desc')
             ->first();
 
         $reservations = ReservationResource::collection(Reservation::where('patient_id' , owner_id())
