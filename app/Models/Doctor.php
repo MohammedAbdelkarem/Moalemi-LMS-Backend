@@ -7,6 +7,7 @@ use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
+use App\Models\Scopes\DoctorLoadingScope;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,11 @@ class Doctor extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia;
     protected $guarded = ['id'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new DoctorLoadingScope);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

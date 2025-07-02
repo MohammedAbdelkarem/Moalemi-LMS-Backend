@@ -35,6 +35,7 @@ class DoctorResouce extends JsonResource
             'logo' =>  MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
         ];
 
+        $data['number_of_favorites'] = $this->favorites()->count();
         $data['sub_categories']   = $this->whenLoaded('subCategories');
         $data['user']   = $this->whenLoaded('user');
         $data['complaints'] = ComplaintResource::collection($this->whenLoaded('complaints'));

@@ -31,7 +31,7 @@ class LoginHistoryService extends MainService
             "device_name" => $device,
             "device_id" => $device_id,
         ]);
-        // $this->sendLoginNotification($device, $ip, $user_id);
+        $this->sendLoginNotification($device, $ip, $user_id);
         return $loginHistory;
     }
 
