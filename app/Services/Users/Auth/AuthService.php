@@ -109,12 +109,12 @@ class AuthService extends MainService
 
         $user->save();
 
-        NotificationManagement::firstOrCreate([
-            'user_id' => $user->id
-        ],
-        [
-            'user_id' => $user->id
-        ]);
+        // NotificationManagement::firstOrCreate([
+        //     'user_id' => $user->id
+        // ],
+        // [
+        //     'user_id' => $user->id
+        // ]);
 
         //Send otp
         $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);

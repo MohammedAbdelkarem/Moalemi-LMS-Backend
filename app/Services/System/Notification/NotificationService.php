@@ -70,8 +70,8 @@ class NotificationService extends MainService
             title: json_encode(["message" => $validatedData["title"], "attributes" => []]),
             body: json_encode(["message" => $validatedData["body"], "attributes" => []]),
             type: $validatedData["type"],
-            createdBy: auth()->id(),
-            page: $this->getNotificationPage($validatedData["type"])
+            // createdBy: auth()->id(),
+            // page: $this->getNotificationPage($validatedData["type"])
         );
 
         //Store receivers

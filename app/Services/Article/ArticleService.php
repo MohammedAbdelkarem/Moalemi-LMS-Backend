@@ -5,17 +5,17 @@ namespace App\Services\Article;
 use App\Models\Article;
 use App\Constants\MediaCollection;
 use App\Services\Base\ContextService;
+use App\Services\PatientNotificationService;
 
 /**
  * Class ArticleService.
  */
 class ArticleService
 {
-    protected $contextService;
-    public function __construct(ContextService $contextService)
-    {
-        $this->contextService = $contextService;
-    }
+    public function __construct(
+        protected ContextService $contextService,
+        protected PatientNotificationService $patientNotificationService,
+    ) {}
     public function getAll($data)
     {
         return getOrPaginate(

@@ -172,12 +172,12 @@ return [
     // NotificationMessages::HEALTH_TIP_BODY              => "💡 هل تعلم؟ شرب الماء بانتظام يساعد على تحسين التركيز والوظائف الحيوية.",
 
     //when creating
-    // NotificationMessages::NEW_ARTICLE_TITLE            => "مقال جديد",
-    // NotificationMessages::NEW_ARTICLE_BODY             => "📰 مقال جديد بانتظارك: :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
+    NotificationMessages::NEW_ARTICLE_TITLE            => "مقال جديد",
+    NotificationMessages::NEW_ARTICLE_BODY             => "📰 مقال جديد بانتظارك: :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
 
-    //when creating , did not related to the management
-    // NotificationMessages::DOCTOR_ARTICLE_TITLE         => "مقال جديد من طبيبك المفضل",
-    // NotificationMessages::DOCTOR_ARTICLE_BODY          => "🩺 مقال جديد من د. :doctor بعنوان :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
+    // when creating , did not related to the management
+    NotificationMessages::DOCTOR_ARTICLE_TITLE         => "مقال جديد من طبيبك المفضل",
+    NotificationMessages::DOCTOR_ARTICLE_BODY          => "🩺 مقال جديد من د. :doctor بعنوان :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
 
     NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE  => "رد على تعليقك",
     NotificationMessages::ARTICLE_COMMENT_REPLY_BODY   => "قام الطبيب :name بالرد على تعليقك على مقال !",
