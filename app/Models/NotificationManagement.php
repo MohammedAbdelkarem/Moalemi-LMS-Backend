@@ -16,6 +16,7 @@ class NotificationManagement extends Model
         'weight_notification',
         'general_notification',
         'articles_notification',
+        'user_id',
     ];
 
 
