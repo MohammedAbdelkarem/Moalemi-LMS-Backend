@@ -50,29 +50,37 @@ class ReservationService
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $reservation , MediaCollection::RESERVATION_COLLECTION);
 
-        //     dd($this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY));
-        // $this->sendDirectNotification(
-        //     auth()->id(),
-        //     $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_TITLE),
+        //     dd(__(NotificationMessages::APPOINTMENT_BOOKED_BODY , 
+        
+        // [
+        //             'name' => $reservation->doctor->clinic_name,
+        //             'date' => $reservation->date,
+        //             'time' => $reservation->time_to_come
+        //         ]
+        // ));
+            // dd($this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY));
+        $this->sendDirectNotification(
+            auth()->id(),
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_TITLE),
             
-        //         $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY),
-        //     // $this->notificationMessage(
-        //     //     NotificationMessages::APPOINTMENT_BOOKED_BODY,
-        //     //     [
-        //     //         'name' => $reservation->doctor->clinic_name,
-        //     //         'date' => $reservation->date,
-        //     //         'time' => $reservation->time_to_come
-        //     //     ]
-        //     // ),
-        //     NotificationTypes::RESERVATIONS->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+            //     $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY),
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_BOOKED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'date' => $reservation->date,
+                    'time' => $reservation->time_to_come
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function reject($id , $data)
@@ -90,25 +98,25 @@ class ReservationService
 
         $reservation->save();
 
-        // $this->sendDirectNotification(
-        //     user_id_of_patient($data->patient_id),
-        //     NotificationMessages::APPOINTMENT_REJECTED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::APPOINTMENT_REJECTED_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //             'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
-        //         ]
-        //     ),
-        //     NotificationTypes::RESERVATIONS->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_REJECTED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_REJECTED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function reject_by_admin($id , $data)
@@ -126,25 +134,25 @@ class ReservationService
 
         $reservation->save();
 
-        // $this->sendDirectNotification(
-        //     user_id_of_patient($data->patient_id),
-        //     NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //             'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
-        //         ]
-        //     ),
-        //     NotificationTypes::RESERVATIONS->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function accept($id , $data)
@@ -161,26 +169,26 @@ class ReservationService
 
         $reservation->save();
 
-        // $this->sendDirectNotification(
-        //     user_id_of_patient($data->patient_id),
-        //     NotificationMessages::APPOINTMENT_CONFIRMED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::APPOINTMENT_CONFIRMED_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //             'date' => $reservation->date,
-        //             'time' => $reservation->time_to_come
-        //         ]
-        //     ),
-        //     NotificationTypes::RESERVATIONS->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::APPOINTMENT_CONFIRMED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_CONFIRMED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                    'date' => $reservation->date,
+                    'time' => $reservation->time_to_come
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function cancel($id)
@@ -197,24 +205,24 @@ class ReservationService
 
         $reservation->save();
 
-        // $this->sendDirectNotification(
-        //     auth()->id(),
-        //     NotificationMessages::APPOINTMENT_CANCELLED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::APPOINTMENT_CANCELLED_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //         ]
-        //     ),
-        //     NotificationTypes::RESERVATIONS->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            auth()->id(),
+            NotificationMessages::APPOINTMENT_CANCELLED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::APPOINTMENT_CANCELLED_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function did_not_come($id)
@@ -286,24 +294,24 @@ class ReservationService
         if(isset($data['instructions']))
             $this->patientService->storeInstructionsData($data , $patient->id , $visit->id);
 
-        // $this->sendDirectNotification(
-        //     user_id_of_patient($data->patient_id),
-        //     NotificationMessages::MEDICAL_REPORT_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::MEDICAL_REPORT_BODY,
-        //         [
-        //             'name' => $reservation->doctor->clinic_name,
-        //         ]
-        //     ),
-        //     NotificationTypes::MEDICAL_PROFILE->value,
-        //     'ar',
-        //     false,
-        //     $reservation->id,
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            user_id_of_patient($data->patient_id),
+            NotificationMessages::MEDICAL_REPORT_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::MEDICAL_REPORT_BODY,
+                [
+                    'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::MEDICAL_PROFILE->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
 
     }
 

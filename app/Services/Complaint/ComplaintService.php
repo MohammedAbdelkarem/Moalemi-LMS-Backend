@@ -22,21 +22,21 @@ class ComplaintService
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $Complaint , MediaCollection::COMPLAINT_COLLECTION);
 
-        // $this->sendDirectNotification(
-        //     auth()->id(),
-        //     NotificationMessages::COMPLAINT_SUBMITTED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::COMPLAINT_SUBMITTED_BODY
-        //     ),
-        //     NotificationTypes::COMPLAINTS->value,
-        //     'ar',
-        //     false,
-        //     "",
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            auth()->id(),
+            NotificationMessages::COMPLAINT_SUBMITTED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::COMPLAINT_SUBMITTED_BODY
+            ),
+            NotificationTypes::COMPLAINTS->value,
+            'ar',
+            false,
+            "",
+            [],
+            true,
+            [],
+            true
+        );
     }
 
     public function getForDoctor($doctor_id)
@@ -57,20 +57,20 @@ class ComplaintService
 
         $complaint->save();
 
-        // $this->sendDirectNotification(
-        //     user_id_of_patient($complaint->patient_id),
-        //     NotificationMessages::COMPLAINT_UPDATED_TITLE,
-        //     $this->notificationMessage(
-        //         NotificationMessages::COMPLAINT_UPDATED_BODY
-        //     ),
-        //     NotificationTypes::COMPLAINTS->value,
-        //     'ar',
-        //     false,
-        //     "",
-        //     [],
-        //     true,
-        //     [],
-        //     false
-        // );
+        $this->sendDirectNotification(
+            user_id_of_patient($complaint->patient_id),
+            NotificationMessages::COMPLAINT_UPDATED_TITLE,
+            $this->notificationMessage(
+                NotificationMessages::COMPLAINT_UPDATED_BODY
+            ),
+            NotificationTypes::COMPLAINTS->value,
+            'ar',
+            false,
+            "",
+            [],
+            true,
+            [],
+            true
+        );
     }
 }

@@ -109,21 +109,21 @@ class HealthService
             $water->goal_notified = 1;
             $water->save();
 
-            // $this->sendDirectNotification(
-            //     auth()->id(),
-            //     NotificationMessages::WATER_GOAL_ACHIEVED_TITLE,
-            //     $this->notificationMessage(
-            //         NotificationMessages::WATER_GOAL_ACHIEVED_BODY,
-            //     ),
-            //     NotificationTypes::WATER->value,
-            //     'ar',
-            //     false,
-            //     "",
-            //     [],
-            //     true,
-            //     [],
-            //     false
-            // );
+            $this->sendDirectNotification(
+                auth()->id(),
+                NotificationMessages::WATER_GOAL_ACHIEVED_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::WATER_GOAL_ACHIEVED_BODY,
+                ),
+                NotificationTypes::WATER->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                true
+            );
         }
     }
     
@@ -221,25 +221,25 @@ class HealthService
                 $step->goal_notified = 1;
                 $step->save();
 
-                // $this->sendDirectNotification(
-                //     auth()->id(),
-                //     NotificationMessages::STEP_GOAL_ACHIEVED_TITLE,
-                //     $this->notificationMessage(
-                //         NotificationMessages::STEP_GOAL_ACHIEVED_BODY,
-                //         [
-                //             'goal' => $step->goal,
-                //             'points' => $step->goal_reward
-                //         ]
-                //     ),
-                //     NotificationTypes::STEPS->value,
-                //     'ar',
-                //     false,
-                //     "",
-                //     [],
-                //     true,
-                //     [],
-                //     false
-                // );
+                $this->sendDirectNotification(
+                    auth()->id(),
+                    NotificationMessages::STEP_GOAL_ACHIEVED_TITLE,
+                    $this->notificationMessage(
+                        NotificationMessages::STEP_GOAL_ACHIEVED_BODY,
+                        [
+                            'goal' => $step->goal,
+                            'points' => $step->goal_reward
+                        ]
+                    ),
+                    NotificationTypes::STEPS->value,
+                    'ar',
+                    false,
+                    "",
+                    [],
+                    true,
+                    [],
+                    true
+                );
             }
         }
 
@@ -251,24 +251,24 @@ class HealthService
 
         if(active_steps_notification(auth()->id()))
         {
-            // $this->sendDirectNotification(
-            //     auth()->id(),
-            //     NotificationMessages::DAILY_PROGRESS_TITLE,
-            //     $this->notificationMessage(
-            //         NotificationMessages::DAILY_PROGRESS_BODY,
-            //         [
-            //             'steps' => $data['amount']
-            //         ]
-            //     ),
-            //     NotificationTypes::STEPS->value,
-            //     'ar',
-            //     false,
-            //     "",
-            //     [],
-            //     true,
-            //     [],
-            //     false
-            // );
+            $this->sendDirectNotification(
+                auth()->id(),
+                NotificationMessages::DAILY_PROGRESS_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::DAILY_PROGRESS_BODY,
+                    [
+                        'steps' => $data['amount']
+                    ]
+                ),
+                NotificationTypes::STEPS->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                true
+            );
         }
     }
 

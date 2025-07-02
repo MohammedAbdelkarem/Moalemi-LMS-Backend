@@ -159,5 +159,10 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('' , 'home')->name(RouteNames::PATIENT_HOME);
     });
 
+    Route::prefix('notfication-management')->controller(PatientController::class)->group(function(){
+        Route::get('' , 'getNotificationSettings');
+        Route::post('update/{id}/{type}' , 'updateNotificationSetting');
+    });
+
 
 });

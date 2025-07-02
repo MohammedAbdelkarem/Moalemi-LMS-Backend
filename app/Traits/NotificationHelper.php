@@ -56,7 +56,7 @@ trait NotificationHelper
                 $type,
                 $clickable,
                 $requestedID,
-                $extraData
+                json_encode($extraData)
             );
             $notification->receivers()->attach($targeted_user_id);
         }

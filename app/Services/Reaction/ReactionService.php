@@ -135,24 +135,24 @@ class ReactionService
 
         if(active_articles_notification($comment->user_id))
         {
-            // $this->sendDirectNotification(
-            //     $comment->user_id,
-            //     NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE,
-            //     $this->notificationMessage(
-            //         NotificationMessages::ARTICLE_COMMENT_REPLY_BODY,
-            //         [
-            //             'name' => $article->doctor->clinic_name,
-            //         ]
-            //     ),
-            //     NotificationTypes::ARTICLES->value,
-            //     'ar',
-            //     false,
-            //     "",
-            //     [],
-            //     true,
-            //     [],
-            //     false
-            // );
+            $this->sendDirectNotification(
+                $comment->user_id,
+                NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE,
+                $this->notificationMessage(
+                    NotificationMessages::ARTICLE_COMMENT_REPLY_BODY,
+                    [
+                        'name' => $article->doctor->clinic_name,
+                    ]
+                ),
+                NotificationTypes::ARTICLES->value,
+                'ar',
+                false,
+                "",
+                [],
+                true,
+                [],
+                true
+            );
         }
     }
 

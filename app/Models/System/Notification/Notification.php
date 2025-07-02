@@ -17,6 +17,12 @@ class Notification extends Model
     protected $timestamp = true;
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'title'      => 'array',
+        'body'       => 'array',
+        'extra_data' => 'array',
+    ];
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, "created_by");

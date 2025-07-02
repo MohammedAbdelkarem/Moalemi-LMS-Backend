@@ -9,8 +9,13 @@ class NotificationManagement extends Model
 {
     use HasFactory;
     
-    protected $guarded = [
-        'id'
+    protected $fillable = [
+        'steps_notification',
+        'water_notification',
+        'sleep_notification',
+        'weight_notification',
+        'general_notification',
+        'articles_notification',
     ];
 
 

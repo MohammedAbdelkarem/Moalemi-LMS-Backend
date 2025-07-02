@@ -18,9 +18,9 @@ class NotificationResource extends JsonResource
             "date" => $this->getHumanReadableTime($this->created_at, -48, -60),
             "is_read" => $this->receivers->isEmpty() ? true : (bool)$this->receivers[0]->is_read,
             "type" => $this->type,
-            "page" => $this->page,
+            // "page" => $this->page,
             "clickable"  => (bool) $this->clickable,
-            "is_public"  => (bool) $this->is_public,
+            // "is_public"  => (bool) $this->is_public,
             "extra_data" => $this->extra_data ? json_decode($this->extra_data) : [],
             "requested_id" => $this->requested_id ?? "",
         ];

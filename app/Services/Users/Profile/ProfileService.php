@@ -146,6 +146,7 @@ class ProfileService extends MainService
 
     public function deleteProfile($validatedData)
     {
+        // dd(9);
         /**
          * @var \App\Models\User $user
          */

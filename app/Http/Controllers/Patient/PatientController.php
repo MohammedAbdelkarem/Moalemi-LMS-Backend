@@ -18,11 +18,13 @@ use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionsRequest;
 use App\Http\Requests\MedicalProfile\CreateMedicalProfileRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicalProfileRequest;
+use App\Services\PatientNotificationService;
 
 class PatientController extends Controller
 {
     public function __construct(
         protected PatientService $patientService,
+        protected PatientNotificationService $patientNotificationService,
     ) {}
 
     public function createMyMedicalProfile(CreateMedicalProfileRequest $request)
@@ -119,6 +121,21 @@ class PatientController extends Controller
     {
         return success(
             $this->patientService->home(),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function getNotificationSettings()
+    {
+        return success(
+            $this->patientNotificationService->getSettings(),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+    public function updateNotificationSetting($id , $type)
+    {
+        return success(
+            $this->patientNotificationService->update($id , $type),
             ApiMessages::MSG_SUCCESS,
         );
     }

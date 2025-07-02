@@ -86,6 +86,11 @@ class Article extends Model implements HasMedia
             $query->where('title' , 'like' , '%' . $data['text'] . '%')
                     ->orWhere('body' , 'like' , '%' . $data['text'] . '%');
         })
+        ->when(isset($data['fav']) , function($query) use ($data) {
+            return $query->whereHas('favorites' , function($query) use ($data) {
+                return $query->where('user_id' , auth()->id());
+            });
+        })
         ->when(isset($data['category_ids']) , function($query) use ($data) {
             return $query->whereHas('doctor' , function($query) use ($data) {
                 return $query->whereHas('subCategories' , function($query) use ($data) {

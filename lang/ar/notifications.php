@@ -149,21 +149,21 @@ return [
     // NotificationMessages::WEIGHT_UPDATE_REQUEST_TITLE => "طلب تحديث الوزن",
     // NotificationMessages::WEIGHT_UPDATE_REQUEST_BODY  => "📊 حدّث بيانات وزنك وطولك لتحصل على تحليلات أدق",
 
-    // MotivationalCommand 
+    // MotivationalCommand , calc bmi once a week and then send for all the users , checking the managment
     // NotificationMessages::PERFORMANCE_IMPROVED_TITLE  => "تحسّن في الأداء",
     // NotificationMessages::PERFORMANCE_IMPROVED_BODY   => "💪 بنية جسمك في تحسّن! استمر على هذا الأداء الرائع.",
 
     // Wellness & Articles
 
-    //MorningCommand
+    //MorningCommand 10 am
     // NotificationMessages::GOOD_MORNING_TITLE           => "صباح الخير",
     // NotificationMessages::GOOD_MORNING_BODY            => "☀ صباح الصحة! تذّكر: كل خطوة نحو العافية تهم.",
 
-    //EveningCommand
+    //EveningCommand , 7 pm
     // NotificationMessages::GOOD_EVENING_TITLE           => "مساء الخير",
     // NotificationMessages::GOOD_EVENING_BODY            => "🌙 ختام اليوم بلحظة راحة. لا تنسَ الاهتمام بنفسك",
 
-    //HealthCommand
+    //HealthCommand , once a week at 5 pm
     // NotificationMessages::HEALTHCARE_REMINDER_TITLE    => "هل تهتم بصحتك؟",
     // NotificationMessages::HEALTHCARE_REMINDER_BODY     => "💚 صحتك أهم استثمار! استمر في العناية بنفسك.",
 
@@ -171,9 +171,11 @@ return [
     // NotificationMessages::HEALTH_TIP_TITLE             => "معلومة صحية",
     // NotificationMessages::HEALTH_TIP_BODY              => "💡 هل تعلم؟ شرب الماء بانتظام يساعد على تحسين التركيز والوظائف الحيوية.",
 
+    //when creating
     // NotificationMessages::NEW_ARTICLE_TITLE            => "مقال جديد",
     // NotificationMessages::NEW_ARTICLE_BODY             => "📰 مقال جديد بانتظارك: :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
 
+    //when creating , did not related to the management
     // NotificationMessages::DOCTOR_ARTICLE_TITLE         => "مقال جديد من طبيبك المفضل",
     // NotificationMessages::DOCTOR_ARTICLE_BODY          => "🩺 مقال جديد من د. :doctor بعنوان :title. اكتشف ما يمكن أن يُفيد صحتك اليوم!",
 
