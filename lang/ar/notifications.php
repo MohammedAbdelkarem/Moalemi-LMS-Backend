@@ -79,6 +79,9 @@ return [
     NotificationMessages::APPOINTMENT_REJECTED_TITLE      => "رفض الموعد من قبل الطبيب",
     NotificationMessages::APPOINTMENT_REJECTED_BODY       => "تم رفض موعدك مع د. :name. بسبب :reason يمكنك حجز موعد جديد في وقت آخر.",
 
+    NotificationMessages::APPOINTMENT_DID_NOT_COME_TITLE      => "لم تحضر الموعد",
+    NotificationMessages::APPOINTMENT_DID_NOT_COME_BODY       => "تم اغلاق موعدك مع الطبيب :name لأنك لم تحضر",
+
     NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE  => "إلغاء الموعد من قبل الإدارة",
     NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY   => "تم إلغاء موعدك مع د. :name. بسبب :reason يمكنك حجز موعد جديد.",
 

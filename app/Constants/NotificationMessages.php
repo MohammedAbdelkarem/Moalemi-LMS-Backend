@@ -36,6 +36,8 @@ final class NotificationMessages
     const APPOINTMENT_CANCELLED_BODY        = 'appointment_cancelled_body';
     const APPOINTMENT_REJECTED_TITLE        = 'appointment_rejected_title';
     const APPOINTMENT_REJECTED_BODY         = 'appointment_rejected_body';
+    const APPOINTMENT_DID_NOT_COME_TITLE        = 'appointment_did_not_come_title';
+    const APPOINTMENT_DID_NOT_COME_BODY         = 'appointment_did_not_come_body';
     const APPOINTMENT_ADMIN_CANCEL_TITLE    = 'appointment_admin_cancel_title';
     const APPOINTMENT_ADMIN_CANCEL_BODY     = 'appointment_admin_cancel_body';
 
