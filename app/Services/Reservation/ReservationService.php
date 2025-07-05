@@ -59,6 +59,8 @@ class ReservationService
         //         ]
         // ));
             // dd($this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY));
+
+        //patient notification
         $this->sendDirectNotification(
             auth()->id(),
             $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_TITLE),
@@ -72,6 +74,24 @@ class ReservationService
                     'time' => $reservation->time_to_come
                 ]
             ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+
+        //doctor notification
+        $this->sendDirectNotification(
+            user_id_of_doctor($reservation->doctor_id),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_BOOKED_TITLE),
+            
+            //     $this->notificationMessage(NotificationMessages::APPOINTMENT_BOOKED_BODY),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_BOOKED_BODY),
             NotificationTypes::RESERVATIONS->value,
             'ar',
             false,
@@ -98,13 +118,35 @@ class ReservationService
 
         $reservation->save();
 
+
+        //patient notification
         $this->sendDirectNotification(
             user_id_of_patient($reservation->patient_id),
-            NotificationMessages::APPOINTMENT_REJECTED_TITLE,
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_REJECTED_TITLE),
             $this->notificationMessage(
                 NotificationMessages::APPOINTMENT_REJECTED_BODY,
                 [
                     'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+        //doctor notification
+        $this->sendDirectNotification(
+            auth()->id(),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_REJECTED_TITLE),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_REJECTED_BODY,
+                [
+                    'name' => $reservation->patient->full_name,
                     'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
                 ]
             ),
@@ -134,13 +176,34 @@ class ReservationService
 
         $reservation->save();
 
+
+        //patient notification
         $this->sendDirectNotification(
             user_id_of_patient($reservation->patient_id),
-            NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE,
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE),
             $this->notificationMessage(
                 NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY,
                 [
                     'name' => $reservation->doctor->clinic_name,
+                    'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+        //doctor notification
+        $this->sendDirectNotification(
+            user_id_of_doctor($reservation->doctor_id),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_ADMIN_CANCEL_TITLE),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_ADMIN_CANCEL_BODY,
+                [
                     'reason' => $reservation->rejection_reason ?? $reservation->other_rejection_reason,
                 ]
             ),
@@ -171,13 +234,36 @@ class ReservationService
 
 
         // dd(9);
+
+        //patient notification
         $this->sendDirectNotification(
             user_id_of_patient($reservation->patient_id),
-            NotificationMessages::APPOINTMENT_CONFIRMED_TITLE,
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_CONFIRMED_TITLE),
             $this->notificationMessage(
                 NotificationMessages::APPOINTMENT_CONFIRMED_BODY,
                 [
                     'name' => $reservation->doctor->clinic_name,
+                    'date' => $reservation->date,
+                    'time' => $reservation->time_to_come
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+        //doctor notification
+        $this->sendDirectNotification(
+            auth()->id(),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_CONFIRMED_TITLE),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_CONFIRMED_BODY,
+                [
+                    'name' => $reservation->patient->full_name,
                     'date' => $reservation->date,
                     'time' => $reservation->time_to_come
                 ]
@@ -207,13 +293,33 @@ class ReservationService
 
         $reservation->save();
 
+        //patient notification
         $this->sendDirectNotification(
             auth()->id(),
-            NotificationMessages::APPOINTMENT_CANCELLED_TITLE,
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_CANCELLED_TITLE),
             $this->notificationMessage(
                 NotificationMessages::APPOINTMENT_CANCELLED_BODY,
                 [
                     'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::RESERVATIONS->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+        //doctor notification
+        $this->sendDirectNotification(
+            user_id_of_doctor($reservation->doctor_id),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_CANCELLED_TITLE),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_CANCELLED_BODY,
+                [
+                    'name' => $reservation->patient->full_name,
                 ]
             ),
             NotificationTypes::RESERVATIONS->value,
@@ -239,13 +345,34 @@ class ReservationService
 
         $reservation->save();
 
+
+        //patient notification
         $this->sendDirectNotification(
             user_id_of_patient($reservation->patient_id),
-            NotificationMessages::APPOINTMENT_DID_NOT_COME_TITLE,
+            $this->notificationMessage(NotificationMessages::APPOINTMENT_DID_NOT_COME_TITLE),
             $this->notificationMessage(
                 NotificationMessages::APPOINTMENT_DID_NOT_COME_BODY,
                 [
                     'name' => $reservation->doctor->clinic_name,
+                ]
+            ),
+            NotificationTypes::MEDICAL_PROFILE->value,
+            'ar',
+            false,
+            $reservation->id,
+            [],
+            true,
+            [],
+            true
+        );
+        //doctor notification
+        $this->sendDirectNotification(
+            auth()->id(),
+            $this->notificationMessage(NotificationMessages::DOCTOR_APPOINTMENT_DID_NOT_COME_TITLE),
+            $this->notificationMessage(
+                NotificationMessages::DOCTOR_APPOINTMENT_DID_NOT_COME_BODY,
+                [
+                    'name' => $reservation->patient->full_name,
                 ]
             ),
             NotificationTypes::MEDICAL_PROFILE->value,
@@ -317,7 +444,7 @@ class ReservationService
 
         $this->sendDirectNotification(
             user_id_of_patient($visit->patient_id),
-            NotificationMessages::MEDICAL_REPORT_TITLE,
+            $this->notificationMessage(NotificationMessages::MEDICAL_REPORT_TITLE),
             $this->notificationMessage(
                 NotificationMessages::MEDICAL_REPORT_BODY,
                 [

@@ -137,7 +137,7 @@ class ReactionService
         {
             $this->sendDirectNotification(
                 $comment->user_id,
-                NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE,
+                $this->notificationMessage(NotificationMessages::ARTICLE_COMMENT_REPLY_TITLE),
                 $this->notificationMessage(
                     NotificationMessages::ARTICLE_COMMENT_REPLY_BODY,
                     [

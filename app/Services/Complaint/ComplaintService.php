@@ -24,7 +24,7 @@ class ComplaintService
 
         $this->sendDirectNotification(
             auth()->id(),
-            NotificationMessages::COMPLAINT_SUBMITTED_TITLE,
+            $this->notificationMessage(NotificationMessages::COMPLAINT_SUBMITTED_TITLE),
             $this->notificationMessage(
                 NotificationMessages::COMPLAINT_SUBMITTED_BODY
             ),
@@ -59,7 +59,7 @@ class ComplaintService
 
         $this->sendDirectNotification(
             user_id_of_patient($complaint->patient_id),
-            NotificationMessages::COMPLAINT_UPDATED_TITLE,
+            $this->notificationMessage(NotificationMessages::COMPLAINT_UPDATED_TITLE),
             $this->notificationMessage(
                 NotificationMessages::COMPLAINT_UPDATED_BODY
             ),

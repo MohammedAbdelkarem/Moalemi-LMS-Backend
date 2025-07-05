@@ -61,8 +61,14 @@ return [
     NotificationMessages::APPOINTMENT_BOOKED_TITLE        => "حجز موعد",
     NotificationMessages::APPOINTMENT_BOOKED_BODY         => "تم حجز موعدك مع د. :name يوم :date الساعة :time 🩺",
 
+    NotificationMessages::DOCTOR_APPOINTMENT_BOOKED_TITLE        => "حجز موعد",
+    NotificationMessages::DOCTOR_APPOINTMENT_BOOKED_BODY         => "لديك موعد جديد بانتظار الموافقة 👨‍⚕️",
+
     NotificationMessages::APPOINTMENT_CONFIRMED_TITLE     => "تأكيد موعد",
     NotificationMessages::APPOINTMENT_CONFIRMED_BODY      => "تم تأكيد موعدك مع د. :name يوم :date الساعة :time 🩺",
+
+    NotificationMessages::DOCTOR_APPOINTMENT_CONFIRMED_TITLE     => "تأكيد موعد",
+    NotificationMessages::DOCTOR_APPOINTMENT_CONFIRMED_BODY      =>"تم تأكيد الموعد مع المريض :name يوم :date الساعة :time 🩺",
 
 
     //ReservationDailyReminderCommand
@@ -76,14 +82,26 @@ return [
     NotificationMessages::APPOINTMENT_CANCELLED_TITLE     => "إلغاء الموعد",
     NotificationMessages::APPOINTMENT_CANCELLED_BODY      => "تم إلغاء موعدك مع د. :name. يمكنك حجز موعد جديد بسهولة.",
 
+    NotificationMessages::DOCTOR_APPOINTMENT_CANCELLED_TITLE     => "إلغاء الموعد",
+    NotificationMessages::DOCTOR_APPOINTMENT_CANCELLED_BODY      => "قام المريض :name بإلغاء موعده",
+
     NotificationMessages::APPOINTMENT_REJECTED_TITLE      => "رفض الموعد من قبل الطبيب",
-    NotificationMessages::APPOINTMENT_REJECTED_BODY       => "تم رفض موعدك مع د. :name. بسبب :reason يمكنك حجز موعد جديد في وقت آخر.",
+    NotificationMessages::APPOINTMENT_REJECTED_BODY       => "تم رفض موعدك مع د. :name. والسبب هو :reason يمكنك حجز موعد جديد في وقت آخر.",
+
+    NotificationMessages::DOCTOR_APPOINTMENT_REJECTED_TITLE      => "رفض الموعد من قبل الطبيب",
+    NotificationMessages::DOCTOR_APPOINTMENT_REJECTED_BODY       => "تم رفض الموعد للمريض :name والسبب هو :reason",
 
     NotificationMessages::APPOINTMENT_DID_NOT_COME_TITLE      => "لم تحضر الموعد",
     NotificationMessages::APPOINTMENT_DID_NOT_COME_BODY       => "تم اغلاق موعدك مع الطبيب :name لأنك لم تحضر",
 
+    NotificationMessages::DOCTOR_APPOINTMENT_DID_NOT_COME_TITLE      => "لم يحضر الموعد",
+    NotificationMessages::DOCTOR_APPOINTMENT_DID_NOT_COME_BODY       =>"تم اغلاق الموعد للمريض :name لأنه لم يحضر",
+
     NotificationMessages::APPOINTMENT_ADMIN_CANCEL_TITLE  => "إلغاء الموعد من قبل الإدارة",
     NotificationMessages::APPOINTMENT_ADMIN_CANCEL_BODY   => "تم إلغاء موعدك مع د. :name. بسبب :reason يمكنك حجز موعد جديد.",
+
+    NotificationMessages::DOCTOR_APPOINTMENT_ADMIN_CANCEL_TITLE  => "إلغاء الموعد من قبل الإدارة",
+    NotificationMessages::DOCTOR_APPOINTMENT_ADMIN_CANCEL_BODY   => "تم إلغاء الموعد من قبل الإدارة بسبب :reason",
 
     // Medical Report
     NotificationMessages::MEDICAL_REPORT_TITLE => "تقرير طبي جديد",

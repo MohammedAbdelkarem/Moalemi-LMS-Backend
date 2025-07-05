@@ -363,7 +363,7 @@ class PatientService
             $doctor = Doctor::find(doctor_id());
             $this->sendDirectNotification(
                 user_id_of_patient($patient_id),
-                NotificationMessages::NEW_PRESCRIPTION_TITLE,
+                $this->notificationMessage(NotificationMessages::NEW_PRESCRIPTION_TITLE),
                 $this->notificationMessage(
                     NotificationMessages::NEW_PRESCRIPTION_BODY,
                     [
@@ -434,7 +434,7 @@ class PatientService
             $doctor = Doctor::find(doctor_id());
             $this->sendDirectNotification(
                 user_id_of_patient($patient_id),
-                NotificationMessages::NEW_RECOMMENDATION_TITLE,
+                $this->notificationMessage(NotificationMessages::NEW_RECOMMENDATION_TITLE),
                 $this->notificationMessage(
                     NotificationMessages::NEW_RECOMMENDATION_BODY,
                     [

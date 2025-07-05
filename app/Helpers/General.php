@@ -337,6 +337,13 @@ if (!function_exists('user_id_of_patient')) {
     }
 }
 
+if (!function_exists('user_id_of_doctor')) {
+    function user_id_of_doctor($doctor_id)
+    {
+        return Doctor::find($doctor_id)->user_id;
+    }
+}
+
 // if (!function_exists('getStoryStatus')) {
 //     function getStoryStatus($dateTime)
 //     {

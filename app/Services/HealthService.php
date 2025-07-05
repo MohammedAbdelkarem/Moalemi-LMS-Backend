@@ -111,7 +111,7 @@ class HealthService
 
             $this->sendDirectNotification(
                 auth()->id(),
-                NotificationMessages::WATER_GOAL_ACHIEVED_TITLE,
+                $this->notificationMessage(NotificationMessages::WATER_GOAL_ACHIEVED_TITLE),
                 $this->notificationMessage(
                     NotificationMessages::WATER_GOAL_ACHIEVED_BODY,
                 ),
@@ -223,7 +223,7 @@ class HealthService
 
                 $this->sendDirectNotification(
                     auth()->id(),
-                    NotificationMessages::STEP_GOAL_ACHIEVED_TITLE,
+                    $this->notificationMessage(NotificationMessages::STEP_GOAL_ACHIEVED_TITLE),
                     $this->notificationMessage(
                         NotificationMessages::STEP_GOAL_ACHIEVED_BODY,
                         [
@@ -253,7 +253,7 @@ class HealthService
         {
             $this->sendDirectNotification(
                 auth()->id(),
-                NotificationMessages::DAILY_PROGRESS_TITLE,
+                $this->notificationMessage(NotificationMessages::DAILY_PROGRESS_TITLE),
                 $this->notificationMessage(
                     NotificationMessages::DAILY_PROGRESS_BODY,
                     [

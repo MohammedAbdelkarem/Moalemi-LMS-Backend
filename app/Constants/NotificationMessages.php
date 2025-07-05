@@ -28,10 +28,6 @@ final class NotificationMessages
     const APPOINTMENT_BOOKED_BODY           = 'appointment_booked_body';
     const APPOINTMENT_CONFIRMED_TITLE       = 'appointment_confirmed_title';
     const APPOINTMENT_CONFIRMED_BODY        = 'appointment_confirmed_body';
-    const APPOINTMENT_REMINDER_24_TITLE     = 'appointment_reminder_24_title';
-    const APPOINTMENT_REMINDER_24_BODY      = 'appointment_reminder_24_body';
-    const APPOINTMENT_REMINDER_1_TITLE      = 'appointment_reminder_1_title';
-    const APPOINTMENT_REMINDER_1_BODY       = 'appointment_reminder_1_body';
     const APPOINTMENT_CANCELLED_TITLE       = 'appointment_cancelled_title';
     const APPOINTMENT_CANCELLED_BODY        = 'appointment_cancelled_body';
     const APPOINTMENT_REJECTED_TITLE        = 'appointment_rejected_title';
@@ -40,6 +36,23 @@ final class NotificationMessages
     const APPOINTMENT_DID_NOT_COME_BODY         = 'appointment_did_not_come_body';
     const APPOINTMENT_ADMIN_CANCEL_TITLE    = 'appointment_admin_cancel_title';
     const APPOINTMENT_ADMIN_CANCEL_BODY     = 'appointment_admin_cancel_body';
+    const DOCTOR_APPOINTMENT_BOOKED_TITLE           = 'doctor_appointment_booked_title';
+    const DOCTOR_APPOINTMENT_BOOKED_BODY            = 'doctor_appointment_booked_body';
+    const DOCTOR_APPOINTMENT_CONFIRMED_TITLE        = 'doctor_appointment_confirmed_title';
+    const DOCTOR_APPOINTMENT_CONFIRMED_BODY         = 'doctor_appointment_confirmed_body';
+    const DOCTOR_APPOINTMENT_CANCELLED_TITLE        = 'doctor_appointment_cancelled_title';
+    const DOCTOR_APPOINTMENT_CANCELLED_BODY         = 'doctor_appointment_cancelled_body';
+    const DOCTOR_APPOINTMENT_REJECTED_TITLE         = 'doctor_appointment_rejected_title';
+    const DOCTOR_APPOINTMENT_REJECTED_BODY          = 'doctor_appointment_rejected_body';
+    const DOCTOR_APPOINTMENT_DID_NOT_COME_TITLE     = 'doctor_appointment_did_not_come_title';
+    const DOCTOR_APPOINTMENT_DID_NOT_COME_BODY      = 'doctor_appointment_did_not_come_body';
+    const DOCTOR_APPOINTMENT_ADMIN_CANCEL_TITLE     = 'doctor_appointment_admin_cancel_title';
+    const DOCTOR_APPOINTMENT_ADMIN_CANCEL_BODY      = 'doctor_appointment_admin_cancel_body';
+
+    const APPOINTMENT_REMINDER_24_TITLE     = 'appointment_reminder_24_title';
+    const APPOINTMENT_REMINDER_24_BODY      = 'appointment_reminder_24_body';
+    const APPOINTMENT_REMINDER_1_TITLE      = 'appointment_reminder_1_title';
+    const APPOINTMENT_REMINDER_1_BODY       = 'appointment_reminder_1_body';
 
     //Medical Profile
     const MEDICAL_REPORT_TITLE   = 'medical_report_title';
