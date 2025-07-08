@@ -176,6 +176,7 @@ class DoctorService
             'stories' => $stories,
             'reservations' => $reservations,
             'articles' => $articles,
+            'banners' => $banners,
         ];
     }
 }
