@@ -21,6 +21,7 @@ class RateResource extends JsonResource
             'rate' => $this->rate,
             'comment' => $this->comment,
             'doctor_replay' => $this->doctor_replay,
+            'created_at' => $this->created_at,
         ];
 
         $data['patient'] = PatientResource::make($this->whenLoaded('patient'));
