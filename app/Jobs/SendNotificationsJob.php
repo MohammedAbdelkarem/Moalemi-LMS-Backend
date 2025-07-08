@@ -43,7 +43,6 @@ class SendNotificationsJob implements ShouldQueue
             tokens: $this->tokens,
             title: $this->notification->title,
             body: $this->notification->body,
-            page: $this->notification->page,
             additionalData: $this->additionalData,
             local: 'ar',
             shouldTranslate: $this->shouldTranslate

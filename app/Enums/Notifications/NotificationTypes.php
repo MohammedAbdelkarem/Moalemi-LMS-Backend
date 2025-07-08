@@ -5,6 +5,7 @@ namespace App\Enums\Notifications;
 enum NotificationTypes: string
 {
     case AUTH = 'auth';
+    case SUBSCRIPTION = 'subscription';
     case RESERVATIONS = 'reservations';
     case MEDICAL_PROFILE = 'medical_profile';
     case RATE = 'rate';

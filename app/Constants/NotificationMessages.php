@@ -23,6 +23,9 @@ final class NotificationMessages
     const DEVICE_LOGIN_TITLE                       = 'device_login_title';
     const DEVICE_LOGIN_BODY                        = 'device_login_body';
 
+    //Subscription
+    const NO_SUBSCRIPTION_TITLE          = 'no_subscription_title';
+    const NO_SUBSCRIPTION_BODY          = 'no_subscription_body';
     //Reservations
     const APPOINTMENT_BOOKED_TITLE          = 'appointment_booked_title';
     const APPOINTMENT_BOOKED_BODY           = 'appointment_booked_body';

@@ -58,6 +58,10 @@ return [
     NotificationMessages::DEVICE_LOGIN_BODY    => "تم تسجيل دخول جديد إلى حسابك",
 
     //Reservations
+    NotificationMessages::NO_SUBSCRIPTION_TITLE        => "لا يوجد اشتراك",
+    NotificationMessages::NO_SUBSCRIPTION_BODY         => "لقد انتهى اشتراكك , قم بتجديد اشتراكك للحصول على خدمات التطبيق! 👨‍⚕️",
+    
+    //Reservations
     NotificationMessages::APPOINTMENT_BOOKED_TITLE        => "حجز موعد",
     NotificationMessages::APPOINTMENT_BOOKED_BODY         => "تم حجز موعدك مع د. :name يوم :date الساعة :time 🩺",
 
@@ -72,12 +76,12 @@ return [
 
 
     //ReservationDailyReminderCommand
-    // NotificationMessages::APPOINTMENT_REMINDER_24_TITLE   => "تذكير قبل 24 ساعة",
-    // NotificationMessages::APPOINTMENT_REMINDER_24_BODY    => "موعدك غدًا مع د. :name. نتمنى لك زيارة مريحة 💚",
+    NotificationMessages::APPOINTMENT_REMINDER_24_TITLE   => "تذكير قبل 24 ساعة",
+    NotificationMessages::APPOINTMENT_REMINDER_24_BODY    => "موعدك بعد أقل من 24 ساعة مع د. :name. نتمنى لك زيارة مريحة 💚",
 
     //ReservationHourlyReminderCommand
-    // NotificationMessages::APPOINTMENT_REMINDER_1_TITLE    => "تذكير قبل ساعة",
-    // NotificationMessages::APPOINTMENT_REMINDER_1_BODY     => "تبقى ساعة واحدة على موعدك مع د. :name. استعد! ⏰",
+    NotificationMessages::APPOINTMENT_REMINDER_1_TITLE    => "تذكير قبل ساعة",
+    NotificationMessages::APPOINTMENT_REMINDER_1_BODY     => "تبقى ساعة واحدة على موعدك مع د. :name. استعد! ⏰",
 
     NotificationMessages::APPOINTMENT_CANCELLED_TITLE     => "إلغاء الموعد",
     NotificationMessages::APPOINTMENT_CANCELLED_BODY      => "تم إلغاء موعدك مع د. :name. يمكنك حجز موعد جديد بسهولة.",

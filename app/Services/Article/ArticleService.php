@@ -68,6 +68,8 @@ class ArticleService
             uploadFilesOnMedia($data['images'] , $item , MediaCollection::ARTICLE_COLLECTION);
 
         $item->save();
+
+        // $this->patientNotificationService->notifyForArticles($item);
     }
 
     public function update($data , $id)

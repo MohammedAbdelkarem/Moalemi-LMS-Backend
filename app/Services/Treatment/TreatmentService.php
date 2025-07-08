@@ -66,6 +66,7 @@ class TreatmentService
         );
     }
 
+
     private function checkIfHasHistory($context)
     {
         if(! hasHistory($context))

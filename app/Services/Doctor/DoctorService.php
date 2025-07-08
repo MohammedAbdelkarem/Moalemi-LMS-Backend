@@ -5,6 +5,7 @@ namespace App\Services\Doctor;
 use App\Models\Plan;
 use App\Models\Shift;
 use App\Models\Story;
+use App\Models\Banner;
 use App\Models\Doctor;
 use App\Models\Article;
 use App\Models\Reservation;
@@ -14,6 +15,9 @@ use App\Models\DoctorPhoneNumber;
 use App\Constants\MediaCollection;
 use App\Services\Plan\PlanService;
 use App\Services\Media\MediaService;
+use App\Services\Base\ProcessDataService;
+use App\Http\Resources\Story\StoryResource;
+use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Article\ArticleResource;
 use App\Services\Transaction\TransactionService;
 
@@ -26,6 +30,7 @@ class DoctorService
         protected PlanService $planService,
         protected TransactionService $transactionService,
         protected MediaService $mediaService,
+        protected ProcessDataService $processDataService,
     )
     {}
     public function storeRegisteredDoctor($data)
@@ -146,8 +151,10 @@ class DoctorService
 
     public function home()
     {
-        $stories = Story::active()->get();
+        $stories = StoryResource::collection(Story::active()->get());
 
+        $banners = BannerResource::collection(Banner::active()->get());
+        
         $reservations = Reservation::where('doctor_id' , doctor_id())
             ->with(['patient' , 'visit'])
             ->orderBy('created_at' , 'desc')
@@ -163,7 +170,7 @@ class DoctorService
             ]
         )->get());
 
-        $this->planService->processSubscriptionsData();
+        $this->processDataService->processSubscriptionsData();
 
         return [
             'stories' => $stories,

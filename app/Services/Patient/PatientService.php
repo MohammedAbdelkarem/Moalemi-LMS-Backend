@@ -29,6 +29,7 @@ use App\Http\Resources\Article\ArticleResource;
 use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Story\StoryResource;
+use App\Services\Base\ProcessDataService;
 
 /**
  * Class PatientService.
@@ -40,6 +41,7 @@ class PatientService
     public function __construct(
         protected UserService $userService,
         protected ContextService $contextService,
+        protected ProcessDataService $processDataService,
     ) {}
     
     public function getMyRelations($user_id = null)
@@ -540,6 +542,9 @@ class PatientService
             ]
         )->get());
 
+
+        $this->processDataService->processTreatments();
+        
         return [
             'stories' => $stories,
             'banners' => $banners,

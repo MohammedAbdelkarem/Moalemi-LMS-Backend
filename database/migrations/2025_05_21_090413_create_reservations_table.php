@@ -28,6 +28,8 @@ return new class extends Migration
             $table->date('date');
             $table->boolean('visits_available')->default(0);
             $table->time('time_to_come')->nullable();
+            $table->boolean('daily_reminded')->default(0);
+            $table->boolean('hourly_reminded')->default(0);
             $table->timestamps();
         });
     }

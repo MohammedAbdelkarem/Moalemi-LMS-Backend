@@ -163,26 +163,4 @@ class PlanService
             $data
         );
     }
-
-    public function processSubscriptionsData()
-    {
-        $current_plan = $this->getDoctorActiveSubscription(doctor_id());
-
-        if($current_plan->end_at < now())
-        {
-            $current_plan->is_active = 0;
-            $current_plan->save();
-
-            $possible_next_plan = Subscription::where('doctor_id' , doctor_id())
-                ->whereDate('start_at' , '<=' , now())
-                ->whereDate('end_at' , '>=' , now())
-                ->first();
-            
-            if($possible_next_plan)
-            {
-                $possible_next_plan->is_active = 1;
-                $possible_next_plan->save();
-            }
-        }
-    }
 }
