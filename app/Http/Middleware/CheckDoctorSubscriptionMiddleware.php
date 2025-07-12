@@ -26,6 +26,7 @@ class CheckDoctorSubscriptionMiddleware
                 ExceptionMessages::MSG_NO_ACTIVE_SUBSCRIPTION,
                 403
             );
+            
         return $next($request);
     }
 }

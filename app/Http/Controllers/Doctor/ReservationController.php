@@ -22,12 +22,14 @@ use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 use App\Http\Requests\Reservation\UploadVisitMediaRequest;
 use App\Http\Requests\UpdateReportMediaRequest;
 use App\Http\Requests\UploadReportMediaRequest;
+use App\Services\Base\ContextService;
 
 class ReservationController extends Controller
 {
     public function __construct(
         protected ReservationService $reservationService,
         protected PatientService $patientService,
+        protected ContextService $contextService,
     ){}
 
     public function reject(RejectRequest $request , $id)
@@ -54,6 +56,13 @@ class ReservationController extends Controller
         );
     }
 
+    public function getDatesForDay($day_id)
+    {
+        return success(
+            $this->contextService->getDatesForDay($day_id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 
     public function getReservations(Request $request)
     {

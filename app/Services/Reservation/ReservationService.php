@@ -22,6 +22,8 @@ use App\Constants\NotificationMessages;
 use App\Services\Patient\PatientService;
 use App\Http\Resources\Media\MediaResource;
 use App\Enums\Notifications\NotificationTypes;
+use App\Services\Plan\PlanService;
+use Symfony\Component\Mailer\Messenger\MessageHandler;
 
 /**
  * Class ReservationService.
@@ -33,6 +35,7 @@ class ReservationService
         protected ContextService $contextService,
         protected PatientService $patientService,
         protected MediaService $mediaService,
+        protected PlanService $planService,
     )
     {}
     public function appoint($data)
@@ -226,15 +229,16 @@ class ReservationService
 
         $this->checkStatusFlow($reservation->status , ReservationStatusEnum::ACCEPTED->value);
 
+        $this->checkIfReservationDateIsOnSubscriptionPeriod($data['date'] , $reservation->doctor_id);
+
+        $this->checkIfReservationTimeIsOnDoctorShifts($data['time_to_come'] , $reservation->doctor_id);
+
         $reservation->status = ReservationStatusEnum::ACCEPTED;
 
         $reservation->time_to_come = $data['time_to_come'];
         $reservation->date = $data['date'];
 
         $reservation->save();
-
-
-        // dd(9);
 
         //patient notification
         $this->sendDirectNotification(
@@ -771,6 +775,25 @@ class ReservationService
     {
         if($rate->doctor_replay != null)
             return forbiddenFailure([] , ExceptionMessages::MSG_RATE_ALREADY_HAS_REPLAY);
+    }
+
+    private function checkIfReservationDateIsOnSubscriptionPeriod($reservation_date , $doctor_id)
+    {
+        $latest_paln_date = $this->planService->getDateToStartNewSubscription($doctor_id);
+
+        if($reservation_date > $latest_paln_date)
+            return forbiddenFailure(null , __(ExceptionMessages::MSG_PLAN_EXPIRED , ['date' => $latest_paln_date]));
+    }
+
+    private function checkIfReservationTimeIsOnDoctorShifts($time_to_come , $doctor_id)
+    {
+        $valid_shift = Shift::where('doctor_id' , $doctor_id)
+                    ->where('start_time', '<=', $time_to_come)
+                    ->where('end_time', '>=', $time_to_come)
+                    ->exists();
+
+        if(! $valid_shift)
+            return forbiddenFailure(null , ExceptionMessages::MSG_INVALID_SHIFT);
     }
 
 }

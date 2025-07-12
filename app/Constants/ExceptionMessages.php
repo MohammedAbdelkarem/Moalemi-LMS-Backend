@@ -11,6 +11,7 @@ final class ExceptionMessages
     const MSG_CANT_EDIT_TREATMENTS_IN_VISIT              = 'exception_messages.can_not_edit_treatments_in_visit';
     const MSG_CAN_NOT_GET_HISTORY_FOR_THE_HISTORY              = 'exception_messages.can_not_get_history_for_the_history';
     const MSG_RATE_ALREADY_HAS_REPLAY              = 'exception_messages.rate_already_has_replay';
+    const MSG_INVALID_SHIFT              = 'exception_messages.invalid_shift';
     const MSG_SLEEP_ALREADY_EXIST              = 'exception_messages.sleep_already_exist';
     const MSG_NO_ACTIVE_SUBSCRIPTION              = 'exception_messages.no_active_subscription';
     const MSG_CAN_NOT_UPDATE_HISTORY              = 'exception_messages.can_not_update_history';
@@ -19,6 +20,7 @@ final class ExceptionMessages
     const MSG_CAN_NOT_REPLAY              = 'exception_messages.can_not_replay';
     const MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME              = 'exception_messages.can_not_cancel_reservation_cuz_time';
     const MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER              = 'exception_messages.can_not_edit_or_chat_with_user';
+    const MSG_PLAN_EXPIRED              = 'exception_messages.can_not_set_date_on_expired_date';
     const MSG_CAN_NOT_DELETE_SHIFT_CUZ_RESERVATIONS_EXISTS              = 'exception_messages.can_not_delete_shift_cuz_reservations_exists';
     const MSG_NOT_AUTHORIZED                   = 'exception_messages.not_authorized';
     const MSG_MEDICAL_PROFILE_ALREADY_EXIST                   = 'exception_messages.medical_profile_already_exist';

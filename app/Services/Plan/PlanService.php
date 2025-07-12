@@ -70,10 +70,12 @@ class PlanService
         $this->contextService->changePublishStatus($item);
     }
 
-    public function getLatestSubscripedPlanDate()
+    public function getLatestSubscripedPlanDate($doctor_id)
     {
-        $last_date = Subscription::latest('id')->first()->end_at;
-        // dd($last_date);
+        $last_date = Subscription::where('doctor_id' , $doctor_id)
+            ->latest('id')
+            ->first()->end_at;
+        
         return $last_date;
     }
 
@@ -82,9 +84,9 @@ class PlanService
         return Subscription::where('doctor_id' , $doctor_id)->exists();
     }
 
-    public function getDateToStartNewSubscription()
+    public function getDateToStartNewSubscription($doctor_id)
     {
-        $last_subscription_date = $this->getLatestSubscripedPlanDate();
+        $last_subscription_date = $this->getLatestSubscripedPlanDate($doctor_id);
 
         return Carbon::parse($last_subscription_date)->addDay()->format('Y-m-d');
     }
@@ -115,7 +117,7 @@ class PlanService
         
         if($this->subscripedBefore($doctor_id))
         {
-            $dateToBegin = $this->getDateToStartNewSubscription();
+            $dateToBegin = $this->getDateToStartNewSubscription($doctor_id);
             $dateToEnd = Carbon::parse($dateToBegin)->addDays($plan->number_of_days);
         }
 

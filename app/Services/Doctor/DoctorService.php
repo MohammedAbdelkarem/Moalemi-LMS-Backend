@@ -99,7 +99,7 @@ class DoctorService
             ->with(['subCategories.category' , 'shifts' , 'user']);
 
         if(auth()->user()->isRegularUser())
-            $records = $records->notBanned();
+            $records = $records->notBanned()->subscriped();
         return getOrPaginate(
             $records,
             $data

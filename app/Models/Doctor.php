@@ -210,4 +210,12 @@ class Doctor extends Model implements HasMedia
             });
         });
     }
+
+    public function scopeSubscriped($query)
+    {
+        return 
+        $query->whereHas('plans' , function($query) {
+            $query->where('is_active' , 1);
+        });
+    }
 }
