@@ -30,6 +30,7 @@ class ReservationResource extends JsonResource
             'rejection_reason' => $this->rejection_reason,
             'other_rejection_reason' => $this->other_rejection_reason,
             'doctor_id' => $this->doctor_id,
+            'day_id' => $this->day_id,
             'patient_id' => $this->patient_id,
             'shift_start_time' => $this->shift_start_time,
             'shift_end_time' => $this->shift_end_time,

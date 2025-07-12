@@ -45,6 +45,10 @@ class Reservation extends Model implements HasMedia
     {
         return $this->hasOne(Visit::class);
     }
+    public function day()
+    {
+        return $this->belongsTo(Day::class);
+    }
 
     /**
      * @return \App\Models\Reservation
