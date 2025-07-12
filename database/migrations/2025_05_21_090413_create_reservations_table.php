@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('other_rejection_reason')->nullable();
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('day_id')->constrained()->nullOnDelete();
+            $table->foreignId('day_id')->constrained()->cascadeOnDelete();
             $table->time('shift_start_time')->nullable();
             $table->time('shift_end_time')->nullable();
             $table->date('date')->nullable();
