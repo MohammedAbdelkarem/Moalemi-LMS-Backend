@@ -22,6 +22,7 @@ class AcceptRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
+            'date'         => ['required', 'date'],
             'time_to_come' => ['required' , 'date_format:H:i']
         ];
     }

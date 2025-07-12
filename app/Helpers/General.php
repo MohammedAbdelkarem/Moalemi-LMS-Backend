@@ -468,3 +468,18 @@ if (!function_exists('active_articles_notification')) {
         return User::find($user_id)->notification_management->articles_notification == 1;
     }
 }
+
+if (!function_exists('carbon_id')) {
+    function carbon_id($day_id)
+    {
+        $result = [
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            5 => 5,
+            6 => 6,
+            7 => 0,
+        ];
+    }
+}

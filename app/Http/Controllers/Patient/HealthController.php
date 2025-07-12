@@ -98,6 +98,15 @@ class HealthController extends Controller
             $request->has('per_page')
         );
     }
+    
+    public function getStepByDate(Request $request)
+    {
+        return success(
+            $this->healthService->getStepsByDate($request->all()),
+            ApiMessages::MSG_SUCCESS,
+            null,
+        );
+    }
 
     public function storeStep(TimeRequest $request)
     {

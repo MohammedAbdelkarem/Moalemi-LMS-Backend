@@ -145,6 +145,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             });
             Route::prefix('step')->group(function(){
                 Route::get('history' , 'getStepHistory');
+                Route::get('date' , 'getStepByDate');
                 Route::post('store' , 'storeStep');
                 Route::get('activate/{id}' , 'setStepCalcAsActive');
             });

@@ -25,7 +25,7 @@ return new class extends Migration
             // $table->foreignId('day_id')->constrained()->cascadeOnDelete();
             $table->time('shift_start_time')->nullable();
             $table->time('shift_end_time')->nullable();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->boolean('visits_available')->default(0);
             $table->time('time_to_come')->nullable();
             $table->boolean('daily_reminded')->default(0);

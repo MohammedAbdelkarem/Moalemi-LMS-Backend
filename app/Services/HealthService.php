@@ -279,5 +279,13 @@ class HealthService
             $data
         );
     }
+
+    public function getStepsByDate($data)
+    {
+        return Step::whereDate('created_at' , $data['date'])
+                ->where('user_id' , auth()->id())
+                ->with('steps_times')
+                ->first();
+    }
     
 }

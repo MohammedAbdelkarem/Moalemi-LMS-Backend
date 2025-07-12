@@ -229,6 +229,7 @@ class ReservationService
         $reservation->status = ReservationStatusEnum::ACCEPTED;
 
         $reservation->time_to_come = $data['time_to_come'];
+        $reservation->date = $data['date'];
 
         $reservation->save();
 
