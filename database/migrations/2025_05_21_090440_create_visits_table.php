@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->string('note')->nullable();
+            $table->boolean('rate_reminded')->default(0);
             $table->timestamps();
         });
     }

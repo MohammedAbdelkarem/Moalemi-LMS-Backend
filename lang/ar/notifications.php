@@ -134,8 +134,8 @@ return [
     NotificationMessages::COMPLAINT_UPDATED_BODY    => "📩 تم تحديث حالة الشكوى الخاصة بك. راجع التفاصيل داخل التطبيق.",
 
     //ReservationRateReminderCommand
-    // NotificationMessages::APPOINTMENT_RATING_TITLE  => "طلب تقييم بعد ٢٤ ساعة من الموعد",
-    // NotificationMessages::APPOINTMENT_RATING_BODY   => "كيف كانت زيارتك مع د. :name؟ شاركنا رأيك ✨",
+    NotificationMessages::APPOINTMENT_RATING_TITLE  => "طلب تقييم بعد ٢٤ ساعة من الموعد",
+    NotificationMessages::APPOINTMENT_RATING_BODY   => "كيف كانت زيارتك مع د. :name؟ شاركنا رأيك ✨",
 
     // Activity & Steps
 

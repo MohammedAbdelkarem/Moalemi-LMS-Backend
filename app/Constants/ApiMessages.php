@@ -5,6 +5,7 @@ namespace App\Constants;
 
 final class ApiMessages
 {
+    const WHATSAPP_OTP                                      = 'api_messages.whatsapp_otp';
     const MSG_SUCCESS                                = 'api_messages.success';
     const MSG_FAILURE                                = 'api_messages.failure';
     const MSG_INVALID_OTP_CODE                       = 'api_messages.invalid_otp_code';

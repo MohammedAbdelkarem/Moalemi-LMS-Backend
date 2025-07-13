@@ -4,7 +4,8 @@ namespace App\Enums;
 
 enum TreatmentOtherEndDateEnum: string
 {
-    case FOO    = 'bar';
+    case WHEN_GETTING_BETTER    = 'when_getting_better';
+    case DONT_KNOW              = 'dont_know';
 
     public static function values(): array
     {

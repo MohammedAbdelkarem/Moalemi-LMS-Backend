@@ -311,21 +311,11 @@ if (!function_exists('owner_id')) {
     {
         $user_id = auth()->id();
 
-        $cacheKey = 'owner_id_' . $user_id;
-
-        $returned_owner_id = Cache::get($cacheKey);
-
-        if ($returned_owner_id === null)
-        {
-            $owner = Patient::where('user_id' , $user_id)
+        $owner = Patient::where('user_id' , $user_id)
                         ->where('is_owner' , 1)
                         ->first();
 
-            if($owner)
-                $returned_owner_id = Cache::forever($cacheKey, $owner->id);
-        }
-
-        return $returned_owner_id;
+        return $owner->id ?? null;
     }
 }
 

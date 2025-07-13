@@ -40,6 +40,11 @@ class ProfileResource extends JsonResource
             "active_notifications" => (bool) $this->active_notifications,
         ];
 
+        if($this->role_id == 4)
+        {
+            $data['owner_patient_id'] = owner_id();
+        } 
+
         if (auth()->user() ) {
             $data += $this->getAdminData();
         }

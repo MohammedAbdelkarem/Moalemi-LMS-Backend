@@ -46,7 +46,8 @@
             "app/Helpers/FileHelper.php",
             "app/Helpers/ModelHelper.php",
             "app/Helpers/ResponseHandler.php",
-            "app/Helpers/HealthHelper.php"
+            "app/Helpers/HealthHelper.php",
+            "app/Helpers/WhatsAppHelper.php"
         ]
     },
     "autoload-dev": {

@@ -39,5 +39,9 @@ return [
         'credentialsPath' => storage_path(env('FCM_CREDENTIALS_PATH')),
     ],
 
+    'whatsapp' => [
+        'token' => env('WHATSAPP_TOKEN'),
+        'session_id' => env('WHATSAPP_SESSION_ID'),
+    ],  
 
 ];

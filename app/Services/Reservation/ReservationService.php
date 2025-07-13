@@ -577,6 +577,10 @@ class ReservationService
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $rate , MediaCollection::RATE_COLLECTION);
 
+        $visit->rate_reminded = 1;
+
+        $visit->save();
+        
         $doctor = Doctor::find($visit->doctor_id);
 
         $doctor->rate_sum += $data['rate'];
