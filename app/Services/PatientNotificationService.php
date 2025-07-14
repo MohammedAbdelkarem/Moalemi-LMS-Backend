@@ -36,38 +36,10 @@ class PatientNotificationService
 
     public function notifyForArticles($article)
     {
-        $usersIdsList = User::where('role_id' , 4)
-            ->pluck('id')
-            ->toArray();
+        
+        $users_tokens_list = $this->getUsersTokensList(true , 'articles');
 
-        $favoriteUsersIds = Favorite::where('favoritable_type' , Article::class)
-            ->where('favoritable_id' , $article->id)
-            ->pluck('user_id')
-            ->toArray();
-
-        //Get Device Tokens
-        $users_tokens_list = UserDevice::query()
-            ->whereIn('user_id', $usersIdsList)
-            ->whereHas("user", function ($query) {
-                $query->whereNull("deactive_at")->where('active_notifications', true)
-                    ->whereHas('notification_management' , function ($q) {
-                        $q->where('articles_notification' , 1);
-                    });
-            })
-            ->pluck('notification_token')
-            ->toArray();
-
-        $favorite_users_tokens_list = UserDevice::query()
-            ->whereIn('user_id', $favoriteUsersIds)
-            ->whereHas("user", function ($query) {
-                $query->whereNull("deactive_at")->where('active_notifications', true)
-                    ->whereHas('notification_management' , function ($q) {
-                        $q->where('articles_notification' , 1);
-                    });
-            })
-            ->pluck('notification_token')
-            ->toArray();
-
+        $favorite_users_tokens_list = $this->getUsersTokensListForFavoriteArticles($article);
         //Create Notification
         $userNotification = $this->createNotification(
             title: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_TITLE) ,
@@ -103,17 +75,41 @@ class PatientNotificationService
             ->pluck('id')
             ->toArray();
 
-        $users_tokens_list = UserDevice::query()
+        $usersTokensList = UserDevice::query()
             ->whereIn('user_id', $usersIdsList)
-            ->whereHas("user", function ($query) {
-                $query->whereNull("deactive_at")->where('active_notifications', true)
-                    ->when($notification_management , function($q) use ($string) {
-                            whereHas('notification_management' , function ($q) {
-                            $q->where($string . '_notification' , 1);
+            ->whereHas('user', function ($query) use ($notification_management, $string) {
+                $query->whereNull('deactive_at')
+                    ->where('active_notifications', true)
+                    ->when($notification_management, function ($q) use ($string) {
+                        $q->whereHas('notification_management', function ($q2) use ($string) {
+                            $q2->where($string . '_notification', 1);
                         });
-                    })
+                    });
             })
             ->pluck('notification_token')
             ->toArray();
+
+        return $usersTokensList;
+    }
+
+    private function getUsersTokensListForFavoriteArticles($article)
+    {
+        $favoriteUsersIds = Favorite::where('favoritable_type' , Article::class)
+            ->where('favoritable_id' , $article->id)
+            ->pluck('user_id')
+            ->toArray();
+
+        $favorite_users_tokens_list = UserDevice::query()
+            ->whereIn('user_id', $favoriteUsersIds)
+            ->whereHas("user", function ($query) {
+                $query->whereNull("deactive_at")->where('active_notifications', true)
+                    ->whereHas('notification_management' , function ($q) {
+                        $q->where('articles_notification' , 1);
+                    });
+            })
+            ->pluck('notification_token')
+            ->toArray();
+
+        return $favorite_users_tokens_list;
     }
 }
