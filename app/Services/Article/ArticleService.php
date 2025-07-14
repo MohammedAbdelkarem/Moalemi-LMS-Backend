@@ -69,7 +69,7 @@ class ArticleService
 
         $item->save();
 
-        // $this->patientNotificationService->notifyForArticles($item);
+        $this->patientNotificationService->notifyForArticles($item);
     }
 
     public function update($data , $id)

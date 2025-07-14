@@ -162,7 +162,7 @@ class NotificationService extends MainService
             ->whereHas('receivers', function ($q) use ($user) {
                 $q->where('user_id', $user?->id);
             })
-            // ->orWhere('is_public', true)
+            ->orWhere('is_public', true)
             ->with('receivers', function ($query) use ($user) {
                 $query->where('user_id', $user?->id);
             })

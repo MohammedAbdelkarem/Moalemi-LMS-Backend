@@ -40,8 +40,8 @@ class PatientNotificationService
             ->pluck('id')
             ->toArray();
 
-        $favoriteUsersIds = Favorite::where('favoritalbe_type' , Article::class)
-            ->where('favoritalbe_id' , $article->id)
+        $favoriteUsersIds = Favorite::where('favoritable_type' , Article::class)
+            ->where('favoritable_id' , $article->id)
             ->pluck('user_id')
             ->toArray();
 
@@ -70,15 +70,17 @@ class PatientNotificationService
 
         //Create Notification
         $userNotification = $this->createNotification(
-            $this->notificationMessage(NotificationMessages::NEW_ARTICLE_TITLE) ,
-            $this->notificationMessage(NotificationMessages::NEW_ARTICLE_BODY , ['title' => $article->title]),
+            title: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_BODY , ['title' => $article->title]),
             type: NotificationTypes::ARTICLES->value,
+            is_public: true
         );
 
         $favoriteUserNotification = $this->createNotification(
-            $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_TITLE) ,
-            $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_BODY , ['title' => $article->title , 'doctor' => $article->doctor->clinic_name]),
+            title: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_BODY , ['title' => $article->title , 'doctor' => $article->doctor->clinic_name]),
             type: NotificationTypes::ARTICLES->value,
+            is_public: true
         );
 
         //Dispatch Job To Send Notification
@@ -93,5 +95,25 @@ class PatientNotificationService
             notification: $favoriteUserNotification,
             shouldTranslate: true,
         ));
+    }
+
+    private function getUsersTokensList($notification_management = false , $string = "")
+    {
+        $usersIdsList = User::where('role_id' , 4)
+            ->pluck('id')
+            ->toArray();
+
+        $users_tokens_list = UserDevice::query()
+            ->whereIn('user_id', $usersIdsList)
+            ->whereHas("user", function ($query) {
+                $query->whereNull("deactive_at")->where('active_notifications', true)
+                    ->when($notification_management , function($q) use ($string) {
+                            whereHas('notification_management' , function ($q) {
+                            $q->where($string . '_notification' , 1);
+                        });
+                    })
+            })
+            ->pluck('notification_token')
+            ->toArray();
     }
 }

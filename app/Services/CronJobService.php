@@ -92,28 +92,33 @@ class CronJobService
             ->chunkById(100, function ($visits) {
                 foreach ($visits as $visit) {
 
-                    $visit->rate_reminded = 1;
-                    $visit->save();
+                    if (Carbon::now()->diffInHours(Carbon::parse($visit)) >= 24 ) {
 
-                    $this->sendDirectNotification(
-                        user_id_of_patient($visit->patient_id),
-                        $this->notificationMessage(NotificationMessages::APPOINTMENT_RATING_TITLE),
-                        $this->notificationMessage(
-                            NotificationMessages::APPOINTMENT_RATING_BODY,
-                            [
-                                'name' => $visit->doctor->clinic_name,
-                            ]
-                        ),
-                        NotificationTypes::RESERVATIONS->value,
-                        'ar',
-                        false,
-                        "",
-                        [],
-                        true,
-                        [],
-                        true
-                    );
+                        $visit->rate_reminded = 1;
+                        $visit->save();
+                        
+                        $this->sendDirectNotification(
+                            user_id_of_patient($visit->patient_id),
+                            $this->notificationMessage(NotificationMessages::APPOINTMENT_RATING_TITLE),
+                            $this->notificationMessage(
+                                NotificationMessages::APPOINTMENT_RATING_BODY,
+                                [
+                                    'name' => $visit->doctor->clinic_name,
+                                ]
+                            ),
+                            NotificationTypes::RESERVATIONS->value,
+                            'ar',
+                            false,
+                            "",
+                            [],
+                            true,
+                            [],
+                            true
+                        );
+                    }
                 }
             });
     }
+
+    
 }

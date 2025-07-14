@@ -64,7 +64,7 @@ class Plan extends Model
     
     public function scopePublished($query)
     {
-        return $query->where('publish_status' , PublishStatusEnum::PUBLISHED);
+        return $query->where('publish_status' , PublishStatusEnum::PUBLISHED->value);
     }
 
     public function scopeFilter($query , $data)

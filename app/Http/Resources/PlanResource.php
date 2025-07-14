@@ -26,6 +26,7 @@ class PlanResource extends JsonResource
             'price_after_discount' => ($this->discount_percentage > 0 && $this->discount_end_at >= now()) 
                                     ? $this->price - ($this->price * ($this->discount_percentage / 100)) 
                                     : $this->price,
+            'publish_status' => $this->publish_status
         ];
 
         $routeName = $request->route()->getName();

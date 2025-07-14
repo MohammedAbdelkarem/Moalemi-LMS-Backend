@@ -22,7 +22,7 @@ return new class extends Migration
             // $table->enum('page', NotificationScreens::values())->default(NotificationScreens::HOME->value);
             $table->boolean("clickable")->default(false);
             $table->string("requested_id")->nullable();     //String instead of unsignedBigInteger because it may be account_name /slug/ email not integer id only
-            // $table->boolean('is_public')->default(false);
+            $table->boolean('is_public')->default(false);
             $table->json("extra_data")->nullable();
             $table->timestamps();
         });

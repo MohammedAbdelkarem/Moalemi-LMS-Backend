@@ -113,14 +113,14 @@ trait NotificationHelper
      * @param string $body
      * @param string $type
      * @param mixed $createdBy
-     * @param bool $public
+     * @param bool $is_public
      * @param string $page
      * @param bool $clickable
      * @param string $requestedID
      * @param array $extraData
      * @return Notification
      */
-    protected function createNotification(string $title, string $body, string $type, bool $clickable = false, string $requestedID = "", $extraData = null)
+    protected function createNotification(string $title, string $body, string $type, bool $clickable = false, string $requestedID = "", $extraData = null , bool $is_public = false)
     {
         DB::beginTransaction();
         $notification = Notification::create([
@@ -129,7 +129,8 @@ trait NotificationHelper
             "type"          => $type,
             "clickable"     => $clickable,
             "requested_id"  => $requestedID,
-            "extra_data"    => $extraData
+            "extra_data"    => $extraData,
+            "is_public"    => $is_public,
         ]);
         DB::commit();
         return $notification;
