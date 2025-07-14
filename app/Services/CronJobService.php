@@ -3,12 +3,17 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Models\Visit;
+use App\Models\Medicine;
 use App\Models\Reservation;
+use Faker\Provider\Medical;
+use App\Enums\DaysToTakeEnum;
 use App\Traits\NotificationHelper;
 use App\Enums\ReservationStatusEnum;
 use App\Constants\NotificationMessages;
 use App\Enums\Notifications\NotificationTypes;
-use App\Models\Visit;
+use App\Models\MedicineDay;
+use App\Models\MedicineTime;
 
 /**
  * Class CronJobService.
@@ -120,5 +125,39 @@ class CronJobService
             });
     }
 
+    public function remindForMedicinesTimes()
+    {
+        //global scope is applied: excluding the medicines where: is_latest == 0 , status == expired
+        $medicines_ids = Medicine::where('days_to_take' , '!=' , DaysToTakeEnum::WHEN_NEEDED->value)
+            ->pluck('id')
+            ->toArray();
+
+        $medcine_days = MedicineDay::whereIn('medicine_id' , $medicines_ids)->get();
+        $today = Carbon::today();
+        $nowTime = Carbon::now()->format('H:i:s'); 
+
+        foreach($medcine_days as $medcine_day)
+        {
+            if($medcine_day->day->name === $today->englishDayOfWeek)
+            {
+                $medicine_times = MedicineTime::where('medicine_day_id' , $medcine_day->id)
+                    ->where('daily_reminded' , 0)
+                    ->whereNotNull('time')
+                    ->get();
+
+                foreach ($medicine_times as $medicine_time) 
+                {
+                    if ($medicine_time->time <= $nowTime) 
+                    {
+                        //send notification
+                        $medicine_time->daily_reminded = 1;
+                        $medicine_time->save();
+                    }
+                }
+            }
+        }
+    }
+
+    //cronjob function to put the medicines reminded_daily as 0 again , at 00:00
     
 }

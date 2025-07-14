@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('medicine_day_id')->constrained()->cascadeOnDelete();
             $table->time('time')->nullable();
             $table->enum('other_time' , MedicineTimeEnum::values())->nullable();
+            $table->boolean('daily_reminded')->default(0);
             $table->timestamps();
         });
     }
