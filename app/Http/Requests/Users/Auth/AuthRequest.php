@@ -76,15 +76,15 @@ class AuthRequest extends BaseApiRequest
             "phone_numbers" => ['nullable' , 'array'],
             "phone_numbers.*" => ['required'],
             //specialization table
-            "sub_category_ids" => ['nullable' , 'array'],
-            "sub_category_ids.*" => ['nullable' , 'exists:sub_categories,id'],
+            "sub_category_ids" => ['required' , 'array'],
+            "sub_category_ids.*" => ['required' , 'exists:sub_categories,id'],
             //shifts table
             "shift_times"       => ['required' , 'array', new ShiftsOverlappingRule()],
             "shift_times.*.day_id" => ['required' , 'exists:days,id'],
             "shift_times.*.start_time" => ['required', 'date_format:H:i'],
             "shift_times.*.end_time" => ['required', 'date_format:H:i', 'after:shift_times.*.start_time'],
             //subscriptions table
-            "plan_id" => ['nullable', 'exists:plans,id'],
+            "plan_id" => ['required', 'exists:plans,id'],
             "has_been_paid" => ['required', 'boolean'],
         ];
     }
