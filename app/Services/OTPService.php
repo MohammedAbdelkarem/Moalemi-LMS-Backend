@@ -98,7 +98,7 @@ class OTPService extends MainService
 
             //Create User Device
             if ($validatedData["notification_token"] || $validatedData["device_id"]) {
-                $this->updateDeviceInfo($user, $validatedData);
+                $this->updateDeviceInfo($user, $validatedData , $user->role_id);
             }
 
             //Create a loginHistory
@@ -115,7 +115,7 @@ class OTPService extends MainService
             $data["tokens"] = app(AuthService::class)->generateTokens($user, $loginHistory->id);
             $data["status"] = $status;
             $data["user"]   = UserSugResource::make($user);
-            if ($user->role_id != 3)
+            if ($user->role_id != 3 && $user->role_id != 4)
                 $data["abilities"] = $user->role->abilities()->pluck('ability_id')->toArray();
 
             return $data;
@@ -123,15 +123,18 @@ class OTPService extends MainService
         throw new ApiException(null, trans(ApiMessages::MSG_INVALID_OTP_CODE), 400);
     }
 
-    public function updateDeviceInfo($user, $validatedData)
+    public function updateDeviceInfo($user, $validatedData , $role_id)
     {
-        $existingDevice = UserDevice::when(isset($data['device_id']), function ($query) use ($validatedData) {
-            return $query->where('device_id', $validatedData["device_id"]);
+        // dd($role_id);
+        $existingDevice = UserDevice::whereHas("user", function ($query) use ($role_id) {
+                $query->where('role_id', $role_id);
             })
-            ->orWhere('notification_token', $validatedData["notification_token"])
+            ->where('device_id', $validatedData['device_id'])
+            // ->orWhere('notification_token', $validatedData["notification_token"])
             ->first();
 
             // dd($validatedData);
+        // dd($existingDevice , $role_id);
         if ($existingDevice) {
             // Update the existing record
             $existingDevice->update([

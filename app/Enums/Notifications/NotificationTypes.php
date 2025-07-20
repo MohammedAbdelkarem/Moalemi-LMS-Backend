@@ -10,6 +10,7 @@ enum NotificationTypes: string
     case MEDICAL_PROFILE = 'medical_profile';
     case RATE = 'rate';
     case COMPLAINTS = 'complaints';
+    case TREATMENT_REMINDER = 'treatment_reminder';
     case STEPS = 'steps';
     case WATER = 'water';
     case SLEEP = 'sleep';

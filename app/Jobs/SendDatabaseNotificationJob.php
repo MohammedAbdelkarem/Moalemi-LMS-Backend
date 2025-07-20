@@ -13,7 +13,7 @@ class SendDatabaseNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, NotificationHelper;
 
-    public $targeted_user_id , $title , $body , $type , $local , $clickable , $requestedID , $extraData , $shouldCreate , $additionalData , $shouldTranslate , $tokens;
+    public $targeted_user_id , $title , $body , $type , $local , $clickable , $requestedID , $extraData , $shouldCreate , $additionalData , $shouldTranslate;
     /**
      * Create a new job instance.
      */
@@ -29,7 +29,6 @@ class SendDatabaseNotificationJob implements ShouldQueue
         bool $shouldCreate = true,
         array $additionalData = [],
         bool $shouldTranslate = true,
-        $tokens = [],
     )
     {
         $this->targeted_user_id = $targeted_user_id;
@@ -43,7 +42,6 @@ class SendDatabaseNotificationJob implements ShouldQueue
         $this->shouldCreate = $shouldCreate;
         $this->additionalData = $additionalData;
         $this->shouldTranslate = $shouldTranslate;
-        $this->tokens = $tokens;
     }
 
     /**
@@ -63,7 +61,6 @@ class SendDatabaseNotificationJob implements ShouldQueue
             $this->shouldCreate,
             $this->additionalData,
             $this->shouldTranslate,
-            $this->tokens
         );
     }
 }

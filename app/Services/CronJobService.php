@@ -127,37 +127,56 @@ class CronJobService
 
     public function remindForMedicinesTimes()
     {
-        //global scope is applied: excluding the medicines where: is_latest == 0 , status == expired
-        $medicines_ids = Medicine::where('days_to_take' , '!=' , DaysToTakeEnum::WHEN_NEEDED->value)
+        $medicines_ids = Medicine::where('days_to_take', '!=', DaysToTakeEnum::WHEN_NEEDED->value)
             ->pluck('id')
             ->toArray();
 
-        $medcine_days = MedicineDay::whereIn('medicine_id' , $medicines_ids)->get();
-        $today = Carbon::today();
-        $nowTime = Carbon::now()->format('H:i:s'); 
+        $todayName = Carbon::today()->englishDayOfWeek;
+        $nowTime = Carbon::now()->format('H:i:s');
 
-        foreach($medcine_days as $medcine_day)
-        {
-            if($medcine_day->day->name === $today->englishDayOfWeek)
-            {
-                $medicine_times = MedicineTime::where('medicine_day_id' , $medcine_day->id)
-                    ->where('daily_reminded' , 0)
-                    ->whereNotNull('time')
-                    ->get();
+        MedicineDay::whereIn('medicine_id', $medicines_ids)
+            ->chunkById(100, function ($medicineDays) use ($todayName, $nowTime) {
+                foreach ($medicineDays as $medicineDay) {
+                    if ($medicineDay->day->name === $todayName) {
+                        MedicineTime::where('medicine_day_id', $medicineDay->id)
+                            ->where('daily_reminded', 0)
+                            ->whereNotNull('time')
+                            ->where('time', '<=', $nowTime)
+                            ->chunkById(50, function ($times) {
+                                foreach ($times as $medicineTime) {
+                                    $medicineTime->update(['daily_reminded' => 1]);
 
-                foreach ($medicine_times as $medicine_time) 
-                {
-                    if ($medicine_time->time <= $nowTime) 
-                    {
-                        //send notification
-                        $medicine_time->daily_reminded = 1;
-                        $medicine_time->save();
+                                    $this->sendDirectNotification(
+                                        user_id_of_patient($medicineTime->medicine_day->medicine->patient_id),
+                                        $this->notificationMessage(NotificationMessages::MEDICATION_REMINDER_TITLE),
+                                        $this->notificationMessage(
+                                            NotificationMessages::MEDICATION_REMINDER_BODY,
+                                            [
+                                                'medication' => $medicineTime->medicine_day->medicine->text,
+                                            ]
+                                        ),
+                                        NotificationTypes::TREATMENT_REMINDER->value,
+                                        'ar',
+                                        false,
+                                        "",
+                                        [],
+                                        true,
+                                        [],
+                                        true
+                                    );
+                                }
+                            });
                     }
                 }
-            }
-        }
+            });
     }
 
+
     //cronjob function to put the medicines reminded_daily as 0 again , at 00:00
-    
+    public function resetDailyReminders()
+    {
+        MedicineTime::where('daily_reminded', 1)
+            ->update(['daily_reminded' => 0]);
+    }
+
 }

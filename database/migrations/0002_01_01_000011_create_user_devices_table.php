@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('user_devices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
-            $table->string("notification_token")->unique();
-            $table->string("device_id")->unique()->nullable();
+            $table->string("notification_token")->nullable();
+            $table->string("device_id")->nullable();
             $table->timestamps();
         });
     }

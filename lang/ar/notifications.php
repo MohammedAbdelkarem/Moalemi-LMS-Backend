@@ -119,8 +119,8 @@ return [
     NotificationMessages::NEW_RECOMMENDATION_BODY     => "💊  توصية جديدة من د. :name بانتظارك داخل التطبيق.",
 
     //MedicineHourlyReminderCommand
-    // NotificationMessages::MEDICATION_REMINDER_TITLE   => "وقت تناول الدواء",
-    // NotificationMessages::MEDICATION_REMINDER_BODY    => "💊 تذكير: حان وقت تناول دواء :medication. صحتك أولويتنا!",
+    NotificationMessages::MEDICATION_REMINDER_TITLE   => "وقت تناول الدواء",
+    NotificationMessages::MEDICATION_REMINDER_BODY    => "💊 تذكير: حان وقت تناول دواء :medication. صحتك أولويتنا!",
 
     //MedicineForgetReminderCommand
     // NotificationMessages::MISSED_DOSE_TITLE           => "نسيان جرعة",
