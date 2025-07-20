@@ -123,13 +123,13 @@ class OTPService extends MainService
         throw new ApiException(null, trans(ApiMessages::MSG_INVALID_OTP_CODE), 400);
     }
 
-    public function updateDeviceInfo($user, $validatedData , $role_id)
+    public function updateDeviceInfo($user, $validatedData , $role_id = null)
     {
         // dd($role_id);
         $existingDevice = UserDevice::whereHas("user", function ($query) use ($role_id) {
                 $query->where('role_id', $role_id);
             })
-            ->where('device_id', $validatedData['device_id'])
+            ->where('device_id', $validatedData['device_id'] ?? null)
             // ->orWhere('notification_token', $validatedData["notification_token"])
             ->first();
 
