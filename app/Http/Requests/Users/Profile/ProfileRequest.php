@@ -38,7 +38,7 @@ class ProfileRequest extends BaseApiRequest
             "name"       => ['required', 'string', 'between:1,100'],
             "birth_date" => ["present", "nullable", "date", "after_or_equal:1930-01-01"],
             "is_male"    => ["present", "nullable", "boolean"],
-            "email"      => ["present", "nullable", "email", Rule::unique("users", "email")],
+            "email"      => ["present", "nullable", "email", Rule::unique("users", "email")->where('role_id' , auth()->user()->role_id)],
             "avatar" => [
                 "nullable",
                 "file",
@@ -71,7 +71,7 @@ class ProfileRequest extends BaseApiRequest
             'name'          => ['required', 'string', 'between:1,100'],
             "birth_date"    => ["present", "nullable", "date", "after_or_equal:1930-01-01"],
             "is_male"       => ["present", "nullable", "boolean"],
-            "email"         => ["present", "nullable", "email", Rule::unique("users", "email")->ignore(auth()->id())],
+            "email"         => ["present", "nullable", "email", Rule::unique("users", "email")->where('role_id' , auth()->user()->role_id)->ignore(auth()->id())],
             "city_id"       => ['present', 'nullable', "exists:cities,id"],
             "delete_image" => ["present", "nullable", "boolean"],
             "avatar" => [
