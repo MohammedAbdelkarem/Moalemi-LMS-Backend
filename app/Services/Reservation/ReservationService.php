@@ -736,6 +736,7 @@ class ReservationService
     {
         return Reservation::where('patient_id' , $patient_id)
             ->where('doctor_id' , $doctor_id)
+            ->where('status' , ReservationStatusEnum::PENDING->value)
             ->latest('id')
             ->first();
     }
