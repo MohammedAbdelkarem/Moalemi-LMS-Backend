@@ -4,6 +4,7 @@ namespace App\Services\Users\Profile;
 
 use App\Models\User;
 use App\Models\Doctor;
+use App\Models\Patient;
 use App\Constants\Resources;
 use App\Services\MainService;
 use App\Traits\StorageHelper;
@@ -84,7 +85,38 @@ class ProfileService extends MainService
         ]);
 
         if($user->role_id == 4)
+        {
             $this->userService->updateOwnerInfo($validatedData);
+
+            $patient=  Patient::where('is_owner' , 1)
+                ->where('user_id' , auth()->id())
+                ->first();
+                
+            if (isset($validatedData["avatar"])) {
+                if($patient)
+                    $patient = $this->StoreUpdate(
+                        file: $validatedData["avatar"],
+                        path: "patients/{$patient->id}",
+                        model: $patient,
+                        column: "avatar",
+                        deleteImage: true,
+                        singleFilePath: $patient->avatar ?? ""
+                    );
+
+
+                    $user = $this->StoreUpdate(
+                        file: $validatedData["avatar"],
+                        path: "users/{$user->id}",
+                        model: $user,
+                        column: "avatar",
+                        deleteImage: true,
+                        singleFilePath: $user->avatar ?? ""
+                    );
+
+                $user->save();
+                $patient->save();
+            }
+        }
         else if($user->role_id == 3)
             {
                 $doctor = Doctor::find(doctor_id());

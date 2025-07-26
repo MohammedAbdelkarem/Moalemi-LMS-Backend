@@ -22,6 +22,8 @@ class UserService
 
     public function updateOwnerInfo($data)
     {
+        unset($data['avatar']);
+        
         $user = auth()->user();
         $user->update($data + [
             'name' => $data['full_name'] ?? null
@@ -33,29 +35,6 @@ class UserService
 
         if($patient)
             $patient->update($data);
-
-
-        // if (isset($data["avatar"])) {
-        //     if($patient)
-        //         $patient = $this->StoreUpdate(
-        //             file: $data["avatar"],
-        //             path: "patients/{$patient->id}",
-        //             model: $patient,
-        //             column: "avatar",
-        //             deleteImage: true,
-        //             singleFilePath: $patient->avatar ?? ""
-        //         );
-
-
-        //         $user = $this->StoreUpdate(
-        //         file: $data["avatar"],
-        //         path: "users/{$user->id}",
-        //         model: $user,
-        //         column: "avatar",
-        //         deleteImage: true,
-        //         singleFilePath: $user->avatar ?? ""
-        //     );
-        // }
         
         $user->save();
         $patient->save();
