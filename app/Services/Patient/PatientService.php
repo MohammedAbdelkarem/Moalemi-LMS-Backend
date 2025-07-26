@@ -95,7 +95,7 @@ class PatientService
             'notes' => $data['notes'] ?? null,
         ];
 
-        $patientData['avatar'] = $data['avatar'] ?? null;
+        // $patientData['avatar'] = $data['avatar'] ?? null;
 
         $patient = $this->storePatientData($patientData);
 

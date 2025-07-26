@@ -45,14 +45,14 @@ class PatientNotificationService
             title: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_TITLE) ,
             body: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_BODY , ['title' => $article->title]),
             type: NotificationTypes::ARTICLES->value,
-            is_public: true
+            is_public: false
         );
 
         $favoriteUserNotification = $this->createNotification(
             title: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_TITLE) ,
             body: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_BODY , ['title' => $article->title , 'doctor' => $article->doctor->clinic_name]),
             type: NotificationTypes::ARTICLES->value,
-            is_public: true
+            is_public: false
         );
 
         //Dispatch Job To Send Notification
@@ -98,6 +98,7 @@ class PatientNotificationService
             ->where('favoritable_id' , $article->id)
             ->pluck('user_id')
             ->toArray();
+            // dd($favoriteUsersIds);
 
         $favorite_users_tokens_list = UserDevice::query()
             ->whereIn('user_id', $favoriteUsersIds)
@@ -110,6 +111,7 @@ class PatientNotificationService
             ->pluck('notification_token')
             ->toArray();
 
+            // dd($favorite_users_tokens_list);
         return $favorite_users_tokens_list;
     }
 }

@@ -257,7 +257,7 @@ class HealthService
                 $this->notificationMessage(
                     NotificationMessages::DAILY_PROGRESS_BODY,
                     [
-                        'steps' => $data['amount']
+                        'steps' => $step->total_amount
                     ]
                 ),
                 NotificationTypes::STEPS->value,
