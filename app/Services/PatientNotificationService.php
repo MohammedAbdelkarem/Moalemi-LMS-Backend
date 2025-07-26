@@ -11,6 +11,7 @@ use App\Models\NotificationManagement;
 use App\Constants\NotificationMessages;
 use App\Models\Users\Profile\UserDevice;
 use App\Enums\Notifications\NotificationTypes;
+use App\Services\System\Notification\NotificationService;
 
 /**
  * Class PatientNotificationService.
@@ -18,6 +19,10 @@ use App\Enums\Notifications\NotificationTypes;
 class PatientNotificationService
 {
     use NotificationHelper;
+
+    public function __construct(
+        protected NotificationService $notificationService,
+    ) {}
     public function getSettings()
     {
         return auth()->user()->notification_management;
@@ -37,9 +42,12 @@ class PatientNotificationService
     public function notifyForArticles($article)
     {
         
-        $users_tokens_list = $this->getUsersTokensList(true , 'articles');
+        $users_ids = $this->notificationService->getEligibleUserIds(true , 'articles');
+        $users_tokens_list = $this->notificationService->getNotificationTokens($users_ids);
 
-        $favorite_users_tokens_list = $this->getUsersTokensListForFavoriteArticles($article);
+        $fav_users_ids = $this->getEligibleFavoriteUserIds($article);
+        $fav_users_tokens_list = $this->notificationService->getNotificationTokens($users_ids);
+
         //Create Notification
         $userNotification = $this->createNotification(
             title: $this->notificationMessage(NotificationMessages::NEW_ARTICLE_TITLE) ,
@@ -48,12 +56,16 @@ class PatientNotificationService
             is_public: false
         );
 
+        $userNotification->receivers()->attach($users_ids);
+
         $favoriteUserNotification = $this->createNotification(
             title: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_TITLE) ,
             body: $this->notificationMessage(NotificationMessages::DOCTOR_ARTICLE_BODY , ['title' => $article->title , 'doctor' => $article->doctor->clinic_name]),
             type: NotificationTypes::ARTICLES->value,
             is_public: false
         );
+
+        $favoriteUserNotification->receivers()->attach($fav_users_ids);
 
         //Dispatch Job To Send Notification
         dispatch(new SendNotificationsJob(
@@ -63,55 +75,71 @@ class PatientNotificationService
         ));
 
         dispatch(new SendNotificationsJob(
-            tokens: $favorite_users_tokens_list,
+            tokens: $fav_users_tokens_list,
             notification: $favoriteUserNotification,
             shouldTranslate: true,
         ));
     }
 
-    private function getUsersTokensList($notification_management = false , $string = "")
+    public function getEligibleStepsUserIds()
     {
-        $usersIdsList = User::where('role_id' , 4)
+        return User::whereNull('deactive_at')
+        ->where('active_notifications', true)
+        ->whereHas('notification_management', function ($q) {
+            $q->where('steps_notification', 1); // adjust key if needed
+        })
+        ->where(function ($query) {
+            $query
+                // Case 1: User has today's steps but achieved less than 20% of goal
+                ->whereHas('steps', function ($q) {
+                    $q->whereDate('created_at', today())
+                      ->whereRaw('(total_amount / goal) < 0.2');
+                })
+                // Case 2: OR User has NO steps record for today
+                ->orWhereDoesntHave('steps', function ($q) {
+                    $q->whereDate('created_at', today());
+                });
+        })
+        ->pluck('id')
+        ->toArray();
+    }
+
+    public function getEligibleWaterUserIds()
+    {
+        return User::whereNull('deactive_at')
+        ->where('active_notifications', true)
+        ->whereHas('notification_management', function ($q) {
+            $q->where('water_notification', 1); // adjust key if needed
+        })
+        ->where(function ($query) {
+            $query
+                ->whereHas('water', function ($q) {
+                    $q->whereDate('created_at', today())
+                      ->whereRaw('total_amount < goal');
+                })
+                ->orWhereDoesntHave('water', function ($q) {
+                    $q->whereDate('created_at', today());
+                });
+        })
+        ->pluck('id')
+        ->toArray();
+    }
+
+    private function getEligibleFavoriteUserIds($article)
+    {
+        return User::whereIn('id', function ($query) use ($article) {
+                $query->select('user_id')
+                    ->from('favorites')
+                    ->where('favoritable_type', Article::class)
+                    ->where('favoritable_id', $article->id);
+            })
+            ->whereNull('deactive_at')
+            ->where('active_notifications', true)
+            ->whereHas('notification_management', function ($q) {
+                $q->where('articles_notification', 1);
+            })
             ->pluck('id')
             ->toArray();
-
-        $usersTokensList = UserDevice::query()
-            ->whereIn('user_id', $usersIdsList)
-            ->whereHas('user', function ($query) use ($notification_management, $string) {
-                $query->whereNull('deactive_at')
-                    ->where('active_notifications', true)
-                    ->when($notification_management, function ($q) use ($string) {
-                        $q->whereHas('notification_management', function ($q2) use ($string) {
-                            $q2->where($string . '_notification', 1);
-                        });
-                    });
-            })
-            ->pluck('notification_token')
-            ->toArray();
-
-        return $usersTokensList;
     }
 
-    private function getUsersTokensListForFavoriteArticles($article)
-    {
-        $favoriteUsersIds = Favorite::where('favoritable_type' , Article::class)
-            ->where('favoritable_id' , $article->id)
-            ->pluck('user_id')
-            ->toArray();
-            // dd($favoriteUsersIds);
-
-        $favorite_users_tokens_list = UserDevice::query()
-            ->whereIn('user_id', $favoriteUsersIds)
-            ->whereHas("user", function ($query) {
-                $query->whereNull("deactive_at")->where('active_notifications', true)
-                    ->whereHas('notification_management' , function ($q) {
-                        $q->where('articles_notification' , 1);
-                    });
-            })
-            ->pluck('notification_token')
-            ->toArray();
-
-            // dd($favorite_users_tokens_list);
-        return $favorite_users_tokens_list;
-    }
 }

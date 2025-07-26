@@ -140,8 +140,8 @@ return [
     // Activity & Steps
 
     //StepsReminderCommand //6 pm
-    // NotificationMessages::INACTIVITY_TITLE         => "عدم تقدم",
-    // NotificationMessages::INACTIVITY_BODY          => "خطواتك تصنع فرقًا صغيرًا كل يوم! ما رأيك بنزهة قصيرة الآن؟ 🚶‍♂️",
+    NotificationMessages::INACTIVITY_TITLE         => "عدم تقدم",
+    NotificationMessages::INACTIVITY_BODY          => "خطواتك تصنع فرقًا صغيرًا كل يوم! ما رأيك بنزهة قصيرة الآن؟ 🚶‍♂️",
 
     NotificationMessages::DAILY_PROGRESS_TITLE     => "تقدم يومي",
     NotificationMessages::DAILY_PROGRESS_BODY      => "👏 لقد مشيت :steps خطوة اليوم! استمر في التقدم 💪",
@@ -154,15 +154,15 @@ return [
     // NotificationMessages::STEP_WITHDRAWAL_BODY     => "تم سحب مبلغ من رصيدك بقيمة :withdrawal. تبقى في رصيدك :remaining.",
 
     // WaterReminderCommand // 9 to 9 , every hour
-    // NotificationMessages::WATER_REMINDER_TITLE     => "تذكير بالشرب",
-    // NotificationMessages::WATER_REMINDER_BODY      => "هل شربت كوب ماء اليوم؟ ابقَ منتعشًا 💧",
+    NotificationMessages::WATER_REMINDER_TITLE     => "تذكير بالشرب",
+    NotificationMessages::WATER_REMINDER_BODY      => "هل شربت كوب ماء اليوم؟ ابقَ منتعشًا 💧",
 
     NotificationMessages::WATER_GOAL_ACHIEVED_TITLE=> "تحقق الهدف",
     NotificationMessages::WATER_GOAL_ACHIEVED_BODY => "أحسنت! وصلت إلى هدفك اليومي من شرب الماء 💦",
 
     // SleepReminderCommand     // 9 pm
-    // NotificationMessages::SLEEP_REMINDER_TITLE     => "تذكير بالنوم",
-    // NotificationMessages::SLEEP_REMINDER_BODY      => "اقترب وقت النوم. خذ قسطًا من الراحة 💤",
+    NotificationMessages::SLEEP_REMINDER_TITLE     => "تذكير بالنوم",
+    NotificationMessages::SLEEP_REMINDER_BODY      => "اقترب وقت النوم. خذ قسطًا من الراحة 💤",
 
     // SleepReportCommand       // 9 am
     // NotificationMessages::SLEEP_REVIEW_TITLE       => "مراجعة نوم",
@@ -179,7 +179,7 @@ return [
     // NotificationMessages::PERFORMANCE_IMPROVED_BODY   => "💪 بنية جسمك في تحسّن! استمر على هذا الأداء الرائع.",
 
     // Wellness & Articles
-
+    
     //MorningCommand 10 am
     // NotificationMessages::GOOD_MORNING_TITLE           => "صباح الخير",
     // NotificationMessages::GOOD_MORNING_BODY            => "☀ صباح الصحة! تذّكر: كل خطوة نحو العافية تهم.",

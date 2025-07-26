@@ -5,15 +5,17 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\Visit;
 use App\Models\Medicine;
+use App\Models\MedicineDay;
 use App\Models\Reservation;
 use Faker\Provider\Medical;
+use App\Models\MedicineTime;
 use App\Enums\DaysToTakeEnum;
+use App\Jobs\SendNotificationsJob;
 use App\Traits\NotificationHelper;
 use App\Enums\ReservationStatusEnum;
 use App\Constants\NotificationMessages;
 use App\Enums\Notifications\NotificationTypes;
-use App\Models\MedicineDay;
-use App\Models\MedicineTime;
+use App\Services\System\Notification\NotificationService;
 
 /**
  * Class CronJobService.
@@ -21,6 +23,11 @@ use App\Models\MedicineTime;
 class CronJobService
 {
     use NotificationHelper;
+
+    public function __construct(
+        protected NotificationService $notificationService,
+        protected PatientNotificationService $patientNotificationService,
+    ) {}
     public function remindForReservationsDaily()
     {
         Reservation::where('status', ReservationStatusEnum::ACCEPTED->value)
@@ -179,4 +186,72 @@ class CronJobService
             ->update(['daily_reminded' => 0]);
     }
 
+    public function remindForStepsDaily()
+    {
+        $usersIds = $this->patientNotificationService->getEligibleStepsUserIds();
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($usersIds);
+
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage(NotificationMessages::INACTIVITY_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::INACTIVITY_BODY),
+            type: NotificationTypes::STEPS->value,
+            is_public: false
+        );
+
+        $userNotification->receivers()->attach($usersIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
+
+    public function remindForWaterHourly()
+    {
+        $usersIds = $this->patientNotificationService->getEligibleWaterUserIds();
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($usersIds);
+
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage(NotificationMessages::WATER_REMINDER_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::WATER_REMINDER_BODY),
+            type: NotificationTypes::WATER->value,
+            is_public: false
+        );
+
+        $userNotification->receivers()->attach($usersIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
+
+    public function remindForSleepDaily()
+    {
+        $usersIds = $this->notificationService->getEligibleUserIds(true , 'sleep');
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($usersIds);
+
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage(NotificationMessages::SLEEP_REMINDER_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::SLEEP_REMINDER_BODY),
+            type: NotificationTypes::SLEEP->value,
+            is_public: false
+        );
+
+        $userNotification->receivers()->attach($usersIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
 }

@@ -216,4 +216,28 @@ class NotificationService extends MainService
     //     }
     //     return $page;
     // }
+
+    public function getEligibleUserIds($notification_management, $string)
+    {
+        return User::query()
+            ->where('role_id', 4)
+            ->whereNull('deactive_at')
+            ->where('active_notifications', true)
+            ->when($notification_management, function ($q) use ($string) {
+                $q->whereHas('notification_management', function ($q2) use ($string) {
+                    $q2->where($string . '_notification', 1);
+                });
+            })
+            ->pluck('id')
+            ->toArray();
+    }
+
+    
+    public function getNotificationTokens(array $userIds)
+    {
+        return UserDevice::query()
+            ->whereIn('user_id', $userIds)
+            ->pluck('notification_token')
+            ->toArray();
+    }
 }
