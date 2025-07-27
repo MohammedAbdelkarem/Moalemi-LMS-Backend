@@ -66,9 +66,9 @@ class BanRemoverCommand extends Command
                 targeted_user_id: $user->id,
                 title: $this->notificationMessage(NotificationMessages::UNBAN_TITLE),
                 body: $this->notificationMessage(NotificationMessages::UNBAN_BODY),
-                type: NotificationTypes::ACCOUNT->value,
-                createdBy: null,
-                page: NotificationScreens::PROFILE_SCREEN->value,
+                type: NotificationTypes::AUTH->value,
+                // createdBy: null,
+                // page: NotificationScreens::PROFILE_SCREEN->value,
                 local: $user->language,
             );
             usleep(500000); // 0.5sec
