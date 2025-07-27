@@ -37,7 +37,7 @@ class HealthController extends Controller
     public function getBMI()
     {
         return success(
-            $this->healthService->BMI(),
+            $this->healthService->BMI(auth()->id()),
             ApiMessages::MSG_SUCCESS,
         );
     }

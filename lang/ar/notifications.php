@@ -160,41 +160,41 @@ return [
     NotificationMessages::WATER_GOAL_ACHIEVED_TITLE=> "تحقق الهدف",
     NotificationMessages::WATER_GOAL_ACHIEVED_BODY => "أحسنت! وصلت إلى هدفك اليومي من شرب الماء 💦",
 
-    // SleepReminderCommand     // 9 pm
+    // SleepReminderCommand     // 10 pm
     NotificationMessages::SLEEP_REMINDER_TITLE     => "تذكير بالنوم",
     NotificationMessages::SLEEP_REMINDER_BODY      => "اقترب وقت النوم. خذ قسطًا من الراحة 💤",
 
-    // SleepReportCommand       // 9 am
-    // NotificationMessages::SLEEP_REVIEW_TITLE       => "مراجعة نوم",
-    // NotificationMessages::SLEEP_REVIEW_BODY        => "نمت :hours ساعة الليلة الماضية. تابع هذا النمط الجيد! 🌙",
+    // when store sleep
+    NotificationMessages::SLEEP_REVIEW_TITLE       => "مراجعة نوم",
+    NotificationMessages::SLEEP_REVIEW_BODY        => "نمت :hours ساعة الليلة الماضية. تابع هذا النمط الجيد! 🌙",
 
     // Weight
 
-    //UpdateMedicalInfoReminderCommand // every month
-    // NotificationMessages::WEIGHT_UPDATE_REQUEST_TITLE => "طلب تحديث الوزن",
-    // NotificationMessages::WEIGHT_UPDATE_REQUEST_BODY  => "📊 حدّث بيانات وزنك وطولك لتحصل على تحليلات أدق",
+    //UpdateWeightReminderCommand // every month
+    NotificationMessages::WEIGHT_UPDATE_REQUEST_TITLE => "طلب تحديث الوزن",
+    NotificationMessages::WEIGHT_UPDATE_REQUEST_BODY  => "📊 حدّث بيانات وزنك وطولك لتحصل على تحليلات أدق",
 
     // MotivationalCommand , calc bmi once a week and then send for all the users , checking the managment
-    // NotificationMessages::PERFORMANCE_IMPROVED_TITLE  => "تحسّن في الأداء",
-    // NotificationMessages::PERFORMANCE_IMPROVED_BODY   => "💪 بنية جسمك في تحسّن! استمر على هذا الأداء الرائع.",
+    NotificationMessages::PERFORMANCE_IMPROVED_TITLE  => "تحسّن في الأداء",
+    NotificationMessages::PERFORMANCE_IMPROVED_BODY   => "💪 بنية جسمك في تحسّن! استمر على هذا الأداء الرائع.",
 
     // Wellness & Articles
-    
+
     //MorningCommand 10 am
-    // NotificationMessages::GOOD_MORNING_TITLE           => "صباح الخير",
-    // NotificationMessages::GOOD_MORNING_BODY            => "☀ صباح الصحة! تذّكر: كل خطوة نحو العافية تهم.",
+    NotificationMessages::GOOD_MORNING_TITLE           => "صباح الخير",
+    NotificationMessages::GOOD_MORNING_BODY            => "☀ صباح الصحة! تذّكر: كل خطوة نحو العافية تهم.",
 
     //EveningCommand , 7 pm
-    // NotificationMessages::GOOD_EVENING_TITLE           => "مساء الخير",
-    // NotificationMessages::GOOD_EVENING_BODY            => "🌙 ختام اليوم بلحظة راحة. لا تنسَ الاهتمام بنفسك",
+    NotificationMessages::GOOD_EVENING_TITLE           => "مساء الخير",
+    NotificationMessages::GOOD_EVENING_BODY            => "🌙 ختام اليوم بلحظة راحة. لا تنسَ الاهتمام بنفسك",
 
     //HealthCommand , once a week at 5 pm
-    // NotificationMessages::HEALTHCARE_REMINDER_TITLE    => "هل تهتم بصحتك؟",
-    // NotificationMessages::HEALTHCARE_REMINDER_BODY     => "💚 صحتك أهم استثمار! استمر في العناية بنفسك.",
+    NotificationMessages::HEALTHCARE_REMINDER_TITLE    => "هل تهتم بصحتك؟",
+    NotificationMessages::HEALTHCARE_REMINDER_BODY     => "💚 صحتك أهم استثمار! استمر في العناية بنفسك.",
 
-    //HealthTipCommand
-    // NotificationMessages::HEALTH_TIP_TITLE             => "معلومة صحية",
-    // NotificationMessages::HEALTH_TIP_BODY              => "💡 هل تعلم؟ شرب الماء بانتظام يساعد على تحسين التركيز والوظائف الحيوية.",
+    //HealthTipCommand , every 2 day
+    NotificationMessages::HEALTH_TIP_TITLE             => "معلومة صحية",
+    NotificationMessages::HEALTH_TIP_BODY              => randomFact(),
 
     //when creating
     NotificationMessages::NEW_ARTICLE_TITLE            => "مقال جديد",

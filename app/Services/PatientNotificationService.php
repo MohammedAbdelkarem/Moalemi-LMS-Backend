@@ -85,6 +85,7 @@ class PatientNotificationService
     {
         return User::whereNull('deactive_at')
         ->where('active_notifications', true)
+        ->where('role_id', 4)
         ->whereHas('notification_management', function ($q) {
             $q->where('steps_notification', 1); // adjust key if needed
         })
@@ -108,6 +109,7 @@ class PatientNotificationService
     {
         return User::whereNull('deactive_at')
         ->where('active_notifications', true)
+        ->where('role_id', 4)
         ->whereHas('notification_management', function ($q) {
             $q->where('water_notification', 1); // adjust key if needed
         })
@@ -135,6 +137,7 @@ class PatientNotificationService
             })
             ->whereNull('deactive_at')
             ->where('active_notifications', true)
+            ->where('role_id', 4)
             ->whereHas('notification_management', function ($q) {
                 $q->where('articles_notification', 1);
             })

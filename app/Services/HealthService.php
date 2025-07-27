@@ -50,9 +50,11 @@ class HealthService
     }
 
     // bmi
-    public function BMI()
+    public function BMI($user_id)
     {
-        $patient = Patient::findByIdOrFail(owner_id());
+        $patient = Patient::where('is_owner' , 1)
+                    ->where('user_id' , $user_id)
+                    ->first();
 
         $bmi = BMI($patient->weight , $patient->height);
         $classification = $this->getClassification($bmi);
@@ -142,16 +144,38 @@ class HealthService
         ->whereDate('created_at' , Carbon::today())
         ->exists();
 
-        // if($existSleep)
-        //     return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
+        if($existSleep)
+            return forbiddenFailure([] , ExceptionMessages::MSG_SLEEP_ALREADY_EXIST);
 
         $patient = Patient::findByIdOrFail(owner_id());
 
-        Sleep::create([
+        $sleep = Sleep::create([
             'user_id' => auth()->id(),
             'goal' => sleep_goal($patient->birth_date),
             'total_amount' => $amount
         ]);
+
+        if(($sleep->total_amount / $sleep->goal) > 0.7 && active_sleep_notification(auth()->id()))
+        {
+            $this->sendDirectNotification(
+                    $sleep->user_id,
+                    $this->notificationMessage(NotificationMessages::SLEEP_REVIEW_TITLE),
+                    $this->notificationMessage(
+                        NotificationMessages::SLEEP_REVIEW_BODY,
+                        [
+                            'hours' => $sleep->total_amount,
+                        ]
+                    ),
+                    NotificationTypes::SLEEP->value,
+                    'ar',
+                    false,
+                    "",
+                    [],
+                    true,
+                    [],
+                    true
+                );
+        }
     }
 
     public function getSleepHistory($data)

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Sleep;
 use App\Models\Visit;
 use App\Models\Medicine;
 use App\Models\MedicineDay;
@@ -27,6 +29,7 @@ class CronJobService
     public function __construct(
         protected NotificationService $notificationService,
         protected PatientNotificationService $patientNotificationService,
+        protected HealthService $healthService,
     ) {}
     public function remindForReservationsDaily()
     {
@@ -246,6 +249,114 @@ class CronJobService
         );
 
         $userNotification->receivers()->attach($usersIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
+    public function remindForWeightMonthly()
+    {
+        $usersIds = $this->notificationService->getEligibleUserIds(true , 'weight');
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($usersIds);
+
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage(NotificationMessages::WEIGHT_UPDATE_REQUEST_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::WEIGHT_UPDATE_REQUEST_BODY),
+            type: NotificationTypes::WEIGHT->value,
+            is_public: false
+        );
+
+        $userNotification->receivers()->attach($usersIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
+
+    public function remindForBMIMonthly()
+    {
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage(NotificationMessages::PERFORMANCE_IMPROVED_TITLE) ,
+            body: $this->notificationMessage(NotificationMessages::PERFORMANCE_IMPROVED_BODY),
+            type: NotificationTypes::GENERAL->value,
+            is_public: false
+        );
+
+        $userIds = [];
+
+        User::query()
+            ->where('role_id', 4)
+            ->whereNull('deactive_at')
+            ->where('active_notifications', true)
+            ->whereHas('notification_management', function ($q2) {
+                $q2->where('general_notification', 1);
+            })
+            ->whereHas('patients', function ($query) {
+                $query->where('is_owner', 1);
+            })
+            ->chunkById(100, function ($users) use ($userNotification) {
+                foreach ($users as $user) {
+                    $bmi = $this->healthService->BMI($user->id)['BMI'];
+                    if($bmi >= 18.5 && $bmi < 25)
+                    {
+                        $userIds[] = $user->id;
+                        $userNotification->receivers()->attach($user->id);
+                    }
+                }
+            });
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($userIds);
+
+        //Dispatch Job To Send Notification
+        dispatch(new SendNotificationsJob(
+            tokens: $notificationTokens,
+            notification: $userNotification,
+            shouldTranslate: true,
+        ));
+    }
+
+    
+    public function remindForGoodMorning()
+    {
+        $this->remindForGeneral(NotificationMessages::GOOD_MORNING_TITLE , NotificationMessages::GOOD_MORNING_BODY);
+    }
+
+    public function remindForGoodEvening()
+    {
+        $this->remindForGeneral(NotificationMessages::GOOD_EVENING_TITLE , NotificationMessages::GOOD_EVENING_BODY);
+    }
+
+    public function remindForHealthcare()
+    {
+        $this->remindForGeneral(NotificationMessages::HEALTHCARE_REMINDER_TITLE , NotificationMessages::HEALTHCARE_REMINDER_BODY);
+    }
+
+    public function healthTip()
+    {
+        $this->remindForGeneral(NotificationMessages::HEALTH_TIP_TITLE , NotificationMessages::HEALTHCARE_REMINDER_BODY);
+    }
+
+    private function remindForGeneral($notfication_title , $notification_body)
+    {
+        $userIds = $this->notificationService->getEligibleUserIds(true , 'general');
+
+        $notificationTokens = $this->notificationService->getNotificationTokens($userIds);
+
+        $userNotification = $this->createNotification(
+            title: $this->notificationMessage($notfication_title) ,
+            body: $this->notificationMessage($notification_body),
+            type: NotificationTypes::GENERAL->value,
+            is_public: false
+        );
+
+        $userNotification->receivers()->attach($userIds);
 
         //Dispatch Job To Send Notification
         dispatch(new SendNotificationsJob(

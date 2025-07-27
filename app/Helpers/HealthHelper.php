@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use App\Services\System\SystemSettingService;
 
 if (!function_exists('BMI')) {
     function BMI($weight , $height)
@@ -80,23 +79,23 @@ if (!function_exists('age')) {
     }
 }
 
-if (!function_exists('step_reward_value')) {
-    function step_reward_value()
+if (!function_exists('randomFact')) {
+    function randomFact()
     {
-        return (new SystemSettingService)->index()[3]["value"];
-    }
-}
+        $facts = [
+            '💡 هل تعلم؟ تناول التمر على الريق يساعد في تنظيم الهضم ويمنح الجسم طاقة طبيعية. 🌴',
+            '💡 هل تعلم؟ المشي لمدة 30 دقيقة يوميًا يقلل خطر الإصابة بأمراض القلب. 🚶‍♂️',
+            '💡 هل تعلم؟ النوم الكافي يساعد على تعزيز جهاز المناعة وتحسين الذاكرة. 😴',
+            '💡 هل تعلم؟ القراءة لمدة 6 دقائق فقط يمكن أن تقلل التوتر بنسبة 60%. 📖',
+            '💡 هل تعلم؟ تناول الخضروات الورقية يعزز صحة الدماغ والتركيز. 🥬',
+            '💡 هل تعلم؟ التعرض لأشعة الشمس لمدة 10 دقائق يوميًا يساعد الجسم على إنتاج فيتامين د. ☀️',
+            '💡 هل تعلم؟ تنظيم بيئة العمل يقلل التشتت ويزيد الإنتاجية. 🧹',
+            '💡 هل تعلم؟ القهوة تحتوي على مضادات أكسدة تساعد في مكافحة الشيخوخة. ☕',
+            '💡 هل تعلم؟ التنفس العميق يساعد على تقليل التوتر والقلق فورًا. 🌬️',
+            '💡 هل تعلم؟ قضاء وقت في الطبيعة يعزز الصحة النفسية ويقلل الاكتئاب. 🌳',
+            '💡 هل تعلم؟ شرب الماء بانتظام يساعد على تحسين التركيز والوظائف الحيوية. 💧',
+        ];
 
-if (!function_exists('steps_daily_goal')) {
-    function steps_daily_goal()
-    {
-        return (new SystemSettingService)->index()[4]["value"];
-    }
-}
-
-if (!function_exists('stpes_minimum_balance_to_get')) {
-    function stpes_minimum_balance_to_get()
-    {
-        return (new SystemSettingService)->index()[5]["value"];
+        return $facts[array_rand($facts)];
     }
 }

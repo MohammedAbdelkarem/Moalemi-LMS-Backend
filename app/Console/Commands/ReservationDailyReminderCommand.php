@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Services\CronJobService;
 
 class ReservationDailyReminderCommand extends Command
 {
@@ -11,7 +12,7 @@ class ReservationDailyReminderCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:reservation-daily-reminder-command';
+    protected $signature = 'reservation:daily';
 
     /**
      * The console command description.
@@ -19,12 +20,19 @@ class ReservationDailyReminderCommand extends Command
      * @var string
      */
     protected $description = 'Command description';
+    protected CronJobService $cronJobService;
+
+    public function __construct(CronJobService $cronJobService)
+    {
+        parent::__construct();
+        $this->cronJobService = $cronJobService;
+    }
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        
+        $this->cronJobService->remindForReservationsDaily();
     }
 }

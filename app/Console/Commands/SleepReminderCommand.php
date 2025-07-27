@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Services\CronJobService;
 
 class SleepReminderCommand extends Command
 {
@@ -11,7 +12,7 @@ class SleepReminderCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sleep-reminder-command';
+    protected $signature = 'sleep:daily';
 
     /**
      * The console command description.
@@ -19,12 +20,19 @@ class SleepReminderCommand extends Command
      * @var string
      */
     protected $description = 'Command description';
+    protected CronJobService $cronJobService;
+
+    public function __construct(CronJobService $cronJobService)
+    {
+        parent::__construct();
+        $this->cronJobService = $cronJobService;
+    }
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $this->cronJobService->remindForSleepDaily();
     }
 }

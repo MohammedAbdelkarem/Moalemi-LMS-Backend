@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Services\CronJobService;
 
 class HealthCommand extends Command
 {
@@ -11,7 +12,7 @@ class HealthCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:health-command';
+    protected $signature = 'healthCare:weekly';
 
     /**
      * The console command description.
@@ -20,11 +21,19 @@ class HealthCommand extends Command
      */
     protected $description = 'Command description';
 
+    protected CronJobService $cronJobService;
+
+    public function __construct(CronJobService $cronJobService)
+    {
+        parent::__construct();
+        $this->cronJobService = $cronJobService;
+    }
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $this->cronJobService->remindForHealthcare();
     }
 }

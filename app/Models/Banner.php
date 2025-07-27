@@ -37,7 +37,7 @@ class Banner extends Model implements HasMedia
 
     public function delete()
     {
-        deleteFilesFromMedia($this , MediaCollection::ARTICLE_COLLECTION);
+        deleteFilesFromMedia($this , MediaCollection::BANNER_COLLECTION);
 
         return parent::delete();
     }

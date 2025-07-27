@@ -35,6 +35,13 @@ class Story extends Model implements HasMedia
         return $this->morphTo();
     }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this , MediaCollection::STORY_COLLECTION);
+
+        return parent::delete();
+    }
+
     /**
      * @return \App\Models\Story
      */
