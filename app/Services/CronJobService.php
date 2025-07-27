@@ -340,7 +340,7 @@ class CronJobService
 
     public function healthTip()
     {
-        $this->remindForGeneral(NotificationMessages::HEALTH_TIP_TITLE , NotificationMessages::HEALTHCARE_REMINDER_BODY);
+        $this->remindForGeneral(NotificationMessages::HEALTH_TIP_TITLE , NotificationMessages::HEALTH_TIP_BODY);
     }
 
     private function remindForGeneral($notfication_title , $notification_body)
