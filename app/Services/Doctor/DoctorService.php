@@ -19,6 +19,7 @@ use App\Services\Base\ProcessDataService;
 use App\Http\Resources\Story\StoryResource;
 use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Article\ArticleResource;
+use App\Services\System\Notification\NotificationService;
 use App\Services\Transaction\TransactionService;
 
 /**
@@ -31,6 +32,7 @@ class DoctorService
         protected TransactionService $transactionService,
         protected MediaService $mediaService,
         protected ProcessDataService $processDataService,
+        protected NotificationService $notificationService,
     )
     {}
     public function storeRegisteredDoctor($data)
@@ -170,6 +172,8 @@ class DoctorService
             ]
         )->get());
 
+        $unreadNotificationsCount = $this->notificationService->getUnreadNotificationsCount();
+
         $this->processDataService->processSubscriptionsData();
 
         return [
@@ -177,6 +181,7 @@ class DoctorService
             'reservations' => $reservations,
             'articles' => $articles,
             'banners' => $banners,
+            'unreadNotificationsCount' => $unreadNotificationsCount,
         ];
     }
 }

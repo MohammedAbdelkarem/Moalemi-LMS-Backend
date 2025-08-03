@@ -153,6 +153,17 @@ class NotificationService extends MainService
             ->firstOrFail();
     }
 
+    public function getUnreadNotificationsCount()
+    {
+        $user = auth()->user();
+
+        return Notification::query()
+            ->whereHas('receivers', function ($q) use ($user) {
+                $q->where('user_id', $user?->id)->where('is_read', false);
+            })
+            ->count();
+    }
+
     public function getMyNotifications($per_page)
     {
         $user = auth()->user();

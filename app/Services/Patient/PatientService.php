@@ -30,6 +30,7 @@ use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Story\StoryResource;
 use App\Services\Base\ProcessDataService;
+use App\Services\System\Notification\NotificationService;
 
 /**
  * Class PatientService.
@@ -42,6 +43,7 @@ class PatientService
         protected UserService $userService,
         protected ContextService $contextService,
         protected ProcessDataService $processDataService,
+        protected NotificationService $notificationService,
     ) {}
     
     public function getMyRelations($user_id = null)
@@ -543,6 +545,8 @@ class PatientService
             ]
         )->get());
 
+        $unreadNotificationsCount = $this->notificationService->getUnreadNotificationsCount();
+
 
         $this->processDataService->processTreatments();
         
@@ -555,7 +559,8 @@ class PatientService
             'latestReservation' => $latestReservation,
             'reservations' => $reservations,
             'doctors' => $doctors,
-            'articles' => $articles
+            'articles' => $articles,
+            'unreadNotificationsCount' => $unreadNotificationsCount
         ];
     }
 }
