@@ -152,7 +152,7 @@ class HealthService
         $sleep = Sleep::create([
             'user_id' => auth()->id(),
             'goal' => sleep_goal($patient->birth_date),
-            'total_amount' => $amount
+            'total_amount' => round($amount, 1)
         ]);
 
         if(($sleep->total_amount / $sleep->goal) > 0.7 && active_sleep_notification(auth()->id()))

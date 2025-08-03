@@ -512,6 +512,7 @@ class PatientService
 
         $latestReservation = Reservation::whereIn('status' , [
                 ReservationStatusEnum::ACCEPTED->value,
+                ReservationStatusEnum::PENDING->value,
             ])
             ->with([
                 'doctor.subCategories.category' ,
