@@ -72,4 +72,14 @@ class ArticleController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function search(Request $request)
+    {
+        return success(
+            $this->articleService->search($request->all()),
+            ApiMessages::MSG_SUCCESS,
+            ArticleResource::class,
+            $request->has('per_page')
+        );
+    }
 }
