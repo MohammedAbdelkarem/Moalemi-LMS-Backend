@@ -32,7 +32,7 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
-            'logo' =>  MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)),
+            'logo' =>  MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)) ?? config('app.url') . '/' . config('_custom.user_default_image'),
         ];
 
         $data['number_of_favorites'] = $this->favorites()->count();
