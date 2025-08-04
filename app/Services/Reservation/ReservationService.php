@@ -3,6 +3,7 @@
 namespace App\Services\Reservation;
 
 use Carbon\Carbon;
+use App\Models\Day;
 use App\Models\Rate;
 use App\Models\Shift;
 use App\Models\Visit;
@@ -12,6 +13,7 @@ use App\Models\Reservation;
 use App\Enums\ReactionStatusEnum;
 use App\Constants\MediaCollection;
 use App\Models\PatientUpdatedInfo;
+use App\Services\Plan\PlanService;
 use App\Traits\NotificationHelper;
 use App\Constants\ExceptionMessages;
 use App\Enums\ReservationStatusEnum;
@@ -22,7 +24,6 @@ use App\Constants\NotificationMessages;
 use App\Services\Patient\PatientService;
 use App\Http\Resources\Media\MediaResource;
 use App\Enums\Notifications\NotificationTypes;
-use App\Services\Plan\PlanService;
 use Symfony\Component\Mailer\Messenger\MessageHandler;
 
 /**
@@ -428,12 +429,18 @@ class ReservationService
         }
 
         //the next reservation
+
+        $day_name = Carbon::parse($data['next_date'])->format('l');
+
+        $day_id = Day::where('name' , $day_name)->first()->id;
+
         if(isset($data['next_date']))
         {
             Reservation::create([
                 'text' => $data['next_text'] ?? null,
                 'notes' => $data['next_notes'] ?? null,
                 'date'  => $data['next_date'] ?? null,
+                'day_id'  => $day_id,
                 'time_to_come' => $data['time_to_come'],
                 'status' => ReservationStatusEnum::ACCEPTED,
                 'patient_id' => $reservation->patient_id,
