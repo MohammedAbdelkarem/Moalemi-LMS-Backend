@@ -18,6 +18,7 @@ use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionsRequest;
 use App\Http\Requests\MedicalProfile\CreateMedicalProfileRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicalProfileRequest;
+use App\Http\Resources\DoctorResouce;
 use App\Services\PatientNotificationService;
 
 class PatientController extends Controller

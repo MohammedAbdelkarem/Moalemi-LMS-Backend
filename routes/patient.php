@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     }); 
     Route::prefix('favorite')->controller(FavoriteController::class)->group(function(){
         Route::get('get' , 'get');
+        Route::get('get' , 'get');
         Route::prefix('set')->group(function(){
             Route::post('doctor/{id}' , 'setDoctorAsFavorite');
             Route::post('article/{id}' , 'setArticleAsFavorite');

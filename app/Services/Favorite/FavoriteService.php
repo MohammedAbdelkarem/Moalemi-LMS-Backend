@@ -4,6 +4,7 @@ namespace App\Services\Favorite;
 
 use App\Models\Doctor;
 use App\Models\Article;
+use App\Models\Favorite;
 
 /**
  * Class FavoriteService.
@@ -34,10 +35,20 @@ class FavoriteService
     {
         $class = $this->classType($data['type']);
 
+        $favIds = Favorite::where('user_id' , auth()->id())
+                ->where('favoritable_type' , $class)
+                ->pluck('favoritable_id')
+                ->toArray();
 
+                // dd($favIds);
+        if($data['type'] == 'doctor')
+            $items = Doctor::whereIn('id' , $favIds)
+                    ->with(['subCategories.category' , 'shifts' , 'user']);
+        else
+            $items = Article::whereIn('id' , $favIds);
+        
         return getOrPaginate(
-            auth()->user()->favorites()
-                    ->where('favoritable_type' , $class),
+            $items,
             $data
         );
     }

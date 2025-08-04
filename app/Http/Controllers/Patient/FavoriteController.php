@@ -14,7 +14,7 @@ class FavoriteController extends Controller
     public function __construct(
         protected FavoriteService $favoriteService
     ){}
-
+        
     public function get(Request $request)
     {
         return success(
@@ -56,6 +56,16 @@ class FavoriteController extends Controller
         return success(
             $this->favoriteService->setAsUnFavorite($id , 'article'),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getFavoriteDoctors(Request $request)
+    {
+        return success(
+            $this->patientService->getFavoriteDoctors(),
+            ApiMessages::MSG_SUCCESS,
+            DoctorResouce::class,
+            $request->has('per_page')
         );
     }
 }

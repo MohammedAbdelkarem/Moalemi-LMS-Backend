@@ -24,6 +24,7 @@ class DoctorResouce extends JsonResource
     {
         $logo = MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
 
+        // dd($logo->resource);
         $data = [
             'id' => $this->id, 
             'clinic_name' => $this->clinic_name,
@@ -34,7 +35,7 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
-            'logo' =>   $logo == null 
+            'logo' =>   $logo->resource == null 
                         ? config('app.url') . '/' . config('_custom.user_default_image')
                         : $logo,
         ];
