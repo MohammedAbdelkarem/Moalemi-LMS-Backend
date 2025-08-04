@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     });
     Route::prefix('article')->controller(ArticleController::class)->group(function () {
         Route::get('getMine' , 'getMyArticles');
+        Route::get('search' , 'search');
         Route::get('show/{id}' , 'show')->name(RouteNames::ARTICLES_SHOW);
     });
     Route::prefix('profile')->controller(DoctorController::class)->group(function () {
