@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Article\ArticleResource;
+use App\Http\Resources\Media\DefaultMediaResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\Rate\RateResource;
 use App\Http\Resources\SubCategory\SubCategoryResource;
@@ -24,7 +25,6 @@ class DoctorResouce extends JsonResource
     {
         $logo = MediaResource::make($this->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION));
 
-        // dd($logo->resource);
         $data = [
             'id' => $this->id, 
             'clinic_name' => $this->clinic_name,
@@ -35,9 +35,9 @@ class DoctorResouce extends JsonResource
             'is_center' => $this->is_center,
             'bio' => $this->bio,
             'rate' => $this->total_rate,
-            'logo' =>   $logo->resource == null 
-                        ? config('app.url') . '/' . config('_custom.user_default_image')
-                        : $logo,
+            'logo' =>  $logo->resource == null 
+                    ? DefaultMediaResource::make(1)
+                    : $logo
         ];
 
         $data['number_of_favorites'] = $this->favorites()->count();
