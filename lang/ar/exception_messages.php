@@ -11,6 +11,7 @@ return [
     'reservation_status_flow_error'                     => 'لا يمكن تغيير حالة الموعد من :old_status الى :new_status',
     'this_is_not_your_route'                     => ' غير مخصص لك, قم بتسجيل الدخول كطبيب أو مريض لتتمكن من المتابعة',
     'can_not_edit_treatments_in_visit'                     => 'لا يمكنك التعديل على الأدوية أو التوصيات المضافة من قبل الطبيب',
+    'can_not_delete_owner'                     => 'لا يمكنك حذف المالك',
     'can_not_rate_again'                     => 'لا يمكنك التقييم مرة اخرى',
     'medical_profile_already_exist'     => 'لقد قمت بإنشاء ملفك الطبي بالفعل!',
     'can_not_delete_shift_cuz_reservations_exists'                     => 'لا يمكن حذف الوقت لان تم الحجز فيه',

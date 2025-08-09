@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Patient\PatientService;
+use App\Services\Vaccination\VaccinationService;
 use App\Http\Requests\MedicalProfile\AddMedicinesRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicineRequest;
+use App\Http\Requests\Vaccination\UpdateVaccinationRequest;
 use App\Http\Requests\MedicalProfile\AddInstructionsRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 
@@ -16,6 +18,7 @@ class PatientController extends Controller
 
     public function __construct(
         protected PatientService $patientService,
+        protected VaccinationService $vaccinationService,
     ) {}
     public function addMedicines(AddMedicinesRequest $request , $patient_id , $visit_id)
     {
@@ -62,6 +65,22 @@ class PatientController extends Controller
         return success(
             $this->patientService->deleteInstruction($id), 
             ApiMessages::MSG_SUCCESS
+        );
+    }
+    
+    public function getVaccinations($patient_id)
+    {
+        return success(
+            $this->vaccinationService->getVaccinations($patient_id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+    
+    public function updateVaccination(UpdateVaccinationRequest $request , $vaccination_id , $patient_id)
+    {
+        return success(
+            $this->vaccinationService->updateVaccination($request->validated() , $vaccination_id , $patient_id),
+            ApiMessages::MSG_SUCCESS,
         );
     }
 }

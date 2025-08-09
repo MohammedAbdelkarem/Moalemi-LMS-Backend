@@ -30,6 +30,7 @@ return new class extends Migration
             $table->enum('blood_type' , BloodTypeEnum::values())->nullable();
             $table->string('chronic_diseases')->nullable();
             $table->string('notes')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

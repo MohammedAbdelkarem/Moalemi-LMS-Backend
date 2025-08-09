@@ -19,14 +19,15 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(AdminProfilesTableSeeder::class);
-        // $this->call(UserProfilesTableSeeder::class);
+        $this->call(UserProfilesTableSeeder::class);
 
 
 
 
-        // $this->call(MainSeeder::class);
+        $this->call(MainSeeder::class);
         $this->call(DaySeeder::class);
         $this->call(BmiClassificationSeeder::class);
+        $this->call(VaccinationSeeder::class);
 
 
 

@@ -40,6 +40,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
             Route::post('store_others' , 'createMedicalProfile');
             Route::get('relations' , 'getRelations')->name(RouteNames::PATIENT_RELATIONS);
             Route::get('permanents/{id}' , 'getPermanentProfile')->name(RouteNames::PATIENT_PERMANENT_PROFILE);
+            Route::get('delete/{id}' , 'deletePatient');
+            Route::prefix('vaccinations')->group(function(){
+                Route::get('{id}' , 'getVaccinations');
+                Route::post('{vaccination_id}/update/{patient_id}' , 'updateVaccination');
+            });
             Route::prefix('update')->group(function(){
                 Route::post('profile/{id}' , 'updateInfo');
             });

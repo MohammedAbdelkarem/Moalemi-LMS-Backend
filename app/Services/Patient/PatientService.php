@@ -31,6 +31,7 @@ use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Story\StoryResource;
 use App\Services\Base\ProcessDataService;
 use App\Services\System\Notification\NotificationService;
+use App\Services\Vaccination\VaccinationService;
 
 /**
  * Class PatientService.
@@ -44,6 +45,7 @@ class PatientService
         protected ContextService $contextService,
         protected ProcessDataService $processDataService,
         protected NotificationService $notificationService,
+        protected VaccinationService $vaccinationService,
     ) {}
     
     public function getMyRelations($user_id = null)
@@ -276,6 +278,8 @@ class PatientService
             $this->userService->updateOwnerInfo($data);
             $this->contextService->createWeightHistory($patient->id , 0 , $data['weight']);
         }
+
+        $this->vaccinationService->createVaccinations($patient);
 
         return $patient;
     }
@@ -562,5 +566,17 @@ class PatientService
             'articles' => $articles,
             'unreadNotificationsCount' => $unreadNotificationsCount
         ];
+    }
+
+    public function deletePatient($patient_id)
+    {
+        $patient = Patient::findByIdOrFail($patient_id);
+
+        if($patient->is_owner)
+            return unprocessableFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_OWNER);
+
+        $patient->is_active = 0;
+
+        $patient->save();
     }
 }

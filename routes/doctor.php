@@ -11,10 +11,9 @@ use App\Http\Controllers\Patient\ListController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Doctor\ArticleController;
-use App\Http\Controllers\Patient\PatientController;
+use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\ReservationController;
 use App\Http\Controllers\Doctor\TransactionController;
-use App\Http\Controllers\Doctor\PatientController as DoctorPatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,6 +128,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('medicine/{medicine_id}' , 'getMedicineHistory')->name(RouteNames::TREATMENT_DETAILS);
         Route::get('instruction/{instruction_id}' , 'getInstructionHistory')->name(RouteNames::TREATMENT_DETAILS);
     });
+
+    Route::prefix('medical_profile/vaccinations')->controller(PatientController::class)->group(function(){
+                Route::get('{id}' , 'getVaccinations');
+                Route::post('{vaccination_id}/update/{patient_id}' , 'updateVaccination');
+            });
     
     Route::prefix('expired')->controller(TreatmentController::class)->group(function(){
         Route::get('medicine/{patient_id}' , 'getExpiredMedicine')->name(RouteNames::TREATMENT_DETAILS);

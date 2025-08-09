@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use App\Enums\TreatmentStatusEnum;
+use App\Models\Scopes\ActivePatientScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,6 +29,12 @@ class Patient extends Model
             $selectedColumns
         );
     }
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ActivePatientScope);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -97,5 +104,15 @@ class Patient extends Model
         return $this->favorites()->where('favoritable_type', Article::class);
     }
 
+    public function vaccinations()
+    {
+        return $this->belongsToMany(Vaccination::class, 'patient_vaccinations')
+                    ->using(PatientVaccination::class)
+                    ->withPivot(
+                    'checked',
+                        'note',
+                    )
+                    ->withTimestamps();
+    }
 
 }

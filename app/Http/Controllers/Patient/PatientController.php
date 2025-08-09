@@ -18,14 +18,18 @@ use App\Http\Requests\MedicalProfile\UpdateInstructionRequest;
 use App\Http\Requests\MedicalProfile\UpdateInstructionsRequest;
 use App\Http\Requests\MedicalProfile\CreateMedicalProfileRequest;
 use App\Http\Requests\MedicalProfile\UpdateMedicalProfileRequest;
+use App\Http\Requests\Vaccination\UpdateVaccination;
+use App\Http\Requests\Vaccination\UpdateVaccinationRequest;
 use App\Http\Resources\DoctorResouce;
 use App\Services\PatientNotificationService;
+use App\Services\Vaccination\VaccinationService;
 
 class PatientController extends Controller
 {
     public function __construct(
         protected PatientService $patientService,
         protected PatientNotificationService $patientNotificationService,
+        protected VaccinationService $vaccinationService,
     ) {}
 
     public function createMyMedicalProfile(CreateMedicalProfileRequest $request)
@@ -137,6 +141,30 @@ class PatientController extends Controller
     {
         return success(
             $this->patientNotificationService->update($id , $type),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function deletePatient($id)
+    {
+        return success(
+            $this->patientService->deletePatient($id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function getVaccinations($patient_id)
+    {
+        return success(
+            $this->vaccinationService->getVaccinations($patient_id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function updateVaccination(UpdateVaccinationRequest $request , $vaccination_id , $patient_id)
+    {
+        return success(
+            $this->vaccinationService->updateVaccination($request->validated() , $vaccination_id , $patient_id),
             ApiMessages::MSG_SUCCESS,
         );
     }
