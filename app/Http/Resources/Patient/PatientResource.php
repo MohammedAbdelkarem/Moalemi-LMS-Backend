@@ -38,6 +38,7 @@ class PatientResource extends JsonResource
             'blood_type' => $this->blood_type,
             'chronic_diseases' => $this->chronic_diseases,
             'notes' => $this->notes,
+            'has_vaccinations' => has_vaccinations($this),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

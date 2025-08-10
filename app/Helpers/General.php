@@ -459,17 +459,11 @@ if (!function_exists('active_articles_notification')) {
     }
 }
 
-if (!function_exists('carbon_id')) {
-    function carbon_id($day_id)
+if (!function_exists('has_vaccinations')) {
+    function has_vaccinations($patient)
     {
-        $result = [
-            1 => 1,
-            2 => 2,
-            3 => 3,
-            4 => 4,
-            5 => 5,
-            6 => 6,
-            7 => 0,
-        ];
+        $hasVaccinations = $patient->vaccinations()->exists();
+
+        return $hasVaccinations;
     }
 }
