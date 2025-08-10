@@ -516,16 +516,27 @@ class PatientService
             ->latest('id')
             ->first();
 
-        $latestReservation = Reservation::whereIn('status' , [
-                ReservationStatusEnum::ACCEPTED->value,
-                ReservationStatusEnum::PENDING->value,
-            ])
-            ->with([
-                'doctor.subCategories.category' ,
-                'doctor.user' ,
-            ])
-            ->orderBy('updated_at' , 'desc')
-            ->first();
+        $patientsIds = Patient::where('user_id' , auth()->id())
+                    ->pluck('id')
+                    ->toArray();
+        
+
+        $latestReservation = null;
+
+        if (!empty($patientsIds)) {
+            $latestReservation = Reservation::whereIn('status', [
+                    ReservationStatusEnum::ACCEPTED->value,
+                    ReservationStatusEnum::PENDING->value,
+                ])
+                ->whereIn('patient_id', $patientsIds)
+                ->with([
+                    'doctor.subCategories.category',
+                    'doctor.user',
+                ])
+                ->orderBy('updated_at', 'desc')
+                ->first();
+        }
+
 
         $reservations = ReservationResource::collection(Reservation::where('patient_id' , owner_id())
             ->with([
