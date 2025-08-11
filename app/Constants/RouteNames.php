@@ -7,31 +7,10 @@ final class RouteNames
     //Admin admin.php
     const ADMIN_CITIES_SELECTABLE_LIST                         = 'admin.cities.selectable-list';
     const ADMIN_FAQ_LIST                                       = 'admin.faq.list';
-    const ARTICLES_LIST                                       = 'articles.itme';
-    const ARTICLES_SHOW                                         = 'articles.show';
-    const PATIENT_HOME                                         = 'patient.home';
-    const PATIENT_RESERVATIONS                                         = 'patient.reservations';
-    const RESERVATION_DETAILS_FOR_DOCTOR                                         = 'reservation.details.for-doctor';
     const ADMIN_CUSTOMER_CARD_LIST                                         = 'admin.customer-card.list';
-    const ADMIN_RESERVATIONS                                         = 'admin.reservations';
-    const TREATMENT_DETAILS                                         = 'treatment.details';
-    const PATIENT_PERMANENT_PROFILE                                         = 'patient.permanent-profile';
-    const RESERVATION_DETAILS                                         = 'reservation.details';
-    const PATIENT_RELATIONS                                         = 'patient.relations';
-    const DOCTOR_RESERVATIONS                                         = 'doctor.reservations';
     const ADMIN_FAQ_CATEGORY_LIST                              = 'admin.faq.category.list';
     const CITIES_SELECTABLE_LIST                               = 'cities.selectable-list';
-    const PLAN_ADMIN                               = 'plan.admin';
-    const DOCTORS_GET_PROFILE                               = 'doctors.get-profile';
-    const DOCTORS_FILTER_USER_SIDE                               = 'doctors.filter.user-side';
-    const DOCTOR_SHIFT_GET                               = 'doctor.shift.get';
-    const DOCTOR_SHIFT_SHOW                               = 'doctor.shift.show';
     const LOGIN_HISTORY_List                                   = 'login_history.list';
-    const CATEGORY_LIST                                        = 'category.list';
-    const SUBCATEGORY_LIST                                     = 'subcategory.list';
-    const COLOR_LIST                                           = 'color.list';
-    const SIZE_LIST                                            = 'size.list';
-    const FABRIC_LIST                                          = 'fabric.list';
     const USERS_LIST                                           = 'users.list';
     const ADMINS_LIST                                          = 'admins.list';
     const NOTIFICATIONS_LIST                                   = 'notifications.list';
@@ -42,11 +21,8 @@ final class RouteNames
     const FAQ_CATEGORY_LIST                                    = 'faq.category.list';
     const REPORTS_List                                         = 'reports.list';
     const BANLOG_LIST                                          = 'banlog.list';
-    const PRODUCT_RATE_LIST                                    = 'product.rate.list';
     const BANNER_ADMINS_LIST                                   = 'banner.admins.list';
     const REEL_ADMINS_LIST                                     = 'reel.admins.list';
-    const FAVORITE_LIST                                        = 'favorite.list';
-    const PRODUCT_RATE                                         = 'product.rate';
     const UPDATE_RATE                                          = 'update.rate';
     const PRODUCT_LIST                                         = 'product.list';
     const ADMIN_STORY_GET              = 'admin.story.get';
@@ -55,6 +31,4 @@ final class RouteNames
     const GUEST_BANNER_GET              = 'guest.banner.get';
     const GET_SUBCATEGORIES              = 'get.subcategories';
     const GET_CATEGORIES              = 'get.categories';
-    const ADMIN_TRANSACTION_GET              = 'admin.transaction.get';
-    const DOCTOR_TRANSACTION_GET              = 'doctor.transaction.get';
 }

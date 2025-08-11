@@ -23,11 +23,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-
-        $this->call(MainSeeder::class);
         $this->call(DaySeeder::class);
-        $this->call(BmiClassificationSeeder::class);
-        $this->call(VaccinationSeeder::class);
 
 
 

@@ -201,64 +201,10 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix('media')->controller(MediaController::class)->group(function(){
         Route::delete('delete' , 'delete');
     });
-    Route::prefix('sub_category')->controller(SubCategoryController::class)->group(function(){
-        Route::get('getBycategories' , 'getBycategories');
-    });
-    Route::prefix('plan')->controller(PlanController::class)->group(function(){
-        Route::get('changePublishStatus/{id}' , 'changePublishStatus');
-    });
-    Route::prefix('transactions')->controller(TransactionController::class)->group(function(){
-        Route::get('get' , 'getTransactions')->name(RouteNames::ADMIN_TRANSACTION_GET);
-    });
-    Route::prefix('doctors')->controller(DoctorController::class)->group(function(){
-        Route::get('get' , 'getAll');
-        Route::get('profile/{id}' , 'profile')->name(RouteNames::DOCTORS_GET_PROFILE);
-        Route::delete('rate/delete/{id}' , 'deleteRate');
-    });
-    Route::prefix('patients')->controller(UserController::class)->group(function(){
-        Route::get('get' , 'getPatients');
-    });
-    Route::prefix('article/reactions')->controller(ReactionController::class)->group(function(){
-        Route::delete('deleteComment/{id}' , 'unComment');
-        Route::delete('deleteReplay/{id}' , 'unReplay');
-    });
-    Route::prefix('article')->controller(ArticleController::class)->group(function(){
-        Route::get('filter' , 'filter');
-        Route::delete('delete/{id}' , 'destroy');
-        Route::get('show/{id}' , 'show')->name(RouteNames::ARTICLES_SHOW);
-    });
-
-    Route::prefix('reservation')->group(function(){
-        Route::controller(ReservationController::class)->group(function(){
-            Route::post('reject_by_admin/{id}' , 'reject_by_admin');
-            Route::get('get/{id}' , 'getReservationsForDoctor')->name(RouteNames::DOCTOR_RESERVATIONS);
-            Route::get('getPatient/{id}' , 'getReservationsForUser')->name(RouteNames::PATIENT_RESERVATIONS);
-            Route::get('filter' , 'filter')->name(RouteNames::ADMIN_RESERVATIONS);
-            Route::get('details/{id}' , 'getReservationDetails')->name(RouteNames::RESERVATION_DETAILS);
-            Route::get('analysis/{id}' , 'getReservationAnalysis');
-        });
-    });
-
-    Route::prefix('patient')->group(function(){
-        Route::controller(PatientController::class)->group(function(){
-            Route::get('relations/{id}' , 'index')->name(RouteNames::PATIENT_RELATIONS);
-        });
-    });
-
-    Route::prefix('complaints')->group(function(){
-        Route::controller(ComplaintController::class)->group(function(){
-            Route::get('process/{id}' , 'process');
-        });
-    });
-
-    
     
     Route::apiResource('/story', StoryController::class)
         ->name('show' , RouteNames::ADMIN_STORY_GET)
         ->name('index' , RouteNames::ADMIN_STORY_GET);
     Route::apiResource('/banner', BannerController::class)->name('show' , RouteNames::ADMIN_BANNER_GET);
     Route::apiResource('/media', MediaController::class);
-    Route::apiResource('/category', CategoryController::class)->name('show' , RouteNames::GET_CATEGORIES);
-    Route::apiResource('/sub_category', SubCategoryController::class)->name('show' , RouteNames::GET_SUBCATEGORIES);
-    Route::apiResource('/plan', PlanController::class)->name('show' , RouteNames::PLAN_ADMIN);
 });

@@ -64,10 +64,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     //JWT
-    protected static function booted()
-    {
-        static::addGlobalScope(new DoctorUserScope);
-    }
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -141,27 +137,6 @@ class User extends Authenticatable implements JWTSubject
     //Relations
 
     //Account Relations
-
-    
-    public function waters()
-    {
-        return $this->hasMany(Water::class);
-    }
-
-    public function sleeps()
-    {
-        return $this->hasMany(sleep::class);
-    }
-
-    public function steps()
-    {
-        return $this->hasMany(Step::class);
-    }
-
-    public function favorites()
-    {
-        return $this->hasMany(Favorite::class);
-    }
 
     public function loginHistory(): HasMany
     {
@@ -280,21 +255,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(BanLog::class, "unbanned_by_id");
     }
 
-    public function reactions()
-    {
-        return $this->hasMany(Reaction::class);
-    }
-
-    public function ArticleViews()
-    {
-        return $this->hasMany(ArticleView::class);
-    }
-
-    public function notification_management()
-    {
-        return $this->hasOne(NotificationManagement::class);
-    }
-
     //Scopes
 
     /**
@@ -352,16 +312,6 @@ class User extends Authenticatable implements JWTSubject
     public function messages()
     {
         return $this->hasMany(Message::class);
-    }
-
-    public function Patients()
-    {
-        return $this->hasMany(Patient::class);
-    }
-
-    public function Doctor()
-    {
-        return $this->hasOne(Doctor::class);
     }
 
     public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)

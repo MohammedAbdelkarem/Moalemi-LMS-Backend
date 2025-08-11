@@ -28,5 +28,5 @@ return [
     'refused'                                 => "تم الرفض",
     'admin_account'                           => "حساب مدير",
     'rate_create'                             => "شكرا لتقييم المنتج",
-    'whatsapp_otp'                            => "مرحباً بك في Tabibak 👋 \n إن رمز التحقق هو: \n:otp"
+    'whatsapp_otp'                            => "مرحباً بك في e-learning 👋 \n إن رمز التحقق هو: \n:otp"
 ];

@@ -17,16 +17,6 @@ return [
     */
     //Enum Keys
     NotificationTypes::AUTH->value           => "Authentication Notifications",
-    NotificationTypes::RESERVATIONS->value   => "Reservations Notifications",
-    NotificationTypes::MEDICAL_PROFILE->value=> "Medical Profile Notifications",
-    NotificationTypes::RATE->value           => "Ratings Notifications",
-    NotificationTypes::COMPLAINTS->value     => "Complaints Notifications",
-    NotificationTypes::STEPS->value          => "Steps Notifications",
-    NotificationTypes::WATER->value          => "Water Notifications",
-    NotificationTypes::SLEEP->value          => "Sleep Notifications",
-    NotificationTypes::WEIGHT->value         => "Weight Notifications",
-    NotificationTypes::GENERAL->value        => "Motivational Notifications",
-    NotificationTypes::ARTICLES->value       => "Articles Notifications",
 
     //
     "Suspend" => "Suspend",
