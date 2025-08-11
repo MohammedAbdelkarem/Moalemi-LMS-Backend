@@ -133,7 +133,7 @@ class ReactionService
 
         $this->updateArticleCounters($article , '+' , 'comments');
 
-        if(active_articles_notification($comment->user_id))
+        if($comment->user->role_id == 4 && active_articles_notification($comment->user_id))
         {
             $this->sendDirectNotification(
                 $comment->user_id,

@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Reaction;
 
-use App\Constants\RouteNames;
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Users\Profile\UserSugResource;
 
 class RepalyResource extends JsonResource
 {
@@ -25,6 +26,9 @@ class RepalyResource extends JsonResource
         if(auth()->user()->isAdmin())
         {
             $data['status'] = $this->status;
+        }
+        else{
+            $data['user'] = UserSugResource::make($this->whenLoaded('user'));
         }
 
         $routeName = $request->route()->getName();

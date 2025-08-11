@@ -2,14 +2,16 @@
 
 namespace App\Http\Resources\Users\Profile;
 
-use App\Constants\ApiMessages;
-use App\Http\Resources\DoctorResouce;
 use App\Models\Doctor;
 use App\Models\Patient;
+use PhpParser\Comment\Doc;
 use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
+use App\Constants\ApiMessages;
+use App\Constants\MediaCollection;
+use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use PhpParser\Comment\Doc;
 
 class UserSugResource extends JsonResource
 {
@@ -26,12 +28,16 @@ class UserSugResource extends JsonResource
 
         if($this->role_id == 3)
         {
-            $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
+            $doctor = $this->Doctor;
+
+            $logo = ($doctor->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)->getUrl());
         }
         return [
             "id"            => $this->id,
             "name"          => $this->name,
-            "avatar"        => $this->getProfileImage($this) ? $this->getProfileImage($patient_owner) : "",
+            "avatar"        => ($this->role_id == 3)
+            ? $logo
+            :$this->getProfileImage($this) ?? "",
             "phone_number"  => $phone_number,
             "role_id"       => $this->role_id,
             "role_name"     => $this->role->name,
