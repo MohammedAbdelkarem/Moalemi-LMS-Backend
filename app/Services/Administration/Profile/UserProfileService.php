@@ -13,8 +13,8 @@ class UserProfileService extends MainService
     {
         $users = $with_deleted ?  User::withTrashed() : User::query();
 
-        return $users->select(["id", "role_id", 'name', "phone_number", "avatar", "deleted_at", "deactive_at"])
-            ->where("role_id", 3)
+        return $users->select(["id", "role_id", 'name', "phone_number", "deleted_at", "deactive_at"])
+            ->whereIn("role_id", [3,4,5])
             ->when(
                 $search,
                 function ($q) use ($search) {

@@ -31,12 +31,11 @@ class UsersTableSeeder extends Seeder
                 'role_id' => 1,
                 'name' => 'Template Super Admin',
                 'phone_number' => '+963900000000',
-                'email' => 'email@email.com',
+                'email' => 'superAdmin@email.com',
                 'birth_date' => null,
                 'city_id' => 1,
                 'is_male' => true,
                 'language' => 'en',
-                'avatar' => NULL,
                 'active_notifications' => 1,
                 'deactive_at' => NULL,
                 'account_verified_at' => '2025-01-12 10:09:07',
@@ -47,41 +46,21 @@ class UsersTableSeeder extends Seeder
             1 =>
             array(
                 'id' => 2,
-                'role_id' => 3,
-                'name' => 'Omar Mansour',
-                'phone_number' => '+963900000001',
+                'role_id' => 2,
+                'name' => 'Template Admin',
+                'phone_number' => '+963900000000',
+                'email' => 'admin@email.com',
                 'birth_date' => null,
-                'email' => null,
-                'city_id' => NULL,
+                'city_id' => 1,
                 'is_male' => true,
-                'language' => 'ar',
-                'avatar' => NULL,
+                'language' => 'en',
                 'active_notifications' => 1,
                 'deactive_at' => NULL,
-                'account_verified_at' => '2025-01-16 23:37:50',
+                'account_verified_at' => '2025-01-12 10:09:07',
                 'deleted_at' => NULL,
-                'created_at' => '2025-01-16 23:37:46',
-                'updated_at' => '2025-01-16 23:37:55',
+                'created_at' => '2025-01-12 10:09:07',
+                'updated_at' => '2025-01-12 10:09:07',
             ),
-            2 =>
-            array(
-                'id' => 3,
-                'role_id' => 3,
-                'name' => 'Fadi Zayed',
-                'phone_number' => '+963900000002',
-                'birth_date' => null,
-                'email' => null,
-                'city_id' => NULL,
-                'is_male' => true,
-                'language' => 'ar',
-                'avatar' => NULL,
-                'active_notifications' => 1,
-                'deactive_at' => NULL,
-                'account_verified_at' => '2025-01-16 23:38:13',
-                'deleted_at' => NULL,
-                'created_at' => '2025-01-16 23:38:08',
-                'updated_at' => '2025-01-16 23:38:18',
-            )
         ));
 
         LoginHistory::factory()->count(7)->create([
@@ -91,21 +70,5 @@ class UsersTableSeeder extends Seeder
         LoginHistory::factory()->count(3)->create([
             "user_id" => 2
         ]);
-
-        //Admins
-        User::factory()->count(10)
-            ->has(AdminProfile::factory())
-            ->has(LoginHistory::factory()->count(8), 'loginHistory')
-            ->create([
-                'role_id' => 2
-            ]);
-
-        //Normal Users
-        User::factory()->count(20)
-            ->has(UserProfile::factory(), 'profile')
-            ->has(LoginHistory::factory()->count(8), 'loginHistory')
-            ->create([
-                'role_id' => 3
-            ]);
     }
 }

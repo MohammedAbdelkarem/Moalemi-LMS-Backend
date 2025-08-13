@@ -10,6 +10,7 @@ use App\Services\MainService;
 use App\Traits\StorageHelper;
 use Illuminate\Support\Carbon;
 use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use App\Services\JWTTokensService;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\DB;
@@ -38,12 +39,9 @@ class ProfileService extends MainService
         $user->is_male      = $validatedData["is_male"];
 
         //Store Image
-        if (isset($validatedData["avatar"])) {
-            $user->avatar = $this->storeFile(
-                file: $validatedData["avatar"],
-                path: "users/{$user->id}"
-            );
-        }
+        if(isset($validatedData['avatar']))
+            uploadFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
 
         $user->save();
         return $user;
@@ -84,56 +82,9 @@ class ProfileService extends MainService
             "city_id"       => $validatedData["city_id"],
         ]);
 
-        if($user->role_id == 4)
-        {
-            $this->userService->updateOwnerInfo($validatedData);
-
-            $patient=  Patient::where('is_owner' , 1)
-                ->where('user_id' , auth()->id())
-                ->first();
-                
-            if (isset($validatedData["avatar"])) {
-                if($patient)
-                    $patient = $this->StoreUpdate(
-                        file: $validatedData["avatar"],
-                        path: "patients/{$patient->id}",
-                        model: $patient,
-                        column: "avatar",
-                        deleteImage: true,
-                        singleFilePath: $patient->avatar ?? ""
-                    );
-
-
-                    $user = $this->StoreUpdate(
-                        file: $validatedData["avatar"],
-                        path: "users/{$user->id}",
-                        model: $user,
-                        column: "avatar",
-                        deleteImage: true,
-                        singleFilePath: $user->avatar ?? ""
-                    );
-
-                $user->save();
-                $patient->save();
-            }
-        }
-        else if($user->role_id == 3)
-            {
-                $doctor = Doctor::find(doctor_id());
-                if(isset($validatedData["logo"]))
-                    updateFileOnMedia($validatedData["logo"] , $doctor , MediaCollection::DOCTOR_LOGO_COLLECTION);
-
-                // $user = $this->StoreUpdate(
-                //     file: $validatedData["logo"],
-                //     path: "users/{$user->id}",
-                //     model: $user,
-                //     column: "avatar",
-                //     deleteImage: true,
-                //     singleFilePath: $user->avatar ?? ""
-                // );
-
-                // $user->save();
-            }
+        if(isset($validatedData['avatar']))
+            updateFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
 
         return $user;
     }
@@ -146,19 +97,12 @@ class ProfileService extends MainService
         $user = auth()->user();
 
         //Check to add new image
-        $user = $this->StoreUpdate(
-            file: $validatedData["avatar"],
-            path: "users/{$user->id}",
-            model: $user,
-            column: "avatar",
-            deleteImage: $validatedData["delete_image"],
-            singleFilePath: $user->avatar ?? ""
-        );
-
-        $user->save();
+        if(isset($validatedData['avatar']))
+            updateFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
 
         //return image url
-        return ["img" => $this->getProfileImage($user)];
+        return ["img" => MediaResource::make($user->getFirstMedia(MediaCollection::USER_COLLECTION))];
     }
 
     public function deactivateAccount()

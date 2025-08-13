@@ -1,24 +1,13 @@
 <?php
 
 use App\Constants\RouteNames;
-use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\ComplaintController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReactionController;
-use App\Http\Controllers\Admin\PlanController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Media\MediaController;
 use App\Http\Controllers\Media\StoryController;
-use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Media\BannerController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\System\Info\FAQController;
 use App\Http\Controllers\System\Info\TosController;
 use App\Http\Controllers\System\Info\CityController;
-use App\Http\Controllers\Admin\ReservationController;
-use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\System\Info\AboutUsController;
 use App\Http\Controllers\System\SystemSettingController;
 use App\Http\Controllers\System\Info\ContactUsController;

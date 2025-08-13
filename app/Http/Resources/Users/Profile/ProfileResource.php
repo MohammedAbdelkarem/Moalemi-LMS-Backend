@@ -3,15 +3,13 @@
 namespace App\Http\Resources\Users\Profile;
 
 use Carbon\Carbon;
-use App\Models\Patient;
-use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
-use App\Http\Resources\DoctorResouce;
+use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource
 {
-    use ImagesHelper;
     public function toArray(Request $request): array
     {
         if (!$this->phone_number && auth()->user() )
@@ -23,11 +21,9 @@ class ProfileResource extends JsonResource
 
         // dd(auth()->id() , $this->id);
         $data = [
-            "is_me"     => $this->id == auth()->id(),
-            "has_medical_profile"  => Patient::where('user_id' , auth()->id())->where('is_owner' , 1)->exists(),
             "id"        => $this->id,
             "name"      => $this->name,
-            "avatar"        => $this->getProfileImage($this),
+            "avatar" => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             "ban"           => (auth()->id() == $this->id ) ? $this->getBanData() : null,
             "birth_date"    => $this->birth_date ?? "",
             "is_male"       => !is_null($this->is_male) ? (bool) $this->is_male : null,
@@ -40,19 +36,8 @@ class ProfileResource extends JsonResource
             "active_notifications" => (bool) $this->active_notifications,
         ];
 
-        if($this->role_id == 4)
-        {
-            $data['owner_patient_id'] = owner_id();
-        } 
-
         if (auth()->user() ) {
             $data += $this->getAdminData();
-        }
-
-        if($this->role_id == 3)
-        {
-            // dd($this->whenLoaded('Doctor'));
-            $data['doctor'] = DoctorResouce::make($this->whenLoaded('Doctor'));
         }
 
         return $data;

@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources\Administration\Profile;
 
-use App\Traits\ImagesHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminProfileResource extends JsonResource
 {
-    use ImagesHelper;
     public function toArray(Request $request): array
     {
         
@@ -25,7 +25,7 @@ class AdminProfileResource extends JsonResource
             "phone_number"  => $this->phone_number,
             "city_id"       => $this->city_id,
             "city_name"     => $this->city["name_" . app()->getLocale()] ?? "",
-            "avatar"        => $this->getProfileImage($this),
+            "avatar" => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             "active_notifications" => (bool) $this->active_notifications,
             "deactive_at"   => $this->deactive_at ? Carbon::parse($this->deactive_at)->translatedFormat("Y-m-d g:i a") : "",
             "is_active"     => (bool) !$this->deactive_at,

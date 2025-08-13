@@ -2,20 +2,14 @@
 
 namespace App\Http\Resources\Users\Profile;
 
-use App\Models\Doctor;
-use App\Models\Patient;
-use PhpParser\Comment\Doc;
-use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Constants\MediaCollection;
-use App\Http\Resources\DoctorResouce;
 use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserSugResource extends JsonResource
 {
-    use ImagesHelper;
 
     public function toArray(Request $request): array
     {
@@ -24,20 +18,11 @@ class UserSugResource extends JsonResource
         else {
             $phone_number = $this->phone_number ?? "";
         }
-        $patient_owner = Patient::where('user_id' , $this->id)->where('is_owner' , 1)->first();
 
-        if($this->role_id == 3)
-        {
-            $doctor = $this->Doctor;
-
-            $logo = ($doctor->getFirstMedia(MediaCollection::DOCTOR_LOGO_COLLECTION)->getUrl());
-        }
         return [
             "id"            => $this->id,
             "name"          => $this->name,
-            "avatar"        => ($this->role_id == 3)
-            ? $logo
-            :$this->getProfileImage($this) ?? "",
+            "avatar"        => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             "phone_number"  => $phone_number,
             "role_id"       => $this->role_id,
             "role_name"     => $this->role->name,

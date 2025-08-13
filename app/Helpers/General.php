@@ -1,28 +1,13 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Story;
-use App\Models\Visit;
 use App\Models\Banner;
-use App\Models\Doctor;
-use App\Models\Replay;
-use App\Models\Article;
-use App\Models\Patient;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
-use App\Models\Category;
-use App\Models\Reaction;
-use App\Models\Reservation;
-use App\Models\SubCategory;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
-use App\Enums\StoryStatusEnum;
-use App\Enums\ReactionTypeEnum;
-use App\Enums\ReactionStatusEnum;
 use App\Constants\MediaCollection;
-use App\Enums\ReservationStatusEnum;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
 
@@ -195,12 +180,7 @@ if (!function_exists('mediaCollectionByContxt')) {
             // LevelEnum::TEACHER        => MediaCollection::TEACHER_COLLECTION,
             LevelEnum::STORY          => MediaCollection::STORY_COLLECTION,
             LevelEnum::BANNER         => MediaCollection::BANNER_COLLECTION,
-            LevelEnum::DOCTOR_COVER   => MediaCollection::DOCTOR_COVER_COLLECTION,
-            LevelEnum::DOCTOR_LOGO    => MediaCollection::DOCTOR_LOGO_COLLECTION,
-            LevelEnum::CATEGORY       => MediaCollection::CATEGORY_COLLECTION,
-            LevelEnum::SUBCATEGORY    => MediaCollection::SUB_CATEGORY_COLLECTION,
-            LevelEnum::RESERVATION    => MediaCollection::RESERVATION_COLLECTION,
-            LevelEnum::VISIT          => MediaCollection::VISIT_COLLECTION,
+            LevelEnum::USER         => MediaCollection::USER_COLLECTION,
         ];
 
         return $data[$model_path] ?? null;
@@ -224,13 +204,7 @@ if (!function_exists('getModel')) {
             // LevelEnum::TEACHER        => Teacher::class,
             LevelEnum::STORY                => Story::class,
             LevelEnum::BANNER               => Banner::class,
-            LevelEnum::DOCTOR               => Doctor::class,
-            LevelEnum::DOCTOR_COVER         => Doctor::class,
-            LevelEnum::DOCTOR_LOGO          => Doctor::class,
-            LevelEnum::CATEGORY             => Category::class,
-            LevelEnum::SUBCATEGORY          => SubCategory::class,
-            LevelEnum::RESERVATION          => Reservation::class,
-            LevelEnum::VISIT                => Visit::class,
+            LevelEnum::USER               => User::class,
         ];
 
         return $data[$model_path] ?? null;
@@ -254,7 +228,7 @@ if (!function_exists('getModelName')) {
             // ModelPaths::Teacher        => LevelEnum::TEACHER,
             ModelPaths::Story          => LevelEnum::STORY,
             ModelPaths::Banner         => LevelEnum::BANNER,
-            ModelPaths::Doctor         => LevelEnum::DOCTOR,
+            ModelPaths::User         => LevelEnum::USER,
         ];
 
         return $data[$model_path] ?? null;
@@ -267,11 +241,7 @@ if (!function_exists('getModelByPath')) {
         $data = [
             ModelPaths::Story          => Story::class,
             ModelPaths::Banner         => Banner::class,
-            ModelPaths::Doctor         => Doctor::class,
-            ModelPaths::Category         => Category::class,
-            ModelPaths::SubCategory         => SubCategory::class,
-            ModelPaths::Reservation         => Reservation::class,
-            ModelPaths::Visit         => Visit::class,
+            ModelPaths::User         => User::class,
         ];
 
         return $data[$model_path] ?? null;

@@ -11,6 +11,8 @@ use App\Models\System\Info\FAQ;
 use App\Models\System\Info\Tos;
 use App\Models\System\Info\City;
 use App\Models\System\Role\Role;
+use Spatie\MediaLibrary\HasMedia;
+use App\Constants\MediaCollection;
 use App\Models\System\Info\AboutUs;
 use App\Models\System\SystemSetting;
 use Illuminate\Support\Facades\Auth;
@@ -25,11 +27,11 @@ use App\Models\Users\Profile\UserProfile;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\LoginHistory;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\System\Notification\Notification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Administration\Profile\AdminProfile;
-use App\Models\Scopes\DoctorUserScope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,9 +39,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\System\CustomerService\CustomerServiceCard;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject , HasMedia
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes , InteractsWithMedia;
 
     protected $with = ["role"];
 
@@ -79,60 +81,45 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(JWTPersonalTokens::class, "user_id");
     }
 
-        /**
-     * Check if user is a regular user (role_id = 3)
-     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::USER_COLLECTION)->singleFile();
+    }
+
     public function isRegularUser(): bool
     {
-        return $this->role_id === 3 || $this->role_id === 4;
+        return $this->role_id === 3 || $this->role_id === 4 || $this->role_id === 5;
     }
 
-    /**
-     * Check if user is an admin (role_id = 1 or 2)
-     */
     public function isAdmin(): bool
     {
-        return $this->role_id !== 3 && $this->role_id !== 4;
+        return $this->role_id === 1 && $this->role_id === 2;
     }
 
-    /**
-     * Check if user is an doctor (role_id = 3)
-     */
-    public function isDoctor(): bool
+    public function isTeacher(): bool
     {
         return $this->role_id === 3;
     }
-    /**
-     * Check if user is an patient (role_id = 4)
-     */
-    public function isPatient(): bool
+
+    public function isParent(): bool
     {
         return $this->role_id === 4;
     }
 
-    /**
-     * Check if user is a super admin (role_id = 1)
-     */
+    public function isStudent(): bool
+    {
+        return $this->role_id === 5;
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->role_id === 1;
     }
 
-    /**
-     * Check if user is a regular admin (role_id = 2)
-     */
     public function isRegularAdmin(): bool
     {
         return $this->role_id === 2;
     }
-
-    public function isSystemAdmin(): bool
-    {
-        return !in_array($this->role_id, [3, 4]);
-    }
-
-    
-
 
     //Relations
 
@@ -287,7 +274,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function scopeUsersSearchCriteria(Builder $query, $checkBan = true)
     {
-        $query->whereIn("role_id", [3,4])
+        $query->whereIn("role_id", [5,4])
             ->whereNotNull(['name', 'account_verified_at'])            //User account is completed and active
             ->whereNull("deactive_at")              //User have an active account
             ->when($checkBan, function (Builder $q) {

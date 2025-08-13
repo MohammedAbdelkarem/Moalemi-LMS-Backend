@@ -2,17 +2,19 @@
 
 namespace App\Services\Administration\Profile;
 
-use App\Constants\ExceptionMessages;
-use App\Constants\Resources;
-use App\Exceptions\ApiException;
-use App\Models\Administration\Profile\AdminProfile;
-use App\Models\User;
-use App\Models\Users\Profile\UserDevice;
-use App\Services\JWTTokensService;
-use App\Services\MainService;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Constants\Resources;
+use App\Services\MainService;
+use App\Exceptions\ApiException;
+use App\Constants\MediaCollection;
+use App\Services\JWTTokensService;
 use Illuminate\Support\Facades\DB;
+use App\Constants\ExceptionMessages;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Users\Profile\UserDevice;
+use App\Models\Administration\Profile\AdminProfile;
 
 class AdminProfileService extends MainService
 {
@@ -22,8 +24,8 @@ class AdminProfileService extends MainService
 
     public function adminSugs($search)
     {
-        return User::query()->select(["id", "role_id", "name", "email", "avatar", "deleted_at", "deactive_at", "created_at"])
-            ->whereNot("role_id", 3)
+        return User::query()->select(["id", "role_id", "name", "email", "deleted_at", "deactive_at", "created_at"])
+            ->whereNotIn("role_id", [3,4,5])
             ->when(
                 $search,
                 function ($q) use ($search) {
@@ -100,13 +102,9 @@ class AdminProfileService extends MainService
             "created_by"    => auth()->id(),
         ]);
         //Store User Image
-        if (isset($validatedData["avatar"])) {
-            $user->avatar = $this->storeFile(
-                file: $validatedData["avatar"],
-                path: "users/{$user->id}"
-            );
-            $user->save();
-        }
+        if(isset($validatedData['avatar']))
+            uploadFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
     }
 
     public function show($id)
@@ -147,35 +145,28 @@ class AdminProfileService extends MainService
             "city_id"       => $validatedData["city_id"],
         ]);
         //Update User Image
-        if (isset($validatedData["avatar"]))
-            $this->updateProfileImage($validatedData, $id);
-
+        if(isset($validatedData['avatar']))
+            updateFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
         if (!empty($validatedData["password"]))
             $user->adminProfile()->update([
                 "password"      => Hash::make($validatedData["password"]),
             ]);
     }
 
-    public function updateProfileImage($validatedData, $id): array
+    public function updateProfileImage($validatedData, $id)
     {
         /**
          * @var \App\Models\User $user
          */
         $user = User::findByIdOrFail($id);
 
-        $user = $this->StoreUpdate(
-            file: $validatedData["avatar"],
-            path: "users/{$user->id}",
-            model: $user,
-            column: "avatar",
-            deleteImage: $validatedData["delete_image"],
-            singleFilePath: $user->avatar ?? ""
-        );
 
-        $user->save();
-
+        if(isset($validatedData['avatar']))
+            updateFileOnMedia($validatedData['avatar'] , $user , MediaCollection::USER_COLLECTION);
+        
         //return image url
-        return ["img" => $this->getProfileImage($user)];
+        return ["img" => MediaResource::make($user->getFirstMedia(MediaCollection::USER_COLLECTION))];
     }
 
     public function deactivateAccount($id)

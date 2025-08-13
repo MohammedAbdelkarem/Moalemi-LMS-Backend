@@ -25,6 +25,14 @@ class AdminProfilesTableSeeder extends Seeder
                 'created_at' => '2025-01-12 10:19:11',
                 'updated_at' => '2025-01-12 10:19:11',
             ),
+            1 =>
+            array(
+                'user_id'    => 2,
+                'password'   => Hash::make(123456789),
+                'created_by' => NULL,
+                'created_at' => '2025-01-12 10:19:11',
+                'updated_at' => '2025-01-12 10:19:11',
+            ),
         ));
     }
 }

@@ -17,7 +17,7 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Gate::allows("admin"))
+        if (Gate::allows("admin") || Gate::allows("superAdmin"))
             return $next($request);
         return failure(
             ExceptionMessages::MSG_NOT_AUTHORIZED,

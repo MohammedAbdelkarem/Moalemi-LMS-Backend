@@ -44,7 +44,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_super_admin' => \App\Http\Middleware\CheckSuperAdmin::class,
             'is_doctor' => \App\Http\Middleware\CheckDoctorMiddleware::class,
             'is_patient' => \App\Http\Middleware\CheckPatientMiddleware::class,
-            'subscribed' => \App\Http\Middleware\CheckDoctorSubscriptionMiddleware::class,
             //User Account Middleware
             'user.active'            => \App\Http\Middleware\User\UserActive::class,
             'user.banned'            => \App\Http\Middleware\User\UserBanned::class,

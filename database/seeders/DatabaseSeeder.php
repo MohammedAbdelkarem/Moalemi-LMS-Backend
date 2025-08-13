@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(AdminProfilesTableSeeder::class);
-        $this->call(UserProfilesTableSeeder::class);
+        // $this->call(UserProfilesTableSeeder::class);
 
 
 
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FAQTableSeeder::class);
         $this->call(SystemSettingsTableSeeder::class);
 
-        $this->call(CustomerCardsTableSeeder::class);
+        // $this->call(CustomerCardsTableSeeder::class);
         
 
         // $this->call(NotificationsTableSeeder::class);

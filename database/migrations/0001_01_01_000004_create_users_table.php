@@ -21,7 +21,6 @@ return new class extends Migration
             $table->boolean('is_male')->nullable();
             $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
             $table->string('language')->default('en');
-            $table->string('avatar')->nullable();
             $table->boolean('active_notifications')->default(true);
             $table->dateTime('deactive_at')->nullable();
             $table->timestamp('account_verified_at')->nullable();

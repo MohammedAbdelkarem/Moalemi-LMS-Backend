@@ -5,12 +5,13 @@ namespace App\Http\Resources\Users\Profile;
 use Carbon\Carbon;
 use App\Traits\ImagesHelper;
 use Illuminate\Http\Request;
+use App\Constants\MediaCollection;
 use App\Http\Resources\DoctorResouce;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserListResource extends JsonResource
 {
-    use ImagesHelper;
 
     public function toArray(Request $request): array
     {
@@ -19,24 +20,19 @@ class UserListResource extends JsonResource
         else {
             $phone_number = $this->phone_number ?? "";
         }
-        if($this->role_id == 3)
-        {
-            $data['doctor'] = DoctorResouce::make($this->whenLoaded('doctor'));
-        }
 
         $data = [
             "id"                => $this->id,
             "name"              => $this->name,
-            "avatar"            => $this->getProfileImage($this),
+            "avatar"            => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             "is_male"           => $this->is_male ? (bool) $this->is_male : null,
             "city_name"         => $this->city["name_" . app()->getLocale()] ?? "",
             "phone_number"      => $phone_number,
             "created_at"        => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i a"),
-            "is_doctor"         => $this->role_id == 3,
         ];
 
         //Admin Info
-        if (auth()->user() && auth()->user()->role_id != 3) {
+        if (auth()->user()->isRegularAdmin()) {
             $data += [
                 "in_trash"      => (bool) $this->deleted_at,
                 "is_active"     => (bool) !$this->deactive_at,

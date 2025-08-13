@@ -40,8 +40,8 @@ class RolesTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'name' => 'doctor',
-                'description' => 'System doctor.',
+                'name' => 'Teacher',
+                'description' => 'System Teacher.',
                 'created_at' => '2025-01-12 10:03:49',
                 'updated_at' => '2025-01-12 10:03:49',
                 'created_by' => NULL,
@@ -49,8 +49,17 @@ class RolesTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'patient',
-                'description' => 'System patient.',
+                'name' => 'Parent',
+                'description' => 'System Parent.',
+                'created_at' => '2025-01-12 10:03:49',
+                'updated_at' => '2025-01-12 10:03:49',
+                'created_by' => NULL,
+            ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'Student',
+                'description' => 'System Student.',
                 'created_at' => '2025-01-12 10:03:49',
                 'updated_at' => '2025-01-12 10:03:49',
                 'created_by' => NULL,
