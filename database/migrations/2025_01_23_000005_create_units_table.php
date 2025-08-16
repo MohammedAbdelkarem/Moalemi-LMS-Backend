@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use App\Enums\PublishStatusEnum;
+use App\Enums\AccessTypeEnum;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('units', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('e_level_id')->constrained('e_levels')->onDelete('cascade');
+            $table->foreignId('c_level_id')->constrained('c_levels')->onDelete('cascade');
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->string('name');
+            $table->text('bio')->nullable();
+            $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
+            $table->integer('number_of_contents')->default(0);
+            $table->integer('number_of_published_contents')->default(0);
+            $table->integer('duration')->default(0); // in minutes
+            $table->integer('number_of_lessons')->default(0);
+            $table->decimal('price', 10, 2)->default(0.00);
+            $table->integer('number_of_purchased_students')->default(0);
+            $table->enum('access_type', AccessTypeEnum::values())->default(AccessTypeEnum::FREE->value);
+            $table->integer('number_of_quizzes')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('units');
+    }
+};
