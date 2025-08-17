@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->foreignId('sub_unit_id')->constrained('sub_units')->onDelete('cascade');
             $table->text('text');
-            $table->enum('type', QuestionTypeEnum::values())->default(QuestionTypeEnum::ONE_SELECT->value);
+            $table->text('hint')->nullable();
+            $table->enum('type', QuestionTypeEnum::values());
             $table->timestamps();
         });
     }

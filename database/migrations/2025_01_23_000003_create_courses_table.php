@@ -18,13 +18,15 @@ return new class extends Migration
             $table->foreignId('e_level_id')->constrained('e_levels')->onDelete('cascade');
             $table->foreignId('c_level_id')->constrained('c_levels')->onDelete('cascade');
             $table->string('name');
+            $table->text('bio')->nullable();
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->integer('number_of_contents')->default(0);
             $table->integer('number_of_published_contents')->default(0);
             $table->integer('duration')->default(0); // in minutes
             $table->integer('number_of_lessons')->default(0);
+            $table->integer('price')->default(0);
             $table->integer('number_of_purchased_students')->default(0);
-            $table->enum('access_type', AccessTypeEnum::values())->default(AccessTypeEnum::FREE->value);
+            $table->enum('access_type', AccessTypeEnum::values());
             $table->integer('number_of_teachers')->default(0);
             $table->timestamps();
         });

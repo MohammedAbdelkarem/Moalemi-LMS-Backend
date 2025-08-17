@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Responsibility;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Constants\MediaCollection;
 
-class ELevel extends Model
+class ELevel extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $table = 'e_levels';
 
@@ -16,7 +20,16 @@ class ELevel extends Model
         'id'
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::E_LEVEL_COLLECTION)->singleFile();
+    }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this, MediaCollection::E_LEVEL_COLLECTION);
+        return parent::delete();
+    }
 
     // Relationships
     public function cLevels(): HasMany
@@ -56,11 +69,6 @@ class ELevel extends Model
 
     // Scopes
     public function scopePublished($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeActive($query)
     {
         return $query->where('publish_status', 'published');
     }

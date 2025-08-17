@@ -26,10 +26,13 @@ return new class extends Migration
             $table->integer('number_of_published_contents')->default(0);
             $table->integer('duration')->default(0); // in minutes
             $table->integer('number_of_lessons')->default(0);
-            $table->decimal('price', 10, 2)->default(0.00);
+            $table->integer('price')->default(0);
             $table->integer('number_of_purchased_students')->default(0);
-            $table->enum('access_type', AccessTypeEnum::values())->default(AccessTypeEnum::FREE->value);
+            $table->enum('access_type', AccessTypeEnum::values());
             $table->integer('number_of_quizzes')->default(0);
+            $table->integer('number_of_published_quizzes')->default(0);
+            $table->integer('number_of_files')->default(0);
+            $table->integer('number_of_published_files')->default(0);
             $table->timestamps();
         });
     }

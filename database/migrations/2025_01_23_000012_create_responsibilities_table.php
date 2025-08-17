@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('responsibilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
-            $table->unsignedBigInteger('context_id');
-            $table->string('context_type'); // e_levels, c_levels, courses, subjects, units, sub_units, lessons
+            $table->morphs('context');
             $table->timestamps();
         });
     }

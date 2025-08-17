@@ -6,16 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Responsibility;
+use App\Models\Quiz;
+use App\Models\File;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Constants\MediaCollection;
 
-class Subject extends Model
+class Subject extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $guarded = [
         'id'
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::SUBJECT_COLLECTION)->singleFile();
+    }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this, MediaCollection::SUBJECT_COLLECTION);
+        return parent::delete();
+    }
 
     // Relationships
     public function eLevel(): BelongsTo
@@ -53,13 +68,18 @@ class Subject extends Model
         return $this->morphMany(Responsibility::class, 'context');
     }
 
-    // Scopes
-    public function scopePublished($query)
+    public function quizzes()
     {
-        return $query->where('publish_status', 'published');
+        return $this->morphMany(Quiz::class, 'context');
     }
 
-    public function scopeActive($query)
+    public function files()
+    {
+        return $this->morphMany(File::class, 'context');
+    }
+
+    // Scopes
+    public function scopePublished($query)
     {
         return $query->where('publish_status', 'published');
     }

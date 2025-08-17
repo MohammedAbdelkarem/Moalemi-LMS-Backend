@@ -38,6 +38,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\System\CustomerService\CustomerServiceCard;
+use App\Models\Responsibility;
+use App\Models\LessonQuestion;
+use App\Models\Comment;
+use App\Models\Replay;
+use App\Models\QuizResult;
 
 class User extends Authenticatable implements JWTSubject , HasMedia
 {
@@ -109,6 +114,26 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function isStudent(): bool
     {
         return $this->role_id === 5;
+    }
+
+    public function hasParent(): bool
+    {
+        return $this->isStudent() && !is_null($this->parent_id);
+    }
+
+    public function hasStudents(): bool
+    {
+        return $this->isParent() && $this->students()->exists();
+    }
+
+    public function getStudentsCount(): int
+    {
+        return $this->isParent() ? $this->students()->count() : 0;
+    }
+
+    public function getParentName(): ?string
+    {
+        return $this->isStudent() && $this->parent ? $this->parent->name : null;
     }
 
     public function isSuperAdmin(): bool
@@ -223,6 +248,51 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function CustomerServiceCard(): HasMany
     {
         return $this->hasMany(CustomerServiceCard::class, "user_id");
+    }
+
+    //E-Learning Responsibilities
+    public function responsibilities(): HasMany
+    {
+        return $this->hasMany(Responsibility::class, 'teacher_id');
+    }
+
+    //E-Learning Lesson Questions
+    public function lessonQuestionsAsTeacher(): HasMany
+    {
+        return $this->hasMany(LessonQuestion::class, 'teacher_id');
+    }
+
+    public function lessonQuestionsAsStudent(): HasMany
+    {
+        return $this->hasMany(LessonQuestion::class, 'student_id');
+    }
+
+    //E-Learning Comments and Replays
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public function replays(): HasMany
+    {
+        return $this->hasMany(Replay::class, 'user_id');
+    }
+
+    //E-Learning Quiz Results
+    public function quizResults(): HasMany
+    {
+        return $this->hasMany(QuizResult::class, 'student_id');
+    }
+
+    //Parent-Student Relationships
+    public function students(): HasMany
+    {
+        return $this->hasMany(User::class, 'parent_id')->where('role_id', 5);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'parent_id')->where('role_id', 4);
     }
 
 

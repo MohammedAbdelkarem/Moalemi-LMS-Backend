@@ -15,8 +15,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->unsignedBigInteger('context_id');
-            $table->string('context_type'); // lessons
+            $table->foreignId('lesson_id')->constrained('lessons')->onDelete('cascade');
             $table->text('text');
             $table->enum('status', CommentStatusEnum::values())->default(CommentStatusEnum::EXIST->value);
             $table->boolean('is_pinned')->default(false);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->boolean('is_male')->nullable();
             $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('language')->default('en');
             $table->boolean('active_notifications')->default(true);
             $table->dateTime('deactive_at')->nullable();

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('e_levels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('bio')->nullable();
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->integer('number_of_contents')->default(0);
             $table->integer('number_of_published_contents')->default(0);

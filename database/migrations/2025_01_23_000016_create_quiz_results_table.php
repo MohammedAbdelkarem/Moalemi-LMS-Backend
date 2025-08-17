@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained('quizzes')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('degree', 5, 2)->default(0.00);
-            $table->enum('result', QuizResultEnum::values())->default(QuizResultEnum::FAIL->value);
+            $table->integer('degree')->default(0);
+            $table->enum('result', QuizResultEnum::values());
             $table->integer('number_of_correct_answers')->default(0);
             $table->integer('number_of_wrong_answers')->default(0);
             $table->integer('number_of_answered_questions')->default(0);

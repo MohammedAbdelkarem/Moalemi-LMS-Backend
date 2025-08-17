@@ -12,17 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->morphs('context');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->string('title');
+            $table->morphs('context'); // This creates context_id and context_type columns
             $table->integer('priority')->default(0);
-            $table->integer('period')->default(0); // in minutes
-            $table->integer('number_of_questions')->default(0);
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
-            $table->integer('degree')->default(0); // total possible score
-            $table->integer('pass_degree')->default(0); // passing score
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('files');
     }
 };

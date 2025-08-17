@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Responsibility;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Constants\MediaCollection;
 
-class CLevel extends Model
+class CLevel extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $table = 'c_levels';
 
@@ -17,7 +21,16 @@ class CLevel extends Model
         'id'
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::C_LEVEL_COLLECTION)->singleFile();
+    }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this, MediaCollection::C_LEVEL_COLLECTION);
+        return parent::delete();
+    }
 
     // Relationships
     public function eLevel(): BelongsTo
@@ -57,11 +70,6 @@ class CLevel extends Model
 
     // Scopes
     public function scopePublished($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeActive($query)
     {
         return $query->where('publish_status', 'published');
     }

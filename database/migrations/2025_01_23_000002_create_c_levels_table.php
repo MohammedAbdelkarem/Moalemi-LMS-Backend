@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('e_level_id')->constrained('e_levels')->onDelete('cascade');
             $table->string('name');
+            $table->text('bio')->nullable();
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->integer('number_of_contents')->default(0);
             $table->integer('number_of_published_contents')->default(0);

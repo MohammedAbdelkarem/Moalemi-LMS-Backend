@@ -6,16 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Responsibility;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Constants\MediaCollection;
 
-class Course extends Model
+class Course extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $guarded = [
         'id'
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::COURSE_COLLECTION)->singleFile();
+    }
 
+    public function delete()
+    {
+        deleteFilesFromMedia($this, MediaCollection::COURSE_COLLECTION);
+        return parent::delete();
+    }
 
     // Relationships
     public function eLevel(): BelongsTo
@@ -55,11 +68,6 @@ class Course extends Model
 
     // Scopes
     public function scopePublished($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeActive($query)
     {
         return $query->where('publish_status', 'published');
     }

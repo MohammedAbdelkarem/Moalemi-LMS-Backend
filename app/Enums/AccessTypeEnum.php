@@ -6,7 +6,6 @@ enum AccessTypeEnum: string
 {
     case FREE          = 'free';
     case PAID          = 'paid';
-    case SUBSCRIPTION  = 'subscription';
 
     public static function values(): array
     {
