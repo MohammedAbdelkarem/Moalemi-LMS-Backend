@@ -8,7 +8,7 @@ return [
     'no_content'                        => 'لا يوجد محتوى',
     'deleting_failed'                   => 'فشلت عملية الحذف',
     'no_permission'                     => 'لا تملك صلاحيات',
-    'this_is_not_your_route'                     => ' غير مخصص لك, قم بتسجيل الدخول كطبيب أو مريض لتتمكن من المتابعة',
+    'this_is_not_your_route'                     => 'يجب عليك الدخول بالدور المناسب، تم رفض الوصول لهذا المسار',
     'method_not_allowed'                => 'الإجراء غير صالح',
     'resource_not_FoundF'               => ':resource غير موجودة',
     'resource_not_Found'                => ':resource غير موجود',

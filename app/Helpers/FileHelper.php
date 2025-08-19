@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 
 
 if (!function_exists('uploadFileOnMedia')) {
-    function uploadFileOnMedia($file, $model, $collectionName)
+    function uploadFileOnMedia($file, $model, $collectionName , $return = false)
     {
         $image = null;
         $image = is_array($file) ? $file['image'] : $file;
@@ -15,6 +15,10 @@ if (!function_exists('uploadFileOnMedia')) {
             ->usingFileName($fileName)
             ->withCustomProperties($customProperties)
             ->toMediaCollection($collectionName);
+
+        if ($return) {
+            return $image;
+        }
     }
 }
 

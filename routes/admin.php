@@ -16,6 +16,13 @@ use App\Http\Controllers\Administration\AdminHomeController;
 use App\Http\Controllers\Administration\Auth\AuthController;
 use App\Http\Controllers\Administration\Log\BanLogController;
 use App\Http\Controllers\System\Info\PrivacyPolicyController;
+use App\Http\Controllers\Administration\ELevel\ELevelController;
+use App\Http\Controllers\Administration\CLevel\CLevelController;
+use App\Http\Controllers\Administration\Course\CourseController;
+use App\Http\Controllers\Administration\Subject\SubjectController;
+use App\Http\Controllers\Administration\Unit\UnitController;
+use App\Http\Controllers\Administration\SubUnit\SubUnitController;
+use App\Http\Controllers\Administration\Lesson\LessonController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
@@ -136,6 +143,66 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::get("/{id}", "show");
         });
         Route::apiResource('/settings', SystemSettingController::class);
+    });
+
+    //e-learning
+    Route::prefix("e-levels")->controller(ELevelController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+    });
+
+    Route::prefix("c-levels")->controller(CLevelController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+    });
+
+    Route::prefix("courses")->controller(CourseController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::patch("/{id}/change-access-type-status", "changeAccessTypeStatus");
+    });
+
+    Route::prefix("subjects")->controller(SubjectController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::patch("/{id}/change-access-type-status", "changeAccessTypeStatus");
+    });
+
+    Route::prefix("units")->controller(UnitController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::patch("/{id}/change-access-type-status", "changeAccessTypeStatus");
+    });
+
+    Route::prefix("sub-units")->controller(SubUnitController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+    });
+
+    Route::prefix("lessons")->controller(LessonController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
     });
 
     //Logs

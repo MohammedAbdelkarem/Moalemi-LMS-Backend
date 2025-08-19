@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Services\Unit;
+
+use App\Constants\MediaCollection;
+use App\Models\Unit;
+use App\Services\Base\ContextService;
+use Illuminate\Support\Facades\DB;
+
+class UnitService
+{
+    public function __construct(
+        protected ContextService $contextService
+    ) {}
+
+    /**
+     * Get all Units with optional filtering
+     */
+    public function getAll($data)
+    {
+        $query = Unit::orderBy('created_at', 'desc')
+                ->with(['subject','subUnits', 'responsibilities']);
+
+        // Filter by Subject ID if provided
+        if (isset($data['subject_id'])) {
+            $query->where('subject_id', $data['subject_id']);
+        }
+
+        // Filter by Course ID if provided
+        if (isset($data['course_id'])) {
+            $query->where('course_id', $data['course_id']);
+        }
+
+        // Filter by CLevel ID if provided
+        if (isset($data['c_level_id'])) {
+            $query->where('c_level_id', $data['c_level_id']);
+        }
+
+        // Filter by ELevel ID if provided
+        if (isset($data['e_level_id'])) {
+            $query->where('e_level_id', $data['e_level_id']);
+        }
+
+        return getOrPaginate($query, $data);
+    }
+
+    public function store($data)
+    {
+        $unit = Unit::create($data);
+
+        if (isset($data['image'])) {
+            uploadFileOnMedia($data['image'], $unit, MediaCollection::UNIT_COLLECTION);
+        }
+
+        $unit->save();
+
+        // Update parent Subject numbers
+        $this->contextService->updateParentNumberOfContents($unit, '+');
+    }
+
+    public function update($data, $id)
+    {
+        $unit = Unit::findByIdOrFail($id);
+
+        $unit->update($data);
+
+        $unit->save();
+    }
+
+    public function destroy($id)
+    {
+        $unit = Unit::findByIdOrFail($id);
+        
+        // Update parent Subject numbers before deletion
+        $this->contextService->updateParentNumberOfContents($unit, '-');
+        
+        $unit->delete();
+    }
+
+    public function changePublishStatus($id)
+    {
+        $unit = Unit::findByIdOrFail($id);
+
+        $this->contextService->changeContentPublishStatus($unit);
+    }
+
+    public function changeAccessTypeStatus($id)
+    {
+        $unit = Unit::findByIdOrFail($id);
+        
+        return $this->contextService->changeContentAccessTypeStatus($unit);
+    }
+}

@@ -2,24 +2,41 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Constants\Resources;
 use App\Models\Responsibility;
-use App\Models\Quiz;
-use App\Models\File;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Constants\MediaCollection;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Unit extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
+    protected $table = 'units';
+
     protected $guarded = [
         'id'
     ];
+
+    /**
+     * @return \App\Models\Unit
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            null,
+            Resources::UNIT,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
 
     public function registerMediaCollections(): void
     {
@@ -63,21 +80,6 @@ class Unit extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'unit_id');
     }
 
-    public function questions(): HasMany
-    {
-        return $this->hasMany(Question::class, 'unit_id');
-    }
-
-    public function quizzes()
-    {
-        return $this->morphMany(Quiz::class, 'context');
-    }
-
-    public function files()
-    {
-        return $this->morphMany(File::class, 'context');
-    }
-
     public function responsibilities()
     {
         return $this->morphMany(Responsibility::class, 'context');
@@ -87,15 +89,5 @@ class Unit extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', 'published');
-    }
-
-    public function scopeFree($query)
-    {
-        return $query->where('access_type', 'free');
-    }
-
-    public function scopePaid($query)
-    {
-        return $query->where('access_type', 'paid');
     }
 }

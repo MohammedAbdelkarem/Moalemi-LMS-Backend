@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use App\Models\Responsibility;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Constants\MediaCollection;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ELevel extends Model implements HasMedia
 {
@@ -19,6 +21,22 @@ class ELevel extends Model implements HasMedia
     protected $guarded = [
         'id'
     ];
+
+    /**
+     * @return \App\Models\ELevel
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::MALE,
+            Resources::E_LEVEL,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
 
     public function registerMediaCollections(): void
     {

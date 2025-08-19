@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Constants\ExceptionMessages;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckDoctorMiddleware
+class CheckStudentMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckDoctorMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth()->user()->isDoctor())
+        if(auth()->user()->isStudent())
             return $next($request);
         return failure(
             ExceptionMessages::MSG_THIS_IS_NOT_YOUR_ROUTE,

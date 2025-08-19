@@ -2,103 +2,164 @@
 
 namespace App\Services\Base;
 
-use Carbon\Carbon;
-use App\Models\Day;
-use App\Models\Visit;
-use App\Models\Doctor;
-use App\Models\Patient;
-use App\Models\Reservation;
 use App\Enums\PublishStatusEnum;
+use App\Enums\AccessTypeEnum;
 use App\Constants\ExceptionMessages;
-use App\Models\OwnerPatientWeightHistory;
+use App\Constants\ModelPaths;
 
 /**
  * Class ContextService.
  */
 class ContextService
 {
-    public function changePublishStatus($context)
+    /**
+     * Change publish status for any content model with publish_status field
+     * 
+     * @param mixed $model The model instance
+     * @return mixed The updated model
+     */
+    public function changeContentPublishStatus($context)
     {
-        $context->publish_status =
-            ($context->publish_status == PublishStatusEnum::PUBLISHED)
-            ? PublishStatusEnum::DRAFT
-            : PublishStatusEnum::PUBLISHED;
+        $newStatus = $context->publish_status === PublishStatusEnum::PUBLISHED->value 
+            ? PublishStatusEnum::DRAFT->value 
+            : PublishStatusEnum::PUBLISHED->value;
+            
+        $context->update(['publish_status' => $newStatus]);
 
-        $context->save();
+        $operation = $newStatus === PublishStatusEnum::PUBLISHED->value ? '+' : '-';
+
+        $this->updateParentNumberOfPublishedContents($context, $operation);
     }
 
-    public function checkIfPlanIsPublished($plan)
+    /**
+     * Change access type status for any content model with access_type field
+     * 
+     * @param mixed $context The model instance
+     * @return mixed The updated model
+     */
+    public function changeContentAccessTypeStatus($context)
     {
-        if ($plan->publish_status == PublishStatusEnum::DRAFT)
-            return unprocessableFailure([], ExceptionMessages::MSG_CAN_NOT_SUBSCRIBE_TO_DRAFT_PLAN);
+        $newAccessType = $context->access_type === AccessTypeEnum::FREE->value 
+            ? AccessTypeEnum::PAID->value 
+            : AccessTypeEnum::FREE->value;
+            
+        $context->update(['access_type' => $newAccessType]);
     }
 
-    public function getUserModel($user)
+    /**
+     * Update lesson duration and add it to all parent levels
+     *
+     * @param \App\Models\Lesson $lesson The lesson to update
+     * @param int $duration The duration in minutes to add
+     * @return void
+     */
+    public function updateLessonDurationAndParentLevels($lesson, $duration , $operation)
     {
-        if ($user->role_id == 3)
-            return Doctor::class;
-        else
-            return Patient::class;
-    }
+        // Update lesson duration
+        $lesson->update(['duration' => $duration]);
 
-    public function checkIfReservationEditorIsValid($reservation_id)
-    {
-        $reservation = Reservation::findbyIdOrFail($reservation_id);
+        $parents = [
+            'eLevel',
+            'cLevel',
+            'course',
+            'subject',
+            'unit',
+            'subUnit',
+        ];
 
-        $valid = true;
-
-        if (auth()->user()->isDoctor())
-            $valid = doctor_id() == $reservation->doctor_id;
-        else if (auth()->user()->isPatient())
-            $valid = user_id_of_patient($reservation->patient_id) == auth()->id();
-        else
-            $valid = false;
-
-        if (!$valid)
-            return unprocessableFailure([], ExceptionMessages::MSG_THIS_IS_NOT_YOUR_ROUTE);
-    }
-
-    public function checkIfPatientCanCancelReservation($reservation)
-    {
-        if (!ableToCancel($reservation))
-            return forbiddenFailure([], ExceptionMessages::MSG_CAN_NOT_CANCEL_RESERVATION_CUZ_TIME);
-    }
-
-    public function checkIfDoctorCanEditOrChatWithPatient($visit)
-    {
-        if (!ableToChangeByDoctor($visit))
-            return forbiddenFailure([], ExceptionMessages::MSG_CAN_NOT_EDIT_OR_CHAT_WITH_USER);
-    }
-
-    public function createWeightHistory($patient_id, $prev_weight, $current_weight)
-    {
-        OwnerPatientWeightHistory::create([
-            'patient_id' => $patient_id,
-            'prev_weight' => $prev_weight,
-            'current_weight' => $current_weight,
-        ]);
-    }
-
-    public function getDatesForDay($dayId)
-    {
-        $day = Day::find($dayId)?->name;
-
-        if (!$day) {
-            return []; 
+        // Add duration to all parent levels
+        foreach ($parents as $parent) {
+            $this->updateDurationToParentLevel($lesson->$parent, $duration , $operation);
         }
-
-        $startDate = Carbon::today();
-        $endDate = $startDate->copy()->addYear();
-
-        $dates = [];
-
-        while ($startDate->lte($endDate)) {
-            if ($startDate->englishDayOfWeek === $day) {
-                $dates[] = $startDate->copy()->toDateString();
-            }
-            $startDate->addDay();
-        }
-
-        return $dates;
     }
+
+    /**
+     * Add duration to a parent level if it exists
+     *
+     * @param mixed $parentLevel The parent level model (ELevel, CLevel, Course, Subject, Unit, SubUnit)
+     * @param int $duration The duration to add
+     * @return void
+     */
+    private function updateDurationToParentLevel($parentLevel, $duration , $operation)
+    {
+        $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        if ($parentLevel) {
+            $parentLevel->$operation('duration', $duration);
+        }
+    }
+
+    /**
+     * Update parent's number of contents for all hierarchy levels from ELevel down to SubUnit
+     * 
+     * @param mixed $context The model instance
+     * @param string $operation '+' for increment, '-' for decrement
+     */
+    public function updateParentNumberOfContents($context, $operation)
+    {
+        $class = get_class($context);
+        $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        switch($class)
+        {
+            case ModelPaths::ELevel:
+                // ELevel is the top level, no parent to update
+                break;
+            case ModelPaths::CLevel:
+                $context->eLevel->$operation('number_of_contents');
+                break;
+            case ModelPaths::Course:
+                $context->cLevel->$operation('number_of_contents');
+                break;
+            case ModelPaths::Subject:
+                $context->course->$operation('number_of_contents');
+                break;
+            case ModelPaths::Unit:
+                $context->subject->$operation('number_of_contents');
+                break;
+            case ModelPaths::SubUnit:
+                $context->unit->$operation('number_of_contents');
+                break;
+            case ModelPaths::Lesson:
+                $context->subUnit->$operation('number_of_contents');
+                break;
+        }
+    }
+
+    /**
+     * Update parent's number of published contents for all hierarchy levels
+     * 
+     * @param mixed $context The model instance
+     * @param string $operation '+' for increment, '-' for decrement
+     */
+    public function updateParentNumberOfPublishedContents($context, $operation)
+    {
+        $class = get_class($context);
+        $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        switch($class)
+        {
+            case ModelPaths::ELevel:
+                // ELevel is the top level, no parent to update
+                break;
+            case ModelPaths::CLevel:
+                $context->eLevel->$operation('number_of_published_contents');
+                break;
+            case ModelPaths::Course:
+                $context->cLevel->$operation('number_of_published_contents');
+                break;
+            case ModelPaths::Subject:
+                $context->course->$operation('number_of_published_contents');
+                break;
+            case ModelPaths::Unit:
+                $context->subject->$operation('number_of_published_contents');
+                break;
+            case ModelPaths::SubUnit:
+                $context->unit->$operation('number_of_published_contents');
+                break;
+            case ModelPaths::Lesson:
+                $context->subUnit->$operation('number_of_published_contents');
+                break;
+        }
+    }   
 }

@@ -17,6 +17,7 @@ use App\Http\Controllers\System\Info\PrivacyPolicyController;
 use App\Http\Controllers\Users\Profile\NumberUpdateController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
+use App\Http\Controllers\Administration\CLevel\CLevelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,5 +135,10 @@ Route::group([], function () {
     //Home
     Route::controller(UserHomeController::class)->group(function () {
         Route::get("/home", "home");
+    });
+
+    //CLevels - Public API
+    Route::prefix("c-levels")->controller(\App\Http\Controllers\Administration\CLevel\CLevelController::class)->group(function () {
+        Route::get("/{eLevelId?}", "index");
     });
 });

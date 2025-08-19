@@ -21,4 +21,18 @@ final class Resources
     const FIELD                     = 'resources.field';
     const MESSAGE                   = 'resources.message';
     const CARD                      = 'resources.card';
+    const E_LEVEL                   = 'resources.e_level';
+    const E_LEVELS                  = 'resources.e_levels';
+    const C_LEVEL                   = 'resources.c_level';
+    const C_LEVELS                  = 'resources.c_levels';
+    const COURSE                    = 'resources.course';
+    const COURSES                   = 'resources.courses';
+    const SUBJECT                   = 'resources.subject';
+    const SUBJECTS                  = 'resources.subjects';
+    const UNIT                      = 'resources.unit';
+    const UNITS                     = 'resources.units';
+    const SUB_UNIT                  = 'resources.sub_unit';
+    const SUB_UNITS                 = 'resources.sub_units';
+    const LESSON                    = 'resources.lesson';
+    const LESSONS                   = 'resources.lessons';
 }

@@ -8,6 +8,7 @@ return [
     'no_content'                        => 'No content',
     'deleting_failed'                   => 'Delete failed',
     'no_permission'                     => 'Permission denied',
+    'this_is_not_your_route'            => 'You have to go with the suitable role, access denied for this route',
     'method_not_allowed'                => 'Method not allowed',
     'resource_not_FoundF'               => ':resource not found',
     'resource_not_Found'                => ':resource not found',
