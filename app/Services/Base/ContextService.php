@@ -66,7 +66,6 @@ class ContextService
             'unit',
             'subUnit',
         ];
-        
 
         // Add duration to all parent levels
         foreach ($parents as $parent) {
