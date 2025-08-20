@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Responsibility;
-use App\Models\Quiz;
 use App\Models\File;
+use App\Models\Quiz;
+use App\Constants\Resources;
+use App\Models\Responsibility;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Constants\MediaCollection;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Lesson extends Model implements HasMedia
 {
@@ -22,18 +23,33 @@ class Lesson extends Model implements HasMedia
         'id'
     ];
 
+    /**
+     * @return \App\Models\Lesson
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            null,
+            Resources::LESSON,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
     public function registerMediaCollections(): void
     {
         // Multiple images collection (no limit, can store multiple images)
         $this->addMediaCollection(MediaCollection::LESSON_COLLECTION)
             ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
-            ->useDisk('public');
+            ->useDisk('media');
 
         // Single video collection with resolution variants
         $this->addMediaCollection(MediaCollection::LESSON_VIDEO_COLLECTION)
             ->singleFile()
             ->acceptsMimeTypes(['video/mp4', 'video/webm', 'video/mov', 'video/avi'])
-            ->useDisk('public')
+            ->useDisk('media')
             ->registerMediaConversions(function (Media $media) {
                 // 720p variant
                 $this->addMediaConversion('720p')
@@ -126,6 +142,22 @@ class Lesson extends Model implements HasMedia
         return $this->morphMany(Responsibility::class, 'context');
     }
 
+    // Scopes
+    public function scopePublished($query)
+    {
+        return $query->where('publish_status', 'published');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('publish_status', 'published');
+    }
+
+    public function scopeByPriority($query)
+    {
+        return $query->orderBy('priority', 'asc');
+    }
+
     // Media Helper Methods
     public function getImages()
     {
@@ -166,21 +198,5 @@ class Lesson extends Model implements HasMedia
     public function hasImages()
     {
         return $this->hasMedia(MediaCollection::LESSON_COLLECTION);
-    }
-
-    // Scopes
-    public function scopePublished($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeByPriority($query)
-    {
-        return $query->orderBy('priority', 'asc');
     }
 }

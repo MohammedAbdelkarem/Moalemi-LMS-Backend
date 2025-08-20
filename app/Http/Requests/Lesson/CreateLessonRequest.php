@@ -33,6 +33,7 @@ class CreateLessonRequest extends BaseApiRequest
             'sub_unit_id' => ['required', 'exists:sub_units,id'],
             'name' => ['required', 'string', 'min:2', 'max:255', Rule::unique('lessons')->where('sub_unit_id', request('sub_unit_id'))],
             'bio' => ['sometimes', 'string'],
+            'duration' => ['required', 'integer', 'min:1'],
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
             'images' => [
                 'sometimes',
@@ -46,7 +47,7 @@ class CreateLessonRequest extends BaseApiRequest
                 'max:4096'
             ],
             'video' => [
-                'sometimes',
+                'required',
                 'mimes:mp4,webm,mov,avi',
                 'max:102400' // 100MB max for video
             ],

@@ -66,18 +66,9 @@ class LessonService
         // Handle single video and calculate duration
         if (isset($data['video'])) {
             // Upload video first
-            $media = uploadFileOnMedia($data['video'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION, true);
+            uploadFileOnMedia($data['video'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);
             
-            // Get duration from Media Library and convert to minutes
-            if ($media) {
-                $durationInSeconds = $media->getCustomProperty('duration');
-                if ($durationInSeconds && is_numeric($durationInSeconds)) {
-                    $durationInMinutes = (int) ceil($durationInSeconds / 60);
-                    
-                    // Update lesson duration and add to all parent levels
-                    $this->contextService->updateLessonDurationAndParentLevels($lesson, $durationInMinutes , '+');
-                }
-            }
+            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
         }
 
         $lesson->save();
@@ -101,7 +92,10 @@ class LessonService
         
         // Update parent SubUnit numbers before deletion
         $this->contextService->updateParentNumberOfContents($lesson, '-');
-        
+
+        // Update lesson duration and subtract from all parent levels
+        $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '-');
+
         $lesson->delete();
     }
 

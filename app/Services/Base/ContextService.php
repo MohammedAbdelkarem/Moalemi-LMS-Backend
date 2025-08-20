@@ -55,9 +55,6 @@ class ContextService
      */
     public function updateLessonDurationAndParentLevels($lesson, $duration , $operation)
     {
-        // Update lesson duration
-        $lesson->update(['duration' => $duration]);
-
         $parents = [
             'eLevel',
             'cLevel',

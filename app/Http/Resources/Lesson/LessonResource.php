@@ -11,6 +11,7 @@ use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Video\VideoResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonResource extends JsonResource
@@ -48,16 +49,9 @@ class LessonResource extends JsonResource
             'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
-        // Handle video with resolution support
+        // Handle video with VideoResource
         if ($this->hasVideo()) {
-            $resolution = $request->get('resolution', '720p');
-            $data['video'] = [
-                'url' => $this->getVideoWithResolution($resolution),
-                'resolution' => $resolution,
-                'available_resolutions' => ['original', '720p', '480p', '360p', 'thumbnail'],
-                'thumbnail' => $this->getVideoWithResolution('thumbnail'),
-                'media_id' => $this->getVideo()->id
-            ];
+            $data['video'] = VideoResource::make($this->getVideo());
         }
 
         return $data;
