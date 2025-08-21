@@ -1,44 +1,44 @@
 <?php
 
-namespace App\Http\Controllers\Administration\Lesson;
+namespace App\Http\Controllers\Administration\File;
 
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
-use App\Services\Lesson\LessonService;
+use App\Services\File\FileService;
 use Illuminate\Http\Request;
-use App\Http\Resources\Lesson\LessonResource;
-use App\Http\Requests\Lesson\CreateLessonRequest;
-use App\Http\Requests\Lesson\UpdateLessonRequest;
+use App\Http\Resources\File\FileResource;
+use App\Http\Requests\File\CreateFileRequest;
+use App\Http\Requests\File\UpdateFileRequest;
 use App\Http\Requests\Base\ChangePriorityRequest;
 
-class LessonController extends Controller
+class FileController extends Controller
 {
     public function __construct(
-        protected LessonService $lessonService,
+        protected FileService $fileService,
     ) {}
 
     public function index(Request $request)
     {   
         return success(
-            $this->lessonService->getAll($request->all()),
+            $this->fileService->getAll($request->all()),
             ApiMessages::MSG_SUCCESS,
-            LessonResource::class,
+            FileResource::class,
             $request->has('per_page')
         );
     }
 
-    public function store(CreateLessonRequest $request)
+    public function store(CreateFileRequest $request)
     {
         return createdSuccess(
-            $this->lessonService->store($request->validated()),
+            $this->fileService->store($request->validated()),
             ApiMessages::MSG_SUCCESS,
         );
     }
 
-    public function update(UpdateLessonRequest $request, $id)
+    public function update(UpdateFileRequest $request, $id)
     {
         return success(
-            $this->lessonService->update($request->validated(), $id),
+            $this->fileService->update($request->validated(), $id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -46,7 +46,7 @@ class LessonController extends Controller
     public function destroy($id)
     {
         return success(
-            $this->lessonService->destroy($id),
+            $this->fileService->destroy($id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -54,7 +54,7 @@ class LessonController extends Controller
     public function changePublishStatus($id)
     {
         return success(
-            $this->lessonService->changePublishStatus($id),
+            $this->fileService->changePublishStatus($id),
             ApiMessages::MSG_SUCCESS
         );
     }
@@ -62,7 +62,7 @@ class LessonController extends Controller
     public function changePriority(ChangePriorityRequest $request)
     {
         return success(
-            $this->lessonService->changePriority($request->validated()['context']),
+            $this->fileService->changePriority($request->validated()['context']),
             ApiMessages::MSG_SUCCESS
         );
     }

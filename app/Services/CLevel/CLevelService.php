@@ -66,7 +66,7 @@ class CLevelService
     {
         $cLevel = CLevel::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($cLevel);
+        $this->contextService->changePublishStatus($cLevel , 'content');
     }
 
 }

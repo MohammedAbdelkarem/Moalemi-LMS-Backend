@@ -4,12 +4,13 @@ namespace App\Http\Resources\SubUnit;
 
 use Illuminate\Http\Request;
 use App\Constants\MediaCollection;
-use App\Http\Resources\ELevel\ELevelResource;
-use App\Http\Resources\CLevel\CLevelResource;
-use App\Http\Resources\Course\CourseResource;
-use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\CLevel\CLevelResource;
+use App\Http\Resources\Course\CourseResource;
+use App\Http\Resources\ELevel\ELevelResource;
+use App\Http\Resources\Lesson\LessonResource;
+use App\Http\Resources\Subject\SubjectResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubUnitResource extends JsonResource
@@ -43,7 +44,7 @@ class SubUnitResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'unit' => UnitResource::make($this->whenLoaded('unit')),
-            'lessons' => $this->whenLoaded('lessons'),
+            'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
             'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 

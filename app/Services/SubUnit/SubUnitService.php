@@ -86,6 +86,6 @@ class SubUnitService
     {
         $subUnit = SubUnit::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($subUnit);
+        $this->contextService->changePublishStatus($subUnit , 'content');
     }
 }

@@ -17,4 +17,9 @@ final class ModelPaths
     const Unit                     = 'App\Models\Unit';
     const SubUnit                  = 'App\Models\SubUnit';
     const Lesson                   = 'App\Models\Lesson';
+    const File                     = 'App\Models\File';
+    const Quiz                     = 'App\Models\Quiz';
+    const Question                 = 'App\Models\Question';
+    const Answer                   = 'App\Models\Answer';
+    const Teacher                  = 'App\Models\Teacher';
 }

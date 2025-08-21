@@ -71,7 +71,7 @@ class CourseService
     {
         $course = Course::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($course);
+        $this->contextService->changePublishStatus($course , 'content');
     }
 
     public function changeAccessTypeStatus($id)

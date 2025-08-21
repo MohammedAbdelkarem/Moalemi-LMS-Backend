@@ -47,11 +47,6 @@ class Quiz extends Model
         return $query->where('publish_status', 'published');
     }
 
-    public function scopeActive($query)
-    {
-        return $query->where('publish_status', 'published');
-    }
-
     public function scopeByPriority($query)
     {
         return $query->orderBy('priority', 'asc');

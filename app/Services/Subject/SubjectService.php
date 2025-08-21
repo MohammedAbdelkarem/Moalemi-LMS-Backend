@@ -76,7 +76,7 @@ class SubjectService
     {
         $subject = Subject::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($subject);
+        $this->contextService->changePublishStatus($subject , 'content');
     }
 
     public function changeAccessTypeStatus($id)

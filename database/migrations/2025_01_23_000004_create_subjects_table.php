@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('number_of_contents')->default(0);
             $table->integer('number_of_published_contents')->default(0);
             $table->integer('duration')->default(0); // in minutes
-            $table->integer('number_of_lessons')->default(0);
             $table->integer('price')->default(0);
             $table->integer('number_of_purchased_students')->default(0);
             $table->enum('access_type', AccessTypeEnum::values());

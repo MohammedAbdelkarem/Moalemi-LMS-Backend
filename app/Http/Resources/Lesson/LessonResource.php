@@ -43,16 +43,12 @@ class LessonResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),
+            'video' => MediaResource::make($this->getFirstMedia(MediaCollection::LESSON_VIDEO_COLLECTION)),
             'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'quizzes' => $this->whenLoaded('quizzes'),
             'files' => $this->whenLoaded('files'),
             'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
-
-        // Handle video with VideoResource
-        if ($this->hasVideo()) {
-            $data['video'] = VideoResource::make($this->getVideo());
-        }
 
         return $data;
     }

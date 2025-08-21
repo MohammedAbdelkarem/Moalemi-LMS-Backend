@@ -23,6 +23,7 @@ use App\Http\Controllers\Administration\Subject\SubjectController;
 use App\Http\Controllers\Administration\Unit\UnitController;
 use App\Http\Controllers\Administration\SubUnit\SubUnitController;
 use App\Http\Controllers\Administration\Lesson\LessonController;
+use App\Http\Controllers\Administration\File\FileController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
@@ -203,6 +204,16 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::post("/change-priority", "changePriority");
+    });
+
+    Route::prefix("files")->controller(FileController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::post("/change-priority", "changePriority");
     });
 
     //Logs

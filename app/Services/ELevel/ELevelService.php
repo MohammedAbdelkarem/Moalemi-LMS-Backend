@@ -58,6 +58,6 @@ class ELevelService
     {
         $eLevel = ELevel::findByIdOrFail($id);
 
-        return $this->contextService->changeContentPublishStatus($eLevel);
+        $this->contextService->changePublishStatus($eLevel , 'content');
     }
 }

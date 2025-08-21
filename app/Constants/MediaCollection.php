@@ -17,5 +17,9 @@ final class MediaCollection
     const SUB_UNIT_COLLECTION           = 'sub_unit_collection';
     const LESSON_COLLECTION             = 'lesson_collection';
     const LESSON_VIDEO_COLLECTION       = 'lesson_video_collection';
-
+    const FILE_COLLECTION               = 'file_collection';
+    const QUIZ_COLLECTION               = 'quiz_collection';
+    const QUESTION_COLLECTION           = 'question_collection';
+    const ANSWER_COLLECTION             = 'answer_collection';
+    const TEACHER_COLLECTION            = 'teacher_collection';
 }

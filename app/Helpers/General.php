@@ -1,10 +1,21 @@
 <?php
 
+use App\Models\File;
+use App\Models\Quiz;
+use App\Models\Unit;
 use App\Models\User;
 use App\Models\Story;
+use App\Models\Answer;
 use App\Models\Banner;
+use App\Models\CLevel;
+use App\Models\Course;
+use App\Models\ELevel;
+use App\Models\Lesson;
+use App\Models\Subject;
+use App\Models\SubUnit;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
+use App\Models\Question;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Constants\MediaCollection;
@@ -168,19 +179,21 @@ if (!function_exists('mediaCollectionByContxt')) {
     function mediaCollectionByContxt($model_path)
     {
         $data = [
-            // LevelEnum::SPECIALIZATION => MediaCollection::SPECIALIZATION_COLLECTION,
-            // LevelEnum::COURSE         => MediaCollection::COURSE_COLLECTION,
-            // LevelEnum::UNIT           => MediaCollection::UNIT_COLLECTION,
-            // LevelEnum::SUB_UNIT       => MediaCollection::SUB_UNIT_COLLECTION,
-            // LevelEnum::LESSON         => MediaCollection::LESSON_COLLECTION,
-            // LevelEnum::FILE           => MediaCollection::FILE_COLLECTION,
-            // LevelEnum::QUIZ           => MediaCollection::QUIZ_COLLECTION,
-            // LevelEnum::QUESTION       => MediaCollection::QUESTION_COLLECTION,
-            // LevelEnum::ANSWER         => MediaCollection::ANSWER_COLLECTION,
-            // LevelEnum::TEACHER        => MediaCollection::TEACHER_COLLECTION,
             LevelEnum::STORY          => MediaCollection::STORY_COLLECTION,
             LevelEnum::BANNER         => MediaCollection::BANNER_COLLECTION,
             LevelEnum::USER         => MediaCollection::USER_COLLECTION,
+            LevelEnum::E_LEVEL         => MediaCollection::E_LEVEL_COLLECTION,
+            LevelEnum::C_LEVEL         => MediaCollection::C_LEVEL_COLLECTION,
+            LevelEnum::COURSE         => MediaCollection::COURSE_COLLECTION,
+            LevelEnum::SUBJECT         => MediaCollection::SUBJECT_COLLECTION,
+            LevelEnum::UNIT         => MediaCollection::UNIT_COLLECTION,
+            LevelEnum::SUB_UNIT         => MediaCollection::SUB_UNIT_COLLECTION,
+            LevelEnum::LESSON         => MediaCollection::LESSON_COLLECTION,
+            LevelEnum::FILE         => MediaCollection::FILE_COLLECTION,
+            LevelEnum::QUIZ         => MediaCollection::QUIZ_COLLECTION,
+            LevelEnum::QUESTION         => MediaCollection::QUESTION_COLLECTION,
+            LevelEnum::ANSWER         => MediaCollection::ANSWER_COLLECTION,
+            LevelEnum::TEACHER         => MediaCollection::TEACHER_COLLECTION,
         ];
 
         return $data[$model_path] ?? null;
@@ -192,19 +205,20 @@ if (!function_exists('getModel')) {
     function getModel($model_path)
     {
         $data = [
-            // LevelEnum::SPECIALIZATION => Specialization::class,
-            // LevelEnum::COURSE         => Course::class,
-            // LevelEnum::UNIT           => Unit::class,
-            // LevelEnum::SUB_UNIT       => SubUnit::class,
-            // LevelEnum::LESSON         => Lesson::class,
-            // LevelEnum::FILE           => File::class,
-            // LevelEnum::QUIZ           => Quiz::class,
-            // LevelEnum::QUESTION       => Question::class,
-            // LevelEnum::ANSWER         => Answer::class,
-            // LevelEnum::TEACHER        => Teacher::class,
             LevelEnum::STORY                => Story::class,
             LevelEnum::BANNER               => Banner::class,
             LevelEnum::USER               => User::class,
+            LevelEnum::E_LEVEL               => ELevel::class,
+            LevelEnum::C_LEVEL               => CLevel::class,
+            LevelEnum::COURSE               => Course::class,
+            LevelEnum::SUBJECT               => Subject::class,
+            LevelEnum::UNIT               => Unit::class,
+            LevelEnum::SUB_UNIT               => SubUnit::class,
+            LevelEnum::LESSON               => Lesson::class,
+            LevelEnum::FILE               => File::class,
+            LevelEnum::QUIZ               => Quiz::class,
+            LevelEnum::QUESTION               => Question::class,
+            LevelEnum::ANSWER               => Answer::class,
         ];
 
         return $data[$model_path] ?? null;
@@ -216,19 +230,21 @@ if (!function_exists('getModelName')) {
     function getModelName($model_path)
     {
         $data = [
-            // ModelPaths::Specialization => LevelEnum::SPECIALIZATION,
-            // ModelPaths::Course         => LevelEnum::COURSE,
-            // ModelPaths::Unit           => LevelEnum::UNIT,
-            // ModelPaths::SubUnit        => LevelEnum::SUB_UNIT,
-            // ModelPaths::Lesson         => LevelEnum::LESSON,
-            // ModelPaths::File           => LevelEnum::FILE,
-            // ModelPaths::Quiz           => LevelEnum::QUIZ,
-            // ModelPaths::Question       => LevelEnum::QUESTION,
-            // ModelPaths::Answer         => LevelEnum::ANSWER,
-            // ModelPaths::Teacher        => LevelEnum::TEACHER,
             ModelPaths::Story          => LevelEnum::STORY,
             ModelPaths::Banner         => LevelEnum::BANNER,
             ModelPaths::User         => LevelEnum::USER,
+            ModelPaths::ELevel         => LevelEnum::E_LEVEL,
+            ModelPaths::CLevel         => LevelEnum::C_LEVEL,
+            ModelPaths::Course         => LevelEnum::COURSE,
+            ModelPaths::Subject         => LevelEnum::SUBJECT,
+            ModelPaths::Unit         => LevelEnum::UNIT,
+            ModelPaths::SubUnit         => LevelEnum::SUB_UNIT,
+            ModelPaths::Lesson         => LevelEnum::LESSON,
+            ModelPaths::File         => LevelEnum::FILE,
+            ModelPaths::Quiz         => LevelEnum::QUIZ,
+            ModelPaths::Question         => LevelEnum::QUESTION,
+            ModelPaths::Answer         => LevelEnum::ANSWER,
+            ModelPaths::Teacher         => LevelEnum::TEACHER,
         ];
 
         return $data[$model_path] ?? null;
@@ -242,6 +258,17 @@ if (!function_exists('getModelByPath')) {
             ModelPaths::Story          => Story::class,
             ModelPaths::Banner         => Banner::class,
             ModelPaths::User         => User::class,
+            ModelPaths::ELevel         => ELevel::class,
+            ModelPaths::CLevel         => CLevel::class,
+            ModelPaths::Course         => Course::class,
+            ModelPaths::Subject         => Subject::class,
+            ModelPaths::Unit         => Unit::class,
+            ModelPaths::SubUnit         => SubUnit::class,
+            ModelPaths::Lesson         => Lesson::class,
+            ModelPaths::File         => File::class,
+            ModelPaths::Quiz         => Quiz::class,
+            ModelPaths::Question         => Question::class,
+            ModelPaths::Answer         => Answer::class,
         ];
 
         return $data[$model_path] ?? null;

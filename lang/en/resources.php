@@ -39,4 +39,6 @@ return [
     'sub_units'                 => 'Sub Units',
     'lesson'                    => 'Lesson',
     'lessons'                   => 'Lessons',
+    'file'                      => 'File',
+    'files'                      => 'Files',
 ];

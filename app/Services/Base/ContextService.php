@@ -6,6 +6,10 @@ use App\Enums\PublishStatusEnum;
 use App\Enums\AccessTypeEnum;
 use App\Constants\ExceptionMessages;
 use App\Constants\ModelPaths;
+use App\Models\Subject;
+use App\Models\Unit;
+use App\Models\SubUnit;
+use App\Models\Lesson;
 
 /**
  * Class ContextService.
@@ -18,7 +22,7 @@ class ContextService
      * @param mixed $model The model instance
      * @return mixed The updated model
      */
-    public function changeContentPublishStatus($context)
+    public function changePublishStatus($context , $type)
     {
         $newStatus = $context->publish_status === PublishStatusEnum::PUBLISHED->value 
             ? PublishStatusEnum::DRAFT->value 
@@ -28,7 +32,10 @@ class ContextService
 
         $operation = $newStatus === PublishStatusEnum::PUBLISHED->value ? '+' : '-';
 
-        $this->updateParentNumberOfPublishedContents($context, $operation);
+        if($type == 'content')
+            $this->updateParentNumberOfContents($context, $operation, true);
+        elseif($type == 'file')
+            $this->updateParentNumberOfFiles($context, $context->context_id , $operation , true);
     }
 
     /**
@@ -92,10 +99,12 @@ class ContextService
      * @param mixed $context The model instance
      * @param string $operation '+' for increment, '-' for decrement
      */
-    public function updateParentNumberOfContents($context, $operation)
+    public function updateParentNumberOfContents($context, $operation , $published = false)
     {
         $class = get_class($context);
         $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        $field = $published ? 'number_of_published_contents' : 'number_of_contents';
 
         switch($class)
         {
@@ -103,60 +112,68 @@ class ContextService
                 // ELevel is the top level, no parent to update
                 break;
             case ModelPaths::CLevel:
-                $context->eLevel->$operation('number_of_contents');
+                $context->eLevel->$operation($field);
                 break;
             case ModelPaths::Course:
-                $context->cLevel->$operation('number_of_contents');
+                $context->cLevel->$operation($field);
                 break;
             case ModelPaths::Subject:
-                $context->course->$operation('number_of_contents');
+                $context->course->$operation($field);
                 break;
             case ModelPaths::Unit:
-                $context->subject->$operation('number_of_contents');
+                $context->subject->$operation($field);
                 break;
             case ModelPaths::SubUnit:
-                $context->unit->$operation('number_of_contents');
+                $context->unit->$operation($field);
                 break;
             case ModelPaths::Lesson:
-                $context->subUnit->$operation('number_of_contents');
+                $context->subUnit->$operation($field);
                 break;
         }
     }
 
-    /**
-     * Update parent's number of published contents for all hierarchy levels
-     * 
-     * @param mixed $context The model instance
-     * @param string $operation '+' for increment, '-' for decrement
-     */
-    public function updateParentNumberOfPublishedContents($context, $operation)
+    public function changeContextsPriority($contextsData , $model)
     {
-        $class = get_class($context);
+        foreach ($contextsData as $contextId => $priority) {
+            $context = $model::find($contextId);
+
+            if ($context) {
+                $context->update(['priority' => $priority]);
+            }
+
+            $context->save();
+        }
+    }
+
+    public function updateParentNumberOfFiles($context , $id , $operation , $published = false)
+    {
+        // Update context number of files
+        $class = $context->context_type;
+
         $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        $field = $published ? 'number_of_published_files' : 'number_of_files';
 
         switch($class)
         {
-            case ModelPaths::ELevel:
-                // ELevel is the top level, no parent to update
-                break;
-            case ModelPaths::CLevel:
-                $context->eLevel->$operation('number_of_published_contents');
-                break;
-            case ModelPaths::Course:
-                $context->cLevel->$operation('number_of_published_contents');
-                break;
             case ModelPaths::Subject:
-                $context->course->$operation('number_of_published_contents');
+                $subject = Subject::find($id);
+                $subject->$operation($field);
                 break;
             case ModelPaths::Unit:
-                $context->subject->$operation('number_of_published_contents');
+                $unit = Unit::find($id);
+                $unit->$operation($field);
                 break;
             case ModelPaths::SubUnit:
-                $context->unit->$operation('number_of_published_contents');
+                $subUnit = SubUnit::find($id);
+                $subUnit->$operation($field);
                 break;
             case ModelPaths::Lesson:
-                $context->subUnit->$operation('number_of_published_contents');
+                $lesson = Lesson::find($id);
+                $lesson->$operation($field);
                 break;
         }
-    }   
+
+        
+    }
 }

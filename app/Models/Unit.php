@@ -80,6 +80,16 @@ class Unit extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'unit_id');
     }
 
+    public function files()
+    {
+        return $this->morphMany(File::class, 'context');
+    }
+
+    public function quizzes()
+    {
+        return $this->morphMany(Quiz::class, 'context');
+    }
+
     public function responsibilities()
     {
         return $this->morphMany(Responsibility::class, 'context');

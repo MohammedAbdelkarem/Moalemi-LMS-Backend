@@ -18,7 +18,7 @@ class LessonService
      */
     public function getAll($data)
     {
-        $query = Lesson::orderBy('created_at', 'desc')
+        $query = Lesson::orderBy('priority', 'asc')
                 ->with([ 'subUnit', 'quizzes', 'files', 'responsibilities']);
 
         // Filter by SubUnit ID if provided
@@ -103,6 +103,11 @@ class LessonService
     {
         $lesson = Lesson::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($lesson);
+        $this->contextService->changePublishStatus($lesson , 'content');
+    }
+
+    public function changePriority($contextsData)
+    {
+        $this->contextService->changeContextsPriority($contextsData , Lesson::class);
     }
 }

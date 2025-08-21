@@ -81,7 +81,7 @@ class UnitService
     {
         $unit = Unit::findByIdOrFail($id);
 
-        $this->contextService->changeContentPublishStatus($unit);
+        $this->contextService->changePublishStatus($unit , 'content');
     }
 
     public function changeAccessTypeStatus($id)
