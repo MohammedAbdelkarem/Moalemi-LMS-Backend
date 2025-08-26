@@ -36,6 +36,8 @@ class ContextService
             $this->updateParentNumberOfContents($context, $operation, true);
         elseif($type == 'file')
             $this->updateParentNumberOfFiles($context, $context->context_id , $operation , true);
+        elseif($type == 'quiz')
+            $this->updateParentNumberOfQuizzes($context, $context->context_id , $operation , true);
     }
 
     /**
@@ -173,7 +175,34 @@ class ContextService
                 $lesson->$operation($field);
                 break;
         }
+    }
+    public function updateParentNumberOfQuizzes($context , $id , $operation , $published = false)
+    {
+        // Update context number of files
+        $class = $context->context_type;
 
-        
+        $operation = ($operation == '+' ? 'increment' : 'decrement');
+
+        $field = $published ? 'number_of_published_quizzes' : 'number_of_quizzes';
+
+        switch($class)
+        {
+            case ModelPaths::Subject:
+                $subject = Subject::find($id);
+                $subject->$operation($field);
+                break;
+            case ModelPaths::Unit:
+                $unit = Unit::find($id);
+                $unit->$operation($field);
+                break;
+            case ModelPaths::SubUnit:
+                $subUnit = SubUnit::find($id);
+                $subUnit->$operation($field);
+                break;
+            case ModelPaths::Lesson:
+                $lesson = Lesson::find($id);
+                $lesson->$operation($field);
+                break;
+        }
     }
 }

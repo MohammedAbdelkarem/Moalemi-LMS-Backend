@@ -14,6 +14,8 @@ return [
     'stories'                   => 'القصص',
     'question'                  => 'السؤال',
     'questions'                 => 'الأسئلة',
+    'quiz'                      => 'الاختبار',
+    'quizzes'                   => 'الاختبارات',
     'user'                      => 'المستخدم',
     'users'                     => 'مستخدمين',
     'questions_and_answers'     => 'الأسئلة الشائعة',
@@ -43,4 +45,5 @@ return [
     'lessons'                   => 'الدروس',
     'file'                      => 'الملف',
     'files'                     => 'الملفات',
+    
 ];

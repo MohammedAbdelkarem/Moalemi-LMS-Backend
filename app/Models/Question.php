@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Question extends Model
 {
@@ -16,7 +18,21 @@ class Question extends Model
         'id'
     ];
 
-
+    /**
+     * @return \App\Models\Question
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::FEMALE,
+            Resources::QUESTION,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
 
     // Relationships
     public function unit(): BelongsTo
@@ -60,15 +76,5 @@ class Question extends Model
     public function scopeMultipleSelect($query)
     {
         return $query->where('type', 'multiple_select');
-    }
-
-    public function scopeTrueFalse($query)
-    {
-        return $query->where('type', 'true_false');
-    }
-
-    public function scopeText($query)
-    {
-        return $query->where('type', 'text');
     }
 }

@@ -29,7 +29,10 @@ class FileService
             $query->where('context_type', $data['context_type']);
         }
 
-        return $query->orderBy('priority', 'asc')->paginate();
+        return getOrPaginate(
+            $query->orderBy('priority', 'asc'),
+            $data
+        );
     }
 
     public function store($data)

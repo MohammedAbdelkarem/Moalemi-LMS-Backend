@@ -16,7 +16,7 @@ class ContactUsResource extends JsonResource
             "type"      => $this->type,
         ];
 
-        if ($user && $user->isSystemAdmin()) {
+        if ($user && $user->isAdmin()) {
             $creator = $this->created_by ? $this->creator : null;
             $data += [
                 "created_by_id" => $this->created_by,

@@ -11,6 +11,8 @@ return [
     'Story'                     => 'story',
     'Stories'                   => 'stories',
     'Question'                  => 'question',
+    'quiz'                      => 'Quiz',
+    'quizzes'                   => 'Quizzes',
     'Banner'                    => 'banner',
     'Banners'                   => 'banners',
     'user'                      => 'User',
@@ -41,4 +43,6 @@ return [
     'lessons'                   => 'Lessons',
     'file'                      => 'File',
     'files'                      => 'Files',
+    'question'                  => 'Question',
+    'questions'                 => 'Questions',
 ];

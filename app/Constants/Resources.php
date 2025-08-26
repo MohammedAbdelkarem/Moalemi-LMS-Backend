@@ -16,6 +16,8 @@ final class Resources
     const RES_USER                  = 'resources.user';
     const RES_USERS                 = 'resources.users';
     const RES_QUESTIONS_AND_ANSWERS = 'resources.questions_and_answers';
+    const QUIZ                      = 'resources.quiz';
+    const QUIZZES                   = 'resources.quizzes';
     const CITY                      = 'resources.city';
     const ITEM                      = 'resources.item';
     const FIELD                     = 'resources.field';
@@ -37,4 +39,6 @@ final class Resources
     const LESSONS                   = 'resources.lessons';
     const FILE                      = 'resources.file';
     const FILES                     = 'resources.files';
+    const QUESTION                  = 'resources.question';
+    const QUESTIONS                 = 'resources.questions';
 }

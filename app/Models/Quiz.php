@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +17,21 @@ class Quiz extends Model
         'id'
     ];
 
-
+    /**
+     * @return \App\Models\Quiz
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            null,
+            Resources::QUIZ,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
 
     // Relationships
     public function context()

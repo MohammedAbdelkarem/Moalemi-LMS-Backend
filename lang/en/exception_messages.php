@@ -44,4 +44,6 @@ return [
     'cannot_update_this_role'                           => 'Cannot update this role',
     'cannot_delete_this_role'                           => 'Cannot delete this role',
     'cannot_set_to_active_cuz_has_no_media'             => 'Cannot set to active cuz has no image',
+    'question_answers_is_correct_only_one'              => 'Question must have only one correct answer',
+    'question_answers_is_correct_more_than_one'          => 'Question must have more than one correct answer',
 ];

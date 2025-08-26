@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use App\Models\Responsibility;
+use App\Models\User;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -79,6 +80,16 @@ class CLevel extends Model implements HasMedia
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class, 'c_level_id');
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(User::class, 'c_level_id')->where('role_id', 5);
+    }
+
+    public function getStudentsCount(): int
+    {
+        return $this->students()->count();
     }
 
     public function responsibilities()

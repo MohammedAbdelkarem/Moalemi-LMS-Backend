@@ -19,13 +19,13 @@ class FAQService extends MainService
                 $query->when($search, function ($query) use ($search) {
                     $query->whereAny(['question', 'answer'], 'like', "%" . $search . "%");
                 });
-                if (auth()->user()?->isSystemAdmin()) {
+                if (auth()->user()?->isAdmin()) {
                     $query->with([
                         "category"  => fn($q) => $q->select('id', 'name'),
                         "updater"   => fn($q) => $q->select('id', 'name')
                     ]);
                 }
-                if (!auth()->user()?->isSystemAdmin()) {
+                if (!auth()->user()?->isAdmin()) {
                     $query->where('is_draft', 0);
                 }
             })

@@ -92,9 +92,10 @@ Route::group(['middleware' => ['is_user', 'auth:api', 'token.access_api', 'user.
 Route::group([], function () {
     //Auth
     Route::controller(AuthController::class)->group(function () {
-        Route::post("/register/doctor", "registerDoctor")->middleware('bots')->name('registerDoctor');
-        Route::post("/login/doctor", "loginDoctor")->middleware('bots')->name('loginDoctor');
-        Route::post("/login/patient", "loginPatient")->middleware('bots')->name('loginPatient');
+        Route::post("/register/student", "registerStudent")->middleware('bots')->name('registerStudent');
+        Route::post("/login/student", "loginStudent")->middleware('bots')->name('loginStudent');
+        Route::post("/login/parent", "loginParent")->middleware('bots')->name('loginParent');
+        Route::post("/login/teacher", "loginTeacher")->middleware('bots')->name('loginTeacher');
     });
 
     //Profile

@@ -28,6 +28,8 @@ use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
+use App\Http\Controllers\Administration\Question\QuestionController;
+use App\Http\Controllers\Administration\Quiz\QuizController;
 
 
 
@@ -216,6 +218,27 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::post("/change-priority", "changePriority");
     });
 
+    // Questions
+    Route::prefix("questions")->controller(QuestionController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::get("/{id}", "show");
+        Route::post("/{id}/update", "update");
+        Route::delete("/{id}", "destroy");
+        Route::post("/change-priority", "changePriority");
+    });
+
+    // Quizzes
+    Route::prefix("quizzes")->controller(QuizController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::get("/{id}", "show");
+        Route::post("/{id}/update", "update");
+        Route::delete("/{id}", "destroy");
+        Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::post("/change-priority", "changePriority");
+    });
+
     //Logs
     Route::prefix("logs")->group(function () {
         Route::prefix("bans-log")->controller(BanLogController::class)->group(function () {
@@ -274,4 +297,5 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         ->name('index' , RouteNames::ADMIN_STORY_GET);
     Route::apiResource('/banner', BannerController::class)->name('show' , RouteNames::ADMIN_BANNER_GET);
     Route::apiResource('/media', MediaController::class);
+    
 });

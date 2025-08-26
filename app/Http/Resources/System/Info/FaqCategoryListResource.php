@@ -11,7 +11,7 @@ class FaqCategoryListResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->isSystemAdmin()) {
+        if ($user && $user->isAdmin()) {
             return [
                 "id"                => $this->id,
                 "name"              => $this->name,

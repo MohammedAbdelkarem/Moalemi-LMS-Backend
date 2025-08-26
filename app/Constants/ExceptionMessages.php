@@ -43,4 +43,6 @@ final class ExceptionMessages
     const MSG_CANNOT_DELETE_THIS_ROLE                             = 'exception_messages.cannot_delete_this_role';
     const MSG_CANNOT_SET_TO_ACTIVE_CUZ_HAS_NO_MEDIA               = 'exception_messages.cannot_set_to_active_cuz_has_no_media';
     const MSG_CAN_NOT_DELETE_CUZ_HAS_RELATED_ITEMS               = 'exception_messages.can_not_delete_cuz_has_related_items';
+    const MSG_QUESTION_ANSWERS_IS_CORRECT_ONLY_ONE               = 'exception_messages.question_answers_is_correct_only_one';
+    const MSG_QUESTION_ANSWERS_IS_CORRECT_MORE_THAN_ONE          = 'exception_messages.question_answers_is_correct_more_than_one';
 }

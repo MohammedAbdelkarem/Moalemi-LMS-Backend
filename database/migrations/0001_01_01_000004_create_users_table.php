@@ -25,6 +25,8 @@ return new class extends Migration
             $table->boolean('active_notifications')->default(true);
             $table->dateTime('deactive_at')->nullable();
             $table->timestamp('account_verified_at')->nullable();
+            $table->foreignId('e_level_id')->nullable()->constrained('e_levels')->nullOnDelete();
+            $table->foreignId('c_level_id')->nullable()->constrained('c_levels')->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

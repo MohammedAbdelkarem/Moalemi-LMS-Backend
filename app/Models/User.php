@@ -11,6 +11,8 @@ use App\Models\System\Info\FAQ;
 use App\Models\System\Info\Tos;
 use App\Models\System\Info\City;
 use App\Models\System\Role\Role;
+use App\Models\ELevel;
+use App\Models\CLevel;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use App\Models\System\Info\AboutUs;
@@ -116,6 +118,21 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->role_id === 5;
     }
 
+    public function hasELevel(): bool
+    {
+        return $this->isStudent() && !is_null($this->e_level_id);
+    }
+
+    public function hasCLevel(): bool
+    {
+        return $this->isStudent() && !is_null($this->c_level_id);
+    }
+
+    public function hasLevels(): bool
+    {
+        return $this->isStudent() && $this->hasELevel() && $this->hasCLevel();
+    }
+
     public function hasParent(): bool
     {
         return $this->isStudent() && !is_null($this->parent_id);
@@ -134,6 +151,16 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function getParentName(): ?string
     {
         return $this->isStudent() && $this->parent ? $this->parent->name : null;
+    }
+
+    public function getELevelName(): ?string
+    {
+        return $this->isStudent() && $this->eLevel ? $this->eLevel->name : null;
+    }
+
+    public function getCLevelName(): ?string
+    {
+        return $this->isStudent() && $this->cLevel ? $this->cLevel->name : null;
     }
 
     public function isSuperAdmin(): bool
@@ -178,6 +205,16 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, "city_id");
+    }
+
+    public function eLevel(): BelongsTo
+    {
+        return $this->belongsTo(ELevel::class, "e_level_id");
+    }
+
+    public function cLevel(): BelongsTo
+    {
+        return $this->belongsTo(CLevel::class, "c_level_id");
     }
 
     public function userDevices(): HasMany
@@ -363,7 +400,23 @@ class User extends Authenticatable implements JWTSubject , HasMedia
             $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%')
                 ->orWhere('phone_number', 'like', '%' . $search . '%');
+        })
+        ->when(isset($data['e_level_id']), function ($query, $e_level_id) {
+            $query->where('e_level_id', $e_level_id);
+        })
+        ->when(isset($data['c_level_id']), function ($query, $c_level_id) {
+            $query->where('c_level_id', $c_level_id);
         });
+    }
+    public function scopeStudentsByLevels($query, $e_level_id = null, $c_level_id = null)
+    {
+        return $query->where('role_id', 5)
+            ->when($e_level_id, function ($q) use ($e_level_id) {
+                $q->where('e_level_id', $e_level_id);
+            })
+            ->when($c_level_id, function ($q) use ($c_level_id) {
+                $q->where('c_level_id', $c_level_id);
+            });
     }
 
     public function messages()

@@ -17,7 +17,7 @@ class CustomerServiceCardResource extends JsonResource
         $user = auth()->user();
         $data = $this->getCardData();
 
-        if ($user && $user->isSystemAdmin())
+        if ($user && $user->isAdmin())
             $data += $this->getCardAdminData();
 
         return $data;

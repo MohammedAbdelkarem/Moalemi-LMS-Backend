@@ -11,7 +11,7 @@ class PrivacyPolicyResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        if ($user && $user->isSystemAdmin()) {
+        if ($user && $user->isAdmin()) {
             $updater = $this->update_by ? $this->updated_by : null;
             return [
                 "id" => $this->id,

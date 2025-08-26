@@ -34,24 +34,67 @@ class AuthService extends MainService
         protected JWTTokensService $jwtService,
         protected ContextService $contextService,
     ) {}
-    public function loginForPatient($validatedData)
+    public function registerStudent($validatedData)
     {
-        $user = User::firstOrCreate(
+        //check the parent phone number if archived
+        if (ArchivedUser::where('phone_number', $validatedData["parent_phone_number"])->count() >= config("_custom.max_accounts_per_phone_number"))
+            throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
+
+        //create or get the parent
+        $parent = User::firstOrCreate(
             [
-                'phone_number' => $validatedData['phone_number'],
+                'phone_number' => $validatedData['parent_phone_number'],
                 'role_id' => 4
                 ],
             [
-                'phone_number' => $validatedData['phone_number'],
+                'phone_number' => $validatedData['parent_phone_number'],
                 'role_id' => 4,
                 'language' => config("app.locale"),
                 ]
             );
-        if (ArchivedUser::where('phone_number', $validatedData["phone_number"])->count() >= config("_custom.max_accounts_per_phone_number"))
-            throw new ApiException(null, trans(ExceptionMessages::MSG_PHONE_NUMBER_USED_MANY_TIMES), 400);
+        
+        $parent->save();
 
-        $user->save();
+        //create the student
+        $student = User::create([
+            'phone_number' => $validatedData['phone_number'],
+            'role_id' => 5,
+            'language' => config("app.locale"),
+            'parent_id' => $parent->id, //link the student to the parent
+            'e_level_id' => $validatedData['e_level_id'],
+            'c_level_id' => $validatedData['c_level_id'],
+            'name' => $validatedData['name'],
+            'birth_date' => $validatedData['birth_date'],
+            'is_male' => $validatedData['is_male'],
+            'email' => $validatedData['email'],
+        ]);
 
+        if (isset($validatedData['image'])) 
+            uploadFileOnMedia($validatedData['image'] , $student, MediaCollection::USER_COLLECTION);
+
+        //Send otp
+        $otp = $this->OTPService->createOTP($student->id, $validatedData['phone_number']);
+
+        //Generate Token
+        $token = $this->generateLoginToken($student);
+
+        $data = [
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "tokens" => $token,
+            "student"   => [
+                "id" => $student->id,
+                "student_phone_number" => $student->phone_number,
+            ],
+        ];
+
+        return $data;
+    }
+    public function loginForStudent($validatedData)
+    {
+
+        $user = User::where('phone_number' , $validatedData['phone_number'])
+                        ->where('role_id' , 5)->first();
+        
         //Send otp
         $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
 
@@ -69,7 +112,30 @@ class AuthService extends MainService
 
         return $data;
     }
-    public function loginForDoctor($validatedData)
+    public function loginForParent($validatedData)
+    {
+
+        $user = User::where('phone_number' , $validatedData['phone_number'])
+                        ->where('role_id' , 4)->first();
+        
+        //Send otp
+        $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
+
+        //Generate Token
+        $token = $this->generateLoginToken($user);
+
+        $data = [
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "tokens" => $token,
+            "user"   => [
+                "id" => $user->id,
+                "user_phone_number" => $user->phone_number,
+            ],
+        ];
+
+        return $data;
+    }
+    public function loginForTeacher($validatedData)
     {
 
         $user = User::where('phone_number' , $validatedData['phone_number'])
