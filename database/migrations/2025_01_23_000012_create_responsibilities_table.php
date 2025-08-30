@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('responsibilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
-            $table->morphs('context');
+            $table->foreignId('e_level_id')->constrained('e_levels')->onDelete('cascade');
+            $table->foreignId('c_level_id')->nullable()->constrained('c_levels')->onDelete('cascade');
+            $table->foreignId('course_id')->nullable()->constrained('courses')->onDelete('cascade');
+            $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('unit_id')->nullable()->constrained('units')->onDelete('cascade');
+            $table->foreignId('sub_unit_id')->nullable()->constrained('sub_units')->onDelete('cascade');
+            $table->foreignId('lesson_id')->nullable()->constrained('lessons')->onDelete('cascade');
             $table->timestamps();
         });
     }

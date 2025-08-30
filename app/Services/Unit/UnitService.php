@@ -19,7 +19,7 @@ class UnitService
     public function getAll($data)
     {
         $query = Unit::orderBy('created_at', 'desc')
-                ->with(['subject','subUnits', 'responsibilities']);
+                ->with(['subject','subUnits' , 'responsibilities']);
 
         // Filter by Subject ID if provided
         if (isset($data['subject_id'])) {

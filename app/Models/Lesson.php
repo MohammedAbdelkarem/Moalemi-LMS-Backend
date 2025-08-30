@@ -103,9 +103,9 @@ class Lesson extends Model implements HasMedia
         return $this->morphMany(Comment::class, 'context');
     }
 
-    public function responsibilities()
+    public function responsibilities(): HasMany
     {
-        return $this->morphMany(Responsibility::class, 'context');
+        return $this->hasMany(Responsibility::class, 'lesson_id');
     }
 
     // Scopes

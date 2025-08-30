@@ -90,9 +90,9 @@ class SubUnit extends Model implements HasMedia
         return $this->morphMany(Quiz::class, 'context');
     }
 
-    public function responsibilities()
+    public function responsibilities(): HasMany
     {
-        return $this->morphMany(Responsibility::class, 'context');
+        return $this->hasMany(Responsibility::class, 'sub_unit_id');
     }
 
     // Scopes

@@ -46,7 +46,7 @@ class UnitResource extends JsonResource
             'updated_at' => $this->updated_at,
             'subject' => SubjectResource::make($this->whenLoaded('subject')),
             'sub_units' => SubUnitResource::collection($this->whenLoaded('subUnits')),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

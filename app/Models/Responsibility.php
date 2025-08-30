@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ELevel;
+use App\Models\CLevel;
+use App\Models\Course;
+use App\Models\Subject;
+use App\Models\Unit;
+use App\Models\SubUnit;
+use App\Models\Lesson;
 
 class Responsibility extends Model
 {
@@ -20,14 +27,38 @@ class Responsibility extends Model
         return $this->belongsTo(User::class, 'teacher_id');
     }
 
-    public function context()
+    public function eLevel(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(ELevel::class, 'e_level_id');
     }
 
-    // Scopes
-    public function scopeByTeacher($query, $teacherId)
+    public function cLevel(): BelongsTo
     {
-        return $query->where('teacher_id', $teacherId);
+        return $this->belongsTo(CLevel::class, 'c_level_id');
+    }
+
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
+    }
+
+    public function subUnit(): BelongsTo
+    {
+        return $this->belongsTo(SubUnit::class, 'sub_unit_id');
+    }
+
+    public function lesson(): BelongsTo
+    {
+        return $this->belongsTo(Lesson::class, 'lesson_id');
     }
 }

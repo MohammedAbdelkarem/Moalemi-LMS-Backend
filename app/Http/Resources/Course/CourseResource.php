@@ -39,7 +39,7 @@ class CourseResource extends JsonResource
             'updated_at' => $this->updated_at,
             'c_level' => CLevelResource::make($this->whenLoaded('cLevel')),
             'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

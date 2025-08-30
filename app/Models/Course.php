@@ -80,9 +80,9 @@ class Course extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'course_id');
     }
 
-    public function responsibilities()
+    public function responsibilities(): HasMany
     {
-        return $this->morphMany(Responsibility::class, 'context');
+        return $this->hasMany(Responsibility::class, 'course_id');
     }
 
     // Scopes

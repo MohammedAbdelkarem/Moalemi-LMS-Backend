@@ -32,7 +32,7 @@ class ELevelResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'c_levels' => CLevelResource::collection($this->whenLoaded('cLevels')),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

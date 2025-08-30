@@ -3,7 +3,10 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
+use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class UserResource extends JsonResource
 {
@@ -14,13 +17,20 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data =  [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'image' => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             'role_id' => $this->role_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
+
+        if($this->role_id == 3)
+        {
+            $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
+        }
+        return $data;
     }
 }

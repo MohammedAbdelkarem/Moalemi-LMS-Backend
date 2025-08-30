@@ -19,7 +19,7 @@ class LessonService
     public function getAll($data)
     {
         $query = Lesson::orderBy('priority', 'asc')
-                ->with([ 'subUnit', 'quizzes', 'files', 'responsibilities']);
+                ->with([ 'subUnit', 'quizzes', 'files' , 'responsibilities']);
 
         // Filter by SubUnit ID if provided
         if (isset($data['sub_unit_id'])) {

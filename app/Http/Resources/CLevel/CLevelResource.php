@@ -35,7 +35,7 @@ class CLevelResource extends JsonResource
             'updated_at' => $this->updated_at,
             'e_level' => ELevelResource::make($this->whenLoaded('eLevel')),
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

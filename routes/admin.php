@@ -30,6 +30,8 @@ use App\Http\Controllers\Administration\Profile\AdminProfileController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
 use App\Http\Controllers\Administration\Question\QuestionController;
 use App\Http\Controllers\Administration\Quiz\QuizController;
+use App\Http\Controllers\Administration\Teacher\TeacherController;
+use App\Http\Controllers\Adminstration\Responsibility\ResponsibilityController;
 
 
 
@@ -237,6 +239,19 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
         Route::post("/change-priority", "changePriority");
+    });
+
+    Route::prefix("responsibilities")->controller(ResponsibilityController::class)->group(function () {
+        Route::post("/attach", "attach");
+        Route::post("/detach", "detach");
+        Route::get('/teacher/{id}' , 'getResponsibilitiesByTeacherId');
+    });
+
+    // Teachers
+    Route::prefix("teachers")->controller(TeacherController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::get("/{id}", "show");
     });
 
     //Logs

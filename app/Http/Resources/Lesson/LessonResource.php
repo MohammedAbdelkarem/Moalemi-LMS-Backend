@@ -47,7 +47,7 @@ class LessonResource extends JsonResource
             'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'quizzes' => $this->whenLoaded('quizzes'),
             'files' => $this->whenLoaded('files'),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

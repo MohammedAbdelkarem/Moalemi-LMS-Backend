@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Unit;
+use App\Models\User;
 use App\Models\CLevel;
 use App\Models\Course;
 use App\Models\ELevel;
@@ -93,6 +94,100 @@ class LevelSeeder extends Seeder
             'course_id' => $course->id,
             'subject_id' => $subject->id,
             'unit_id' => $unit->id,
+        ]);
+        $eLevels2 = ELevel::create([
+            'name' => 'elevel 2',
+            'bio' => 'elevel 2',
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+
+        $cLevels2 = CLevel::create([
+            'name' => 'clevel 2',
+            'bio' => 'clevel 2',
+            'e_level_id' => $eLevels2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+
+        $course2 = Course::create([
+            'name' => 'course 2',
+            'bio' => 'course 2',
+            'c_level_id' => $cLevels2->id,
+            'e_level_id' => $eLevels2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+
+        $subject2 = Subject::create([
+            'name' => 'subject 2',
+            'bio' => 'subject 2',
+            'course_id' => $course2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'e_level_id' => $eLevels2->id,
+            'c_level_id' => $cLevels2->id,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+        
+        $unit2 = Unit::create([
+            'name' => 'unit 2',
+            'bio' => 'unit 2',
+            'subject_id' => $subject2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'e_level_id' => $eLevels2->id,
+            'c_level_id' => $cLevels2->id,
+            'course_id' => $course2->id,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+
+        $subunit2 = SubUnit::create([
+            'name' => 'subunit 2',
+            'bio' => 'subunit 2',
+            'unit_id' => $unit2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'e_level_id' => $eLevels2->id,
+            'c_level_id' => $cLevels2->id,
+            'course_id' => $course2->id,
+            'subject_id' => $subject2->id,
+            'number_of_contents' => 1,
+            'number_of_published_contents' => 1,
+        ]);
+        
+        $lesson2 = Lesson::create([
+            'name' => 'lesson 2',
+            'bio' => 'lesson 2',
+            'sub_unit_id' => $subunit2->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'e_level_id' => $eLevels2->id,
+            'c_level_id' => $cLevels2->id,
+            'course_id' => $course2->id,
+            'subject_id' => $subject2->id,
+            'unit_id' => $unit2->id,
+        ]);
+
+        $teacher1 = User::create([
+            'role_id' => 3, // Teacher role
+            'name' => 'teacher 1',
+            'phone_number' => '+963900000000',
+            'email' => 'teacher1@example.com',
+            'birth_date' => '2000-01-01',
+            'is_male' => true,
+            'city_id' => 1,
+        ]);
+
+        $teacher2 = User::create([
+            'role_id' => 3, // Teacher role
+            'name' => 'teacher 2',
+            'phone_number' => '+963900000001',
+            'email' => 'teacher2@example.com',
+            'birth_date' => '2000-01-01',
+            'is_male' => true,
+            'city_id' => 1,
         ]);
     }
 }

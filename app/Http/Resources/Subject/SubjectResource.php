@@ -31,7 +31,6 @@ class SubjectResource extends JsonResource
             'number_of_contents' => $this->number_of_contents,
             'number_of_published_contents' => $this->number_of_published_contents,
             'duration' => $this->duration,
-            'number_of_lessons' => $this->number_of_lessons,
             'price' => $this->price,
             'number_of_purchased_students' => $this->number_of_purchased_students,
             'access_type' => $this->access_type,
@@ -45,7 +44,7 @@ class SubjectResource extends JsonResource
             'updated_at' => $this->updated_at,
             'course' => CourseResource::make($this->whenLoaded('course')),
             'units' => UnitResource::collection($this->whenLoaded('units')),
-            'responsibilities' => $this->whenLoaded('responsibilities'),
+            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         return $data;

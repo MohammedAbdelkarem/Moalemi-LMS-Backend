@@ -16,15 +16,15 @@ class ELevelService
     public function getAll($data)
     {
         return getOrPaginate(
-            ELevel::orderBy('created_at', 'desc')
-                    ->with(['cLevels', 'responsibilities']),
+            ELevel::orderBy('created_at', 'desc' , 'responsibilities')
+                    ->with(['cLevels' , 'responsibilities']),
             $data
         );
     }
 
     public function show($id)
     {
-        return ELevel::findByIdOrFail($id, ['cLevels', 'responsibilities']);
+        return ELevel::findByIdOrFail($id, ['cLevels' , 'responsibilities']);
     }
 
     public function store($data)

@@ -91,9 +91,9 @@ class ELevel extends Model implements HasMedia
         return $this->students()->count();
     }
 
-    public function responsibilities()
+    public function responsibilities(): HasMany
     {
-        return $this->morphMany(Responsibility::class, 'context');
+        return $this->hasMany(Responsibility::class, 'e_level_id');
     }
 
     // Scopes

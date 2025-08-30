@@ -19,7 +19,7 @@ class CLevelService
     public function getAll($data)
     {
         $query = CLevel::orderBy('created_at', 'desc')
-                ->with(['eLevel', 'courses', 'responsibilities']);
+                ->with(['eLevel', 'courses' , 'responsibilities']);
 
         // Filter by ELevel ID if provided
         if (isset($data['e_level_id'])) {
