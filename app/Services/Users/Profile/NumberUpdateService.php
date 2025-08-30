@@ -30,7 +30,7 @@ class NumberUpdateService
         ]);
 
         //TODO dispatch Queue
-        // SendSMSOTPJob::dispatch($validated["phone_number"], $otp);
+        SendSMSOTPJob::dispatch($validated["phone_number"], $otp);
     }
 
     public function verifyNumber($validatedData)
