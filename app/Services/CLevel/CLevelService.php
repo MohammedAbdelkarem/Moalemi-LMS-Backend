@@ -29,6 +29,11 @@ class CLevelService
         return getOrPaginate($query, $data);
     }
 
+    public function getList($e_level_id)
+    {
+        return CLevel::published()->where('e_level_id', $e_level_id)->get();
+    }
+
     public function store($data)
     {
         $cLevel = CLevel::create($data);

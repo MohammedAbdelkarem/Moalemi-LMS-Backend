@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Course;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
@@ -35,12 +36,20 @@ class CourseResource extends JsonResource
             'access_type' => $this->access_type,
             'number_of_teachers' => $this->number_of_teachers,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'c_level' => CLevelResource::make($this->whenLoaded('cLevel')),
-            'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $routeName = $request->route()->getName();
+
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_COURSE_LIST:
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['c_level'] = CLevelResource::make($this->whenLoaded('cLevel'));
+                $data['subjects'] = SubjectResource::collection($this->whenLoaded('subjects'));
+            break;
+        }
 
         return $data;
     }

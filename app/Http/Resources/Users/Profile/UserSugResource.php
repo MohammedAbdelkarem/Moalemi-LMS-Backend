@@ -19,7 +19,7 @@ class UserSugResource extends JsonResource
             $phone_number = $this->phone_number ?? "";
         }
 
-        return [
+        $data =  [
             "id"            => $this->id,
             "name"          => $this->name,
             "avatar"        => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
@@ -27,5 +27,12 @@ class UserSugResource extends JsonResource
             "role_id"       => $this->role_id,
             "role_name"     => $this->role->name,
         ];
+
+        if($this->role_id == 5){
+            $data['c_level_id'] = $this->c_level_id;
+            $data['e_level_id'] = $this->e_level_id;
+        }
+
+        return $data;
     }
 }

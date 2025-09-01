@@ -6,6 +6,7 @@ use App\Constants\Resources;
 use App\Models\Responsibility;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
+use App\Enums\PublishStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -88,6 +89,6 @@ class Course extends Model implements HasMedia
     // Scopes
     public function scopePublished($query)
     {
-        return $query->where('publish_status', 'published');
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 }

@@ -64,4 +64,9 @@ class Story extends Model implements HasMedia
             ->where('end_at' , '>' , now())
             ->where('status' , MediaStatusEnum::ACTIVE);
     }
+
+    public function scopeCLevel($query)
+    {
+        return $query->where('storiable_type', CLevel::class);
+    }
 }

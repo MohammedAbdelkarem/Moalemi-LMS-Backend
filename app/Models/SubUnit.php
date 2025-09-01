@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constants\Resources;
 use App\Models\Responsibility;
+use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -98,6 +99,6 @@ class SubUnit extends Model implements HasMedia
     // Scopes
     public function scopePublished($query)
     {
-        return $query->where('publish_status', 'published');
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 }

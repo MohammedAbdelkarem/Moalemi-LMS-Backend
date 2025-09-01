@@ -115,7 +115,7 @@ class OTPService extends MainService
             $data["tokens"] = app(AuthService::class)->generateTokens($user, $loginHistory->id);
             $data["status"] = $status;
             $data["user"]   = UserSugResource::make($user);
-            if ($user->role_id != 3 && $user->role_id != 4)
+            if ($user->role_id != 3 && $user->role_id != 4 && $user->role_id != 5)
                 $data["abilities"] = $user->role->abilities()->pluck('ability_id')->toArray();
 
             return $data;

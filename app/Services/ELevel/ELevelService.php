@@ -22,6 +22,11 @@ class ELevelService
         );
     }
 
+    public function getList()
+    {
+        return ELevel::published()->get();
+    }
+
     public function show($id)
     {
         return ELevel::findByIdOrFail($id, ['cLevels' , 'responsibilities']);

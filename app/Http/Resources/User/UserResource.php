@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,10 +28,15 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
         ];
 
-        if($this->role_id == 3)
+        $routeName = $request->route()->getName();
+
+        switch ($routeName) 
         {
-            $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
+            case RouteNames::ADMIN_TEACHER_LIST:
+                $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
+            break;
         }
+
         return $data;
     }
 }

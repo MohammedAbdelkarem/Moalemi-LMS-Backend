@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Subject;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\Media\MediaResource;
@@ -40,12 +41,20 @@ class SubjectResource extends JsonResource
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'course' => CourseResource::make($this->whenLoaded('course')),
-            'units' => UnitResource::collection($this->whenLoaded('units')),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $routeName = $request->route()->getName();
+
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_SUBJECT_LIST:
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['course'] = CourseResource::make($this->whenLoaded('course'));
+                $data['units'] = UnitResource::collection($this->whenLoaded('units'));
+            break;
+        }
 
         return $data;
     }

@@ -207,12 +207,12 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->belongsTo(City::class, "city_id");
     }
 
-    public function eLevel(): BelongsTo
+    public function e_level(): BelongsTo
     {
         return $this->belongsTo(ELevel::class, "e_level_id");
     }
 
-    public function cLevel(): BelongsTo
+    public function c_level(): BelongsTo
     {
         return $this->belongsTo(CLevel::class, "c_level_id");
     }

@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\Quiz;
 use App\Constants\Resources;
 use App\Models\Responsibility;
+use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -111,12 +112,7 @@ class Lesson extends Model implements HasMedia
     // Scopes
     public function scopePublished($query)
     {
-        return $query->where('publish_status', 'published');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('publish_status', 'published');
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function scopeByPriority($query)

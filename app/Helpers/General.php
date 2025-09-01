@@ -283,3 +283,17 @@ if (!function_exists('maskString')) {
         return "$visiblePart$maskedPart";
     }
 }
+
+if (!function_exists('student_c_level_id')) {
+    function student_c_level_id()
+    {
+        return auth()->user()->c_level_id;
+    }
+}
+
+if (!function_exists('student_e_level_id')) {
+    function student_e_level_id()
+    {
+        return auth()->user()->e_level_id;
+    }
+}

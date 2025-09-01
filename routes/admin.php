@@ -152,7 +152,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
 
     //e-learning
     Route::prefix("e-levels")->controller(ELevelController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_E_LEVEL_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -160,7 +160,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("c-levels")->controller(CLevelController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_C_LEVEL_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -168,7 +168,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("courses")->controller(CourseController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_COURSE_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -177,7 +177,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("subjects")->controller(SubjectController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_SUBJECT_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -186,7 +186,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("units")->controller(UnitController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_UNIT_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -195,7 +195,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("sub-units")->controller(SubUnitController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_SUB_UNIT_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -203,7 +203,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("lessons")->controller(LessonController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_LESSON_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -249,7 +249,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
 
     // Teachers
     Route::prefix("teachers")->controller(TeacherController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_TEACHER_LIST);
         Route::post("/", "store");
         Route::get("/{id}", "show");
     });

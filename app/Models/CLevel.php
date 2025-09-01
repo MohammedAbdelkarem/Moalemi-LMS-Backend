@@ -97,6 +97,16 @@ class CLevel extends Model implements HasMedia
         return $this->hasMany(Responsibility::class, 'c_level_id');
     }
 
+    public function stories(): HasMany
+    {
+        return $this->hasMany(Story::class, 'storiable_id')->where('storiable_type', CLevel::class);
+    }
+
+    public function banners(): HasMany
+    {
+        return $this->hasMany(Banner::class, 'bannerable_id')->where('bannerable_type', CLevel::class);
+    }
+
     // Scopes
     public function scopePublished($query)
     {

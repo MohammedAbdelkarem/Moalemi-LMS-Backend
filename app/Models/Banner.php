@@ -62,4 +62,9 @@ class Banner extends Model implements HasMedia
         return $query
             ->where('status' , MediaStatusEnum::ACTIVE);
     }
+
+    public function scopeCLevel($query)
+    {
+        return $query->where('bannerable_type', CLevel::class);
+    }
 }
