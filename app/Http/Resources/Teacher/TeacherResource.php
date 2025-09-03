@@ -4,6 +4,7 @@ namespace App\Http\Resources\Teacher;
 
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
+use App\Constants\MediaCollection;
 use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Responsibility\ResponsibilityResource;
