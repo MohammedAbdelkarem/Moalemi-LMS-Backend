@@ -57,10 +57,10 @@ class HierarichyController extends Controller
         );
     }
 
-    public function getResponsibilitiesByTeacherId(Request $request , $teacher_id)
+    public function getResponsibilitiesByTeacherId(Request $request , $teacher_id, $c_level_id)
     {
         return success(
-            $this->responsibilityService->getResponsibilitiesByTeacherId($request->all() , $teacher_id , true),
+            $this->responsibilityService->getResponsibilitiesByTeacherId($request->all() , $teacher_id , true , $c_level_id),
             ApiMessages::MSG_SUCCESS,
             ResponsibilityResource::class,
             $request->has('per_page')
