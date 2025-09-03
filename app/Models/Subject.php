@@ -42,6 +42,7 @@ class Subject extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(MediaCollection::SUBJECT_COLLECTION)->singleFile();
+        $this->addMediaCollection(MediaCollection::SUBJECT_VIDEO_COLLECTION)->singleFile();
     }
 
     public function delete()
@@ -71,9 +72,19 @@ class Subject extends Model implements HasMedia
         return $this->hasMany(Unit::class, 'subject_id');
     }
 
+    public function publishedUnits(): HasMany
+    {
+        return $this->units()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
     public function subUnits(): HasMany
     {
         return $this->hasMany(SubUnit::class, 'subject_id');
+    }
+
+    public function publishedSubUnits(): HasMany
+    {
+        return $this->subUnits()->published();
     }
 
     public function lessons(): HasMany
@@ -81,14 +92,29 @@ class Subject extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'subject_id');
     }
 
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
+    }
+
     public function files()
     {
         return $this->morphMany(File::class, 'context');
     }
 
+    public function publishedFiles()
+    {
+        return $this->files()->published();
+    }
+
     public function quizzes()
     {
         return $this->morphMany(Quiz::class, 'context');
+    }
+
+    public function publishedQuizzes()
+    {
+        return $this->quizzes()->published();
     }
 
     public function responsibilities(): HasMany
@@ -100,5 +126,14 @@ class Subject extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
+    public function numberOfLessons()
+    {
+        return $this->lessons()->count();
+    }
+    public function numberOfPublishedLessons()
+    {
+        return $this->lessons()->published()->count();
     }
 }

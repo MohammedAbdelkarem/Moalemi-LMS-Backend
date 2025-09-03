@@ -39,6 +39,11 @@ class CreateSubjectRequest extends BaseApiRequest
                 'mimes:jpeg,jpg,png,webp',
                 'max:4096'
             ],
+            'video' => [
+                'sometimes',
+                'mimes:mp4,webm,mov,avi',
+                'max:4096'
+            ],
         ];
     }
 }

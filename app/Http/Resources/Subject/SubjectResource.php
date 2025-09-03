@@ -5,12 +5,16 @@ namespace App\Http\Resources\Subject;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\File\FileResource;
+use App\Http\Resources\Quiz\QuizResource;
 use App\Http\Resources\Unit\UnitResource;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
 use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\ELevel\ELevelResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class SubjectResource extends JsonResource
 {
@@ -28,20 +32,15 @@ class SubjectResource extends JsonResource
             'course_id' => $this->course_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'publish_status' => $this->publish_status,
-            'number_of_contents' => $this->number_of_contents,
             'number_of_published_contents' => $this->number_of_published_contents,
             'duration' => $this->duration,
             'price' => $this->price,
-            'number_of_purchased_students' => $this->number_of_purchased_students,
             'access_type' => $this->access_type,
-            'number_of_teachers' => $this->number_of_teachers,
-            'number_of_quizzes' => $this->number_of_quizzes,
-            'number_of_files' => $this->number_of_files,
+            'number_of_published_lessons' => $this->numberOfPublishedLessons() ?? 0,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
-            // 'responsibilities' => $this->whenLoaded('responsibilities'),
+            'video' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_VIDEO_COLLECTION)),
         ];
 
         $routeName = $request->route()->getName();
@@ -49,10 +48,21 @@ class SubjectResource extends JsonResource
         switch ($routeName) 
         {
             case RouteNames::ADMIN_SUBJECT_LIST:
+                $data['number_of_quizzes'] = $this->number_of_quizzes;
+                $data['number_of_files'] = $this->number_of_files;
+                $data['number_of_purchased_students'] = $this->number_of_purchased_students;
+                $data['publish_status'] = $this->publish_status;
+                $data['number_of_contents'] = $this->number_of_contents;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['course'] = CourseResource::make($this->whenLoaded('course'));
                 $data['units'] = UnitResource::collection($this->whenLoaded('units'));
+            break;
+            case RouteNames::MOBILE_HIERARICHY_SUBJECT:
+                $data['teachers'] = UserResource::collection($this->whenLoaded('responsibilities')->pluck('teacher')->unique('id')->values());
+                $data['units'] = UnitResource::collection($this->whenLoaded('publishedUnits'));
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
             break;
         }
 

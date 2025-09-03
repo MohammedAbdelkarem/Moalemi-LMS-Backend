@@ -37,6 +37,7 @@ class TeacherService extends MainService
             'role_id' => 3, // Teacher role
             'name' => $data['name'],
             'phone_number' => $data['phone_number'],
+            'bio' => $data['bio'],
             'email' => $data['email'] ?? null,
             'birth_date' => $data['birth_date'] ?? null,
             'is_male' => $data['is_male'] ?? null,

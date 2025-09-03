@@ -3,7 +3,10 @@
 namespace App\Http\Resources\SubUnit;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\File\FileResource;
+use App\Http\Resources\Quiz\QuizResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
@@ -31,22 +34,32 @@ class SubUnitResource extends JsonResource
             'unit_id' => $this->unit_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'publish_status' => $this->publish_status,
-            'number_of_contents' => $this->number_of_contents,
             'number_of_published_contents' => $this->number_of_published_contents,
             'duration' => $this->duration,
-            'number_of_lessons' => $this->number_of_lessons,
-            'number_of_quizzes' => $this->number_of_quizzes,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_files' => $this->number_of_files,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUB_UNIT_COLLECTION)),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'unit' => UnitResource::make($this->whenLoaded('unit')),
-            'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
-            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $routeName = $request->route()->getName();
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_SUB_UNIT_LIST:
+                $data['number_of_quizzes'] = $this->number_of_quizzes;
+                $data['number_of_files'] = $this->number_of_files;
+                $data['publish_status'] = $this->publish_status;
+                $data['number_of_contents'] = $this->number_of_contents;
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['unit'] = UnitResource::make($this->whenLoaded('unit'));
+                $data['lessons'] = LessonResource::collection($this->whenLoaded('lessons'));
+            break;
+            case RouteNames::MOBILE_HIERARICHY_SUB_UNIT:
+                $data['lessons'] = LessonResource::collection($this->whenLoaded('publishedLessons'));
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+            break;
+        }
 
         return $data;
     }

@@ -52,6 +52,7 @@ class StudentHomeService
                 
 
         return [
+            'profile' => UserResource::make($profile),
             'stories' => StoryResource::collection($stories),
             'banners' => BannerResource::collection($banners),
             'courses' => CourseResource::collection($courses),

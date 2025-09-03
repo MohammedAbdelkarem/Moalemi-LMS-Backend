@@ -3,7 +3,11 @@
 namespace App\Http\Resources\Unit;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\File\FileResource;
+use App\Http\Resources\Quiz\QuizResource;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
 use App\Http\Resources\Course\CourseResource;
@@ -29,25 +33,37 @@ class UnitResource extends JsonResource
             'subject_id' => $this->subject_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'publish_status' => $this->publish_status,
-            'number_of_contents' => $this->number_of_contents,
             'number_of_published_contents' => $this->number_of_published_contents,
             'duration' => $this->duration,
-            'number_of_lessons' => $this->number_of_lessons,
             'price' => $this->price,
-            'number_of_purchased_students' => $this->number_of_purchased_students,
             'access_type' => $this->access_type,
-            'number_of_quizzes' => $this->number_of_quizzes,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_files' => $this->number_of_files,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::UNIT_COLLECTION)),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'subject' => SubjectResource::make($this->whenLoaded('subject')),
-            'sub_units' => SubUnitResource::collection($this->whenLoaded('subUnits')),
-            // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $routeName = $request->route()->getName();
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_UNIT_LIST:
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['publish_status'] = $this->publish_status;
+                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_quizzes'] = $this->number_of_quizzes;
+                $data['number_of_files'] = $this->number_of_files;
+                $data['subject'] = SubjectResource::make($this->whenLoaded('subject'));
+                $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('subUnits'));
+            break;
+            case RouteNames::MOBILE_HIERARICHY_UNIT:
+                $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('publishedSubUnits'));
+            break;
+            case RouteNames::MOBILE_HIERARICHY_UNIT_DETAILS:
+                $data['teacher'] = UserResource::make($this->whenLoaded('responsibilities')->pluck('teacher')->first());
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+            break;
+        }
 
         return $data;
     }

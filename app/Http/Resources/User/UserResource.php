@@ -33,7 +33,12 @@ class UserResource extends JsonResource
         switch ($routeName) 
         {
             case RouteNames::ADMIN_TEACHER_LIST:
+                $data['bio'] = $this->bio;
                 $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
+            break;
+            case RouteNames::STUDENT_HOME:
+                $data['c_level_name'] = $this->whenLoaded('c_level')->name;
+                $data['e_level_name'] = $this->whenLoaded('e_level')->name;
             break;
         }
 

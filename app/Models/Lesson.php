@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -42,7 +43,7 @@ class Lesson extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(MediaCollection::LESSON_COLLECTION);
-        $this->addMediaCollection(MediaCollection::LESSON_VIDEO_COLLECTION)->singleFile();
+        $this->addMediaCollection(MediaCollection::LESSON_VIDEO_COLLECTION);
     }
 
     public function delete()
@@ -118,5 +119,15 @@ class Lesson extends Model implements HasMedia
     public function scopeByPriority($query)
     {
         return $query->orderBy('priority', 'asc');
+    }
+
+    public function publishedFiles(): MorphMany
+    {
+        return $this->files()->published();
+    }
+
+    public function publishedQuizzes(): MorphMany
+    {
+        return $this->quizzes()->published();
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Subject;
 use App\Models\Unit;
 use App\Models\SubUnit;
 use App\Models\Lesson;
+use App\Enums\PublishStatusEnum;
 
 class Responsibility extends Model
 {
@@ -60,5 +61,46 @@ class Responsibility extends Model
     public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class, 'lesson_id');
+    }
+
+    // Scopes
+    public function scopePublished($query)
+    {
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
+    public function publishedELevel(): BelongsTo
+    {
+        return $this->eLevel()->published();
+    }
+
+    public function publishedCLevel(): BelongsTo
+    {
+        return $this->cLevel()->published();
+    }
+
+    public function publishedCourse(): BelongsTo
+    {
+        return $this->course()->published();
+    }
+
+    public function publishedSubject(): BelongsTo
+    {
+        return $this->subject()->published();
+    }
+
+    public function publishedUnit(): BelongsTo
+    {
+        return $this->unit()->published();
+    }
+
+    public function publishedSubUnit(): BelongsTo
+    {
+        return $this->subUnit()->published();
+    }
+
+    public function publishedLesson(): BelongsTo
+    {
+        return $this->lesson()->published();
     }
 }

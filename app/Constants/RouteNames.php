@@ -39,5 +39,13 @@ final class RouteNames
     const ADMIN_UNIT_LIST              = 'admin.unit.list';
     const ADMIN_SUB_UNIT_LIST          = 'admin.sub-unit.list';
     const ADMIN_LESSON_LIST            = 'admin.lesson.list';
+    const ADMIN_FILE_LIST              = 'admin.file.list';
+    const ADMIN_QUIZ_LIST              = 'admin.quiz.list';
+    const ADMIN_QUIZ_SHOW              = 'admin.quiz.show';
     const ADMIN_TEACHER_LIST           = 'admin.teacher.list';
+    const MOBILE_HIERARICHY_SUBJECT    = 'mobile.hierarichy.subject';
+    const MOBILE_HIERARICHY_UNIT       = 'mobile.hierarichy.unit';
+    const MOBILE_HIERARICHY_SUB_UNIT   = 'mobile.hierarichy.sub-unit';
+    const MOBILE_HIERARICHY_UNIT_DETAILS = 'mobile.hierarichy.unit-details';
+    const MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID = 'mobile.hierarichy.responsibilities-by-teacher';
 }

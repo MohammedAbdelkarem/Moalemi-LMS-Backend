@@ -13,6 +13,7 @@ final class MediaCollection
     const C_LEVEL_COLLECTION            = 'c_level_collection';
     const COURSE_COLLECTION             = 'course_collection';
     const SUBJECT_COLLECTION            = 'subject_collection';
+    const SUBJECT_VIDEO_COLLECTION      = 'subject_video_collection';
     const UNIT_COLLECTION               = 'unit_collection';
     const SUB_UNIT_COLLECTION           = 'sub_unit_collection';
     const LESSON_COLLECTION             = 'lesson_collection';

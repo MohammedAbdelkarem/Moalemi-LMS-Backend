@@ -14,24 +14,24 @@ use App\Http\Controllers\System\Info\ContactUsController;
 use App\Http\Controllers\System\Info\FaqCategoryController;
 use App\Http\Controllers\Administration\AdminHomeController;
 use App\Http\Controllers\Administration\Auth\AuthController;
+use App\Http\Controllers\Administration\File\FileController;
+use App\Http\Controllers\Administration\Quiz\QuizController;
+use App\Http\Controllers\Administration\Unit\UnitController;
 use App\Http\Controllers\Administration\Log\BanLogController;
 use App\Http\Controllers\System\Info\PrivacyPolicyController;
-use App\Http\Controllers\Administration\ELevel\ELevelController;
 use App\Http\Controllers\Administration\CLevel\CLevelController;
 use App\Http\Controllers\Administration\Course\CourseController;
-use App\Http\Controllers\Administration\Subject\SubjectController;
-use App\Http\Controllers\Administration\Unit\UnitController;
-use App\Http\Controllers\Administration\SubUnit\SubUnitController;
+use App\Http\Controllers\Administration\ELevel\ELevelController;
 use App\Http\Controllers\Administration\Lesson\LessonController;
-use App\Http\Controllers\Administration\File\FileController;
+use App\Http\Controllers\Administration\Subject\SubjectController;
+use App\Http\Controllers\Administration\SubUnit\SubUnitController;
+use App\Http\Controllers\Administration\Teacher\TeacherController;
+use App\Http\Controllers\Administration\Question\QuestionController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
+use App\Http\Controllers\Administration\Responsibility\ResponsibilityController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
-use App\Http\Controllers\Administration\Question\QuestionController;
-use App\Http\Controllers\Administration\Quiz\QuizController;
-use App\Http\Controllers\Administration\Teacher\TeacherController;
-use App\Http\Controllers\Adminstration\Responsibility\ResponsibilityController;
 
 
 
@@ -205,6 +205,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix("lessons")->controller(LessonController::class)->group(function () {
         Route::get("/", "index")->name(RouteNames::ADMIN_LESSON_LIST);
         Route::post("/", "store");
+        Route::post("/{id}/upload-videos", "uploadVideos");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
@@ -212,7 +213,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     });
 
     Route::prefix("files")->controller(FileController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_FILE_LIST);
         Route::post("/", "store");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -232,9 +233,9 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
 
     // Quizzes
     Route::prefix("quizzes")->controller(QuizController::class)->group(function () {
-        Route::get("/", "index");
+        Route::get("/", "index")->name(RouteNames::ADMIN_QUIZ_LIST);
         Route::post("/", "store");
-        Route::get("/{id}", "show");
+        Route::get("/{id}", "show")->name(RouteNames::ADMIN_QUIZ_SHOW);
         Route::post("/{id}/update", "update");
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");

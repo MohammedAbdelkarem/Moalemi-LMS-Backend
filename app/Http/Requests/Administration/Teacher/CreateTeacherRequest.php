@@ -28,6 +28,7 @@ class CreateTeacherRequest extends BaseApiRequest
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'phone_number' => ['required', 'string', Rule::unique('users', 'phone_number')->where('role_id', 3)],
             'email' => ['sometimes', 'email', 'max:255', 'unique:users,email'],
+            'bio' => ['sometimes', 'max:6000'],
             'birth_date' => ['sometimes', 'date', 'before:today'],
             'is_male' => ['sometimes', 'boolean'],
             'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],

@@ -3,15 +3,18 @@
 namespace App\Http\Resources\Lesson;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
-use App\Http\Resources\ELevel\ELevelResource;
-use App\Http\Resources\CLevel\CLevelResource;
-use App\Http\Resources\Course\CourseResource;
-use App\Http\Resources\Subject\SubjectResource;
+use App\Http\Resources\File\FileResource;
+use App\Http\Resources\Quiz\QuizResource;
 use App\Http\Resources\Unit\UnitResource;
-use App\Http\Resources\SubUnit\SubUnitResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\Video\VideoResource;
+use App\Http\Resources\CLevel\CLevelResource;
+use App\Http\Resources\Course\CourseResource;
+use App\Http\Resources\ELevel\ELevelResource;
+use App\Http\Resources\Subject\SubjectResource;
+use App\Http\Resources\SubUnit\SubUnitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonResource extends JsonResource
@@ -33,22 +36,33 @@ class LessonResource extends JsonResource
             'sub_unit_id' => $this->sub_unit_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'publish_status' => $this->publish_status,
             'duration' => $this->duration,
             'priority' => $this->priority,
-            'number_of_quizzes' => $this->number_of_quizzes,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_files' => $this->number_of_files,
             'number_of_published_files' => $this->number_of_published_files,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),
-            'video' => MediaResource::make($this->getFirstMedia(MediaCollection::LESSON_VIDEO_COLLECTION)),
-            'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
-            'quizzes' => $this->whenLoaded('quizzes'),
-            'files' => $this->whenLoaded('files'),
+            'videos' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $routeName = $request->route()->getName();
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_LESSON_LIST:
+                $data['publish_status'] = $this->publish_status;
+                $data['number_of_quizzes'] = $this->number_of_quizzes;
+                $data['number_of_files'] = $this->number_of_files;
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['quizzes'] = $this->whenLoaded('quizzes');
+                $data['files'] = $this->whenLoaded('files');
+                $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('subUnit'));
+            break;
+            case RouteNames::MOBILE_HIERARICHY_SUB_UNIT:
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+            break;
+        }
 
         return $data;
     }

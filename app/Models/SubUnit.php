@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SubUnit extends Model implements HasMedia
@@ -100,5 +101,20 @@ class SubUnit extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
+    }
+    
+    public function publishedFiles(): MorphMany
+    {
+        return $this->files()->published();
+    }
+
+    public function publishedQuizzes(): MorphMany
+    {
+        return $this->quizzes()->published();
     }
 }

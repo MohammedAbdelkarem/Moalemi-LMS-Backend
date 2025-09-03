@@ -46,6 +46,9 @@ class SubjectService
         if (isset($data['image'])) {
             uploadFileOnMedia($data['image'], $subject, MediaCollection::SUBJECT_COLLECTION);
         }
+        if (isset($data['video'])) {
+            uploadFileOnMedia($data['video'], $subject, MediaCollection::SUBJECT_VIDEO_COLLECTION);
+        }
 
         $subject->save();
 

@@ -26,15 +26,10 @@ class CourseResource extends JsonResource
             'c_level_id' => $this->c_level_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'publish_status' => $this->publish_status,
-            'number_of_contents' => $this->number_of_contents,
             'number_of_published_contents' => $this->number_of_published_contents,
             'duration' => $this->duration,
-            'number_of_lessons' => $this->number_of_lessons,
             'price' => $this->price,
-            'number_of_purchased_students' => $this->number_of_purchased_students,
             'access_type' => $this->access_type,
-            'number_of_teachers' => $this->number_of_teachers,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
@@ -44,6 +39,9 @@ class CourseResource extends JsonResource
         switch ($routeName) 
         {
             case RouteNames::ADMIN_COURSE_LIST:
+                $data['publish_status'] = $this->publish_status;
+                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_purchased_students'] = $this->number_of_purchased_students;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['c_level'] = CLevelResource::make($this->whenLoaded('cLevel'));

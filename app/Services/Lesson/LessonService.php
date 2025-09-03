@@ -64,9 +64,9 @@ class LessonService
         }
 
         // Handle single video and calculate duration
-        if (isset($data['video'])) {
+        if (isset($data['videos'])) {
             // Upload video first
-            uploadFileOnMedia($data['video'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);
+            uploadFilesOnMedia($data['videos'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);
             
             $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
         }
@@ -75,6 +75,18 @@ class LessonService
 
         // Update parent SubUnit numbers
         $this->contextService->updateParentNumberOfContents($lesson, '+');
+    }
+
+    public function uploadVideos($data, $id)
+    {
+        $lesson = Lesson::findByIdOrFail($id);
+
+        $file['image'] = $data['video'];
+        $file['quality'] = $data['quality'];
+
+        uploadFileOnMedia($file, $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);
+
+        $lesson->save();
     }
 
     public function update($data, $id)

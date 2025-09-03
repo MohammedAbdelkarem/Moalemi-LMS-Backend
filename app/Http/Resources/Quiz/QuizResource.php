@@ -3,9 +3,10 @@
 namespace App\Http\Resources\Quiz;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Question\QuestionResource;
+use App\Constants\RouteNames;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Question\QuestionResource;
 
 class QuizResource extends JsonResource
 {
@@ -16,7 +17,7 @@ class QuizResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'title' => $this->title,
             'context_id' => $this->context_id,
@@ -26,11 +27,21 @@ class QuizResource extends JsonResource
             'pass_degree' => $this->pass_degree,
             'number_of_questions' => $this->number_of_questions,
             'priority' => $this->priority,
-            'publish_status' => $this->publish_status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => UserResource::make($this->whenLoaded('createdBy')),
-            'questions' => QuestionResource::collection($this->whenLoaded('questions')),
         ];
+
+        $routeName = $request->route()->getName();
+        switch ($routeName) 
+        {
+            case RouteNames::ADMIN_QUIZ_SHOW:
+                $data['publish_status'] = $this->publish_status;
+                $data['created_at'] = $this->created_at;
+                $data['updated_at'] = $this->updated_at;
+                $data['created_by'] = UserResource::make($this->whenLoaded('createdBy'));
+                $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
+            break;
+        }
+
+
+        return $data;
     }
 }

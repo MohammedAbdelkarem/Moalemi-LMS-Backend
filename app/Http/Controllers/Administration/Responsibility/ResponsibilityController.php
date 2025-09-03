@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Adminstration\Responsibility;
+namespace App\Http\Controllers\Administration\Responsibility;
 
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;

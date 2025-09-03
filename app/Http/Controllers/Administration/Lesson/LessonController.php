@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Administration\Lesson;
 
+use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Lesson\LessonService;
-use Illuminate\Http\Request;
 use App\Http\Resources\Lesson\LessonResource;
+use App\Http\Requests\Base\ChangePriorityRequest;
 use App\Http\Requests\Lesson\CreateLessonRequest;
 use App\Http\Requests\Lesson\UpdateLessonRequest;
-use App\Http\Requests\Base\ChangePriorityRequest;
+use App\Http\Requests\Lesson\UploadLessonVideosRequest;
 
 class LessonController extends Controller
 {
@@ -55,6 +56,14 @@ class LessonController extends Controller
     {
         return success(
             $this->lessonService->changePublishStatus($id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function uploadVideos(UploadLessonVideosRequest $request, $id)
+    {
+        return success(
+            $this->lessonService->uploadVideos($request->validated(), $id),
             ApiMessages::MSG_SUCCESS
         );
     }

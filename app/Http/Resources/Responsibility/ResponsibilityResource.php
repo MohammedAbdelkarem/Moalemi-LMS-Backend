@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Responsibility;
 
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\User\UserResource;
@@ -45,6 +46,19 @@ class ResponsibilityResource extends JsonResource
             'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'lesson' => LessonResource::make($this->whenLoaded('lesson')),
         ];
+
+        $routeName = $request->route()->getName();
+        switch ($routeName) {
+            case RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID:
+                $data['e_level'] = ELevelResource::make($this->whenLoaded('publishedELevel'));
+                $data['c_level'] = CLevelResource::make($this->whenLoaded('publishedCLevel'));
+                $data['course'] = CourseResource::make($this->whenLoaded('publishedCourse'));
+                $data['subject'] = SubjectResource::make($this->whenLoaded('publishedSubject'));
+                $data['unit'] = UnitResource::make($this->whenLoaded('publishedUnit'));
+                $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('publishedSubUnit'));
+                $data['lesson'] = LessonResource::make($this->whenLoaded('publishedLesson'));
+            break;
+        }
 
 
 

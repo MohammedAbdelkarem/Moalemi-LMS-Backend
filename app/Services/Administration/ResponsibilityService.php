@@ -196,11 +196,29 @@ class ResponsibilityService extends MainService
         return $relationByContext[$context_type] ?? null;
     }
 
-    public function getResponsibilitiesByTeacherId($data, $teacher_id)
+    private function relationPublishedByContext($context_type)
+    {
+        $relationPublishedByContext = [
+            LevelEnum::E_LEVEL => 'publishedELevel',
+            LevelEnum::C_LEVEL => 'publishedCLevel',
+            LevelEnum::COURSE => 'publishedCourse',
+            LevelEnum::SUBJECT => 'publishedSubject',
+            LevelEnum::UNIT => 'publishedUnit',
+            LevelEnum::SUB_UNIT => 'publishedSubUnit',
+            LevelEnum::LESSON => 'publishedLesson',
+        ];
+
+        return $relationPublishedByContext[$context_type] ?? null;
+    }
+
+    public function getResponsibilitiesByTeacherId($data, $teacher_id , $published = false)
     {
         $column = $this->getContextField($data['context_type']);
 
-        $relationByContext = $this->relationByContext($data['context_type']);
+        $relationByContext = $published 
+                ? $this->relationPublishedByContext($data['context_type']) 
+                : $this->relationByContext($data['context_type']);
+
         
         // First get all responsibilities for the teacher
         $query = Responsibility::where('teacher_id', $teacher_id)
