@@ -36,5 +36,6 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/sub-unit/{sub_unit_id}', 'getSubUnit')->name(RouteNames::MOBILE_HIERARICHY_SUB_UNIT);
         Route::get('/unit-details/{unit_id}', 'getUnitDetails')->name(RouteNames::MOBILE_HIERARICHY_UNIT_DETAILS);
         Route::get('/responsibilities-by-teacher/{teacher_id}', 'getResponsibilitiesByTeacherId')->name(RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID);
+        Route::post('/lesson/{lesson_id}/mark-watched', 'markLessonAsWatched')->name(RouteNames::MOBILE_HIERARICHY_MARK_LESSON_WATCHED);
     });
 });

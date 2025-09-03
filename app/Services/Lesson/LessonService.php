@@ -4,8 +4,10 @@ namespace App\Services\Lesson;
 
 use App\Constants\MediaCollection;
 use App\Models\Lesson;
+use App\Models\LessonWatched;
 use App\Services\Base\ContextService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class LessonService
 {
@@ -121,5 +123,27 @@ class LessonService
     public function changePriority($contextsData)
     {
         $this->contextService->changeContextsPriority($contextsData , Lesson::class);
+    }
+
+    public function markAsWatched($lesson_id)
+    {
+        $user_id = Auth::id();
+        
+        // Check if the lesson exists
+        Lesson::findByIdOrFail($lesson_id);
+        
+        // Check if already watched to avoid duplicates
+        $existingRecord = LessonWatched::where('lesson_id', $lesson_id)
+            ->where('user_id', $user_id)
+            ->first();
+            
+        if (!$existingRecord) {
+            LessonWatched::create([
+                'lesson_id' => $lesson_id,
+                'user_id' => $user_id
+            ]);
+        }
+        
+        return true;
     }
 }

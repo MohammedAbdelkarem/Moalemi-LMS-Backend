@@ -11,12 +11,14 @@ use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use App\Services\Administration\ResponsibilityService;
 use App\Http\Resources\Responsibility\ResponsibilityResource;
+use App\Services\Lesson\LessonService;
 
 class HierarichyController extends Controller
 {
     public function __construct(
         protected HierarichyService $hierarichyService,
-        protected ResponsibilityService $responsibilityService
+        protected ResponsibilityService $responsibilityService,
+        protected LessonService $lessonService
     ) {}
 
     public function getSubject($subject_id)
@@ -62,6 +64,14 @@ class HierarichyController extends Controller
             ApiMessages::MSG_SUCCESS,
             ResponsibilityResource::class,
             $request->has('per_page')
+        );
+    }
+
+    public function markLessonAsWatched($lesson_id)
+    {
+        return success(
+            $this->lessonService->markAsWatched($lesson_id),
+            ApiMessages::MSG_SUCCESS
         );
     }
 }

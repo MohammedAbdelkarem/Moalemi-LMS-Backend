@@ -11,11 +11,12 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\SubUnit;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Story\StoryResource;
 use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\Subject\SubjectResource;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Teacher\TeacherResource;
 
 /**
  * Class StudentHomeService.
@@ -58,7 +59,7 @@ class StudentHomeService
             'courses' => CourseResource::collection($courses),
             'subjects' => SubjectResource::collection($subjects),
             'latestLessons' => $latestLessons,
-            'teachers' => UserResource::collection($teachers),
+            'teachers' => TeacherResource::collection($teachers),
             'leaderBoard' => $leaderBoard,
             'quizzes' => $quizzes,
         ];
