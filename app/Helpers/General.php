@@ -18,6 +18,7 @@ use App\Enums\LevelEnum;
 use App\Models\Question;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
+use App\Models\UnlockedContext;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -295,5 +296,86 @@ if (!function_exists('student_e_level_id')) {
     function student_e_level_id()
     {
         return auth()->user()->e_level_id;
+    }
+}
+
+if (!function_exists('watched')) {
+    function watched($lesson)
+    {
+        return $lesson->viewers()->where('student_id', auth()->id())->exists();
+    }
+}
+
+if (!function_exists('generateUniqueCoupon')) {
+    function generateUniqueCoupon(int $length = 10): string
+    {
+        do {
+            $coupon = generateRandomCoupon($length);
+        } while (\App\Models\Coupon::where('coupon', $coupon)->exists());
+
+        return $coupon;
+    }
+}
+
+if (!function_exists('generateRandomCoupon')) {
+    function generateRandomCoupon(int $length = 10): string
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $coupon = '';
+        
+        for ($i = 0; $i < $length; $i++) {
+            $coupon .= $characters[random_int(0, strlen($characters) - 1)];
+        }
+        
+        return $coupon;
+    }
+}
+
+if (!function_exists('is_purchased')) {
+    function is_purchased($context_id , $context_type)
+    {
+        $model = getModel($context_type);
+        $context = $model::find($context_id);
+
+        if($model == Lesson::class || $model == SubUnit::class)
+            return UnlockedContext::where('user_id', auth()->id())
+                    ->where('context_type' , Unit::class)
+                    ->where('context_id' , $context->unit_id)
+                    ->exists()
+                    || UnlockedContext::where('user_id', auth()->id())
+                    ->where('context_type' , Course::class)
+                    ->where('context_id' , $context->course_id)
+                    ->exists()
+                    || UnlockedContext::where('user_id', auth()->id())
+                    ->where('context_type' , Subject::class)
+                    ->where('context_id' , $context->subject_id)
+                    ->exists();
+        elseif($model == Unit::class)
+            return UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Subject::class)
+                ->where('context_id' , $context->subject_id)
+                ->exists()
+                || UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Course::class)
+                ->where('context_id' , $context->course_id)
+                ->exists()
+                || UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Unit::class)
+                ->where('context_id' , $context->id)
+                ->exists();
+        elseif($model == Subject::class)
+            return UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Course::class)
+                ->where('context_id' , $context->course_id)
+                ->exists()
+                || UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Subject::class)
+                ->where('context_id' , $context->id)
+                ->exists();
+        elseif($model == Course::class)
+            return UnlockedContext::where('user_id', auth()->id())
+                ->where('context_type' , Course::class)
+                ->where('context_id' , $context->id)
+                ->exists();
     }
 }

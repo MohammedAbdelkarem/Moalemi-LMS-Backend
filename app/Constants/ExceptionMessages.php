@@ -45,4 +45,8 @@ final class ExceptionMessages
     const MSG_CAN_NOT_DELETE_CUZ_HAS_RELATED_ITEMS               = 'exception_messages.can_not_delete_cuz_has_related_items';
     const MSG_QUESTION_ANSWERS_IS_CORRECT_ONLY_ONE               = 'exception_messages.question_answers_is_correct_only_one';
     const MSG_QUESTION_ANSWERS_IS_CORRECT_MORE_THAN_ONE          = 'exception_messages.question_answers_is_correct_more_than_one';
+    const MSG_CANNOT_CREATE_CUZ_CONTEXT_IS_FREE                  = 'exception_messages.cannot_create_cuz_context_is_free';
+    const MSG_CUPON_NOT_FOUND                                    = 'exception_messages.cupon_not_found';
+    const MSG_INSUFFICIENT_BALANCE                                = 'exception_messages.insufficient_balance';
+    const MSG_CONTEXT_ALREADY_UNLOCKED                            = 'exception_messages.context_already_unlocked';
 }

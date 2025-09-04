@@ -42,8 +42,9 @@ class UserProfileService extends MainService
         $end_date,
         $role_id
     ) {
+        // dd($role_id);
         return User::query()
-            ->whereIn('role_id' , [3,4])
+            ->whereIn('role_id' , [3,4,5])
             ->when($role_id, function ($query) use ($role_id) {
                 $query->where('role_id', $role_id);
             })

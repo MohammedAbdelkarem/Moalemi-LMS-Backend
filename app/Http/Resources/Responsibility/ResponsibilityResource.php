@@ -14,6 +14,7 @@ use App\Http\Resources\ELevel\ELevelResource;
 use App\Http\Resources\Lesson\LessonResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
+use App\Http\Resources\Teacher\TeacherResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ResponsibilityResource extends JsonResource

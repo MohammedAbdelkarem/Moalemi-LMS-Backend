@@ -30,6 +30,9 @@ class UserResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
+        if(auth()->user()->isStudent())
+            $data['balance'] = $this->balance;
+
         switch ($routeName) 
         {
             case RouteNames::ADMIN_TEACHER_LIST:

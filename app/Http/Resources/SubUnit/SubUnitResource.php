@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\SubUnit;
 
+use App\Enums\LevelEnum;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
@@ -40,6 +41,10 @@ class SubUnitResource extends JsonResource
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUB_UNIT_COLLECTION)),
         ];
+
+        if(auth()->user()->isStudent())
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::SUB_UNIT);
+
 
         $routeName = $request->route()->getName();
         switch ($routeName) 

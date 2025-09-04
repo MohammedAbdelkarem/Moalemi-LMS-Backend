@@ -28,6 +28,9 @@ class UserSugResource extends JsonResource
             "role_name"     => $this->role->name,
         ];
 
+        if(auth()->user()->isStudent())
+            $data['balance'] = $this->balance;
+
         if($this->role_id == 5){
             $data['c_level_id'] = $this->c_level_id;
             $data['e_level_id'] = $this->e_level_id;

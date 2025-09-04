@@ -213,6 +213,7 @@ class ResponsibilityService extends MainService
 
     public function getResponsibilitiesByTeacherId($data, $teacher_id , $published = false , $clevel_id = null)
     {
+        // dd($clevel_id);
         $column = $this->getContextField($data['context_type']);
 
         $relationByContext = $published 
@@ -222,7 +223,7 @@ class ResponsibilityService extends MainService
         
         // First get all responsibilities for the teacher
         $query = Responsibility::where('teacher_id', $teacher_id)
-            ->when($clevel_id, function($query) use ($clevel_id) {
+            ->when($clevel_id != null, function($query) use ($clevel_id) {
                 $query->where('c_level_id', $clevel_id);
             })
             ->whereNotNull($column)
@@ -243,4 +244,5 @@ class ResponsibilityService extends MainService
             $data
         );
     }
+
 }

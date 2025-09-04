@@ -5,6 +5,7 @@ namespace App\Http\Resources\Course;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Enums\LevelEnum;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
 use App\Http\Resources\ELevel\ELevelResource;
@@ -33,6 +34,9 @@ class CourseResource extends JsonResource
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        if(auth()->user()->isStudent())
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::COURSE);
 
         $routeName = $request->route()->getName();
 

@@ -30,6 +30,7 @@ use App\Http\Controllers\Administration\Question\QuestionController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
+use App\Http\Controllers\Administration\Transaction\TransactionController;
 use App\Http\Controllers\Administration\Responsibility\ResponsibilityController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
 
@@ -246,6 +247,12 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::post("/attach", "attach");
         Route::post("/detach", "detach");
         Route::get('/teacher/{id}' , 'getResponsibilitiesByTeacherId');
+    });
+
+    // Transactions
+    Route::prefix("transactions")->controller(TransactionController::class)->group(function () {
+        Route::post("/create-student-cupon", "createStudentCupon");
+        Route::post("/create-context-cupon", "createContextCupon");
     });
 
     // Teachers

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Subject;
 
+use App\Enums\LevelEnum;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
@@ -42,6 +43,9 @@ class SubjectResource extends JsonResource
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
             'video' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_VIDEO_COLLECTION)),
         ];
+
+        if(auth()->user()->isStudent())
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::SUBJECT);
 
         $routeName = $request->route()->getName();
 

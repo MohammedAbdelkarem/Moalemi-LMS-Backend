@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Constants\Resources;
 use App\Models\Responsibility;
+use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
-use App\Enums\PublishStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model implements HasMedia
@@ -84,6 +85,16 @@ class Course extends Model implements HasMedia
     public function responsibilities(): HasMany
     {
         return $this->hasMany(Responsibility::class, 'course_id');
+    }
+
+    public function unlockedContexts(): MorphMany
+    {
+        return $this->morphMany(UnlockedContext::class, 'context');
+    }
+
+    public function coupons(): MorphMany
+    {
+        return $this->morphMany(Coupon::class, 'context');
     }
 
     // Scopes

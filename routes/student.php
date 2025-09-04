@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\HomeController;
 use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\HierarichyController;
+use App\Http\Controllers\Mobile\Transaction\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,14 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/sub-unit/{sub_unit_id}', 'getSubUnit')->name(RouteNames::MOBILE_HIERARICHY_SUB_UNIT);
         Route::get('/unit-details/{unit_id}', 'getUnitDetails')->name(RouteNames::MOBILE_HIERARICHY_UNIT_DETAILS);
         Route::get('/responsibilities-by-teacher/{teacher_id}/c-level/{c_level_id}', 'getResponsibilitiesByTeacherId')->name(RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID);
-        Route::post('/lesson/{lesson_id}/mark-watched', 'markLessonAsWatched')->name(RouteNames::MOBILE_HIERARICHY_MARK_LESSON_WATCHED);
+        Route::get('/teacher-details/{teacher_id}', 'getTeacherDetails')->name(RouteNames::MOBILE_HIERARICHY_TEACHER_DETAILS);
+        Route::post('/lesson/{lesson_id}/watch', 'recordLessonView');
+    });
+
+    // Transactions
+    Route::prefix('transactions')->controller(TransactionController::class)->group(function () {
+        Route::post('/use-student-cupon', 'useStudentCupon');
+        Route::post('/use-context-cupon', 'useContextCupon');
+        Route::post('/direct-purchase', 'directPurchase');
     });
 });

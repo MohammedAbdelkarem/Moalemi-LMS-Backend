@@ -41,4 +41,6 @@ final class Resources
     const FILES                     = 'resources.files';
     const QUESTION                  = 'resources.question';
     const QUESTIONS                 = 'resources.questions';
+    const COUPON                    = 'resources.coupon';
+    const COUPONS                   = 'resources.coupons';
 }

@@ -45,4 +45,6 @@ return [
     'files'                      => 'Files',
     'question'                  => 'Question',
     'questions'                 => 'Questions',
+    'coupon'                    => 'Coupon',
+    'coupons'                   => 'Coupons',
 ];

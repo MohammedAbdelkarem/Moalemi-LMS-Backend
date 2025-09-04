@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lesson_watched', function (Blueprint $table) {
+        Schema::create('lesson_student', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lesson_id')->constrained('lessons')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
+            $table->timestamp('watched_at')->useCurrent();
             $table->timestamps();
             
-            // Ensure unique combination of lesson_id and user_id
-            $table->unique(['lesson_id', 'user_id']);
+            // Ensure unique combination of lesson and student
+            $table->unique(['lesson_id', 'student_id']);
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lesson_watched');
+        Schema::dropIfExists('lesson_student');
     }
 };

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->morphs('context'); // This creates context_id and context_type columns
-            $table->integer('priority')->default(0);
+            $table->integer('priority')->default(1);
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->timestamps();
         });

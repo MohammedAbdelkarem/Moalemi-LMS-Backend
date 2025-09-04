@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Lesson;
 
+use App\Enums\LevelEnum;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
@@ -44,6 +45,12 @@ class LessonResource extends JsonResource
             'videos' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        if(auth()->user()->isStudent())
+        {
+            $data['is_watched'] = watched($this);
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::LESSON);
+        }
 
         $routeName = $request->route()->getName();
         switch ($routeName) 

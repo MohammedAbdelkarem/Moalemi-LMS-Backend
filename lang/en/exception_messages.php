@@ -46,4 +46,8 @@ return [
     'cannot_set_to_active_cuz_has_no_media'             => 'Cannot set to active cuz has no image',
     'question_answers_is_correct_only_one'              => 'Question must have only one correct answer',
     'question_answers_is_correct_more_than_one'          => 'Question must have more than one correct answer',
+    'cannot_create_cuz_context_is_free'                  => 'Cannot create coupon for this context because it is free',
+    'cupon_not_found'                                    => 'Coupon not found',
+    'insufficient_balance'                                => 'Insufficient balance',
+    'context_already_unlocked'                            => 'This context has already been unlocked',
 ];

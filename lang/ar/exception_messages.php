@@ -46,4 +46,8 @@ return [
     'cannot_set_to_active_cuz_has_no_media'             => 'لا يمكن نشر هذا العنصر لانه لا يوجد صورة له',
     'question_answers_is_correct_only_one'              => 'يجب أن يكون للسؤال إجابة صحيحة واحدة فقط',
     'question_answers_is_correct_more_than_one'          => 'يجب أن يكون للسؤال أكثر من إجابة صحيحة',
+    'cannot_create_cuz_context_is_free'                  => 'لا يمكن إنشاء كوبون لهذا القسم لأنه مجاني',
+    'cupon_not_found'                                    => 'الكوبون غير موجود',
+    'insufficient_balance'                                => 'الرصيد غير كافي',
+    'context_already_unlocked'                            => 'تم فتح هذا القسم بالفعل',
 ];

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->timestamp('account_verified_at')->nullable();
             $table->foreignId('e_level_id')->nullable()->constrained('e_levels')->nullOnDelete();
             $table->foreignId('c_level_id')->nullable()->constrained('c_levels')->nullOnDelete();
+            $table->integer('balance')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

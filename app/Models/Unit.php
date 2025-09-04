@@ -102,6 +102,16 @@ class Unit extends Model implements HasMedia
         return $this->hasMany(Responsibility::class, 'unit_id');
     }
 
+    public function unlockedContexts(): MorphMany
+    {
+        return $this->morphMany(UnlockedContext::class, 'context');
+    }
+
+    public function coupons(): MorphMany
+    {
+        return $this->morphMany(Coupon::class, 'context');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

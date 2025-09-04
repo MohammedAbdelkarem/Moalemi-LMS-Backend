@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -129,5 +130,12 @@ class Lesson extends Model implements HasMedia
     public function publishedQuizzes(): MorphMany
     {
         return $this->quizzes()->published();
+    }
+
+    public function viewers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'lesson_student', 'lesson_id', 'student_id')
+                    ->withPivot('watched_at')
+                    ->withTimestamps();
     }
 }

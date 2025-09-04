@@ -293,6 +293,26 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->hasMany(Responsibility::class, 'teacher_id');
     }
 
+    //E-Learning Watched Lessons
+    public function watchedLessons(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_student', 'student_id', 'lesson_id')
+                    ->withPivot('watched_at')
+                    ->withTimestamps();
+    }
+
+    //E-Learning Unlocked Contexts
+    public function unlockedContexts(): HasMany
+    {
+        return $this->hasMany(UnlockedContext::class, 'user_id');
+    }
+
+    //E-Learning Transactions
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
+    }
+
     //E-Learning Lesson Questions
     public function lessonQuestionsAsTeacher(): HasMany
     {

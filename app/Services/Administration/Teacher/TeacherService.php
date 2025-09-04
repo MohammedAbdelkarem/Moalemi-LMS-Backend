@@ -47,4 +47,9 @@ class TeacherService extends MainService
         if(isset($data['image']))
             uploadFileOnMedia($data['image'] , $teacher , MediaCollection::USER_COLLECTION);
     }
+
+    public function getTeacherDetails($teacher_id)  
+    {
+        return User::findByIdOrFail($teacher_id);
+    }
 }

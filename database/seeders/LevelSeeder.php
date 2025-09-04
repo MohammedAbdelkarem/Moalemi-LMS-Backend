@@ -95,6 +95,18 @@ class LevelSeeder extends Seeder
             'subject_id' => $subject->id,
             'unit_id' => $unit->id,
         ]);
+
+        $lessonn = Lesson::create([
+            'name' => 'lesson 2',
+            'bio' => 'lesson 2',
+            'sub_unit_id' => $subunit->id,
+            'publish_status' => PublishStatusEnum::PUBLISHED->value,
+            'e_level_id' => $eLevels->id,
+            'c_level_id' => $cLevels->id,
+            'course_id' => $course->id,
+            'subject_id' => $subject->id,
+            'unit_id' => $unit->id,
+        ]);
         $eLevels2 = ELevel::create([
             'name' => 'elevel 2',
             'bio' => 'elevel 2',

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->morphs('context');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->string('title');
-            $table->integer('priority')->default(0);
+            $table->integer('priority')->default(1);
             $table->integer('period')->default(0); // in minutes
             $table->integer('number_of_questions')->default(0);
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);

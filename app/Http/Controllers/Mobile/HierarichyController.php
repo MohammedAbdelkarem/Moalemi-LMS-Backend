@@ -5,20 +5,23 @@ namespace App\Http\Controllers\Mobile;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Services\Lesson\LessonService;
 use App\Http\Resources\Unit\UnitResource;
 use App\Services\Hierarichy\HierarichyService;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
+use App\Http\Resources\Teacher\TeacherResource;
 use App\Services\Administration\ResponsibilityService;
 use App\Http\Resources\Responsibility\ResponsibilityResource;
-use App\Services\Lesson\LessonService;
+use App\Services\Administration\Teacher\TeacherService;
 
 class HierarichyController extends Controller
 {
     public function __construct(
         protected HierarichyService $hierarichyService,
         protected ResponsibilityService $responsibilityService,
-        protected LessonService $lessonService
+        protected LessonService $lessonService,
+        protected TeacherService $teacherService,
     ) {}
 
     public function getSubject($subject_id)
@@ -57,7 +60,7 @@ class HierarichyController extends Controller
         );
     }
 
-    public function getResponsibilitiesByTeacherId(Request $request , $teacher_id, $c_level_id)
+    public function getResponsibilitiesByTeacherId(Request $request , $teacher_id , $c_level_id)
     {
         return success(
             $this->responsibilityService->getResponsibilitiesByTeacherId($request->all() , $teacher_id , true , $c_level_id),
@@ -67,11 +70,24 @@ class HierarichyController extends Controller
         );
     }
 
-    public function markLessonAsWatched($lesson_id)
+    public function recordLessonView($lesson_id)
+    {
+        $student_id = auth()->id();
+        
+        $this->lessonService->recordLessonView($lesson_id, $student_id);
+        
+        return success(
+            [],
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getTeacherDetails($teacher_id)
     {
         return success(
-            $this->lessonService->markAsWatched($lesson_id),
-            ApiMessages::MSG_SUCCESS
+            $this->teacherService->getTeacherDetails($teacher_id),
+            ApiMessages::MSG_SUCCESS,
+            TeacherResource::class,
         );
     }
 }

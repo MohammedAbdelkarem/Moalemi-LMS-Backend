@@ -40,6 +40,9 @@ class ProfileResource extends JsonResource
             $data += $this->getAdminData();
         }
 
+        if(auth()->user()->isStudent())
+            $data['balance'] = $this->balance;
+
         return $data;
     }
 
