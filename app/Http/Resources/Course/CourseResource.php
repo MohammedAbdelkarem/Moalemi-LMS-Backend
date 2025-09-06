@@ -51,6 +51,9 @@ class CourseResource extends JsonResource
                 $data['c_level'] = CLevelResource::make($this->whenLoaded('cLevel'));
                 $data['subjects'] = SubjectResource::collection($this->whenLoaded('subjects'));
             break;
+            case RouteNames::MOBILE_PURCHASED_COURSES:
+                $data['subjects'] = SubjectResource::collection($this->whenLoaded('publishedSubjects'));
+            break;
         }
 
         return $data;

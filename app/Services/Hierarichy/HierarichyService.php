@@ -3,9 +3,10 @@
 namespace App\Services\Hierarichy;
 
 use App\Models\Unit;
+use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\SubUnit;
-use App\Models\Lesson;
 
 /**
  * Class HierarichyService.
@@ -54,5 +55,16 @@ class HierarichyService
         ]);
 
         return $unit;
+    }
+
+    public function getPurchasedContextByModel($student_id, $data, $model , $with)
+    {
+        return getOrPaginate(
+            $model::whereHas('unlockedContexts', function($query) use ($student_id) {
+                $query->where('user_id', $student_id);
+            })
+            ->with($with),
+            $data
+        );
     }
 }

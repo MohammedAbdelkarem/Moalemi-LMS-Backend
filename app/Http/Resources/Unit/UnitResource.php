@@ -60,7 +60,10 @@ class UnitResource extends JsonResource
                 $data['subject'] = SubjectResource::make($this->whenLoaded('subject'));
                 $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('subUnits'));
             break;
-            case RouteNames::MOBILE_HIERARICHY_UNIT:
+            case in_array($routeName , [
+                RouteNames::MOBILE_HIERARICHY_UNIT,
+                RouteNames::MOBILE_PURCHASED_UNITS,
+            ]):
                 $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('publishedSubUnits'));
             break;
             case RouteNames::MOBILE_HIERARICHY_UNIT_DETAILS:

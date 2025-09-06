@@ -40,6 +40,9 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/responsibilities-by-teacher/{teacher_id}/c-level/{c_level_id}', 'getResponsibilitiesByTeacherId')->name(RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID);
         Route::get('/teacher-details/{teacher_id}', 'getTeacherDetails')->name(RouteNames::MOBILE_HIERARICHY_TEACHER_DETAILS);
         Route::post('/lesson/{lesson_id}/watch', 'recordLessonView');
+        Route::get('/purchased-courses', 'getPurchasedCourses')->name(RouteNames::MOBILE_PURCHASED_COURSES);
+        Route::get('/purchased-subjects', 'getPurchasedSubjects')->name(RouteNames::MOBILE_PURCHASED_SUBJECTS);
+        Route::get('/purchased-units', 'getPurchasedUnits')->name(RouteNames::MOBILE_PURCHASED_UNITS);
     });
 
     // Transactions

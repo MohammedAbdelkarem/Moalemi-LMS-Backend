@@ -49,4 +49,7 @@ final class RouteNames
     const MOBILE_HIERARICHY_UNIT_DETAILS = 'mobile.hierarichy.unit-details';
     const MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID = 'mobile.hierarichy.responsibilities-by-teacher';
     const MOBILE_HIERARICHY_TEACHER_DETAILS = 'mobile.hierarichy.teacher-details';
+    const MOBILE_PURCHASED_COURSES = 'mobile.purchased.courses';
+    const MOBILE_PURCHASED_SUBJECTS = 'mobile.purchased.subjects';
+    const MOBILE_PURCHASED_UNITS = 'mobile.purchased.units';
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Models\Unit;
+use App\Models\Course;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
@@ -9,6 +12,7 @@ use App\Services\CLevel\CLevelService;
 use App\Services\ELevel\ELevelService;
 use App\Services\Lesson\LessonService;
 use App\Http\Resources\Unit\UnitResource;
+use App\Http\Resources\Course\CourseResource;
 use App\Services\Hierarichy\HierarichyService;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
@@ -102,6 +106,36 @@ class HierarichyController extends Controller
             $this->teacherService->getTeacherDetails($teacher_id),
             ApiMessages::MSG_SUCCESS,
             TeacherResource::class,
+        );
+    }
+
+    public function getPurchasedCourses(Request $request)
+    {
+        return success(
+            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), Course::class, 'publishedSubjects'),
+            ApiMessages::MSG_SUCCESS,
+            CourseResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function getPurchasedSubjects(Request $request)
+    {
+        return success(
+            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), Subject::class, 'publishedUnits'),
+            ApiMessages::MSG_SUCCESS,
+            SubjectResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function getPurchasedUnits(Request $request)
+    {
+        return success(
+            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), Unit::class, 'publishedSubUnits'),
+            ApiMessages::MSG_SUCCESS,
+            UnitResource::class,
+            $request->has('per_page')
         );
     }
 }

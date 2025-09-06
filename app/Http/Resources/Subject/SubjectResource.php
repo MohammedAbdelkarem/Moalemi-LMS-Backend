@@ -62,6 +62,9 @@ class SubjectResource extends JsonResource
                 $data['course'] = CourseResource::make($this->whenLoaded('course'));
                 $data['units'] = UnitResource::collection($this->whenLoaded('units'));
             break;
+            case RouteNames::MOBILE_PURCHASED_SUBJECTS:
+                $data['units'] = UnitResource::collection($this->whenLoaded('publishedUnits'));
+            break;
             case RouteNames::MOBILE_HIERARICHY_SUBJECT:
                 $data['teachers'] = UserResource::collection($this->whenLoaded('responsibilities')->pluck('teacher')->unique('id')->values());
                 $data['units'] = UnitResource::collection($this->whenLoaded('publishedUnits'));
