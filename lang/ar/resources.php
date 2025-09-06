@@ -47,4 +47,6 @@ return [
     'files'                     => 'الملفات',
     'coupon'                    => 'الكوبون',
     'coupons'                   => 'الكوبونات',
+    'saved_context'             => 'المحتوى المحفوظ',
+    'saved_contexts'            => 'المحتويات المحفوظة',
 ];

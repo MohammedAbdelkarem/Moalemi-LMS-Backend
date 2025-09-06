@@ -43,4 +43,6 @@ final class Resources
     const QUESTIONS                 = 'resources.questions';
     const COUPON                    = 'resources.coupon';
     const COUPONS                   = 'resources.coupons';
+    const SAVED_CONTEXT             = 'resources.saved_context';
+    const SAVED_CONTEXTS            = 'resources.saved_contexts';
 }

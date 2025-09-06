@@ -47,4 +47,6 @@ return [
     'questions'                 => 'Questions',
     'coupon'                    => 'Coupon',
     'coupons'                   => 'Coupons',
+    'saved_context'             => 'Saved Context',
+    'saved_contexts'            => 'Saved Contexts',
 ];

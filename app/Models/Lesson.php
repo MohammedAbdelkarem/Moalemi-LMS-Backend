@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\Quiz;
 use App\Constants\Resources;
 use App\Models\Responsibility;
+use App\Models\SavedContext;
 use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
@@ -142,5 +143,10 @@ class Lesson extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'lesson_student', 'lesson_id', 'student_id')
                     ->withPivot('watched_at')
                     ->withTimestamps();
+    }
+
+    public function savedByStudents(): MorphMany
+    {
+        return $this->morphMany(SavedContext::class, 'context');
     }
 }

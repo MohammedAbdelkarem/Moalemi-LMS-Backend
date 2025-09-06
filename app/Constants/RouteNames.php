@@ -52,4 +52,6 @@ final class RouteNames
     const MOBILE_PURCHASED_COURSES = 'mobile.purchased.courses';
     const MOBILE_PURCHASED_SUBJECTS = 'mobile.purchased.subjects';
     const MOBILE_PURCHASED_UNITS = 'mobile.purchased.units';
+    const MOBILE_SAVED_LESSONS = 'mobile.saved.lessons';
+    const MOBILE_SAVED_QUESTIONS = 'mobile.saved.questions';
 }

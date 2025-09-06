@@ -45,6 +45,7 @@ use App\Models\LessonQuestion;
 use App\Models\Comment;
 use App\Models\Replay;
 use App\Models\QuizResult;
+use App\Models\SavedContext;
 
 class User extends Authenticatable implements JWTSubject , HasMedia
 {
@@ -339,6 +340,22 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function quizResults(): HasMany
     {
         return $this->hasMany(QuizResult::class, 'student_id');
+    }
+
+    //E-Learning Saved Contexts
+    public function savedContexts(): HasMany
+    {
+        return $this->hasMany(SavedContext::class, 'student_id');
+    }
+
+    public function savedLessons(): HasMany
+    {
+        return $this->savedContexts()->lessons();
+    }
+
+    public function savedQuestions(): HasMany
+    {
+        return $this->savedContexts()->questions();
     }
 
     //Parent-Student Relationships
