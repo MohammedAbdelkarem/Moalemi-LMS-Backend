@@ -332,50 +332,11 @@ if (!function_exists('generateRandomCoupon')) {
 }
 
 if (!function_exists('is_purchased')) {
-    function is_purchased($context_id , $context_type)
+    function is_purchased($context_id , $context_type , $student_id)
     {
         $model = getModel($context_type);
         $context = $model::find($context_id);
-
-        if($model == Lesson::class || $model == SubUnit::class)
-            return UnlockedContext::where('user_id', auth()->id())
-                    ->where('context_type' , Unit::class)
-                    ->where('context_id' , $context->unit_id)
-                    ->exists()
-                    || UnlockedContext::where('user_id', auth()->id())
-                    ->where('context_type' , Course::class)
-                    ->where('context_id' , $context->course_id)
-                    ->exists()
-                    || UnlockedContext::where('user_id', auth()->id())
-                    ->where('context_type' , Subject::class)
-                    ->where('context_id' , $context->subject_id)
-                    ->exists();
-        elseif($model == Unit::class)
-            return UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Subject::class)
-                ->where('context_id' , $context->subject_id)
-                ->exists()
-                || UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Course::class)
-                ->where('context_id' , $context->course_id)
-                ->exists()
-                || UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Unit::class)
-                ->where('context_id' , $context->id)
-                ->exists();
-        elseif($model == Subject::class)
-            return UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Course::class)
-                ->where('context_id' , $context->course_id)
-                ->exists()
-                || UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Subject::class)
-                ->where('context_id' , $context->id)
-                ->exists();
-        elseif($model == Course::class)
-            return UnlockedContext::where('user_id', auth()->id())
-                ->where('context_type' , Course::class)
-                ->where('context_id' , $context->id)
-                ->exists();
+        
+        return $context->unlockedContexts()->where('user_id', $student_id)->exists();
     }
 }

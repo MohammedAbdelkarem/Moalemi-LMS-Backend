@@ -72,10 +72,11 @@ class Subject extends Model implements HasMedia
     {
         return $this->hasMany(Unit::class, 'subject_id');
     }
+    
 
     public function publishedUnits(): HasMany
     {
-        return $this->units()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+        return $this->units()->published();
     }
 
     public function subUnits(): HasMany

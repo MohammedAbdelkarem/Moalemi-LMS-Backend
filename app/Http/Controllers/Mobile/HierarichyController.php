@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Mobile;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Services\CLevel\CLevelService;
+use App\Services\ELevel\ELevelService;
 use App\Services\Lesson\LessonService;
 use App\Http\Resources\Unit\UnitResource;
 use App\Services\Hierarichy\HierarichyService;
@@ -12,8 +14,8 @@ use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use App\Http\Resources\Teacher\TeacherResource;
 use App\Services\Administration\ResponsibilityService;
-use App\Http\Resources\Responsibility\ResponsibilityResource;
 use App\Services\Administration\Teacher\TeacherService;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class HierarichyController extends Controller
 {
@@ -22,7 +24,19 @@ class HierarichyController extends Controller
         protected ResponsibilityService $responsibilityService,
         protected LessonService $lessonService,
         protected TeacherService $teacherService,
+        protected ELevelService $eLevelService,
+        protected CLevelService $cLevelService,
     ) {}
+
+    public function e_levels()
+    {
+        return success($this->eLevelService->getList(), ApiMessages::MSG_SUCCESS);
+    }
+
+    public function c_levels($e_level_id)
+    {
+        return success($this->cLevelService->getList($e_level_id), ApiMessages::MSG_SUCCESS);
+    }
 
     public function getSubject($subject_id)
     {

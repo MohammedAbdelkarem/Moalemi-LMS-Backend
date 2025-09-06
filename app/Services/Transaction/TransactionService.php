@@ -9,12 +9,18 @@ use App\Enums\CouponTypeEnum;
 use App\Models\UnlockedContext;
 use App\Enums\TransactionTypeEnum;
 use App\Constants\ExceptionMessages;
+use App\Services\Purchase\PurchaseService;
 
 /**
  * Class TransactionService.
  */
 class TransactionService
 {
+
+    public function __construct(
+        protected PurchaseService $purchaseService
+    ){}
+
     public function createStudentCupon($data)
     {
         $cupon = Coupon::create([
@@ -86,11 +92,7 @@ class TransactionService
 
         $this->checkIflreadyUnlockedForCupon($cupon);
 
-        $unlockedContext = UnlockedContext::create([
-            'user_id' => auth()->id(),
-            'context_id' => $cupon->context_id,
-            'context_type' => $cupon->context_type,
-        ]);
+        $unlockedContext = $this->purchaseService->unlockContexts($cupon->context_id, getModelByPath($cupon->context_type));
         
         $cupon->update([
             'number_of_uses' => $cupon->number_of_uses + 1,
@@ -115,22 +117,14 @@ class TransactionService
 
         if($context->access_type == AccessTypeEnum::FREE->value)
         {
-            $unlockedContext = UnlockedContext::create([
-                'user_id' => auth()->id(),
-                'context_id' => $context->id,
-                'context_type' => getModel($data['context_type']),
-            ]);
+            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']));
         }
         else
         {
             if($balance < $context->price)
                 return forbiddenFailure([] , ExceptionMessages::MSG_INSUFFICIENT_BALANCE);
             
-            $unlockedContext = UnlockedContext::create([
-                'user_id' => auth()->id(),
-                'context_id' => $context->id,
-                'context_type' => getModel($data['context_type']),
-            ]);
+            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']));
 
             auth()->user()->balance -= $context->price;
             auth()->user()->save();

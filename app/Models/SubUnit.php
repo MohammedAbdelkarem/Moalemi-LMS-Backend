@@ -97,6 +97,11 @@ class SubUnit extends Model implements HasMedia
         return $this->hasMany(Responsibility::class, 'sub_unit_id');
     }
 
+    public function unlockedContexts(): MorphMany
+    {
+        return $this->morphMany(UnlockedContext::class, 'context');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

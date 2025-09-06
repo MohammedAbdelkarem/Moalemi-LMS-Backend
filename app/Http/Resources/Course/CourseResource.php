@@ -36,7 +36,7 @@ class CourseResource extends JsonResource
         ];
 
         if(auth()->user()->isStudent())
-            $data['is_purchased'] = is_purchased($this->id, LevelEnum::COURSE);
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::COURSE , auth()->id());
 
         $routeName = $request->route()->getName();
 

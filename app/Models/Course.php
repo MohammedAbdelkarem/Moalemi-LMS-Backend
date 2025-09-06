@@ -67,9 +67,18 @@ class Course extends Model implements HasMedia
         return $this->hasMany(Subject::class, 'course_id');
     }
 
+    public function publishedSubjects(): HasMany
+    {
+        return $this->subjects()->published();
+    }
+
     public function units(): HasMany
     {
         return $this->hasMany(Unit::class, 'course_id');
+    }
+    public function publishedUnits(): HasMany
+    {
+        return $this->units()->published();
     }
 
     public function subUnits(): HasMany
@@ -77,9 +86,19 @@ class Course extends Model implements HasMedia
         return $this->hasMany(SubUnit::class, 'course_id');
     }
 
+    public function publishedSubUnits(): HasMany
+    {
+        return $this->subUnits()->published();
+    }
+
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class, 'course_id');
+    }
+
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
     }
 
     public function responsibilities(): HasMany

@@ -43,7 +43,7 @@ class SubUnitResource extends JsonResource
         ];
 
         if(auth()->user()->isStudent())
-            $data['is_purchased'] = is_purchased($this->id, LevelEnum::SUB_UNIT);
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::SUB_UNIT , auth()->id());
 
 
         $routeName = $request->route()->getName();

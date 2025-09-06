@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
+use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -55,7 +56,7 @@ class File extends Model implements HasMedia
     // Scopes
     public function scopePublished($query)
     {
-        return $query->where('publish_status', 'published');
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function scopeByPriority($query)

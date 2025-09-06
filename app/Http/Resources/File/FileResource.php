@@ -4,6 +4,8 @@ namespace App\Http\Resources\File;
 
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
+use App\Constants\MediaCollection;
+use App\Http\Resources\Media\MediaResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileResource extends JsonResource
@@ -21,6 +23,7 @@ class FileResource extends JsonResource
             'context_id' => $this->context_id,
             'context_type' => getModelName($this->context_type),
             'priority' => $this->priority,
+            'file' => MediaResource::make($this->getFirstMedia(MediaCollection::FILE_COLLECTION)),
         ];
 
         $routeName = $request->route()->getName();

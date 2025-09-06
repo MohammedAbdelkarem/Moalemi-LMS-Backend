@@ -47,7 +47,7 @@ class LessonResource extends JsonResource
 
         if(auth()->user()->isStudent())
         {
-            $is_purchased = is_purchased($this->id, LevelEnum::LESSON);
+            $is_purchased = is_purchased($this->id, LevelEnum::LESSON , auth()->id());
             $data['is_watched'] = watched($this);
             $data['is_purchased'] = $is_purchased;
             $data['video'] = $is_purchased 

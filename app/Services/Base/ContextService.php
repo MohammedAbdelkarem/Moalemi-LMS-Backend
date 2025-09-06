@@ -2,14 +2,15 @@
 
 namespace App\Services\Base;
 
-use App\Enums\PublishStatusEnum;
-use App\Enums\AccessTypeEnum;
-use App\Constants\ExceptionMessages;
-use App\Constants\ModelPaths;
-use App\Models\Subject;
 use App\Models\Unit;
-use App\Models\SubUnit;
+use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Subject;
+use App\Models\SubUnit;
+use App\Constants\ModelPaths;
+use App\Enums\AccessTypeEnum;
+use App\Enums\PublishStatusEnum;
+use App\Constants\ExceptionMessages;
 
 /**
  * Class ContextService.
@@ -204,5 +205,29 @@ class ContextService
                 $lesson->$operation($field);
                 break;
         }
+    }
+    public function getPurchasedCourses($student_id)
+    {
+        $courses = Course::whereHas('unlockedContexts', function($query) use ($student_id) {
+            $query->where('user_id', $student_id);
+        })->get();
+
+        return $courses;
+    }
+    public function getPurchasedSubjects($student_id)
+    {
+        $subjects = Subject::whereHas('unlockedContexts', function($query) use ($student_id) {
+            $query->where('user_id', $student_id);
+        })->get();
+
+        return $subjects;
+    }
+    public function getPurchasedUnits($student_id)
+    {
+        $units = Unit::whereHas('unlockedContexts', function($query) use ($student_id) {
+            $query->where('user_id', $student_id);
+        })->get();
+
+        return $units;
     }
 }

@@ -44,7 +44,7 @@ class UnitResource extends JsonResource
         ];
 
         if(auth()->user()->isStudent())
-            $data['is_purchased'] = is_purchased($this->id, LevelEnum::UNIT);
+            $data['is_purchased'] = is_purchased($this->id, LevelEnum::UNIT , auth()->id());
 
 
         $routeName = $request->route()->getName();

@@ -3,6 +3,7 @@
 use App\Constants\RouteNames;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\HomeController;
+use App\Http\Controllers\Mobile\File\FileController;
 use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
@@ -18,10 +19,10 @@ use App\Http\Controllers\Mobile\Transaction\TransactionController;
 
 // No Auth Needed
 Route::middleware([])->withoutMiddleware('is_student')->group(function () {
-    Route::prefix('e-levels')->controller(HirarichyController::class)->group(function () {
+    Route::prefix('e-levels')->controller(HierarichyController::class)->group(function () {
         Route::get('/', 'e_levels');
     });
-    Route::prefix('c-levels')->controller(HirarichyController::class)->group(function () {
+    Route::prefix('c-levels')->controller(HierarichyController::class)->group(function () {
         Route::get('/{e_level_id}', 'c_levels');
     });
 });
@@ -46,5 +47,13 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::post('/use-student-cupon', 'useStudentCupon');
         Route::post('/use-context-cupon', 'useContextCupon');
         Route::post('/direct-purchase', 'directPurchase');
+    });
+
+    // Files
+    Route::prefix('files')->controller(FileController::class)->group(function () {
+        Route::get('/subject', 'subjectFiles');
+        Route::get('/unit', 'unitFiles');
+        Route::get('/sub-unit', 'subUnitFiles');
+        Route::get('/lesson', 'lessonFiles');
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Services\File;
 
 use App\Models\File;
+use App\Models\Subject;
 use App\Constants\Resources;
 use App\Constants\MediaCollection;
 use App\Services\Base\ContextService;
@@ -75,5 +76,19 @@ class FileService
     public function changePriority($contextsData)
     {
         $this->contextService->changeContextsPriority($contextsData, File::class);
+    }
+
+    public function getPurchasedFiles($student_id , $data , $model)
+    {
+        return getOrPaginate(
+            File::published()
+            ->whereHas('context', function($query) use ($student_id, $model) {
+                $query->whereHas('unlockedContexts', function($query) use ($student_id, $model) {
+                    $query->where('user_id', $student_id)
+                    ->where('context_type', $model);
+                });
+            }),
+            $data
+        );
     }
 }
