@@ -42,14 +42,17 @@ class LessonResource extends JsonResource
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),
-            'videos' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         if(auth()->user()->isStudent())
         {
+            $is_purchased = is_purchased($this->id, LevelEnum::LESSON);
             $data['is_watched'] = watched($this);
-            $data['is_purchased'] = is_purchased($this->id, LevelEnum::LESSON);
+            $data['is_purchased'] = $is_purchased;
+            $data['video'] = $is_purchased 
+                ? MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)) 
+                : [];
         }
 
         $routeName = $request->route()->getName();
@@ -64,6 +67,7 @@ class LessonResource extends JsonResource
                 $data['quizzes'] = $this->whenLoaded('quizzes');
                 $data['files'] = $this->whenLoaded('files');
                 $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('subUnit'));
+                $data['video'] = MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION));
             break;
             case RouteNames::MOBILE_HIERARICHY_SUB_UNIT:
                 $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
