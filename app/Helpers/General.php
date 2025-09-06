@@ -307,7 +307,7 @@ if (!function_exists('watched')) {
 }
 
 if (!function_exists('generateUniqueCoupon')) {
-    function generateUniqueCoupon(int $length = 10): string
+    function generateUniqueCoupon(int $length = 4): string
     {
         do {
             $coupon = generateRandomCoupon($length);
