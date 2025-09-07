@@ -62,6 +62,8 @@ class UnitService
     {
         $unit = Unit::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Unit::class);
+
         $unit->update($data);
 
         $unit->save();
@@ -71,6 +73,10 @@ class UnitService
     {
         $unit = Unit::findByIdOrFail($id);
         
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Unit::class);
+        $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Unit::class);
+        $this->contextService->checkIfHasContentBeforeDeleting($id , Unit::class);
+
         // Update parent Subject numbers before deletion
         $this->contextService->updateParentNumberOfContents($unit, '-');
         
@@ -80,6 +86,10 @@ class UnitService
     public function changePublishStatus($id)
     {
         $unit = Unit::findByIdOrFail($id);
+
+        $this->contextService->checkIfParentPublishedBeforePublish($id , Unit::class);
+        $this->contextService->checkIfContextHasContentBeforePublish($id , Unit::class);
+        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Unit::class);
 
         $this->contextService->changePublishStatus($unit , 'content');
     }

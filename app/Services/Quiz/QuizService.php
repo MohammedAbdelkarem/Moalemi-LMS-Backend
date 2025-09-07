@@ -65,6 +65,8 @@ class QuizService extends MainService
     {
         $quiz = Quiz::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Quiz::class);
+
         $quiz->update($validatedData);
 
         foreach ($validatedData['questions'] as $question) {
@@ -82,6 +84,8 @@ class QuizService extends MainService
     {
         $quiz = Quiz::findByIdOrFail($id);
         
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Quiz::class);
+
         // Update parent context quiz count before deletion
         $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '-');
         

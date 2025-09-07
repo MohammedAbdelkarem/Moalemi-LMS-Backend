@@ -54,12 +54,16 @@ class FileService
     {
         $file = File::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , File::class);
+
         $file->update($data);
     }
 
     public function destroy($id)
     {
         $file = File::findByIdOrFail($id);
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , File::class);
 
         $this->contextService->updateParentNumberOfFiles($file , $file->context_id , '-');
 
@@ -88,6 +92,16 @@ class FileService
                     ->where('context_type', $model);
                 });
             }),
+            $data
+        );
+    }
+
+    public function search($data , $student_id)
+    {
+        $files = File::searchForMobile($data['search'] , $student_id);
+
+        return getOrPaginate(
+            $files,
             $data
         );
     }

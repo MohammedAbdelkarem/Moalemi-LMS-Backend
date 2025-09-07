@@ -25,12 +25,20 @@ class SavedContextService
             $context->savedByStudents()->create(['student_id' => auth()->id()]);
     }
 
-    public function getSavedContexts($data , $student_id , $model)
+    public function getSavedContexts($data , $student_id , $model , $with = [])
     {
         $records = $model::whereHas('savedByStudents', function($query) use ($student_id) {
             $query->where('student_id', $student_id);
-        });
+        })->with($with);
 
         return getOrPaginate($records, $data);
     }
+
+    public function searchForQuestions($data , $student_id)
+    {
+        $questions = Question::searchForMobile($data['search'] , $student_id)->with('answers');
+
+        return getOrPaginate($questions, $data);
+    }
 }
+    

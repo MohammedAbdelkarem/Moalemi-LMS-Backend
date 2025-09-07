@@ -50,4 +50,13 @@ return [
     'cupon_not_found'                                    => 'Coupon not found',
     'insufficient_balance'                                => 'Insufficient balance',
     'context_already_unlocked'                            => 'This context has already been unlocked',
+    'entity_has_sub_entities_purchased'                   => 'Cannot unlock this context because it has sub entities that have already been unlocked',
+    'can_not_publish_cuz_parent_is_not_published'         => 'Cannot publish this context because its parent is not published',
+    'can_not_publish_cuz_has_no_content'                  => 'Cannot publish this context because it has no content',
+    'can_not_publish_cuz_has_no_teachers'                  => 'Cannot publish this context because it has no teachers',
+    'can_not_delete_cuz_has_purchased_students'            => 'Cannot delete this context because it has purchased students',
+    'can_not_delete_cuz_has_registered_students'            => 'Cannot delete this context because it has registered students',
+    'has_to_be_draft_before_deleting_or_updating'                        => 'Cannot delete or update this context because it is published',
+    'can_not_delete_cuz_has_content'                        => 'Cannot delete this context because it has content',
+    'can_not_delete_or_update_cuz_has_quiz'                        => 'Cannot delete or update this question because it has quiz',
 ];

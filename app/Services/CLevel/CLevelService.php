@@ -52,6 +52,8 @@ class CLevelService
     {
         $cLevel = CLevel::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , CLevel::class);
+
         $cLevel->update($data);
 
         $cLevel->save();
@@ -60,7 +62,11 @@ class CLevelService
     public function destroy($id)
     {
         $cLevel = CLevel::findByIdOrFail($id);
-        
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , CLevel::class);
+        $this->contextService->checkIfHasRegisterdStudentsBeforeDeleting($id , CLevel::class);
+        $this->contextService->checkIfHasContentBeforeDeleting($id , CLevel::class);
+
         // Update parent ELevel numbers before deletion
         $this->contextService->updateParentNumberOfContents($cLevel, '-');
         
@@ -70,6 +76,10 @@ class CLevelService
     public function changePublishStatus($id)
     {
         $cLevel = CLevel::findByIdOrFail($id);
+
+        $this->contextService->checkIfParentPublishedBeforePublish($id , CLevel::class);
+        $this->contextService->checkIfContextHasContentBeforePublish($id , CLevel::class);
+        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , CLevel::class);
 
         $this->contextService->changePublishStatus($cLevel , 'content');
     }

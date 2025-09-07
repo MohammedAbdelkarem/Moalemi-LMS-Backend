@@ -63,4 +63,17 @@ class File extends Model implements HasMedia
     {
         return $query->orderBy('priority', 'asc');
     }
+
+    public function scopeSearchForMobile($query, $search , $studnet_id = null)
+    {
+        return $query->published()
+            ->where(function($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->whereHas('context', function($query) use ($studnet_id) {
+                $query->whereHas('unlockedContexts', function($query) use ($studnet_id) {
+                    $query->where('user_id', $studnet_id);
+                });
+            });
+    }
 }

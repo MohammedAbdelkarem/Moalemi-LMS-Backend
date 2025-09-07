@@ -93,6 +93,8 @@ class LessonService
     {
         $lesson = Lesson::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Lesson::class);
+
         $lesson->update($data);
 
         $lesson->save();
@@ -102,6 +104,9 @@ class LessonService
     {
         $lesson = Lesson::findByIdOrFail($id);
         
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Lesson::class);
+        $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Lesson::class);
+
         // Update parent SubUnit numbers before deletion
         $this->contextService->updateParentNumberOfContents($lesson, '-');
 
@@ -114,6 +119,8 @@ class LessonService
     public function changePublishStatus($id)
     {
         $lesson = Lesson::findByIdOrFail($id);
+
+        $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
 
         $this->contextService->changePublishStatus($lesson , 'content');
     }

@@ -11,6 +11,8 @@ use App\Constants\ModelPaths;
 use App\Enums\AccessTypeEnum;
 use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
+use App\Models\CLevel;
+use App\Models\ELevel;
 
 /**
  * Class ContextService.
@@ -230,4 +232,124 @@ class ContextService
 
         return $units;
     }
+
+    //use it for: clevel , course , subject , unit , subunit , lesson
+    public function checkIfParentPublishedBeforePublish($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        $published = true;
+
+        if($model == CLevel::class)
+            $published = $context->eLevel->publish_status == PublishStatusEnum::PUBLISHED->value;
+        else if($model == Course::class)
+            $published = $context->cLevel->publish_status == PublishStatusEnum::PUBLISHED->value;
+        else if($model == Subject::class)
+            $published = $context->course->publish_status == PublishStatusEnum::PUBLISHED->value;
+        else if($model == Unit::class)
+            $published = $context->subject->publish_status == PublishStatusEnum::PUBLISHED->value;
+        else if($model == SubUnit::class)
+            $published = $context->unit->publish_status == PublishStatusEnum::PUBLISHED->value;
+        else if($model == Lesson::class)
+            $published = $context->subUnit->publish_status == PublishStatusEnum::PUBLISHED->value;
+
+        if(!$published)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_PUBLISH_CUZ_PARENT_IS_NOT_PUBLISHED);
+    }
+
+    //use it for: elevel , clevel , course , subject , unit , subunit
+    public function checkIfContextHasContentBeforePublish($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        $hasContent = true;
+
+        if($model == ELevel::class)
+            $hasContent = $context->cLevels()->count() > 0;
+        else if($model == CLevel::class)
+            $hasContent = $context->courses()->count() > 0;
+        else if($model == Course::class)
+            $hasContent = $context->subjects()->count() > 0;
+        else if($model == Subject::class)
+            $hasContent = $context->units()->count() > 0;
+        else if($model == Unit::class)
+            $hasContent = $context->subUnits()->count() > 0;
+        else if($model == SubUnit::class)
+            $hasContent = $context->lessons()->count() > 0;
+
+        if(!$hasContent)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_PUBLISH_CUZ_HAS_NO_CONTENT);
+    }
+
+    //use it for:elevel , clevel , course , subject , unit
+    public function checkIfContextHasResponsibilitiesBeforePublish($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        
+        $hasTeachers = $context->responsibilities()->count() > 0;
+
+        if(!$hasTeachers)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_PUBLISH_CUZ_HAS_NO_TEACHERS);
+    }
+
+    //use it for:course , subject , unit , subunit , lesson
+    public function checkIfHasPurchasedStudentsBeforeDeleting($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        $hasPurchasedStudents = false;
+
+        if($context->unlockedContexts()->count() > 0)
+            $hasPurchasedStudents = true;
+
+        if($hasPurchasedStudents)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_CUZ_HAS_PURCHASED_STUDENTS);
+    }
+
+    //use it for:elevel , clevel
+    public function checkIfHasRegisterdStudentsBeforeDeleting($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        $hasStudents = $context->students()->count() > 0;
+
+        if($hasStudents)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_CUZ_HAS_REGISTERED_STUDENTS);
+    }
+
+    //use it for deleting or updating: elevel, clevel , course , subject , unit , subunit , lesson , file , quiz
+    public function checkIfDraftBeforeDeletingOrUpdating($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+
+        if($context->publish_status == PublishStatusEnum::PUBLISHED->value)
+            return forbiddenFailure([] , ExceptionMessages::MSG_HAS_TO_BE_DRAFT_BEFORE_DELETING_OR_UPDATING);
+    }
+
+    //use it for elevel, clevel , course , subject , unit , subunit
+    public function checkIfHasContentBeforeDeleting($context_id , $model)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        $hasContent = true;
+
+        if($model == ELevel::class)
+            $hasContent = $context->cLevels()->count() > 0;
+        else if($model == CLevel::class)
+            $hasContent = $context->courses()->count() > 0;
+        else if($model == Course::class)
+            $hasContent = $context->subjects()->count() > 0;
+        else if($model == Subject::class)
+            $hasContent = $context->units()->count() > 0;
+        else if($model == Unit::class)
+            $hasContent = $context->subUnits()->count() > 0;
+        else if($model == SubUnit::class)
+            $hasContent = $context->lessons()->count() > 0;
+
+        if($hasContent)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_CUZ_HAS_CONTENT);
+    }
+    //use it for the question update or delete
+    public function checkIfQuestionBelongsToQuizBeforeDeletingOrUpdating($question)
+    {
+        if($question->quizzes()->count() > 0)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ);
+    }
+    //check if unit has one teacher
+    
 }

@@ -50,4 +50,13 @@ return [
     'cupon_not_found'                                    => 'الكوبون غير موجود',
     'insufficient_balance'                                => 'الرصيد غير كافي',
     'context_already_unlocked'                            => 'تم فتح هذا القسم بالفعل',
+    'entity_has_sub_entities_purchased'                   => 'لا يمكن فتح هذا القسم لانه يحتوي على أقسام بداخله تم فتحها بالفعل',
+    'can_not_publish_cuz_parent_is_not_published'         => 'لا يمكن نشر هذا القسم لان القسم الأب ليس منشور',
+    'can_not_publish_cuz_has_no_content'                  => 'لا يمكن نشر هذا القسم لانه لا يوجد محتوى فيه',
+    'can_not_publish_cuz_has_no_teachers'                  => 'لا يمكن نشر هذا القسم لانه لا يوجد مدرسين فيه',
+    'can_not_delete_cuz_has_purchased_students'            => 'لا يمكن حذف هذا القسم لانه يحتوي على مشتريات من طلاب',
+    'can_not_delete_cuz_has_registered_students'            => 'لا يمكن حذف هذا القسم لانه يحتوي على طلاب مسجلين فيه',
+    'has_to_be_draft_before_deleting_or_updating'                        => 'لا يمكن حذف  أو تعديل هذا القسم لانه منشور',
+    'can_not_delete_cuz_has_content'                        => 'لا يمكن حذف هذا القسم لانه يحتوي على محتوى',
+    'can_not_delete_or_update_cuz_has_quiz'                        => 'لا يمكن حذف  أو تعديل هذا السؤال لانه  يوجد اختبارات مرتبطة به',
 ];

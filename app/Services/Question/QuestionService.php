@@ -62,6 +62,8 @@ class QuestionService extends MainService
 
         $question = Question::findByIdOrFail($id);
 
+        $this->contextService->checkIfQuestionBelongsToQuizBeforeDeletingOrUpdating($question);
+
         $question->update($validatedData);
 
         $question->answers()->delete();
@@ -73,6 +75,8 @@ class QuestionService extends MainService
     {
         $question = Question::findByIdOrFail($id);
         
+        $this->contextService->checkIfQuestionBelongsToQuizBeforeDeletingOrUpdating($question);
+
         $question->delete();
     }
 

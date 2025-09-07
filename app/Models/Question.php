@@ -84,4 +84,12 @@ class Question extends Model
     {
         return $this->morphMany(SavedContext::class, 'context');
     }
+
+    public function scopeSearchForMobile($query, $search , $student_id)
+    {
+        return $query->where('text', 'like', "%{$search}%")
+            ->whereHas('savedByStudents', function($query) use ($student_id) {
+                $query->where('student_id', $student_id);
+            });
+    }
 }

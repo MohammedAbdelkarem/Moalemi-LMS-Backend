@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/unit', 'unitFiles');
         Route::get('/sub-unit', 'subUnitFiles');
         Route::get('/lesson', 'lessonFiles');
+        Route::get('/search', 'search');
     });
 
     // Saved Contexts
@@ -66,5 +67,6 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/lessons', 'getSavedLessons')->name(RouteNames::MOBILE_SAVED_LESSONS);
         Route::get('/questions', 'getSavedQuestions')->name(RouteNames::MOBILE_SAVED_QUESTIONS);
         Route::post('/toggle', 'saveToggle');
+        Route::get('/search-questions', 'searchForQuestions');
     });
 });

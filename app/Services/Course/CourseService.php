@@ -52,6 +52,8 @@ class CourseService
     {
         $course = Course::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Course::class);
+
         $course->update($data);
 
         $course->save();
@@ -60,6 +62,10 @@ class CourseService
     public function destroy($id)
     {
         $course = Course::findByIdOrFail($id);
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Course::class);
+        $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Course::class);
+        $this->contextService->checkIfHasContentBeforeDeleting($id , Course::class);
         
         // Update parent CLevel numbers before deletion
         $this->contextService->updateParentNumberOfContents($course, '-');
@@ -70,6 +76,10 @@ class CourseService
     public function changePublishStatus($id)
     {
         $course = Course::findByIdOrFail($id);
+
+        $this->contextService->checkIfParentPublishedBeforePublish($id , Course::class);
+        $this->contextService->checkIfContextHasContentBeforePublish($id , Course::class);
+        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Course::class);
 
         $this->contextService->changePublishStatus($course , 'content');
     }

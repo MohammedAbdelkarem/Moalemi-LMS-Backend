@@ -49,4 +49,13 @@ final class ExceptionMessages
     const MSG_CUPON_NOT_FOUND                                    = 'exception_messages.cupon_not_found';
     const MSG_INSUFFICIENT_BALANCE                                = 'exception_messages.insufficient_balance';
     const MSG_CONTEXT_ALREADY_UNLOCKED                            = 'exception_messages.context_already_unlocked';
+    const MSG_ENTITY_HAS_SUB_ENTITIES_PURCHASED                   = 'exception_messages.entity_has_sub_entities_purchased';
+    const MSG_CAN_NOT_PUBLISH_CUZ_PARENT_IS_NOT_PUBLISHED         = 'exception_messages.can_not_publish_cuz_parent_is_not_published';
+    const MSG_CAN_NOT_PUBLISH_CUZ_HAS_NO_CONTENT                  = 'exception_messages.can_not_publish_cuz_has_no_content';
+    const MSG_CAN_NOT_PUBLISH_CUZ_HAS_NO_TEACHERS                  = 'exception_messages.can_not_publish_cuz_has_no_teachers';
+    const MSG_CAN_NOT_DELETE_CUZ_HAS_PURCHASED_STUDENTS            = 'exception_messages.can_not_delete_cuz_has_purchased_students';
+    const MSG_CAN_NOT_DELETE_CUZ_HAS_REGISTERED_STUDENTS          = 'exception_messages.can_not_delete_cuz_has_registered_students';
+    const MSG_HAS_TO_BE_DRAFT_BEFORE_DELETING_OR_UPDATING          = 'exception_messages.has_to_be_draft_before_deleting_or_updating';
+    const MSG_CAN_NOT_DELETE_CUZ_HAS_CONTENT                        = 'exception_messages.can_not_delete_cuz_has_content';
+    const MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ                          = 'exception_messages.can_not_delete_or_update_cuz_has_quiz';
 }

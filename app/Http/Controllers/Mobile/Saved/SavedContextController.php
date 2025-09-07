@@ -31,7 +31,7 @@ class SavedContextController extends Controller
     public function getSavedQuestions(Request $request)
     {
         return success(
-            $this->savedContextService->getSavedContexts($request->all(), $request->student_id ?? auth()->id(), Question::class),
+            $this->savedContextService->getSavedContexts($request->all(), $request->student_id ?? auth()->id(), Question::class , ['answers']),
             ApiMessages::MSG_SUCCESS,
             QuestionResource::class,
             $request->has('per_page')
@@ -43,6 +43,16 @@ class SavedContextController extends Controller
         return success(
             $this->savedContextService->toggle($request->validated()),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function searchForQuestions(Request $request)
+    {
+        return success(
+            $this->savedContextService->searchForQuestions($request->all(), $request->student_id ?? auth()->id()),
+            ApiMessages::MSG_SUCCESS,
+            QuestionResource::class,
+            $request->has('per_page')
         );
     }
 }

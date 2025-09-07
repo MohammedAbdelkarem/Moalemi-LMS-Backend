@@ -47,6 +47,8 @@ class ELevelService
     {
         $eLevel = ELevel::findByIdOrFail($id);
 
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , ELevel::class);
+
         $eLevel->update($data);
 
         $eLevel->save();
@@ -55,6 +57,10 @@ class ELevelService
     public function destroy($id)
     {
         $eLevel = ELevel::findByIdOrFail($id);
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , ELevel::class);
+        $this->contextService->checkIfHasRegisterdStudentsBeforeDeleting($id , ELevel::class);
+        $this->contextService->checkIfHasContentBeforeDeleting($id , ELevel::class);
         
         $eLevel->delete();
     }
@@ -62,6 +68,9 @@ class ELevelService
     public function changePublishStatus($id)
     {
         $eLevel = ELevel::findByIdOrFail($id);
+
+        $this->contextService->checkIfContextHasContentBeforePublish($id , ELevel::class);
+        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , ELevel::class);
 
         $this->contextService->changePublishStatus($eLevel , 'content');
     }

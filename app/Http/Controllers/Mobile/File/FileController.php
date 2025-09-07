@@ -57,4 +57,13 @@ class FileController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function search(Request $request)
+    {
+        return success(
+            $this->fileService->search($request->all(), $request->student_id ?? auth()->id()),
+            ApiMessages::MSG_SUCCESS,
+            FileResource::class,
+        );
+    }
 }
