@@ -2,10 +2,11 @@
 
 namespace App\Services\Unit;
 
-use App\Constants\MediaCollection;
 use App\Models\Unit;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
+use App\Services\Base\ContextService;
 
 class UnitService
 {
@@ -87,9 +88,11 @@ class UnitService
     {
         $unit = Unit::findByIdOrFail($id);
 
-        $this->contextService->checkIfParentPublishedBeforePublish($id , Unit::class);
-        $this->contextService->checkIfContextHasContentBeforePublish($id , Unit::class);
-        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Unit::class);
+        if($status == PublishStatusEnum::PUBLISHED->value) {
+            $this->contextService->checkIfParentPublishedBeforePublish($id , Unit::class);
+            $this->contextService->checkIfContextHasContentBeforePublish($id , Unit::class);
+            $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Unit::class);
+        }
 
         $this->contextService->changeWithChildsPublishStatus($id , Unit::class , $status);
     }

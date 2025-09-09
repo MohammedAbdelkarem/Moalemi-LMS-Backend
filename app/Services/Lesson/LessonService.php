@@ -2,10 +2,11 @@
 
 namespace App\Services\Lesson;
 
-use App\Constants\MediaCollection;
 use App\Models\Lesson;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
+use App\Services\Base\ContextService;
 
 class LessonService
 {
@@ -120,7 +121,9 @@ class LessonService
     {
         $lesson = Lesson::findByIdOrFail($id);
 
-        $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
+        if($status == PublishStatusEnum::PUBLISHED->value) {
+            $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
+        }
 
         $this->contextService->changeWithChildsPublishStatus($id , Lesson::class , $status);
     }

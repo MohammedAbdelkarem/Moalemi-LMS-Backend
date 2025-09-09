@@ -2,10 +2,11 @@
 
 namespace App\Services\Subject;
 
-use App\Constants\MediaCollection;
 use App\Models\Subject;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
+use App\Services\Base\ContextService;
 
 class SubjectService
 {
@@ -81,15 +82,17 @@ class SubjectService
         $subject->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $subject = Subject::findByIdOrFail($id);
 
-        $this->contextService->checkIfParentPublishedBeforePublish($id , Subject::class);
-        $this->contextService->checkIfContextHasContentBeforePublish($id , Subject::class);
-        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Subject::class);
+        if($status == PublishStatusEnum::PUBLISHED->value) {
+            $this->contextService->checkIfParentPublishedBeforePublish($id , Subject::class);
+            $this->contextService->checkIfContextHasContentBeforePublish($id , Subject::class);
+            $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Subject::class);
+        }
 
-        $this->contextService->changeWithChildsPublishStatus($id , Subject::class);
+        $this->contextService->changeWithChildsPublishStatus($id , Subject::class , $status);
     }
 
     public function changeAccessTypeStatus($id)

@@ -70,11 +70,11 @@ class FileService
         $file->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $file = File::findByIdOrFail($id);
 
-        $this->contextService->changePublishStatus($file , 'file');
+        $this->contextService->changePublishStatus($file , 'file', $status);
     }
 
     public function changePriority($contextsData)

@@ -50,10 +50,10 @@ class SubjectController extends Controller
         );
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus(Request $request, $id)
     {
         return success(
-            $this->subjectService->changePublishStatus($id),
+            $this->subjectService->changePublishStatus($id, $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

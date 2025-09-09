@@ -2,10 +2,11 @@
 
 namespace App\Services\CLevel;
 
-use App\Constants\MediaCollection;
 use App\Models\CLevel;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
+use App\Services\Base\ContextService;
 
 class CLevelService
 {
@@ -77,9 +78,11 @@ class CLevelService
     {
         $cLevel = CLevel::findByIdOrFail($id);
 
-        $this->contextService->checkIfParentPublishedBeforePublish($id , CLevel::class);
-        $this->contextService->checkIfContextHasContentBeforePublish($id , CLevel::class);
-        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , CLevel::class);
+        if($status == PublishStatusEnum::PUBLISHED->value) {
+            $this->contextService->checkIfParentPublishedBeforePublish($id , CLevel::class);
+            $this->contextService->checkIfContextHasContentBeforePublish($id , CLevel::class);
+            $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , CLevel::class);
+        }
 
         $this->contextService->changePublishStatus($cLevel , 'content' , $status);
     }

@@ -2,10 +2,11 @@
 
 namespace App\Services\ELevel;
 
-use App\Constants\MediaCollection;
 use App\Models\ELevel;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
+use App\Services\Base\ContextService;
 
 class ELevelService
 {
@@ -69,8 +70,10 @@ class ELevelService
     {
         $eLevel = ELevel::findByIdOrFail($id);
 
-        $this->contextService->checkIfContextHasContentBeforePublish($id , ELevel::class);
-        $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , ELevel::class);
+        if($status == PublishStatusEnum::PUBLISHED->value) {
+            $this->contextService->checkIfContextHasContentBeforePublish($id , ELevel::class);
+            $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , ELevel::class);
+        }
 
         $this->contextService->changePublishStatus($eLevel , 'content' , $status);
     }

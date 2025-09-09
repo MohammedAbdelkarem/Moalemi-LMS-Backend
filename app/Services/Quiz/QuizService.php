@@ -92,11 +92,11 @@ class QuizService extends MainService
         $quiz->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $quiz = Quiz::findByIdOrFail($id);
         
-        $this->contextService->changePublishStatus($quiz, 'quiz');
+        $this->contextService->changePublishStatus($quiz, 'quiz', $status);
     }
 
     public function changePriority($contextsData)
