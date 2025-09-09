@@ -52,10 +52,10 @@ class LessonController extends Controller
         );
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus(Request $request, $id)
     {
         return success(
-            $this->lessonService->changePublishStatus($id),
+            $this->lessonService->changePublishStatus($id, $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

@@ -6,9 +6,9 @@ use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Administration\Teacher\TeacherService;
 use App\Http\Requests\GetItemsRequest;
-use App\Http\Resources\Administration\Teacher\TeacherResource;
 use App\Http\Requests\Administration\Teacher\CreateTeacherRequest;
 use App\Http\Requests\Administration\Teacher\UpdateTeacherRequest;
+use App\Http\Resources\Teacher\TeacherResource;
 use App\Http\Resources\User\UserResource;
 
 class TeacherController extends Controller
@@ -22,7 +22,7 @@ class TeacherController extends Controller
         return success(
             $this->teacherService->getAll($request->validated()),
             ApiMessages::MSG_SUCCESS,
-            UserResource::class,
+            TeacherResource::class,
             $request->has('per_page')
         );
     }

@@ -83,7 +83,7 @@ class UnitService
         $unit->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $unit = Unit::findByIdOrFail($id);
 
@@ -91,7 +91,7 @@ class UnitService
         $this->contextService->checkIfContextHasContentBeforePublish($id , Unit::class);
         $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Unit::class);
 
-        $this->contextService->changePublishStatus($unit , 'content');
+        $this->contextService->changeWithChildsPublishStatus($id , Unit::class , $status);
     }
 
     public function changeAccessTypeStatus($id)

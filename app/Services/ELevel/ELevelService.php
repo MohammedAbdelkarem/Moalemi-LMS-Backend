@@ -65,13 +65,13 @@ class ELevelService
         $eLevel->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $eLevel = ELevel::findByIdOrFail($id);
 
         $this->contextService->checkIfContextHasContentBeforePublish($id , ELevel::class);
         $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , ELevel::class);
 
-        $this->contextService->changePublishStatus($eLevel , 'content');
+        $this->contextService->changePublishStatus($eLevel , 'content' , $status);
     }
 }

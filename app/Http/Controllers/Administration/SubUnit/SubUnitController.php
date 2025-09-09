@@ -50,10 +50,10 @@ class SubUnitController extends Controller
         );
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus(Request $request, $id)
     {
         return success(
-            $this->subUnitService->changePublishStatus($id),
+            $this->subUnitService->changePublishStatus($id, $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

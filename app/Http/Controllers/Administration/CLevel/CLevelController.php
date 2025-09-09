@@ -50,10 +50,10 @@ class CLevelController extends Controller
         );
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus(Request $request, $id)
     {
         return success(
-            $this->cLevelService->changePublishStatus($id),
+            $this->cLevelService->changePublishStatus($id , $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

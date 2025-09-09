@@ -25,16 +25,12 @@ class ContextService
      * @param mixed $model The model instance
      * @return mixed The updated model
      */
-    public function changePublishStatus($context , $type)
-    {
-        $newStatus = $context->publish_status === PublishStatusEnum::PUBLISHED->value 
-            ? PublishStatusEnum::DRAFT->value 
-            : PublishStatusEnum::PUBLISHED->value;
-            
-        $context->update(['publish_status' => $newStatus]);
+    public function changePublishStatus($context , $type , $status)
+    { 
+        $context->update(['publish_status' => $status]);
 
-        $operation = $newStatus === PublishStatusEnum::PUBLISHED->value ? '+' : '-';
-
+        $operation = $status === PublishStatusEnum::PUBLISHED->value ? '+' : '-';
+        
         if($type == 'content')
             $this->updateParentNumberOfContents($context, $operation, true);
         elseif($type == 'file')
@@ -111,6 +107,7 @@ class ContextService
 
         $field = $published ? 'number_of_published_contents' : 'number_of_contents';
 
+        
         switch($class)
         {
             case ModelPaths::ELevel:
@@ -350,6 +347,118 @@ class ContextService
         if($question->quizzes()->count() > 0)
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ);
     }
-    //check if unit has one teacher
     
+    public function changeWithChildsPublishStatus($context_id , $model , $status)
+    {
+        $context = $model::findByIdOrFail($context_id);
+        
+        $this->changePublishStatus($context, 'content' , $status);
+
+        $files = $context->files()->get();
+        $quizzes = $context->quizzes()->get();
+
+        $this->changeFilesPublishStatus($files , $status);
+        $this->changeQuizzesPublishStatus($quizzes , $status);
+        
+        if($model == Course::class)
+        {
+            $subjects = $context->subjects()->get();
+            $this->changeSubjectsPublishStatus($subjects , $status);
+        }
+        else if($model == Subject::class)
+        {
+            $units = $context->units()->get();
+            $this->changeUnitsPublishStatus($units , $status);
+        }
+        else if($model == Unit::class)
+        {
+            $subUnits = $context->subUnits()->get();
+            $this->changeSubUnitsPublishStatus($subUnits , $status);
+        }
+        else if($model == SubUnit::class)
+        {
+            $lessons = $context->lessons()->get();
+            $this->changeLessonsPublishStatus($lessons , $status);
+        }
+    }
+
+    private function changeLessonsPublishStatus($lessons , $status)
+    {
+        foreach($lessons as $lesson)
+        {
+            $this->changePublishStatus($lesson, 'content' , $status);
+
+            $files = $lesson->files()->get();
+            $quizzes = $lesson->quizzes()->get();
+
+            $this->changeFilesPublishStatus($files , $status);
+            $this->changeQuizzesPublishStatus($quizzes , $status);
+        }
+    }
+
+    private function changeSubUnitsPublishStatus($subUnits , $status)
+    {
+        foreach($subUnits as $subUnit)
+        {
+            $this->changePublishStatus($subUnit, 'content' , $status);
+
+            $files = $subUnit->files()->get();
+            $quizzes = $subUnit->quizzes()->get();
+
+            $this->changeFilesPublishStatus($files , $status);
+            $this->changeQuizzesPublishStatus($quizzes , $status);
+
+            $lessons = $subUnit->lessons()->get();
+
+            $this->changeLessonsPublishStatus($lessons , $status);
+        }
+    }
+
+    private function changeUnitsPublishStatus($units , $status)
+    {
+        foreach($units as $unit)
+        {
+            $this->changePublishStatus($unit, 'content' , $status);
+
+            $files = $unit->files()->get();
+            $quizzes = $unit->quizzes()->get();
+
+            $this->changeFilesPublishStatus($files , $status);
+            $this->changeQuizzesPublishStatus($quizzes , $status);
+
+            $subUnits = $unit->subUnits()->get();
+
+            $this->changeSubUnitsPublishStatus($subUnits , $status);
+        }
+    }
+
+    private function changeSubjectsPublishStatus($subjects , $status)
+    {
+        foreach($subjects as $subject)
+        {
+            $this->changePublishStatus($subject, 'content' , $status);
+
+            $files = $subject->files()->get();
+            $quizzes = $subject->quizzes()->get();
+
+            $this->changeFilesPublishStatus($files , $status);
+            $this->changeQuizzesPublishStatus($quizzes , $status);
+
+            $units = $subject->units()->get();
+
+            $this->changeUnitsPublishStatus($units , $status);
+        }
+    }
+
+    private function changeQuizzesPublishStatus($quizzes , $status)
+    {
+        foreach($quizzes as $quiz)
+            $this->changePublishStatus($quiz, 'quiz' , $status);
+    }
+
+    private function changeFilesPublishStatus($files , $status)
+    {
+        foreach($files as $file)
+            $this->changePublishStatus($file, 'file' , $status);
+    }
 }

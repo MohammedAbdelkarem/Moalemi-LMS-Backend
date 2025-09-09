@@ -73,7 +73,7 @@ class CLevelService
         $cLevel->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $cLevel = CLevel::findByIdOrFail($id);
 
@@ -81,7 +81,7 @@ class CLevelService
         $this->contextService->checkIfContextHasContentBeforePublish($id , CLevel::class);
         $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , CLevel::class);
 
-        $this->contextService->changePublishStatus($cLevel , 'content');
+        $this->contextService->changePublishStatus($cLevel , 'content' , $status);
     }
 
 }

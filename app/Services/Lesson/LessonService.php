@@ -116,13 +116,13 @@ class LessonService
         $lesson->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $lesson = Lesson::findByIdOrFail($id);
 
         $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
 
-        $this->contextService->changePublishStatus($lesson , 'content');
+        $this->contextService->changeWithChildsPublishStatus($id , Lesson::class , $status);
     }
 
     public function changePriority($contextsData)

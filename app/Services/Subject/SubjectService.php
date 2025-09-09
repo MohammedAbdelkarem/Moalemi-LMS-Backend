@@ -89,7 +89,7 @@ class SubjectService
         $this->contextService->checkIfContextHasContentBeforePublish($id , Subject::class);
         $this->contextService->checkIfContextHasResponsibilitiesBeforePublish($id , Subject::class);
 
-        $this->contextService->changePublishStatus($subject , 'content');
+        $this->contextService->changeWithChildsPublishStatus($id , Subject::class);
     }
 
     public function changeAccessTypeStatus($id)

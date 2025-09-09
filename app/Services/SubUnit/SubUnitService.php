@@ -88,13 +88,13 @@ class SubUnitService
         $subUnit->delete();
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus($id, $status)
     {
         $subUnit = SubUnit::findByIdOrFail($id);
 
         $this->contextService->checkIfParentPublishedBeforePublish($id , SubUnit::class);
         $this->contextService->checkIfContextHasContentBeforePublish($id , SubUnit::class);
 
-        $this->contextService->changePublishStatus($subUnit , 'content');
+        $this->contextService->changeWithChildsPublishStatus($id , SubUnit::class , $status);
     }
 }
