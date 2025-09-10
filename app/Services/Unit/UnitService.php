@@ -97,10 +97,10 @@ class UnitService
         $this->contextService->changeWithChildsPublishStatus($id , Unit::class , $status);
     }
 
-    public function changeAccessTypeStatus($id)
+    public function changeAccessTypeStatus($id, $price)
     {
         $unit = Unit::findByIdOrFail($id);
         
-        return $this->contextService->changeContentAccessTypeStatus($unit);
+        return $this->contextService->changeContentAccessTypeStatus($unit, $price);
     }
 }

@@ -58,10 +58,10 @@ class SubjectController extends Controller
         );
     }
 
-    public function changeAccessTypeStatus($id)
+    public function changeAccessTypeStatus(Request $request, $id)
     {
         return success(
-            $this->subjectService->changeAccessTypeStatus($id),
+            $this->subjectService->changeAccessTypeStatus($id, $request->price ?? 0),
             ApiMessages::MSG_SUCCESS
         );
     }

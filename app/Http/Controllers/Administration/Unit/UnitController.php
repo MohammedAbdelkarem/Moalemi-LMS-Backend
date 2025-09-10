@@ -58,10 +58,10 @@ class UnitController extends Controller
         );
     }
 
-    public function changeAccessTypeStatus($id)
+    public function changeAccessTypeStatus(Request $request, $id)
     {
         return success(
-            $this->unitService->changeAccessTypeStatus($id),
+            $this->unitService->changeAccessTypeStatus($id, $request->price ?? 0),
             ApiMessages::MSG_SUCCESS
         );
     }

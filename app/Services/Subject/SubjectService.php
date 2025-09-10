@@ -95,10 +95,10 @@ class SubjectService
         $this->contextService->changeWithChildsPublishStatus($id , Subject::class , $status);
     }
 
-    public function changeAccessTypeStatus($id)
+    public function changeAccessTypeStatus($id, $price)
     {
         $subject = Subject::findByIdOrFail($id);
         
-        $this->contextService->changeContentAccessTypeStatus($subject);
+        $this->contextService->changeContentAccessTypeStatus($subject, $price);
     }
 }

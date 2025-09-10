@@ -45,13 +45,13 @@ class ContextService
      * @param mixed $context The model instance
      * @return mixed The updated model
      */
-    public function changeContentAccessTypeStatus($context)
-    {
+    public function changeContentAccessTypeStatus($context, $price)
+    {   
         $newAccessType = $context->access_type === AccessTypeEnum::FREE->value 
             ? AccessTypeEnum::PAID->value 
             : AccessTypeEnum::FREE->value;
             
-        $context->update(['access_type' => $newAccessType]);
+        $context->update(['access_type' => $newAccessType, 'price' => $price]);
     }
 
     /**

@@ -87,10 +87,10 @@ class CourseService
         $this->contextService->changeWithChildsPublishStatus($id , Course::class , $status);
     }
 
-    public function changeAccessTypeStatus($id)
+    public function changeAccessTypeStatus($id, $price)
     {
         $course = Course::findByIdOrFail($id);
         
-        $this->contextService->changeContentAccessTypeStatus($course);
+        $this->contextService->changeContentAccessTypeStatus($course, $price);
     }
 }
