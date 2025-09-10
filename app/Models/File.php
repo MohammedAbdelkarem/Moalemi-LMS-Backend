@@ -76,4 +76,30 @@ class File extends Model implements HasMedia
                 });
             });
     }
+
+    public function scopeFilter($query, $data, $student_id)
+    {
+        return $query->published()
+            ->when(isset($data['subject_ids']) || isset($data['unit_ids']) || isset($data['sub_unit_ids']) || isset($data['lesson_ids']), function($query) use ($data) {
+                $query->where(function($subQuery) use ($data) {
+                    $subQuery->when(isset($data['subject_ids']), function($query) use ($data) {
+                        $query->whereIn('context_id', $data['subject_ids'])->where('context_type', Subject::class);
+                    })
+                    ->when(isset($data['unit_ids']), function($query) use ($data) {
+                        $query->orWhereIn('context_id', $data['unit_ids'])->where('context_type', Unit::class);
+                    })
+                    ->when(isset($data['sub_unit_ids']), function($query) use ($data) {
+                        $query->orWhereIn('context_id', $data['sub_unit_ids'])->where('context_type', SubUnit::class);
+                    })
+                    ->when(isset($data['lesson_ids']), function($query) use ($data) {
+                        $query->orWhereIn('context_id', $data['lesson_ids'])->where('context_type', Lesson::class);
+                    });
+                });
+            })
+            ->whereHas('context', function($query) use ($student_id) {
+                $query->whereHas('unlockedContexts', function($query) use ($student_id) {
+                    $query->where('user_id', $student_id);
+                });
+            });
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Services\CLevel\CLevelService;
 use App\Services\ELevel\ELevelService;
 use App\Services\Lesson\LessonService;
+use App\Http\Resources\List\ListResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\Course\CourseResource;
 use App\Services\Hierarichy\HierarichyService;
@@ -138,4 +139,17 @@ class HierarichyController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function getPurchasedListsByType(Request $request)
+    {
+        $model = getModel($request->context_type);
+
+        return success(
+            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), $model , []),
+            ApiMessages::MSG_SUCCESS,
+            ListResource::class,
+        );
+    }
+
+    
 }

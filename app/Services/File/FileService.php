@@ -82,23 +82,19 @@ class FileService
         $this->contextService->changeContextsPriority($contextsData, File::class);
     }
 
-    public function getPurchasedFiles($student_id , $data , $model)
+    public function search($data , $student_id)
     {
+        $files = File::searchForMobile($data['search'] , $student_id);
+
         return getOrPaginate(
-            File::published()
-            ->whereHas('context', function($query) use ($student_id, $model) {
-                $query->whereHas('unlockedContexts', function($query) use ($student_id, $model) {
-                    $query->where('user_id', $student_id)
-                    ->where('context_type', $model);
-                });
-            }),
+            $files,
             $data
         );
     }
 
-    public function search($data , $student_id)
+    public function filter($data , $student_id)
     {
-        $files = File::searchForMobile($data['search'] , $student_id);
+        $files = File::filter($data, $student_id);
 
         return getOrPaginate(
             $files,

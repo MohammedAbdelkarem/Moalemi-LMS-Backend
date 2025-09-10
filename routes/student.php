@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/purchased-courses', 'getPurchasedCourses')->name(RouteNames::MOBILE_PURCHASED_COURSES);
         Route::get('/purchased-subjects', 'getPurchasedSubjects')->name(RouteNames::MOBILE_PURCHASED_SUBJECTS);
         Route::get('/purchased-units', 'getPurchasedUnits')->name(RouteNames::MOBILE_PURCHASED_UNITS);
+        Route::get('/purchased-lists-by-type', 'getPurchasedListsByType');
     });
 
     // Transactions
@@ -55,11 +56,8 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
     // Files
     Route::prefix('files')->controller(FileController::class)->group(function () {
-        Route::get('/subject', 'subjectFiles');
-        Route::get('/unit', 'unitFiles');
-        Route::get('/sub-unit', 'subUnitFiles');
-        Route::get('/lesson', 'lessonFiles');
         Route::get('/search', 'search');
+        Route::get('/filter', 'filter');
     });
 
     // Saved Contexts
