@@ -33,4 +33,15 @@ class QuizController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function getPurchasedQuizzes(Request $request)
+    {
+        return success(
+            $this->quizService->getPurchasedQuizzes($request->student_id ?? auth()->id(), $request->context_type, $request->all()),
+            ApiMessages::MSG_SUCCESS,
+            QuizResource::class,
+            $request->has('per_page')
+        );
+    }
+    
 }

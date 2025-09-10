@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Question;
 
 use Illuminate\Http\Request;
+use App\Enums\LevelEnum;
 use App\Http\Resources\Answer\AnswerResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
@@ -17,7 +18,7 @@ class QuestionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'text' => $this->text,
             'hint' => $this->hint,
@@ -30,5 +31,10 @@ class QuestionResource extends JsonResource
             'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'answers' => AnswerResource::collection($this->whenLoaded('answers')),
         ];
+
+        if(auth()->user()->isStudent())
+            $data['is_saved'] = is_saved($this->id, LevelEnum::QUESTION , auth()->id());
+
+        return $data;
     }
 }

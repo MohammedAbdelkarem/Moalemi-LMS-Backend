@@ -101,4 +101,21 @@ class FileService
             $data
         );
     }
+
+    public function getPurchasedFiles($student_id , $context_type , $data)
+    {
+        $model = getModel($context_type);
+        
+        $files = File::published()->whereHas('context', function($query) use ($student_id , $model) {
+            $query->whereHas('unlockedContexts', function($query) use ($student_id) {
+                $query->where('user_id', $student_id);
+            })
+            ->where('context_type', $model);
+        });
+
+        return getOrPaginate(
+            $files,
+            $data
+        );
+    }
 }

@@ -59,12 +59,14 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('files')->controller(FileController::class)->group(function () {
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
+        Route::get('/purchased', 'getPurchasedFiles');
     });
 
     // Quizzes
     Route::prefix('quizzes')->controller(QuizController::class)->group(function () {
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
+        Route::get('/purchased', 'getPurchasedQuizzes');
     });
 
     // Saved Contexts

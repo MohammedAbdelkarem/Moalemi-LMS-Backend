@@ -340,3 +340,13 @@ if (!function_exists('is_purchased')) {
         return $context->unlockedContexts()->where('user_id', $student_id)->exists();
     }
 }
+
+if (!function_exists('is_saved')) {
+    function is_saved($context_id , $context_type , $student_id)
+    {
+        $model = getModel($context_type);
+        $context = $model::find($context_id);
+        
+        return $context->savedByStudents()->where('student_id', $student_id)->exists();
+    }
+}
