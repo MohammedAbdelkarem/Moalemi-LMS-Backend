@@ -77,7 +77,7 @@ class File extends Model implements HasMedia
             });
     }
 
-    public function scopeFilter($query, $data, $student_id)
+    public function scopeFilterForMobile($query, $data, $student_id)
     {
         return $query->published()
             ->when(isset($data['subject_ids']) || isset($data['unit_ids']) || isset($data['sub_unit_ids']) || isset($data['lesson_ids']), function($query) use ($data) {

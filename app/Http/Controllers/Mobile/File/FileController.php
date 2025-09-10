@@ -20,6 +20,7 @@ class FileController extends Controller
             $this->fileService->search($request->all(), $request->student_id ?? auth()->id()),
             ApiMessages::MSG_SUCCESS,
             FileResource::class,
+            $request->has('per_page')
         );
     }
 
@@ -29,6 +30,7 @@ class FileController extends Controller
             $this->fileService->filter($request->all(), $request->student_id ?? auth()->id()),
             ApiMessages::MSG_SUCCESS,
             FileResource::class,
+            $request->has('per_page')
         );
     }
 }

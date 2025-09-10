@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\HomeController;
 use App\Http\Controllers\Mobile\File\FileController;
 use App\Http\Controllers\Mobile\HirarichyController;
+use App\Http\Controllers\Mobile\Quiz\QuizController;
 use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Saved\SavedContextController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
@@ -56,6 +57,12 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
     // Files
     Route::prefix('files')->controller(FileController::class)->group(function () {
+        Route::get('/search', 'search');
+        Route::get('/filter', 'filter');
+    });
+
+    // Quizzes
+    Route::prefix('quizzes')->controller(QuizController::class)->group(function () {
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
     });

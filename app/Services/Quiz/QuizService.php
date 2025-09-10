@@ -103,4 +103,24 @@ class QuizService extends MainService
     {
         $this->contextService->changeContextsPriority($contextsData, Quiz::class);
     }
+
+    public function search($data , $student_id)
+    {
+        $quizzes = Quiz::searchForMobile($data['search'] , $student_id);
+
+        return getOrPaginate(
+            $quizzes,
+            $data
+        );
+    }
+
+    public function filter($data , $student_id)
+    {
+        $quizzes = Quiz::filterForMobile($data, $student_id);
+
+        return getOrPaginate(
+            $quizzes,
+            $data
+        );
+    }
 }

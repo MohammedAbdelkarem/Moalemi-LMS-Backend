@@ -94,7 +94,7 @@ class FileService
 
     public function filter($data , $student_id)
     {
-        $files = File::filter($data, $student_id);
+        $files = File::filterForMobile($data, $student_id);
 
         return getOrPaginate(
             $files,
