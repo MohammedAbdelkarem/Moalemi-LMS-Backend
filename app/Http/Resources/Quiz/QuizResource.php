@@ -29,6 +29,9 @@ class QuizResource extends JsonResource
             'priority' => $this->priority,
         ];
 
+        if(auth()->user()->isStudent())
+            $data['is_solved'] = is_solved($this->id, auth()->id());
+
         $routeName = $request->route()->getName();
         switch ($routeName) 
         {
@@ -37,6 +40,9 @@ class QuizResource extends JsonResource
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['created_by'] = UserResource::make($this->whenLoaded('createdBy'));
+                $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
+            break;
+            case RouteNames::MOBILE_QUIZ_PREV_SOLUTION:
                 $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
             break;
         }

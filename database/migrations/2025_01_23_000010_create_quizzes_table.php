@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->integer('degree')->default(0); // total possible score
             $table->integer('pass_degree')->default(0); // passing score
+            $table->double('one_question_degree')->default(0); // one question degree
             $table->timestamps();
         });
     }

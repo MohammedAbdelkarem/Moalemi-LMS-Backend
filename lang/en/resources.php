@@ -13,8 +13,6 @@ return [
     'Question'                  => 'question',
     'quiz'                      => 'Quiz',
     'quizzes'                   => 'Quizzes',
-    'quiz_result'               => 'Quiz Result',
-    'quiz_results'              => 'Quiz Results',
     'Banner'                    => 'banner',
     'Banners'                   => 'banners',
     'user'                      => 'User',
@@ -49,6 +47,8 @@ return [
     'questions'                 => 'Questions',
     'coupon'                    => 'Coupon',
     'coupons'                   => 'Coupons',
+    'quiz_result'               => 'Quiz Result',
+    'quiz_results'              => 'Quiz Results',
     'saved_context'             => 'Saved Context',
     'saved_contexts'            => 'Saved Contexts',
 ];

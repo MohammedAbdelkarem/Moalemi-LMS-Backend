@@ -16,8 +16,6 @@ return [
     'questions'                 => 'الأسئلة',
     'quiz'                      => 'الاختبار',
     'quizzes'                   => 'الاختبارات',
-    'quiz_result'               => 'نتيجة الاختبار',
-    'quiz_results'              => 'نتائج الاختبارات',
     'user'                      => 'المستخدم',
     'users'                     => 'مستخدمين',
     'questions_and_answers'     => 'الأسئلة الشائعة',
@@ -49,6 +47,8 @@ return [
     'files'                     => 'الملفات',
     'coupon'                    => 'الكوبون',
     'coupons'                   => 'الكوبونات',
+    'quiz_result'               => 'نتيجة الاختبار',
+    'quiz_results'              => 'نتائج الاختبارات',
     'saved_context'             => 'المحتوى المحفوظ',
     'saved_contexts'            => 'المحتويات المحفوظة',
 ];

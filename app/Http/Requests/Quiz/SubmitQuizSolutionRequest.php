@@ -5,7 +5,7 @@ namespace App\Http\Requests\Quiz;
 use App\Http\Requests\BaseApiRequest;
 use Illuminate\Validation\Rule;
 
-class StartQuizRequest extends BaseApiRequest
+class SubmitQuizSolutionRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,10 @@ class StartQuizRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'quiz_id' => ['required', 'exists:quizzes,id'],
+            'quiz_result_id' => ['required', 'exists:quiz_results,id'],
+            'taken_period' => ['required', 'integer', 'min:1'],
+            'answers' => ['required', 'array', 'min:1'],
+            'answers.*' => ['required', 'exists:answers,id'],
         ];
     }
 }

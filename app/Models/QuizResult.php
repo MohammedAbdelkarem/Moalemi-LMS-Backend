@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class QuizResult extends Model
@@ -16,6 +16,7 @@ class QuizResult extends Model
         'id'
     ];
 
+
     /**
      * @return \App\Models\QuizResult
      */
@@ -25,7 +26,7 @@ class QuizResult extends Model
             self::class,
             $id,
             null,
-            Resources::QUIZ_RESULT,
+            Resources::RES_QUIZ_RESULT,
             $with,
             $withTrashed,
             $selectedColumns

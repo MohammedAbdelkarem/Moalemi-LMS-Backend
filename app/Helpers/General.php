@@ -16,6 +16,7 @@ use App\Models\SubUnit;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
 use App\Models\Question;
+use App\Models\QuizResult;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Models\UnlockedContext;
@@ -348,5 +349,18 @@ if (!function_exists('is_saved')) {
         $context = $model::find($context_id);
         
         return $context->savedByStudents()->where('student_id', $student_id)->exists();
+    }
+}
+
+if (!function_exists('is_solved')) {
+    function is_solved($quiz_id , $student_id , $getting = false)
+    {
+        $query = QuizResult::where('quiz_id', $quiz_id)
+                ->where('student_id', $student_id);
+
+        if($getting)
+            return $query->first();
+
+        return $query->exists();
     }
 }

@@ -50,6 +50,8 @@ class QuizService extends MainService
 
         $quiz->number_of_questions = count($validatedData['questions']);
 
+        $quiz->one_question_degree = $validatedData['degree'] / count($validatedData['questions']);
+
         foreach ($validatedData['questions'] as $question) {
             $questionData[$question['id']] = ['priority' => $question['priority']];
         }

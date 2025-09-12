@@ -18,8 +18,8 @@ final class Resources
     const RES_QUESTIONS_AND_ANSWERS = 'resources.questions_and_answers';
     const QUIZ                      = 'resources.quiz';
     const QUIZZES                   = 'resources.quizzes';
-    const QUIZ_RESULT               = 'resources.quiz_result';
-    const QUIZ_RESULTS              = 'resources.quiz_results';
+    const RES_QUIZ_RESULT           = 'resources.quiz_result';
+    const RES_QUIZ_RESULTS          = 'resources.quiz_results';
     const CITY                      = 'resources.city';
     const ITEM                      = 'resources.item';
     const FIELD                     = 'resources.field';
