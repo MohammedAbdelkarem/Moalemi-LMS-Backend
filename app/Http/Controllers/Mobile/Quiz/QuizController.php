@@ -75,5 +75,14 @@ class QuizController extends Controller
             QuizResultResource::class
         );
     }
+
+    public function show($id)
+    {
+        return success(
+            $this->quizService->show($id),
+            ApiMessages::MSG_SUCCESS,
+            QuizResource::class
+        );
+    }
     
 }

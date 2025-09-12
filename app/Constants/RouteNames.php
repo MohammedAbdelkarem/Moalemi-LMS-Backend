@@ -55,4 +55,5 @@ final class RouteNames
     const MOBILE_SAVED_LESSONS = 'mobile.saved.lessons';
     const MOBILE_SAVED_QUESTIONS = 'mobile.saved.questions';
     const MOBILE_QUIZ_PREV_SOLUTION = 'mobile.quiz.prev.solution';
+    const MOBILE_QUIZ_DETAILS = 'mobile.quiz.details';
 }

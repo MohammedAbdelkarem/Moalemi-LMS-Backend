@@ -38,7 +38,7 @@ class QuizService extends MainService
 
     public function show($id)
     {
-        return Quiz::findByIdOrFail($id, ['context', 'createdBy', 'questions']);
+        return Quiz::findByIdOrFail($id, ['context', 'createdBy', 'questions.answers']);
     }
 
     public function store($validatedData)

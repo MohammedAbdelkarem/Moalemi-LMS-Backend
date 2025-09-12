@@ -43,7 +43,10 @@ class QuizResource extends JsonResource
                 $data['created_by'] = UserResource::make($this->whenLoaded('createdBy'));
                 $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
             break;
-            case RouteNames::MOBILE_QUIZ_PREV_SOLUTION:
+            case in_array($routeName ,[
+                RouteNames::MOBILE_QUIZ_PREV_SOLUTION,
+                RouteNames::MOBILE_QUIZ_DETAILS,
+            ]):
                 $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
             break;
         }

@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('quizzes')->controller(QuizController::class)->group(function () {
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
+        Route::get('details/{id}' , 'show')->name(RouteNames::MOBILE_QUIZ_DETAILS);
         Route::get('/purchased', 'getPurchasedQuizzes');
         Route::prefix('solution')->controller(QuizController::class)->group(function () {
             Route::get('prev/{id}' , 'getPrevSolution')->name(RouteNames::MOBILE_QUIZ_PREV_SOLUTION);
