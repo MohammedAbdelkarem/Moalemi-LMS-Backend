@@ -26,6 +26,7 @@ class QuizResource extends JsonResource
             'degree' => $this->degree,
             'pass_degree' => $this->pass_degree,
             'number_of_questions' => $this->number_of_questions,
+            'one_question_degree' => $this->one_question_degree,
             'priority' => $this->priority,
         ];
 
