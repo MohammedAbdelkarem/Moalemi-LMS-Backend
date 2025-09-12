@@ -43,7 +43,7 @@ class SolvingService extends MainService
         $quizResult->number_of_answered_questions = count($data['answers'] ?? []);
         $quizResult->taken_period = $data['taken_period'];
 
-        if(isset($data['answers']))
+        if(isset($data['answers']) &&!empty($data['answers']))
         {
             foreach($data['answers'] as $answer_id)
             {
