@@ -40,24 +40,27 @@ class SolvingService extends MainService
         $quizResult = QuizResult::findByIdOrFail($data['quiz_result_id']);
 
         $quiz = Quiz::findByIdOrFail($quizResult->quiz_id);
-        $quizResult->number_of_answered_questions = count($data['answers']);
+        $quizResult->number_of_answered_questions = count($data['answers'] ?? []);
         $quizResult->taken_period = $data['taken_period'];
 
-        foreach($data['answers'] as $answer_id)
+        if(isset($data['answers']))
         {
-            $answer = Answer::find($answer_id);
+            foreach($data['answers'] as $answer_id)
+            {
+                $answer = Answer::find($answer_id);
 
-            $studentAnswer = StudentAnswer::create([
-                'quiz_result_id' => $quizResult->id,
-                'question_id' => $answer->question_id,
-                'answer_id' => $answer->id,
-                'is_correct' => $answer->is_correct,
-            ]);
+                $studentAnswer = StudentAnswer::create([
+                    'quiz_result_id' => $quizResult->id,
+                    'question_id' => $answer->question_id,
+                    'answer_id' => $answer->id,
+                    'is_correct' => $answer->is_correct,
+                ]);
 
-            if($answer->is_correct)
-                $quizResult->number_of_correct_answers++;
-            else
-                $quizResult->number_of_wrong_answers++;
+                if($answer->is_correct)
+                    $quizResult->number_of_correct_answers++;
+                else
+                    $quizResult->number_of_wrong_answers++;
+            }
         }
 
         $result = $quiz->one_question_degree * $quizResult->number_of_correct_answers;

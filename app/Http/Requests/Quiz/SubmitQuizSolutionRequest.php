@@ -25,7 +25,7 @@ class SubmitQuizSolutionRequest extends BaseApiRequest
         return [
             'quiz_result_id' => ['required', 'exists:quiz_results,id'],
             'taken_period' => ['required', 'integer', 'min:1'],
-            'answers' => ['required', 'array', 'min:1'],
+            'answers' => ['sometimes', 'array', 'min:1'],
             'answers.*' => ['required', 'exists:answers,id'],
         ];
     }
