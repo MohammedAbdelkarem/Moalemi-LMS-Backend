@@ -13,6 +13,8 @@ return [
     'Question'                  => 'question',
     'quiz'                      => 'Quiz',
     'quizzes'                   => 'Quizzes',
+    'quiz_result'               => 'Quiz Result',
+    'quiz_results'              => 'Quiz Results',
     'Banner'                    => 'banner',
     'Banners'                   => 'banners',
     'user'                      => 'User',

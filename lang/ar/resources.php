@@ -16,6 +16,8 @@ return [
     'questions'                 => 'الأسئلة',
     'quiz'                      => 'الاختبار',
     'quizzes'                   => 'الاختبارات',
+    'quiz_result'               => 'نتيجة الاختبار',
+    'quiz_results'              => 'نتائج الاختبارات',
     'user'                      => 'المستخدم',
     'users'                     => 'مستخدمين',
     'questions_and_answers'     => 'الأسئلة الشائعة',

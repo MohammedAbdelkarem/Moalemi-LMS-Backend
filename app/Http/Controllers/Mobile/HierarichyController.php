@@ -133,7 +133,7 @@ class HierarichyController extends Controller
     public function getPurchasedUnits(Request $request)
     {
         return success(
-            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), Unit::class, 'publishedSubUnits'),
+            $this->hierarichyService->getPurchasedContextByModel($request->student_id ?? auth()->id(), $request->all(), Unit::class, ['publishedSubUnits', 'publishedQuizzes', 'publishedFiles']),
             ApiMessages::MSG_SUCCESS,
             UnitResource::class,
             $request->has('per_page')

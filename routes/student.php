@@ -67,6 +67,9 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
         Route::get('/purchased', 'getPurchasedQuizzes');
+        Route::post('/start', 'startQuiz');
+        Route::post('/submit-answer', 'submitAnswer');
+        Route::post('/complete', 'completeQuiz');
     });
 
     // Saved Contexts

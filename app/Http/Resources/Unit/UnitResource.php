@@ -65,6 +65,8 @@ class UnitResource extends JsonResource
                 RouteNames::MOBILE_PURCHASED_UNITS,
             ]):
                 $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('publishedSubUnits'));
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
             break;
             case RouteNames::MOBILE_HIERARICHY_UNIT_DETAILS:
                 $data['teacher'] = UserResource::make($this->whenLoaded('responsibilities')->pluck('teacher')->first());
