@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LessonRate extends Model
@@ -28,5 +29,15 @@ class LessonRate extends Model
             $withTrashed,
             $selectedColumns
         );
+    }
+
+    public function lesson(): BelongsTo
+    {
+        return $this->belongsTo(Lesson::class, 'lesson_id');
+    }
+
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'student_id');
     }
 }

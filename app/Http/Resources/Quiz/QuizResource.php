@@ -31,7 +31,10 @@ class QuizResource extends JsonResource
         ];
 
         if(auth()->user()->isStudent())
+        {
             $data['is_solved'] = is_solved($this->id, auth()->id());
+            $data['quiz_result'] = QuizResultResource::collection($this->whenLoaded('quizResults'));
+        }
 
         $routeName = $request->route()->getName();
         switch ($routeName) 
@@ -48,7 +51,6 @@ class QuizResource extends JsonResource
                 RouteNames::MOBILE_QUIZ_DETAILS,
             ]):
                 $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
-                $data['quiz_result'] = QuizResultResource::collection($this->whenLoaded('quizResults'));
             break;
         }
 

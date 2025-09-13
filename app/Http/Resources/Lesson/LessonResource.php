@@ -39,6 +39,7 @@ class LessonResource extends JsonResource
             'bio' => $this->bio,
             'duration' => $this->duration,
             'priority' => $this->priority,
+            'total_rate' => $this->total_rate,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),

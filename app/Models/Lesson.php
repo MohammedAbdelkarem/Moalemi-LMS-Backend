@@ -117,6 +117,11 @@ class Lesson extends Model implements HasMedia
         return $this->morphMany(UnlockedContext::class, 'context');
     }
 
+    public function lessonRates(): HasMany
+    {
+        return $this->hasMany(LessonRate::class, 'lesson_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

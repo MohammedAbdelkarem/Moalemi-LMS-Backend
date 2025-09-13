@@ -369,6 +369,10 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->belongsTo(User::class, 'parent_id')->where('role_id', 4);
     }
 
+    public function lessonRates(): HasMany
+    {
+        return $this->hasMany(LessonRate::class, 'student_id');
+    }
 
     //Ban System
     public function bans(): HasMany
