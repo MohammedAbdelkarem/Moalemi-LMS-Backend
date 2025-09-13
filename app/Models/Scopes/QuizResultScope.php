@@ -13,10 +13,12 @@ class QuizResultScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $studentId = auth()->id();
+        $studentId = auth()->id() ?? null;
         
         $builder->with(['quizResults' => function ($query) use ($studentId) {
-            $query->where('student_id', $studentId);
+            $query->when($studentId != null, function ($query) use ($studentId) {
+                $query->where('student_id', $studentId);
+            });
         }]);
     }
 }
