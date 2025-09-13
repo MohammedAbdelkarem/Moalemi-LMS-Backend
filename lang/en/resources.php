@@ -51,4 +51,6 @@ return [
     'quiz_results'              => 'Quiz Results',
     'saved_context'             => 'Saved Context',
     'saved_contexts'            => 'Saved Contexts',
+    'lesson_rate'               => 'Lesson Rate',
+    'lesson_rates'              => 'Lesson Rates',
 ];

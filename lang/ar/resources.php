@@ -51,4 +51,6 @@ return [
     'quiz_results'              => 'نتائج الاختبارات',
     'saved_context'             => 'المحتوى المحفوظ',
     'saved_contexts'            => 'المحتويات المحفوظة',
+    'lesson_rate'               => 'تقييم الدرس',
+    'lesson_rates'              => 'تقييمات الدروس',
 ];

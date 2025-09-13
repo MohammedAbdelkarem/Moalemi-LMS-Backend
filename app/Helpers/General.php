@@ -19,6 +19,7 @@ use App\Models\Question;
 use App\Models\QuizResult;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
+use App\Enums\QuizResultEnum;
 use App\Models\UnlockedContext;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\Config;
@@ -361,6 +362,6 @@ if (!function_exists('is_solved')) {
         if($getting)
             return $query->first();
 
-        return $query->exists();
+        return $query->where('result', '!=', QuizResultEnum::IN_PROGRESS->value)->exists();
     }
 }

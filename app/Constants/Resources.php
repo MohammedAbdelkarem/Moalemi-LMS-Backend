@@ -39,6 +39,8 @@ final class Resources
     const SUB_UNITS                 = 'resources.sub_units';
     const LESSON                    = 'resources.lesson';
     const LESSONS                   = 'resources.lessons';
+    const LESSON_RATE               = 'resources.lesson_rate';
+    const LESSON_RATES              = 'resources.lesson_rates';
     const FILE                      = 'resources.file';
     const FILES                     = 'resources.files';
     const QUESTION                  = 'resources.question';

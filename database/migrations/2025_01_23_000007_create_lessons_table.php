@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('number_of_published_quizzes')->default(0);
             $table->integer('number_of_files')->default(0);
             $table->integer('number_of_published_files')->default(0);
+            $table->double('total_rate')->default(0);
             $table->timestamps();
         });
     }
