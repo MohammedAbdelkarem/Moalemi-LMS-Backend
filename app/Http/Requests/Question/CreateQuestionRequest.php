@@ -34,6 +34,7 @@ class CreateQuestionRequest extends BaseApiRequest
             'answers.*.text' => ['required', 'string', 'min:2', 'max:500'],
             'answers.*.is_correct' => ['required', 'boolean'],
             'answers.*.priority' => ['nullable', 'integer', 'min:0'],
+            'image' => ['sometimes', 'mimes:jpeg,jpg,png,webp', 'max:4096'],
         ];
     }
 

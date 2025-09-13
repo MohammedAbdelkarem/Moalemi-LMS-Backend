@@ -48,6 +48,7 @@ class QuizResource extends JsonResource
                 RouteNames::MOBILE_QUIZ_DETAILS,
             ]):
                 $data['questions'] = QuestionResource::collection($this->whenLoaded('questions'));
+                $data['quiz_result'] = QuizResultResource::collection($this->whenLoaded('quizResults'));
             break;
         }
 

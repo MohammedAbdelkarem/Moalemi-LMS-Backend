@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constants\Resources;
 use App\Enums\PublishStatusEnum;
+use App\Models\Scopes\QuizResultScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,14 @@ class Quiz extends Model
     protected $guarded = [
         'id'
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new QuizResultScope);
+    }
 
     /**
      * @return \App\Models\Quiz

@@ -5,16 +5,19 @@ namespace App\Models;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use App\Models\SavedContext;
+use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Question extends Model
+class Question extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory , InteractsWithMedia;
 
     protected $guarded = [
         'id'
@@ -34,6 +37,17 @@ class Question extends Model
             $withTrashed,
             $selectedColumns
         );
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::QUESTION_COLLECTION)->singleFile();
+    }
+
+    public function delete()
+    {
+        deleteFilesFromMedia($this, MediaCollection::QUESTION_COLLECTION);
+        return parent::delete();
     }
 
     // Relationships

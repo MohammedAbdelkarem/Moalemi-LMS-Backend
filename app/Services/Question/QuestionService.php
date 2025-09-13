@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Question;
 use App\Services\MainService;
 use App\Enums\QuestionTypeEnum;
+use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
 use App\Constants\ExceptionMessages;
 use App\Services\Base\ContextService;
@@ -54,6 +55,10 @@ class QuestionService extends MainService
         ]);
 
         $question->answers()->createMany($validatedData['answers']);
+
+        if(isset($validatedData['image'])) {
+            uploadFileOnMedia($validatedData['image'], $question, MediaCollection::QUESTION_COLLECTION);
+        }
     }
 
     public function update($validatedData, $id)

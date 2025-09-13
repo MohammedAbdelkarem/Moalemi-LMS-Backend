@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources\Question;
 
-use Illuminate\Http\Request;
 use App\Enums\LevelEnum;
-use App\Http\Resources\Answer\AnswerResource;
+use Illuminate\Http\Request;
+use App\Constants\MediaCollection;
 use App\Http\Resources\Unit\UnitResource;
+use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Answer\AnswerResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,6 +32,7 @@ class QuestionResource extends JsonResource
             'unit' => UnitResource::make($this->whenLoaded('unit')),
             'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'answers' => AnswerResource::collection($this->whenLoaded('answers')),
+            'media' => MediaResource::make($this->getFirstMedia(MediaCollection::QUESTION_COLLECTION)),
         ];
 
         if(auth()->user()->isStudent())

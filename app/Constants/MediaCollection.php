@@ -23,4 +23,5 @@ final class MediaCollection
     const QUESTION_COLLECTION           = 'question_collection';
     const ANSWER_COLLECTION             = 'answer_collection';
     const TEACHER_COLLECTION            = 'teacher_collection';
+    
 }
