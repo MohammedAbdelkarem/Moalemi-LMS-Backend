@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
+use App\Enums\CommentStatusEnum;
+use App\Models\Scopes\LoadUserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +19,29 @@ class Comment extends Model
         'id'
     ];
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LoadUserScope);
+    }
 
+    /**
+     * @return \App\Models\Comment
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            GenderEnum::FEMALE,
+            Resources::RES_COMMENT,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
 
     // Relationships
     public function user(): BelongsTo
@@ -33,15 +59,20 @@ class Comment extends Model
         return $this->hasMany(Replay::class, 'comment_id');
     }
 
+    public function existReplays()
+    {
+        return $this->replays()->exist();
+    }
+
     // Scopes
     public function scopeExist($query)
     {
-        return $query->where('status', 'exist');
+        return $query->where('status', CommentStatusEnum::EXIST->value);
     }
 
     public function scopeDeleted($query)
     {
-        return $query->where('status', 'deleted');
+        return $query->where('status', CommentStatusEnum::DELETED->value);
     }
 
     public function scopePinned($query)

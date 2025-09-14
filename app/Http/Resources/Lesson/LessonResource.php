@@ -50,6 +50,7 @@ class LessonResource extends JsonResource
         {
             $is_purchased = is_purchased($this->id, LevelEnum::LESSON , auth()->id());
             $data['is_watched'] = watched($this);
+            $data['is_rated'] = is_rated($this->id);
             $data['is_purchased'] = $is_purchased;
             $data['is_saved'] = is_saved($this->id, LevelEnum::LESSON , auth()->id());
             $data['video'] = $is_purchased 

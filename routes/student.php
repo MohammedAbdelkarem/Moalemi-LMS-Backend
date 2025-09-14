@@ -7,6 +7,7 @@ use App\Http\Controllers\Mobile\File\FileController;
 use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\Quiz\QuizController;
 use App\Http\Controllers\Mobile\HierarichyController;
+use App\Http\Controllers\Mobile\Comment\CommentController;
 use App\Http\Controllers\Mobile\Saved\SavedContextController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
 
@@ -42,6 +43,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/responsibilities-by-teacher/{teacher_id}/c-level/{c_level_id}', 'getResponsibilitiesByTeacherId')->name(RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID);
         Route::get('/teacher-details/{teacher_id}', 'getTeacherDetails')->name(RouteNames::MOBILE_HIERARICHY_TEACHER_DETAILS);
         Route::post('/lesson/{lesson_id}/watch', 'recordLessonView');
+        Route::get('/lesson/{lesson_id}/rate', 'rateLesson');
         Route::get('/purchased-courses', 'getPurchasedCourses')->name(RouteNames::MOBILE_PURCHASED_COURSES);
         Route::get('/purchased-subjects', 'getPurchasedSubjects')->name(RouteNames::MOBILE_PURCHASED_SUBJECTS);
         Route::get('/purchased-units', 'getPurchasedUnits')->name(RouteNames::MOBILE_PURCHASED_UNITS);
@@ -81,5 +83,12 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/questions', 'getSavedQuestions')->name(RouteNames::MOBILE_SAVED_QUESTIONS);
         Route::post('/toggle', 'saveToggle');
         Route::get('/search-questions', 'searchForQuestions');
+    });
+
+    // Comments
+    Route::prefix('comments')->controller(CommentController::class)->group(function () {
+        Route::get('/{lesson_id}', 'index')->name(RouteNames::MOBILE_COMMENTS_LIST);
+        Route::post('/{lesson_id}', 'store');
+        Route::delete('/{id}', 'deleteComment');
     });
 });

@@ -59,7 +59,7 @@ class CreateLessonRequest extends BaseApiRequest
             ],
             'videos.*.quality' => [
                 'required_with:videos',
-                'in:360,480,720,1080',
+                'in:144,240,360,480,720,1080',
             ],
         ];
     }

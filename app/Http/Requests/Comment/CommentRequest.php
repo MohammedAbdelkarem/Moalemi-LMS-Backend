@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Lesson;
+namespace App\Http\Requests\Comment;
 
 use App\Http\Requests\BaseApiRequest;
 
-class UploadLessonVideosRequest extends BaseApiRequest
+class CommentRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,7 @@ class UploadLessonVideosRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'video' => [
-                'required',
-                'mimes:mp4,webm,mov,avi',
-                'max:204800', // 200MB
-            ],
-            'quality' => [
-                'required',
-                'in:144,240,360,480,720,1080',
-            ],
+            'text' => ['required', 'string', 'max:255'],
         ];
     }
 }

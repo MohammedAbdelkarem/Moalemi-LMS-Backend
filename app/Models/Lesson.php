@@ -107,6 +107,11 @@ class Lesson extends Model implements HasMedia
         return $this->morphMany(Comment::class, 'context');
     }
 
+    public function existComments()
+    {
+        return $this->comments()->exist();
+    }
+
     public function responsibilities(): HasMany
     {
         return $this->hasMany(Responsibility::class, 'lesson_id');

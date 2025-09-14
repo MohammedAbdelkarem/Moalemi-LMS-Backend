@@ -53,4 +53,8 @@ return [
     'saved_contexts'            => 'Saved Contexts',
     'lesson_rate'               => 'Lesson Rate',
     'lesson_rates'              => 'Lesson Rates',
+    'comment'                   => 'Comment',
+    'comments'                  => 'Comments',
+    'replay'                    => 'Replay',
+    'replays'                   => 'Replays',
 ];

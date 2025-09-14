@@ -53,4 +53,8 @@ return [
     'saved_contexts'            => 'المحتويات المحفوظة',
     'lesson_rate'               => 'تقييم الدرس',
     'lesson_rates'              => 'تقييمات الدروس',
+    'comment'                   => 'التعليق',
+    'comments'                  => 'التعليقات',
+    'replay'                    => 'الرد',
+    'replays'                   => 'الردود',
 ];

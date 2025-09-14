@@ -151,5 +151,11 @@ class HierarichyController extends Controller
         );
     }
 
-    
+    public function rateLesson(Request $request, $lesson_id)
+    {
+        return success(
+            $this->lessonService->rateLesson($lesson_id, $request->rate),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }

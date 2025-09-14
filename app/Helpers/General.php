@@ -11,16 +11,20 @@ use App\Models\CLevel;
 use App\Models\Course;
 use App\Models\ELevel;
 use App\Models\Lesson;
+use App\Models\Replay;
+use App\Models\Comment;
 use App\Models\Subject;
 use App\Models\SubUnit;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
 use App\Models\Question;
+use App\Models\LessonRate;
 use App\Models\QuizResult;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\QuizResultEnum;
 use App\Models\UnlockedContext;
+use App\Enums\CommentStatusEnum;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
@@ -363,5 +367,31 @@ if (!function_exists('is_solved')) {
             return $query->first();
 
         return $query->where('result', '!=', QuizResultEnum::IN_PROGRESS->value)->exists();
+    }
+}
+
+if (!function_exists('is_rated')) {
+    function is_rated($lesson_id)
+    {
+        return LessonRate::where('lesson_id', $lesson_id)->where('student_id', auth()->id())->exists();
+    }
+}
+
+if (!function_exists('is_commented')) {
+    function is_commented($lesson_id)
+    {
+        return Comment::where('lesson_id', $lesson_id)
+            ->where('user_id', auth()->id())
+            ->where('status', CommentStatusEnum::EXIST->value)
+            ->exists();
+    }
+}
+
+if (!function_exists('is_replayed')) {
+    function is_replayed($comment_id)
+    {
+        return Replay::where('comment_id', $comment_id)
+            ->where('status', CommentStatusEnum::EXIST->value)
+            ->exists();
     }
 }

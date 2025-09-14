@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\LoadUserScope;
+use App\Enums\CommentStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +17,13 @@ class Replay extends Model
     ];
 
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LoadUserScope);
+    }
 
     // Relationships
     public function user(): BelongsTo
@@ -30,11 +39,11 @@ class Replay extends Model
     // Scopes
     public function scopeExist($query)
     {
-        return $query->where('status', 'exist');
+        return $query->where('status', CommentStatusEnum::EXIST->value);
     }
 
     public function scopeDeleted($query)
     {
-        return $query->where('status', 'deleted');
+        return $query->where('status', CommentStatusEnum::DELETED->value);
     }
 }

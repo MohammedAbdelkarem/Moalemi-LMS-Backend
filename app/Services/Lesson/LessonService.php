@@ -149,4 +149,20 @@ class LessonService
             ]);
         }
     }
+
+    public function rateLesson($lesson_id, $rate)
+    {
+        $lesson = Lesson::findByIdOrFail($lesson_id);
+
+        if(! is_rated($lesson_id)) {
+            $lesson->lessonRates()->create([
+                    'rate' => $rate,
+                    'student_id' => auth()->id()
+                ]);
+
+            $lesson->total_rate = $lesson->lessonRates()->avg('rate');
+
+            $lesson->save();
+        }
+    }
 }

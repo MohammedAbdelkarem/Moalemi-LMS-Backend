@@ -49,4 +49,8 @@ final class Resources
     const COUPONS                   = 'resources.coupons';
     const SAVED_CONTEXT             = 'resources.saved_context';
     const SAVED_CONTEXTS            = 'resources.saved_contexts';
+    const RES_COMMENT               = 'resources.comment';
+    const RES_COMMENTS              = 'resources.comments';
+    const RES_REPLAY                = 'resources.replay';
+    const RES_REPLAYS               = 'resources.replays';
 }
