@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::post('/use-student-cupon', 'useStudentCupon');
         Route::post('/use-context-cupon', 'useContextCupon');
         Route::post('/direct-purchase', 'directPurchase');
+        Route::get('/get', 'getStudentTransactions');
     });
 
     // Files

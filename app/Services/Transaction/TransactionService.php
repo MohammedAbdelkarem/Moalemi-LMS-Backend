@@ -138,6 +138,14 @@ class TransactionService
         }
     }
 
+    public function getStudentTransactions($data , $student_id)
+    {
+        return getOrPaginate(
+            Transaction::where('user_id', $student_id)->with('coupon', 'unlockedContext'),
+            $data
+        );
+    }
+
     private function checkIflreadyUnlockedForCupon($cupon)
     {
         $alreadyUnlocked = UnlockedContext::where('user_id', auth()->id())
