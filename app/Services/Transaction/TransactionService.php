@@ -92,7 +92,7 @@ class TransactionService
 
         $this->checkIflreadyUnlockedForCupon($cupon);
 
-        $unlockedContext = $this->purchaseService->unlockContexts($cupon->context_id, getModelByPath($cupon->context_type));
+        $unlockedContext = $this->purchaseService->unlockContexts($cupon->context_id, getModelByPath($cupon->context_type) , auth()->id());
         
         $cupon->update([
             'number_of_uses' => $cupon->number_of_uses + 1,
@@ -108,29 +108,29 @@ class TransactionService
         return $transaction;
     }
 
-    public function directPurchase($data)
+    public function directPurchase($data , $student_id = null)
     {
         $context = getModel($data['context_type'])::findByIdOrFail($data['context_id']);
         $balance = auth()->user()->balance;
 
-        $this->checkIflreadyUnlockedForDirectPurchase($context->id , getModel($data['context_type']));
+        $this->checkIflreadyUnlockedForDirectPurchase($context->id , getModel($data['context_type']) , $student_id ?? auth()->id());
 
         if($context->access_type == AccessTypeEnum::FREE->value)
         {
-            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']));
+            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']), $student_id ?? auth()->id());
         }
         else
         {
             if($balance < $context->price)
                 return forbiddenFailure([] , ExceptionMessages::MSG_INSUFFICIENT_BALANCE);
             
-            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']));
+            $unlockedContext = $this->purchaseService->unlockContexts($context->id, getModel($data['context_type']), $student_id ?? auth()->id());
 
             auth()->user()->balance -= $context->price;
             auth()->user()->save();
 
             $transaction = Transaction::create([
-                'user_id' => auth()->id(),
+                'user_id' => $student_id ?? auth()->id(),
                 'amount' => $context->price,
                 'transaction_type' => TransactionTypeEnum::DIRECT_PURCHASE->value,
                 'unlocked_context_id' => $unlockedContext->id,
@@ -149,9 +149,9 @@ class TransactionService
             return forbiddenFailure([] , ExceptionMessages::MSG_CONTEXT_ALREADY_UNLOCKED);
     }
 
-    private function checkIflreadyUnlockedForDirectPurchase($context_id , $context_type)
+    private function checkIflreadyUnlockedForDirectPurchase($context_id , $context_type , $student_id)
     {
-        $alreadyUnlocked = UnlockedContext::where('user_id', auth()->id())
+        $alreadyUnlocked = UnlockedContext::where('user_id', $student_id)
             ->where('context_id', $context_id)
             ->where('context_type', $context_type)
             ->first();

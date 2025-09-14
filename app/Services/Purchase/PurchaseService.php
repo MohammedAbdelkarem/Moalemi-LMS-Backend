@@ -11,14 +11,14 @@ use App\Models\Subject;
  */
 class PurchaseService
 {
-    public function unlockContexts($context_id , $model)
+    public function unlockContexts($context_id , $model , $student_id)
     {
         $context = $model::findByIdOrFail($context_id);
 
-        $this->checkIfPurchasedChildsExists($context_id , $model);
+        $this->checkIfPurchasedChildsExists($context_id , $model , $student_id);
 
         $unlockedContext = $context->unlockedContexts()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $student_id,
         ]);
         $this->incrementPurchasedStudents($context);
 
@@ -28,28 +28,28 @@ class PurchaseService
             foreach($subjects as $subject)
             {
                 $subject->unlockedContexts()->create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $student_id,
                 ]);
 
                 $units = $subject->publishedUnits()->get();
                 foreach($units as $unit)
                 {
                     $unit->unlockedContexts()->create([
-                        'user_id' => auth()->id(),
+                        'user_id' => $student_id,
                     ]);
 
                     $subUnits = $unit->publishedSubUnits()->get();
                     foreach($subUnits as $subUnit)
                     {
                         $subUnit->unlockedContexts()->create([
-                            'user_id' => auth()->id(),
+                            'user_id' => $student_id,
                         ]);
 
                         $lessons = $subUnit->publishedLessons()->get();
                         foreach($lessons as $lesson)
                         {
                             $lesson->unlockedContexts()->create([
-                                'user_id' => auth()->id(),
+                                'user_id' => $student_id,
                             ]);
                         }
                     }
@@ -62,21 +62,21 @@ class PurchaseService
             foreach($units as $unit)
             {
                 $unit->unlockedContexts()->create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $student_id,
                 ]);
 
                 $subUnits = $unit->publishedSubUnits()->get();
                 foreach($subUnits as $subUnit)
                 {
                     $subUnit->unlockedContexts()->create([
-                        'user_id' => auth()->id(),
+                        'user_id' => $student_id,
                     ]);
 
                     $lessons = $subUnit->publishedLessons()->get();
                     foreach($lessons as $lesson)
                     {
                         $lesson->unlockedContexts()->create([
-                            'user_id' => auth()->id(),
+                            'user_id' => $student_id,
                         ]);
                     }
                 }
@@ -88,14 +88,14 @@ class PurchaseService
             foreach($subUnits as $subUnit)
             {
                 $subUnit->unlockedContexts()->create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $student_id,
                 ]);
 
                 $lessons = $subUnit->publishedLessons()->get();
                 foreach($lessons as $lesson)
                 {
                     $lesson->unlockedContexts()->create([
-                        'user_id' => auth()->id(),
+                        'user_id' => $student_id,
                     ]);
                 }
             }
@@ -108,7 +108,7 @@ class PurchaseService
         $context->increment('number_of_purchased_students');
     }
 
-    private function checkIfPurchasedChildsExists($context_id , $model)
+    private function checkIfPurchasedChildsExists($context_id , $model , $student_id)
     {
         $context = $model::findByIdOrFail($context_id);
 
@@ -117,7 +117,7 @@ class PurchaseService
             $publishedSubjects = $context->publishedSubjects()->get();
             foreach($publishedSubjects as $subject)
             {
-                if($subject->unlockedContexts()->where('user_id', auth()->id())->exists())
+                if($subject->unlockedContexts()->where('user_id', $student_id)->exists())
                 {
                     return forbiddenFailure([] , ExceptionMessages::MSG_ENTITY_HAS_SUB_ENTITIES_PURCHASED);
                 }
@@ -126,7 +126,7 @@ class PurchaseService
             $publishedUnits = $context->publishedUnits()->get();
             foreach($publishedUnits as $unit)
             {
-                if($unit->unlockedContexts()->where('user_id', auth()->id())->exists())
+                if($unit->unlockedContexts()->where('user_id', $student_id)->exists())
                 {
                     return forbiddenFailure([] , ExceptionMessages::MSG_ENTITY_HAS_SUB_ENTITIES_PURCHASED);
                 }
@@ -137,7 +137,7 @@ class PurchaseService
             $publishedUnits = $context->publishedUnits()->get();
             foreach($publishedUnits as $unit)
             {
-                if($unit->unlockedContexts()->where('user_id', auth()->id())->exists())
+                if($unit->unlockedContexts()->where('user_id', $student_id)->exists())
                 {
                     return forbiddenFailure([] , ExceptionMessages::MSG_ENTITY_HAS_SUB_ENTITIES_PURCHASED);
                 }
