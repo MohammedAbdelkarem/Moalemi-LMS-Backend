@@ -7,7 +7,7 @@ if (!function_exists('uploadFileOnMedia')) {
     function uploadFileOnMedia($file, $model, $collectionName)
     {
         $image = null;
-        $image = is_array($file) ? $file['image'] : $file;
+        $image = is_array($file) ? ($file['image'] ?? $file['video']) : $file;
         $customProperties = is_array($file) && isset($file['quality']) ? ['quality' => $file['quality']] : [];
         $fileName = generateFileName($image);
 

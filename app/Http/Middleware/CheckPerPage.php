@@ -37,7 +37,7 @@ class CheckPerPage
          * Notice that if request has ('selectable' and 'list') in the route name => will selectable will have the upper priority.
          */
         if (
-            Str::contains(request()->route()->getName(), 'list') &&
+            Str::contains(request()->route()->getName(), 'listtttt') &&
             (
                 !$request->has('per_page')
                 || $request->per_page <= 0

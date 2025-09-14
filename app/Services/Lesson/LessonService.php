@@ -59,12 +59,10 @@ class LessonService
     {
         $lesson = Lesson::create($data);
 
-        // Handle multiple images
-        if (isset($data['images'])) {
-            uploadFilesOnMedia($data['images'], $lesson, MediaCollection::LESSON_COLLECTION);
-        }
+        if(isset($data['images']))
+            uploadFilesOnMedia($data['images'] , $lesson , MediaCollection::LESSON_COLLECTION);
 
-        // Handle single video and calculate duration
+
         if (isset($data['videos'])) {
             // Upload video first
             uploadFilesOnMedia($data['videos'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);

@@ -35,16 +35,11 @@ class CreateLessonRequest extends BaseApiRequest
             'bio' => ['sometimes', 'string'],
             'duration' => ['required', 'integer', 'min:1'],
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
-            'images' => [
-                'sometimes',
-                'array',
-                'min:1',
-                'max:10' // Limit to 10 images per lesson
-            ],
-            'images.*' => [
-                'required_with:images',
-                'mimes:jpeg,jpg,png,webp',
-                'max:4096'
+            "images" => ['nullable' , 'array'],
+            "images.*.image" => [
+                'required',
+               'mimes:jpeg,jpg,png,webp',
+               'max:4096'
             ],
             'videos' => [
                 'required',
