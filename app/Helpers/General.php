@@ -395,3 +395,13 @@ if (!function_exists('is_replayed')) {
             ->exists();
     }
 }
+
+if (!function_exists('duration')) {
+    function duration($context , $published = false)
+    {
+        
+        return (int)($published 
+            ? $context->publishedLessons()->sum('duration') 
+            : $context->lessons()->sum('duration'));
+    }
+}

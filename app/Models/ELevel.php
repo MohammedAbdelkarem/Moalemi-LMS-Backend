@@ -82,6 +82,11 @@ class ELevel extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'e_level_id');
     }
 
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
+    }
+
     public function students(): HasMany
     {
         return $this->hasMany(User::class, 'e_level_id')->where('role_id', 5);

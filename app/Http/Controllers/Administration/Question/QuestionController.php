@@ -72,12 +72,4 @@ class QuestionController extends Controller
             ApiMessages::MSG_SUCCESS
         );
     }
-
-    public function changePriority(ChangePriorityRequest $request): JsonResponse
-    {
-        return success(
-            $this->questionService->changePriority($request->validated()['context']),
-            ApiMessages::MSG_SUCCESS
-        );
-    }
 }

@@ -107,28 +107,33 @@ class ContextService
 
         $field = $published ? 'number_of_published_contents' : 'number_of_contents';
 
-        
         switch($class)
         {
             case ModelPaths::ELevel:
                 // ELevel is the top level, no parent to update
                 break;
             case ModelPaths::CLevel:
+                $context->load('eLevel');
                 $context->eLevel->$operation($field);
                 break;
             case ModelPaths::Course:
+                $context->load('cLevel');
                 $context->cLevel->$operation($field);
                 break;
             case ModelPaths::Subject:
+                $context->load('course');
                 $context->course->$operation($field);
                 break;
             case ModelPaths::Unit:
+                $context->load('subject');
                 $context->subject->$operation($field);
                 break;
             case ModelPaths::SubUnit:
+                $context->load('unit');
                 $context->unit->$operation($field);
                 break;
             case ModelPaths::Lesson:
+                $context->load('subUnit');
                 $context->subUnit->$operation($field);
                 break;
         }

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Enums\GenderEnum;
 use App\Constants\Resources;
 use App\Models\Responsibility;
-use App\Models\User;
+use App\Enums\PublishStatusEnum;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -82,6 +83,11 @@ class CLevel extends Model implements HasMedia
         return $this->hasMany(Lesson::class, 'c_level_id');
     }
 
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
+    }
+
     public function students(): HasMany
     {
         return $this->hasMany(User::class, 'c_level_id')->where('role_id', 5);
@@ -110,6 +116,6 @@ class CLevel extends Model implements HasMedia
     // Scopes
     public function scopePublished($query)
     {
-        return $query->where('publish_status', 'published');
+        return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 }

@@ -61,7 +61,10 @@ class HierarichyService
     {
         return getOrPaginate(
             $model::whereHas('unlockedContexts', function($query) use ($student_id) {
-                $query->where('user_id', $student_id);
+                $query->where('user_id', $student_id)
+                ->whereHas('context', function($query) {
+                    $query->published();
+                });
             })
             ->with($with),
             $data

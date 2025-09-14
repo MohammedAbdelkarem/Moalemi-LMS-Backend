@@ -51,10 +51,10 @@ class FileController extends Controller
         );
     }
 
-    public function changePublishStatus($id)
+    public function changePublishStatus(Request $request, $id)
     {
         return success(
-            $this->fileService->changePublishStatus($id),
+            $this->fileService->changePublishStatus($id, $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

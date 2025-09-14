@@ -61,10 +61,10 @@ class QuizController extends Controller
         );
     }
 
-    public function changePublishStatus($id): JsonResponse
+    public function changePublishStatus(Request $request, $id): JsonResponse
     {
         return success(
-            $this->quizService->changePublishStatus($id),
+            $this->quizService->changePublishStatus($id, $request->status),
             ApiMessages::MSG_SUCCESS
         );
     }

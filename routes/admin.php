@@ -229,7 +229,6 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::get("/{id}", "show");
         Route::post("/{id}/update", "update");
         Route::delete("/{id}", "destroy");
-        Route::post("/change-priority", "changePriority");
     });
 
     // Quizzes

@@ -36,7 +36,6 @@ class SubUnitResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'number_of_published_contents' => $this->number_of_published_contents,
-            'duration' => $this->duration,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUB_UNIT_COLLECTION)),
@@ -44,6 +43,10 @@ class SubUnitResource extends JsonResource
 
         if(auth()->user()->isStudent())
             $data['is_purchased'] = is_purchased($this->id, LevelEnum::SUB_UNIT , auth()->id());
+
+        $data['duration'] = auth()->user()->isAdmin()
+            ? duration($this)
+            : duration($this, true);
 
 
         $routeName = $request->route()->getName();

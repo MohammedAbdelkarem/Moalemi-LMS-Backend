@@ -22,6 +22,7 @@ class UploadLessonVideosRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
+            'duration' => ['required', 'integer', 'min:1'],
             'video' => [
                 'required',
                 'mimes:mp4,webm,mov,avi',

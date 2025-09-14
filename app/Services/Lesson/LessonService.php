@@ -7,11 +7,13 @@ use App\Enums\PublishStatusEnum;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
+use App\Services\Purchase\PurchaseService;
 
 class LessonService
 {
     public function __construct(
-        protected ContextService $contextService
+        protected ContextService $contextService,
+        protected PurchaseService $purchaseService
     ) {}
 
     /**
@@ -59,6 +61,8 @@ class LessonService
     {
         $lesson = Lesson::create($data);
 
+        $this->purchaseService->unlockOthersWhenAddnig(Lesson::class, $lesson->id);
+
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $lesson , MediaCollection::LESSON_COLLECTION);
 
@@ -66,8 +70,6 @@ class LessonService
         if (isset($data['videos'])) {
             // Upload video first
             uploadFilesOnMedia($data['videos'], $lesson, MediaCollection::LESSON_VIDEO_COLLECTION);
-            
-            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
         }
 
         $lesson->save();
@@ -79,6 +81,8 @@ class LessonService
     public function uploadVideos($data, $id)
     {
         $lesson = Lesson::findByIdOrFail($id);
+
+        $lesson->duration = $data['duration'];
 
         $file['image'] = $data['video'];
         $file['quality'] = $data['quality'];
@@ -109,9 +113,6 @@ class LessonService
         // Update parent SubUnit numbers before deletion
         $this->contextService->updateParentNumberOfContents($lesson, '-');
 
-        // Update lesson duration and subtract from all parent levels
-        $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '-');
-
         $lesson->delete();
     }
 
@@ -121,6 +122,10 @@ class LessonService
 
         if($status == PublishStatusEnum::PUBLISHED->value) {
             $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
+            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
+        }
+        elseif($status == PublishStatusEnum::DRAFT->value) {
+            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '-');
         }
 
         $this->contextService->changeWithChildsPublishStatus($id , Lesson::class , $status);

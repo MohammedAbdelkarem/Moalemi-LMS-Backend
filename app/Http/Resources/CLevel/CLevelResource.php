@@ -25,10 +25,13 @@ class CLevelResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'number_of_published_contents' => $this->number_of_published_contents,
-            'duration' => $this->duration,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::C_LEVEL_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
+
+        $data['duration'] = auth()->user()->isAdmin()
+            ? duration($this)
+            : duration($this, true);
 
         $routeName = $request->route()->getName();
         switch ($routeName) 

@@ -28,7 +28,6 @@ class CourseResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'number_of_published_contents' => $this->number_of_published_contents,
-            'duration' => $this->duration,
             'price' => $this->price,
             'access_type' => $this->access_type,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
@@ -37,6 +36,10 @@ class CourseResource extends JsonResource
 
         if(auth()->user()->isStudent())
             $data['is_purchased'] = is_purchased($this->id, LevelEnum::COURSE , auth()->id());
+
+        $data['duration'] = auth()->user()->isAdmin()
+        ? duration($this)
+        : duration($this, true);
 
         $routeName = $request->route()->getName();
 

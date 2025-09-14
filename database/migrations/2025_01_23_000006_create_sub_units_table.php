@@ -25,7 +25,6 @@ return new class extends Migration
             $table->enum('publish_status', PublishStatusEnum::values())->default(PublishStatusEnum::DRAFT->value);
             $table->integer('number_of_contents')->default(0);
             $table->integer('number_of_published_contents')->default(0);
-            $table->integer('duration')->default(0); // in minutes
             $table->integer('number_of_quizzes')->default(0);
             $table->integer('number_of_published_quizzes')->default(0);
             $table->integer('number_of_files')->default(0);

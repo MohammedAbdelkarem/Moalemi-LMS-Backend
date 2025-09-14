@@ -7,11 +7,13 @@ use App\Enums\PublishStatusEnum;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
+use App\Services\Purchase\PurchaseService;
 
 class SubjectService
 {
     public function __construct(
-        protected ContextService $contextService
+        protected ContextService $contextService,
+        protected PurchaseService $purchaseService
     ) {}
 
     /**
@@ -43,6 +45,8 @@ class SubjectService
     public function store($data)
     {
         $subject = Subject::create($data);
+
+        $this->purchaseService->unlockOthersWhenAddnig(Subject::class, $subject->id);
 
         if (isset($data['image'])) {
             uploadFileOnMedia($data['image'], $subject, MediaCollection::SUBJECT_COLLECTION);

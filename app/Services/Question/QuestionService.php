@@ -85,11 +85,6 @@ class QuestionService extends MainService
         $question->delete();
     }
 
-    public function changePriority($validatedData)
-    {
-        $this->contextService->changeContextsPriority($validatedData , Answer::class);
-    }
-
     private function chackeQuestionCorrectAnswersCount($validatedData)
     {
         if($validatedData['type'] == QuestionTypeEnum::ONE_SELECT->value) {

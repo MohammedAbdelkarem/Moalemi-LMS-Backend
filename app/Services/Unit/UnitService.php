@@ -7,11 +7,13 @@ use App\Enums\PublishStatusEnum;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
+use App\Services\Purchase\PurchaseService;
 
 class UnitService
 {
     public function __construct(
-        protected ContextService $contextService
+        protected ContextService $contextService,
+        protected PurchaseService $purchaseService
     ) {}
 
     /**
@@ -49,6 +51,8 @@ class UnitService
     {
         $unit = Unit::create($data);
 
+        $this->purchaseService->unlockOthersWhenAddnig(Unit::class, $unit->id);
+        
         if (isset($data['image'])) {
             uploadFileOnMedia($data['image'], $unit, MediaCollection::UNIT_COLLECTION);
         }

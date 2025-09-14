@@ -81,6 +81,11 @@ class SubUnit extends Model implements HasMedia
     {
         return $this->hasMany(Lesson::class, 'sub_unit_id');
     }
+    
+    public function publishedLessons(): HasMany
+    {
+        return $this->lessons()->published();
+    }
 
     public function files()
     {
@@ -106,11 +111,6 @@ class SubUnit extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
-    }
-
-    public function publishedLessons(): HasMany
-    {
-        return $this->lessons()->published();
     }
     
     public function publishedFiles(): MorphMany

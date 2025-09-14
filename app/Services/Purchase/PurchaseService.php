@@ -2,9 +2,12 @@
 
 namespace App\Services\Purchase;
 
-use App\Constants\ExceptionMessages;
+use App\Models\Unit;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\Subject;
+use App\Models\SubUnit;
+use App\Constants\ExceptionMessages;
 
 /**
  * Class PurchaseService.
@@ -102,6 +105,31 @@ class PurchaseService
         }
 
         return $unlockedContext;
+    }
+    public function unlockOthersWhenAddnig($model , $context_id)
+    {
+        $purchasedStudents = [];
+
+        $context = $model::findByIdOrFail($context_id);
+
+        if($model == Subject::class)
+            $purchasedStudents = $context->course->unlockedContexts()->pluck('user_id')->toArray();
+        elseif($model == Unit::class)
+            $purchasedStudents = $context->subject->unlockedContexts()->pluck('user_id')->toArray();
+        elseif($model == SubUnit::class)
+            $purchasedStudents = $context->unit->unlockedContexts()->pluck('user_id')->toArray();
+        elseif($model == Lesson::class)
+            $purchasedStudents = $context->subUnit->unlockedContexts()->pluck('user_id')->toArray();
+
+        foreach($purchasedStudents as $student_id)
+        {
+            $context->unlockedContexts()->create([
+                'user_id' => $student_id,
+                'context_id' => $context_id,
+                'context_type' => $model,
+            ]);
+        }
+        
     }
     private function incrementPurchasedStudents($context)
     {
