@@ -37,9 +37,10 @@ class StudentHomeService
                 ->where('bannerable_id', $profile->c_level_id)
                 ->get();
 
-        $courses = Course::published()->where('c_level_id', $profile->c_level_id)->get();
-
-        $subjects = Subject::published()->where('c_level_id', $profile->c_level_id)->get();
+        $courses = Course::published()
+                ->where('c_level_id', $profile->c_level_id)
+                ->with('publishedSubjects')
+                ->get();
 
         $latestLessons = [];
 
@@ -57,7 +58,6 @@ class StudentHomeService
             'stories' => StoryResource::collection($stories),
             'banners' => BannerResource::collection($banners),
             'courses' => CourseResource::collection($courses),
-            'subjects' => SubjectResource::collection($subjects),
             'latestLessons' => $latestLessons,
             'teachers' => TeacherResource::collection($teachers),
             'leaderBoard' => $leaderBoard,

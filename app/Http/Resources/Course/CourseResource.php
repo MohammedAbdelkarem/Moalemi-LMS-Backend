@@ -54,6 +54,9 @@ class CourseResource extends JsonResource
             case RouteNames::MOBILE_PURCHASED_COURSES:
                 $data['subjects'] = SubjectResource::collection($this->whenLoaded('publishedSubjects'));
             break;
+            case RouteNames::STUDENT_HOME:
+                $data['subjects'] = SubjectResource::collection($this->whenLoaded('publishedSubjects'));
+            break;
         }
 
         return $data;
