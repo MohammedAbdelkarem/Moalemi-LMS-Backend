@@ -57,4 +57,6 @@ return [
     'comments'                  => 'Comments',
     'replay'                    => 'Replay',
     'replays'                   => 'Replays',
+    'lesson_question'           => 'Lesson Question',
+    'lesson_questions'          => 'Lesson Questions',
 ];

@@ -22,6 +22,7 @@ class CommentResource extends JsonResource
             'is_pinned' => $this->is_pinned,
             'created_at' => $this->created_at,
             'user' => UserResource::make($this->whenLoaded('user')),
+            'is_replayed' => is_replayed($this->id),
         ];
 
         $routeName = $request->route()->getName();
@@ -29,7 +30,7 @@ class CommentResource extends JsonResource
         switch ($routeName)
         {
             case RouteNames::MOBILE_COMMENTS_LIST:
-                $data['replays'] = ReplayResource::collection($this->whenLoaded('existReplays'));
+                $data['replay'] = ReplayResource::make($this->whenLoaded('existReplay'));
                 break;
         }
 

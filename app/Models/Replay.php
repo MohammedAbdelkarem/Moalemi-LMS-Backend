@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use App\Models\Scopes\LoadUserScope;
 use App\Enums\CommentStatusEnum;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +19,21 @@ class Replay extends Model
     ];
 
 
+    /**
+     * @return \App\Models\Replay
+     */
+    public static function findByIdOrFail($id, $with = [], $withTrashed = false, $selectedColumns = null)
+    {
+        return findByIdOrFail(
+            self::class,
+            $id,
+            null,
+            Resources::RES_REPLAY,
+            $with,
+            $withTrashed,
+            $selectedColumns
+        );
+    }
     /**
      * The "booted" method of the model.
      */

@@ -7,8 +7,9 @@ use App\Constants\Resources;
 use App\Enums\CommentStatusEnum;
 use App\Models\Scopes\LoadUserScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
@@ -49,19 +50,19 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function context()
+    public function lesson(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Lesson::class, 'lesson_id');
     }
 
-    public function replays(): HasMany
+    public function replay(): HasOne
     {
-        return $this->hasMany(Replay::class, 'comment_id');
+        return $this->hasOne(Replay::class, 'comment_id');
     }
 
-    public function existReplays()
+    public function existReplay()
     {
-        return $this->replays()->exist();
+        return $this->replay()->exist();
     }
 
     // Scopes

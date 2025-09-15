@@ -23,5 +23,6 @@ final class MediaCollection
     const QUESTION_COLLECTION           = 'question_collection';
     const ANSWER_COLLECTION             = 'answer_collection';
     const TEACHER_COLLECTION            = 'teacher_collection';
-    
+    const LESSON_QUESTION_COLLECTION    = 'lesson_question_collection';
+    const LESSON_QUESTION_ANSWER_COLLECTION = 'lesson_question_answer_collection';
 }

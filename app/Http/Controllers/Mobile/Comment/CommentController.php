@@ -39,4 +39,28 @@ class CommentController extends Controller
             ApiMessages::MSG_SUCCESS,
         );
     }
+
+    public function replay(CommentRequest $request , $comment_id)
+    {
+        return success(
+            $this->commentService->replay($request->validated(), $comment_id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function deleteReplay($id)
+    {
+        return success(
+            $this->commentService->deleteReplay($id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function pinComment($id)
+    {
+        return success(
+            $this->commentService->pinComment($id),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
 }

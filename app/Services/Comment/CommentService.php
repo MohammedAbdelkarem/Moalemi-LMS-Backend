@@ -15,7 +15,7 @@ class CommentService
     public function getForMobile($data , $lesson_id)
     {
         $comments =  Comment::exist()->where('lesson_id', $lesson_id)
-                ->with('existReplays');
+                ->with('existReplay');
 
         return getOrPaginate($comments, $data);
     }

@@ -53,4 +53,6 @@ final class Resources
     const RES_COMMENTS              = 'resources.comments';
     const RES_REPLAY                = 'resources.replay';
     const RES_REPLAYS               = 'resources.replays';
+    const RES_LESSON_QUESTION       = 'resources.lesson_question';
+    const RES_LESSON_QUESTIONS      = 'resources.lesson_questions';
 }

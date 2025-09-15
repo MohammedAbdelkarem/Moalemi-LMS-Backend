@@ -57,4 +57,6 @@ return [
     'comments'                  => 'التعليقات',
     'replay'                    => 'الرد',
     'replays'                   => 'الردود',
+    'lesson_question'           => 'السؤال',
+    'lesson_questions'          => 'الأسئلة',
 ];

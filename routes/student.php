@@ -10,6 +10,7 @@ use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Comment\CommentController;
 use App\Http\Controllers\Mobile\Saved\SavedContextController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
+use App\Http\Controllers\Mobile\LessonQuestion\LessonQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,5 +92,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/{lesson_id}', 'index')->name(RouteNames::MOBILE_COMMENTS_LIST);
         Route::post('/{lesson_id}', 'store');
         Route::delete('/{id}', 'deleteComment');
+    });
+
+    // Lesson Questions
+    Route::prefix('lesson-questions')->controller(LessonQuestionController::class)->group(function () {
+        Route::get('/{lesson_id}/student', 'getForStudent');
+        Route::post('/{lesson_id}', 'ask');
     });
 });
