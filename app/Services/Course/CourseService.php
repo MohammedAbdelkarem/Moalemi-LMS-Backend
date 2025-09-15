@@ -20,7 +20,7 @@ class CourseService
     public function getAll($data)
     {
         $query = Course::orderBy('created_at', 'desc')
-                ->with(['cLevel', 'subjects' , 'responsibilities']);
+                ->with(['cLevel', 'subjects' , 'responsibilities.teacher']);
 
         // Filter by CLevel ID if provided
         if (isset($data['c_level_id'])) {

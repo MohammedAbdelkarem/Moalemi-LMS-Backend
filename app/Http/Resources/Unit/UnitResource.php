@@ -15,6 +15,8 @@ use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\ELevel\ELevelResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
+use App\Http\Resources\Teacher\TeacherResource;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UnitResource extends JsonResource
@@ -40,6 +42,9 @@ class UnitResource extends JsonResource
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::UNIT_COLLECTION)),
+            'teachers' => $this->relationLoaded('responsibilities') 
+                ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+                : [],
         ];
 
         if(auth()->user()->isStudent())
@@ -59,6 +64,7 @@ class UnitResource extends JsonResource
                 $data['number_of_contents'] = $this->number_of_contents;
                 $data['number_of_quizzes'] = $this->number_of_quizzes;
                 $data['number_of_files'] = $this->number_of_files;
+                // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
                 $data['subject'] = SubjectResource::make($this->whenLoaded('subject'));
                 $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('subUnits'));
             break;

@@ -5,9 +5,12 @@ namespace App\Http\Resources\ELevel;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
+use App\Http\Resources\Teacher\TeacherResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class ELevelResource extends JsonResource
 {
@@ -24,7 +27,9 @@ class ELevelResource extends JsonResource
             'bio' => $this->bio,
             'number_of_published_contents' => $this->number_of_published_contents,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::E_LEVEL_COLLECTION)),
-            // 'responsibilities' => $this->whenLoaded('responsibilities'),
+            'teachers' => $this->relationLoaded('responsibilities') 
+                ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+                : [],
         ];
 
         $data['duration'] = auth()->user()->isAdmin()
@@ -39,7 +44,8 @@ class ELevelResource extends JsonResource
                 $data['number_of_contents'] = $this->number_of_contents;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
-                $data['c_levels'] = CLevelResource::collection($this->whenLoaded('cLevels'));
+                // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
+                // $data['c_levels'] = CLevelResource::collection($this->whenLoaded('cLevels'));
             break;
         }
 

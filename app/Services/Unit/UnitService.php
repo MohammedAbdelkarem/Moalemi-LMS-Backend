@@ -22,7 +22,7 @@ class UnitService
     public function getAll($data)
     {
         $query = Unit::orderBy('created_at', 'desc')
-                ->with(['subject','subUnits' , 'responsibilities']);
+                ->with(['subject','subUnits' , 'responsibilities.teacher']);
 
         // Filter by Subject ID if provided
         if (isset($data['subject_id'])) {
@@ -52,7 +52,7 @@ class UnitService
         $unit = Unit::create($data);
 
         $this->purchaseService->unlockOthersWhenAddnig(Unit::class, $unit->id);
-        
+
         if (isset($data['image'])) {
             uploadFileOnMedia($data['image'], $unit, MediaCollection::UNIT_COLLECTION);
         }

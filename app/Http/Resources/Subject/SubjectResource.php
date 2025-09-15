@@ -16,6 +16,7 @@ use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\ELevel\ELevelResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Responsibility\ResponsibilityResource;
+use App\Http\Resources\Teacher\TeacherResource;
 
 class SubjectResource extends JsonResource
 {
@@ -41,6 +42,9 @@ class SubjectResource extends JsonResource
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
             'video' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_VIDEO_COLLECTION)),
+            'teachers' => $this->relationLoaded('responsibilities') 
+                ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+                : [],
         ];
 
         if(auth()->user()->isStudent())
@@ -62,6 +66,7 @@ class SubjectResource extends JsonResource
                 $data['number_of_contents'] = $this->number_of_contents;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
+                // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
                 $data['course'] = CourseResource::make($this->whenLoaded('course'));
                 $data['units'] = UnitResource::collection($this->whenLoaded('units'));
             break;
@@ -69,7 +74,9 @@ class SubjectResource extends JsonResource
                 $data['units'] = UnitResource::collection($this->whenLoaded('publishedUnits'));
             break;
             case RouteNames::MOBILE_HIERARICHY_SUBJECT:
-                $data['teachers'] = UserResource::collection($this->whenLoaded('responsibilities')->pluck('teacher')->unique('id')->values());
+                $data['teachers'] = $this->relationLoaded('responsibilities') 
+                    ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+                    : [];
                 $data['units'] = UnitResource::collection($this->whenLoaded('publishedUnits'));
                 $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
                 $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));

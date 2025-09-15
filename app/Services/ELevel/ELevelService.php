@@ -18,7 +18,7 @@ class ELevelService
     {
         return getOrPaginate(
             ELevel::orderBy('created_at', 'desc' , 'responsibilities')
-                    ->with(['cLevels' , 'responsibilities']),
+                    ->with(['cLevels' , 'responsibilities.teacher']),
             $data
         );
     }

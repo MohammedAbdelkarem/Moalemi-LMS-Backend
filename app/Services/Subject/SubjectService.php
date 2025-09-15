@@ -22,7 +22,7 @@ class SubjectService
     public function getAll($data)
     {
         $query = Subject::orderBy('created_at', 'desc')
-                ->with([ 'course', 'units' , 'responsibilities']);
+                ->with([ 'course', 'units' , 'responsibilities.teacher']);
 
         // Filter by Course ID if provided
         if (isset($data['course_id'])) {

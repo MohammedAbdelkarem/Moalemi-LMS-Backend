@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources\Course;
 
+use App\Enums\LevelEnum;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
-use App\Enums\LevelEnum;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Media\MediaResource;
 use App\Http\Resources\CLevel\CLevelResource;
 use App\Http\Resources\ELevel\ELevelResource;
 use App\Http\Resources\Subject\SubjectResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class CourseResource extends JsonResource
 {
@@ -31,7 +33,9 @@ class CourseResource extends JsonResource
             'price' => $this->price,
             'access_type' => $this->access_type,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
-            // 'responsibilities' => $this->whenLoaded('responsibilities'),
+            'teachers' => $this->relationLoaded('responsibilities') 
+                ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+                : [],
         ];
 
         if(auth()->user()->isStudent())
@@ -51,6 +55,7 @@ class CourseResource extends JsonResource
                 $data['number_of_purchased_students'] = $this->number_of_purchased_students;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
+                // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
                 $data['c_level'] = CLevelResource::make($this->whenLoaded('cLevel'));
                 $data['subjects'] = SubjectResource::collection($this->whenLoaded('subjects'));
             break;
