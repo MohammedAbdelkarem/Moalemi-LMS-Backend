@@ -206,6 +206,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix("lessons")->controller(LessonController::class)->group(function () {
         Route::get("/", "index")->name(RouteNames::ADMIN_LESSON_LIST);
         Route::post("/", "store");
+        Route::get("/{id}", "show")->name(RouteNames::ADMIN_LESSON_SHOW);
         Route::post("/{id}/upload-videos", "uploadVideos");
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
@@ -252,6 +253,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
     Route::prefix("transactions")->controller(TransactionController::class)->group(function () {
         Route::post("/create-student-cupon", "createStudentCupon");
         Route::post("/create-context-cupon", "createContextCupon");
+        Route::get('/', 'get');
     });
 
     // Teachers

@@ -36,6 +36,15 @@ class LessonController extends Controller
         );
     }
 
+    public function show($lesson_id)
+    {
+        return success(
+            $this->lessonService->showForAdmin($lesson_id),
+            ApiMessages::MSG_SUCCESS,
+            LessonResource::class,
+        );
+    }
+
     public function update(UpdateLessonRequest $request, $id)
     {
         return success(

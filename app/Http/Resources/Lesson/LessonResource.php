@@ -62,14 +62,17 @@ class LessonResource extends JsonResource
         $routeName = $request->route()->getName();
         switch ($routeName) 
         {
-            case RouteNames::ADMIN_LESSON_LIST:
+            case in_array($routeName , [
+                RouteNames::ADMIN_LESSON_LIST,
+                RouteNames::ADMIN_LESSON_SHOW,
+            ]):
                 $data['publish_status'] = $this->publish_status;
                 $data['number_of_quizzes'] = $this->number_of_quizzes;
                 $data['number_of_files'] = $this->number_of_files;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
-                $data['quizzes'] = $this->whenLoaded('quizzes');
-                $data['files'] = $this->whenLoaded('files');
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('quizzes'));
+                $data['files'] = FileResource::collection($this->whenLoaded('files'));
                 $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('subUnit'));
                 $data['video'] = MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION));
             break;

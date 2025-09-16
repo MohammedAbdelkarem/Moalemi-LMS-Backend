@@ -39,6 +39,7 @@ final class RouteNames
     const ADMIN_UNIT_LIST              = 'admin.unit.list';
     const ADMIN_SUB_UNIT_LIST          = 'admin.sub-unit.list';
     const ADMIN_LESSON_LIST            = 'admin.lesson.list';
+    const ADMIN_LESSON_SHOW            = 'admin.lesson.show';
     const ADMIN_FILE_LIST              = 'admin.file.list';
     const ADMIN_QUIZ_LIST              = 'admin.quiz.list';
     const ADMIN_QUIZ_SHOW              = 'admin.quiz.show';

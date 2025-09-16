@@ -83,6 +83,14 @@ class LessonService
         return Lesson::findByIdOrFail($lesson_id , ['publishedFiles' , 'publishedQuizzes']);
     }
 
+    public function showForAdmin($lesson_id)
+    {
+        return Lesson::findByIdOrFail($lesson_id , [
+            'files',
+            'quizzes'
+        ]);
+    }
+
     public function uploadVideos($data, $id)
     {
         $lesson = Lesson::findByIdOrFail($id);
