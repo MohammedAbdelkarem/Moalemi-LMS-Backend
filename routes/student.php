@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/purchased-subjects', 'getPurchasedSubjects')->name(RouteNames::MOBILE_PURCHASED_SUBJECTS);
         Route::get('/purchased-units', 'getPurchasedUnits')->name(RouteNames::MOBILE_PURCHASED_UNITS);
         Route::get('/purchased-lists-by-type', 'getPurchasedListsByType');
+        Route::get('/lesson/{lesson_id}', 'getLesson')->name(RouteNames::MOBILE_LESSON_DETAILS);
     });
 
     // Transactions

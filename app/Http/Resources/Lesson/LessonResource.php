@@ -80,6 +80,10 @@ class LessonResource extends JsonResource
             case RouteNames::MOBILE_SAVED_LESSONS:
                 $data['video'] = MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION));
             break;
+            case RouteNames::MOBILE_LESSON_DETAILS:
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+            break;
         }
 
         return $data;

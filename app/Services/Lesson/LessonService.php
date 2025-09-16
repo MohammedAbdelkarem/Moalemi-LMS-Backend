@@ -78,6 +78,11 @@ class LessonService
         $this->contextService->updateParentNumberOfContents($lesson, '+');
     }
 
+    public function showForStudent($lesson_id)
+    {
+        return Lesson::findByIdOrFail($lesson_id , ['publishedFiles' , 'publishedQuizzes']);
+    }
+
     public function uploadVideos($data, $id)
     {
         $lesson = Lesson::findByIdOrFail($id);

@@ -14,6 +14,7 @@ use App\Services\Lesson\LessonService;
 use App\Http\Resources\List\ListResource;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Resources\Course\CourseResource;
+use App\Http\Resources\Lesson\LessonResource;
 use App\Services\Hierarichy\HierarichyService;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
@@ -156,6 +157,15 @@ class HierarichyController extends Controller
         return success(
             $this->lessonService->rateLesson($lesson_id, $request->rate),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getLesson($lesson_id)
+    {
+        return success(
+            $this->lessonService->showForStudent($lesson_id),
+            ApiMessages::MSG_SUCCESS,
+            LessonResource::class,
         );
     }
 }

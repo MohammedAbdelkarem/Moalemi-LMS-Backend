@@ -33,7 +33,7 @@ class LessonQuestionService
         $question = LessonQuestion::create([
             'lesson_id' => $lesson_id,
             'student_id' => auth()->id(),
-            'question' => $data['question'],
+            'question' => $data['text'],
             'teacher_id' => $this->getLessonTeacher($lesson_id),
         ]);
 
@@ -44,7 +44,7 @@ class LessonQuestionService
     public function answer($data , $question_id)
     {
         $question = LessonQuestion::findByIdOrFail($question_id);
-        $question->answer = $data['answer'];
+        $question->answer = $data['text'];
         $question->save();
 
         if(isset($data['images']))
@@ -53,8 +53,8 @@ class LessonQuestionService
 
     private function getLessonTeacher($lesson_id)
     {
-        $lesson = Lesson::findByIdOrFail($lesson_id);
+        $lesson = Lesson::findByIdOrFail($lesson_id , ['unit.responsibilities.teacher']);
 
-        return $lesson->responsibilities()->first()->teacher->id;
+        return $lesson->unit->responsibilities->first()->teacher->id;
     }
 }
