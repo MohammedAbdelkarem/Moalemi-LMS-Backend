@@ -7,6 +7,7 @@ use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Lesson\LessonResource;
 use App\Http\Resources\Teacher\TeacherResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,6 +30,7 @@ class LessonQuestionResource extends JsonResource
             'answer_images' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_QUESTION_ANSWER_COLLECTION)),
             'teacher' => TeacherResource::make($this->whenLoaded('teacher')),
             'student' => UserResource::make($this->whenLoaded('student')),
+            'lesson' => LessonResource::make($this->whenLoaded('lesson')),
         ];
 
         $routeName = $request->route()->getName();

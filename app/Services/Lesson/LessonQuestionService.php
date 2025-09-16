@@ -14,7 +14,7 @@ class LessonQuestionService
     public function get($data , $lesson_id)
     {
         $questions = LessonQuestion::where('lesson_id', $lesson_id)
-            ->with(['teacher', 'student']);
+            ->with(['teacher', 'student' , 'lesson']);
 
         return getOrPaginate($questions, $data);
     }
@@ -23,7 +23,7 @@ class LessonQuestionService
     {
         $questions = LessonQuestion::where('lesson_id', $lesson_id)
             ->where('student_id', $student_id)
-            ->with(['teacher', 'student']);
+            ->with(['teacher', 'student' , 'lesson']);
 
         return getOrPaginate($questions, $data);
     }
@@ -49,6 +49,15 @@ class LessonQuestionService
 
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $question , MediaCollection::LESSON_QUESTION_ANSWER_COLLECTION);
+    }
+
+    public function getQuestionableLessons($student_id)
+    {
+        return Lesson::published()
+            ->wherehas('lessonQuestions' , function($query) use ($student_id) {
+                $query->where('student_id', $student_id);
+            })
+            ->get();
     }
 
     private function getLessonTeacher($lesson_id)

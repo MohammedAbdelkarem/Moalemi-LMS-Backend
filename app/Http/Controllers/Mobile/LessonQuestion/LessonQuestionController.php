@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Mobile\LessonQuestion;
 
+use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Text\TextRequest;
-use App\Http\Resources\LessonQuestion\LessonQuestionResource;
+use App\Http\Resources\Lesson\LessonResource;
 use App\Services\Lesson\LessonQuestionService;
-use Illuminate\Http\Request;
+use App\Http\Resources\LessonQuestion\LessonQuestionResource;
+use App\Http\Resources\List\ListResource;
 
 class LessonQuestionController extends Controller
 {
@@ -48,6 +50,15 @@ class LessonQuestionController extends Controller
         return success(
             $this->lessonQuestionService->answer($request->all(), $question_id),
             ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function getQuestionableLessons()
+    {
+        return success(
+            $this->lessonQuestionService->getQuestionableLessons(auth()->id()),
+            ApiMessages::MSG_SUCCESS,
+            ListResource::class,
         );
     }
 }
