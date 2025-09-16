@@ -22,12 +22,12 @@ class QuestionService extends MainService
         $query = Question::orderBy('created_at', 'desc')
                 ->with(['unit', 'subUnit', 'answers']);
 
-        if (isset($data['unit_id'])) {
-            $query->where('unit_id', $data['unit_id']);
+        if (isset($data['unit_ids'])) {
+            $query->whereIn('unit_id', $data['unit_ids']);
         }
 
-        if (isset($data['sub_unit_id'])) {
-            $query->where('sub_unit_id', $data['sub_unit_id']);
+        if (isset($data['sub_unit_ids'])) {
+            $query->whereIn('sub_unit_id', $data['sub_unit_ids']);
         }
 
         if (isset($data['type'])) {

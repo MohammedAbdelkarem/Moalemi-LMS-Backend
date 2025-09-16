@@ -31,6 +31,10 @@ class Transaction extends Model
         return $this->belongsTo(UnlockedContext::class, 'unlocked_context_id');
     }
 
+    public function scopeExistAmount($query)
+    {
+        return $query->whereNotNull('amount');
+    }
     public function scopeFilter($query, $data)
     {
         return $query
@@ -38,10 +42,10 @@ class Transaction extends Model
             $query->where('transaction_type', $data['transaction_type']);
         })
         ->when(isset($data['start_amount']), function($query) use ($data) {
-            $query->where('amount', '>=', $data['start_amount']);
+            $query->existAmount()->where('amount', '>=', $data['start_amount']);
         })
         ->when(isset($data['end_amount']), function($query) use ($data) {
-            $query->where('amount', '<=', $data['end_amount']);
+            $query->existAmount()->where('amount', '<=', $data['end_amount']);
         })
         ->when(isset($data['start_date']), function($query) use ($data) {
             $query->whereDate('created_at', '>=', $data['start_date']);
