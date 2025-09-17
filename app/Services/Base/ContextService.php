@@ -362,8 +362,11 @@ class ContextService
         $files = $context->files()->get();
         $quizzes = $context->quizzes()->get();
 
-        $this->changeFilesPublishStatus($files , $status);
-        $this->changeQuizzesPublishStatus($quizzes , $status);
+        if($model != Course::class)
+        {
+            $this->changeFilesPublishStatus($files , $status);
+            $this->changeQuizzesPublishStatus($quizzes , $status);
+        }
         
         if($model == Course::class)
         {
