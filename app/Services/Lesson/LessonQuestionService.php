@@ -51,11 +51,11 @@ class LessonQuestionService
             uploadFilesOnMedia($data['images'] , $question , MediaCollection::LESSON_QUESTION_ANSWER_COLLECTION);
     }
 
-    public function getQuestionableLessons($student_id)
+    public function getPurchasedleLessons($student_id)
     {
         return Lesson::published()
-            ->wherehas('lessonQuestions' , function($query) use ($student_id) {
-                $query->where('student_id', $student_id);
+            ->wherehas('unlockedContexts' , function($query) use ($student_id) {
+                $query->where('user_id', $student_id);
             })
             ->get();
     }

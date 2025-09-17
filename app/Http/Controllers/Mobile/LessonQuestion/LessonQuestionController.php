@@ -56,7 +56,7 @@ class LessonQuestionController extends Controller
     public function getQuestionableLessons()
     {
         return success(
-            $this->lessonQuestionService->getQuestionableLessons(auth()->id()),
+            $this->lessonQuestionService->getPurchasedleLessons(auth()->id()),
             ApiMessages::MSG_SUCCESS,
             ListResource::class,
         );
