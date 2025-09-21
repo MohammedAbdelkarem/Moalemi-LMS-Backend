@@ -32,6 +32,10 @@ class CommentResource extends JsonResource
             case RouteNames::MOBILE_COMMENTS_LIST:
                 $data['replay'] = ReplayResource::make($this->whenLoaded('existReplay'));
                 break;
+            case RouteNames::ADMIN_LESSON_SHOW:
+                $data['status'] = $this->status;
+                $data['replay'] = ReplayResource::make($this->whenLoaded('replay'));
+                break;
         }
 
         return $data;

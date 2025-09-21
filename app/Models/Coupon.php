@@ -45,4 +45,21 @@ class Coupon extends Model
     {
         return $this->morphTo();
     }
+
+    public function scopeFilter($query, $data)
+    {
+        return $query
+            ->when(isset($data['type']), function($query) use ($data) {
+                $query->where('type', $data['type']);
+            })
+            ->when(isset($data['is_expired']) && $data['is_expired'] == 1, function($query) {
+                $query->where('is_expired', 1);
+            })
+            ->when(isset($data['is_expired']) && $data['is_expired'] == 0, function($query) {
+                $query->where('is_expired', 0);
+            })
+            ->when(isset($data['created_at']), function($query) use ($data) {
+                $query->whereDate('created_at', $data['created_at']);
+            });
+    }
 }

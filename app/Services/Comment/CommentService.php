@@ -33,8 +33,13 @@ class CommentService
 
     public function deleteComment($id)
     {
+        
         Comment::findByIdOrFail($id)->update([
-            'status' => CommentStatusEnum::DELETED->value,
+            'status' => $this->determineDeletedType(),
+        ]);
+
+        Replay::where('comment_id', $id)->update([
+            'status' => $this->determineDeletedType(),
         ]);
     }
 
@@ -52,7 +57,7 @@ class CommentService
     public function deleteReplay($id)
     {
         Replay::findByIdOrFail($id)->update([
-            'status' => CommentStatusEnum::DELETED->value,
+            'status' => $this->determineDeletedType(),
         ]);
     }
 
@@ -71,4 +76,14 @@ class CommentService
         $lesson->save();
         $comment->save();
     }
+
+    private function determineDeletedType()
+    {
+        if(auth()->user()->isTeacher())
+            return CommentStatusEnum::DELETED_BY_TEACHER->value;
+        if(auth()->user()->isAdmin())
+            return CommentStatusEnum::DELETED_BY_ADMIN->value;
+        return CommentStatusEnum::DELETED_BY_STUDENT->value;
+    }
+    
 }

@@ -29,6 +29,7 @@ use App\Http\Controllers\Administration\Teacher\TeacherController;
 use App\Http\Controllers\Administration\Question\QuestionController;
 use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
+use App\Http\Controllers\Administration\SellPoint\SellPointController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
 use App\Http\Controllers\Administration\Transaction\TransactionController;
 use App\Http\Controllers\Administration\Responsibility\ResponsibilityController;
@@ -212,6 +213,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
         Route::post("/change-priority", "changePriority");
+        Route::delete("/comments/{id}", "deleteComment");
     });
 
     Route::prefix("files")->controller(FileController::class)->group(function () {
@@ -243,6 +245,14 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::post("/change-priority", "changePriority");
     });
 
+    // Sell Points
+    Route::prefix("sell-points")->controller(SellPointController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::put("/{id}", "update");
+        Route::delete("/{id}", "destroy");
+    });
+
     Route::prefix("responsibilities")->controller(ResponsibilityController::class)->group(function () {
         Route::post("/attach", "attach");
         Route::post("/detach", "detach");
@@ -254,6 +264,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::post("/create-student-cupon", "createStudentCupon");
         Route::post("/create-context-cupon", "createContextCupon");
         Route::get('/', 'get');
+        Route::get("/set-copons-as-expired", "setCoponsAsExpired");
+        Route::get("/copons", "getCopons");
     });
 
     // Teachers

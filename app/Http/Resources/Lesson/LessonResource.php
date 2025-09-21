@@ -75,6 +75,7 @@ class LessonResource extends JsonResource
                 $data['files'] = FileResource::collection($this->whenLoaded('files'));
                 $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('subUnit'));
                 $data['video'] = MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION));
+                $data['comments'] = CommentResource::collection($this->whenLoaded('comments'));
             break;
             case RouteNames::MOBILE_HIERARICHY_SUB_UNIT:
                 $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));

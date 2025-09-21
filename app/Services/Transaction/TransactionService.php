@@ -21,36 +21,6 @@ class TransactionService
         protected PurchaseService $purchaseService
     ){}
 
-    public function createStudentCupon($data)
-    {
-        $cupon = Coupon::create([
-            'coupon' => generateUniqueCoupon(),
-            'amount' => $data['amount'],
-            'type' => CouponTypeEnum::STUDENT_ONE_TIME,
-        ]);
-
-        return $cupon;
-    }
-
-    public function createContextCupon($data)
-    {
-        $context = getModel($data['context_type'])::find($data['context_id']);
-
-        if($context->access_type == AccessTypeEnum::FREE->value)
-            return forbiddenFailure([] , ExceptionMessages::MSG_CANNOT_CREATE_CUZ_CONTEXT_IS_FREE);
-
-
-        $cupon = Coupon::create([
-            'coupon' => generateUniqueCoupon(),
-            'type' => CouponTypeEnum::CONTEXT_MANY_TIMES,
-            'expired_at' => $data['expired_at'],
-            'context_id' => $data['context_id'],
-            'context_type' => getModel($data['context_type']),
-        ]);
-
-        return $cupon;
-    }
-
     public function useStudentCupon($cupon)
     {
         $cupon = Coupon::where('coupon', $cupon)

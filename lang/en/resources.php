@@ -59,4 +59,6 @@ return [
     'replays'                   => 'Replays',
     'lesson_question'           => 'Lesson Question',
     'lesson_questions'          => 'Lesson Questions',
+    'sell_point'                => 'Sell Point',
+    'sell_points'               => 'Sell Points',
 ];

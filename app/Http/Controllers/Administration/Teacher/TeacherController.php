@@ -20,7 +20,7 @@ class TeacherController extends Controller
     public function index(GetItemsRequest $request)
     {
         return success(
-            $this->teacherService->getAll($request->validated()),
+            $this->teacherService->getAll($request->all()),
             ApiMessages::MSG_SUCCESS,
             TeacherResource::class,
             $request->has('per_page')

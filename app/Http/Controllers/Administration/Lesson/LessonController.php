@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\Lesson\LessonService;
+use App\Services\Comment\CommentService;
 use App\Http\Resources\Lesson\LessonResource;
 use App\Http\Requests\Base\ChangePriorityRequest;
 use App\Http\Requests\Lesson\CreateLessonRequest;
@@ -16,6 +17,7 @@ class LessonController extends Controller
 {
     public function __construct(
         protected LessonService $lessonService,
+        protected CommentService $commentService,
     ) {}
 
     public function index(Request $request)
@@ -81,6 +83,14 @@ class LessonController extends Controller
     {
         return success(
             $this->lessonService->changePriority($request->validated()['context']),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function deleteComment($id)
+    {
+        return success(
+            $this->commentService->deleteComment($id),
             ApiMessages::MSG_SUCCESS
         );
     }

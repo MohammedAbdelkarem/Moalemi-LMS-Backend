@@ -9,10 +9,13 @@ use App\Services\Transaction\TransactionService;
 use App\Http\Requests\Transaction\CreateCuponRequest;
 use App\Http\Resources\Transaction\TransactionResource;
 use App\Http\Requests\Transaction\CreateContextCuponRequest;
+use App\Http\Resources\Copon\CopnoResource;
+use App\Services\Copon\CoponService;
 
 class TransactionController extends Controller
 {
     public function __construct(
+        protected CoponService $coponService,
         protected TransactionService $transactionService
     ) {}
 
@@ -27,7 +30,17 @@ class TransactionController extends Controller
     }
     public function createStudentCupon(CreateCuponRequest $request)
     {
-        $cupon = $this->transactionService->createStudentCupon($request->validated());
+        $this->coponService->createStudentCupon($request->validated());
+        
+        return success(
+            [],
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function createContextCupon(CreateContextCuponRequest $request)
+    {
+        $cupon = $this->coponService->createContextCupon($request->validated());
         
         return success(
             $cupon,
@@ -35,13 +48,21 @@ class TransactionController extends Controller
         );
     }
 
-    public function createContextCupon(CreateContextCuponRequest $request)
-    {
-        $cupon = $this->transactionService->createContextCupon($request->validated());
-        
+    public function setCoponsAsExpired(Request $request)
+    {   
         return success(
-            $cupon,
+            $this->coponService->setAsExpired($request->only('ids')),
             ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function getCopons(Request $request)
+    {
+        return success(
+            $this->coponService->get($request->all()),
+            ApiMessages::MSG_SUCCESS,
+            CopnoResource::class,
+            $request->has('per_page')
         );
     }
 }

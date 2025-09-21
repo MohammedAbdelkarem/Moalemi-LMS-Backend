@@ -59,4 +59,6 @@ return [
     'replays'                   => 'الردود',
     'lesson_question'           => 'السؤال',
     'lesson_questions'          => 'الأسئلة',
+    'sell_point'                => 'نقطة البيع',
+    'sell_points'               => 'نقاط البيع',
 ];

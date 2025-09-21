@@ -23,6 +23,14 @@ class ReplayResource extends JsonResource
             'user' => UserResource::make($this->whenLoaded('user')),
         ];
 
+        $routeName = $request->route()->getName();
+        switch ($routeName)
+        {
+            case RouteNames::ADMIN_LESSON_SHOW:
+                $data['status'] = $this->status;
+                break;
+        }
+
         return $data;
     }
 }

@@ -39,7 +39,7 @@ class AuthRequest extends BaseApiRequest
             'phone_number' => ['required', new PhoneNumberRule() , Rule::unique('users' , 'phone_number')->where('role_id' , 5)],
             'parent_phone_number' => ['required', new PhoneNumberRule()],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['sometimes', 'email',  Rule::unique('users' , 'email')],
+            'email' => ['nullable', 'email',  Rule::unique('users' , 'email')],
             'birth_date' => ['sometimes', 'date'],
             'is_male' => ['sometimes', 'bool'],
             'e_level_id' => ['required', 'exists:e_levels,id'],

@@ -87,7 +87,8 @@ class LessonService
     {
         return Lesson::findByIdOrFail($lesson_id , [
             'files',
-            'quizzes'
+            'quizzes',
+            'comments.replay',
         ]);
     }
 

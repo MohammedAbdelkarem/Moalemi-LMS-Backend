@@ -3,7 +3,10 @@
 namespace App\Services\Base;
 
 use App\Models\Unit;
+use App\Models\CLevel;
+use App\Models\Coupon;
 use App\Models\Course;
+use App\Models\ELevel;
 use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\SubUnit;
@@ -11,14 +14,19 @@ use App\Constants\ModelPaths;
 use App\Enums\AccessTypeEnum;
 use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
-use App\Models\CLevel;
-use App\Models\ELevel;
 
 /**
  * Class ContextService.
  */
 class ContextService
 {
+    public function disableExpiredCopons()
+    {
+        Coupon::
+        whereNotNull('expired_at')
+            ->where('expired_at', '<', now())
+                ->update(['is_expired' => 1]);
+    }
     /**
      * Change publish status for any content model with publish_status field
      * 

@@ -17,12 +17,17 @@ use App\Http\Resources\Banner\BannerResource;
 use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Teacher\TeacherResource;
+use App\Services\Base\ContextService;
 
 /**
  * Class StudentHomeService.
  */
 class StudentHomeService
 {
+    public function __construct(
+        protected ContextService $contextService
+    ) {}
+
     public function get()
     {
         $profile = User::findByIdOrFail(auth()->id() , ['c_level' , 'e_level']);
@@ -51,6 +56,7 @@ class StudentHomeService
 
         $quizzes = [];
                 
+        $this->contextService->disableExpiredCopons();
 
         return [
             'profile' => UserResource::make($profile),

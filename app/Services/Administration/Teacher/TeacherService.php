@@ -2,9 +2,10 @@
 
 namespace App\Services\Administration\Teacher;
 
-use App\Constants\MediaCollection;
 use App\Models\User;
+use App\Enums\LevelEnum;
 use App\Services\MainService;
+use App\Constants\MediaCollection;
 use App\Services\Administration\ResponsibilityService;
 
 class TeacherService extends MainService
@@ -15,8 +16,24 @@ class TeacherService extends MainService
 
     public function getAll($data)
     {
+        $foreignId = [
+            LevelEnum::E_LEVEL => 'e_level_id',
+            LevelEnum::C_LEVEL => 'c_level_id',
+            LevelEnum::COURSE => 'course_id',
+            LevelEnum::SUBJECT => 'subject_id',
+            LevelEnum::UNIT => 'unit_id',
+            LevelEnum::SUB_UNIT => 'sub_unit_id',
+            LevelEnum::LESSON => 'lesson_id',
+        ];
+        
+
         return getOrPaginate(
             User::where('role_id', 3) // Teacher role
+                ->when(isset($data['context_type']), function($query) use ($data , $foreignId) {
+                    $query->whereHas('responsibilities', function($query) use ($data, $foreignId) {
+                        $query->where($foreignId[$data['context_type']], $data['context_id']);
+                    });
+                })
                 ->with(['profile', 'city'])
                 ->orderBy('created_at', 'desc'),
             $data

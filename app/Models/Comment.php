@@ -71,11 +71,6 @@ class Comment extends Model
         return $query->where('status', CommentStatusEnum::EXIST->value);
     }
 
-    public function scopeDeleted($query)
-    {
-        return $query->where('status', CommentStatusEnum::DELETED->value);
-    }
-
     public function scopePinned($query)
     {
         return $query->where('is_pinned', true);

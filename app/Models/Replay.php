@@ -58,9 +58,4 @@ class Replay extends Model
     {
         return $query->where('status', CommentStatusEnum::EXIST->value);
     }
-
-    public function scopeDeleted($query)
-    {
-        return $query->where('status', CommentStatusEnum::DELETED->value);
-    }
 }
