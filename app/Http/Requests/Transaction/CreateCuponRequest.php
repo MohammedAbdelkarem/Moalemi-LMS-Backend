@@ -23,7 +23,7 @@ class CreateCuponRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'amount' => ['required', 'integer', 'min:1'],
+            'amount' => ['required', 'integer', 'min:1' , 'max:5000000'],
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\Quiz\QuizController;
 use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Comment\CommentController;
+use App\Http\Controllers\Mobile\Progress\ProgressController;
 use App\Http\Controllers\Mobile\Saved\SavedContextController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
 use App\Http\Controllers\Mobile\LessonQuestion\LessonQuestionController;
@@ -100,5 +101,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/{lesson_id}/student', 'getForStudent');
         Route::post('/{lesson_id}', 'ask');
         Route::get('/lessons', 'getQuestionableLessons');
+    });
+
+    // Progress
+    Route::prefix('progress')->controller(ProgressController::class)->group(function () {
+        Route::get('/update-study-minutes', 'updateStudyMinutes');
+        Route::get('/get', 'getProgress');
     });
 });
