@@ -60,10 +60,10 @@ class HierarichyService
     public function getPurchasedContextByModel($student_id, $data, $model , $with)
     {
         return getOrPaginate(
-            $model::whereHas('unlockedContexts', function($query) use ($student_id) {
+            $model::whereHas('unlockedContexts', function($query) use ($student_id , $data) {
                 $query->where('user_id', $student_id)
-                ->whereHas('context', function($query) {
-                    $query->published();
+                ->whereHas('context', function($query) use ($data) {
+                    $query->published()->filter($data);
                 });
             })
             ->with($with),

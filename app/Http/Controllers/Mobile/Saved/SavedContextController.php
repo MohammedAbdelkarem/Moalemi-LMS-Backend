@@ -55,4 +55,14 @@ class SavedContextController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function searchSavedLessons(Request $request)
+    {
+        return success(
+            $this->savedContextService->searchSavedLessons($request->all(), $request->student_id ?? auth()->id()),
+            ApiMessages::MSG_SUCCESS,
+            LessonResource::class,
+            $request->has('per_page')
+        );
+    }
 }

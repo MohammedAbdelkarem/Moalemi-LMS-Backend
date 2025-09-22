@@ -40,5 +40,15 @@ class SavedContextService
 
         return getOrPaginate($questions, $data);
     }
+
+    public function searchSavedLessons($data, $student_id)
+    {
+        return getOrPaginate(
+            Lesson::published()->filter($data)->whereHas('savedByStudents', function($query) use ($student_id) {
+                $query->where('student_id', $student_id);
+            }), 
+            $data
+        );
+    }
 }
     

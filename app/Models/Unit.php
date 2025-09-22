@@ -141,4 +141,12 @@ class Unit extends Model implements HasMedia
     {
         return $this->quizzes()->published();
     }
+
+    public function scopeFilter($query, $data)
+    {
+        return $query->when(isset($data['search']), function ($query) use ($data) {
+            $query->where('name', 'like', '%' . $data['search'] . '%')
+                ->orWhere('bio', 'like', '%' . $data['search'] . '%');
+        });
+    }
 }

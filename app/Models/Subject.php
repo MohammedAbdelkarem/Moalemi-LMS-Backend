@@ -148,4 +148,16 @@ class Subject extends Model implements HasMedia
     {
         return $this->lessons()->published()->count();
     }
+
+    public function scopeFilter($query, $data)
+    {
+        return $query->when(isset($data['search']), function ($query) use ($data) {
+            $query->where('name', 'like', '%' . $data['search'] . '%')
+                ->orWhere('bio', 'like', '%' . $data['search'] . '%')
+                ->orWhereHas('course', function ($query) use ($data) {
+                    $query->where('name', 'like', '%' . $data['search'] . '%')
+                        ->orWhere('bio', 'like', '%' . $data['search'] . '%');
+                });
+        });
+    }
 }

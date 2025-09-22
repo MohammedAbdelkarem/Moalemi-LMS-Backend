@@ -20,4 +20,12 @@ class HomeController extends Controller
             ApiMessages::MSG_SUCCESS
         );
     }
+
+    public function search(Request $request)
+    {
+        return success(
+            $this->studentHomeService->search($request->all()),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }

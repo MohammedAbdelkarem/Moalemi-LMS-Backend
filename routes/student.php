@@ -36,6 +36,7 @@ Route::middleware([])->withoutMiddleware('is_student')->group(function () {
 Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.active', 'user.verified']], function () {
     Route::prefix('home')->controller(HomeController::class)->group(function () {
         Route::get('/', 'home')->name(RouteNames::STUDENT_HOME);
+        Route::get('/search', 'search');
     });
     Route::prefix('hierarichy')->controller(HierarichyController::class)->group(function () {
         Route::get('/subject/{subject_id}', 'getSubject')->name(RouteNames::MOBILE_HIERARICHY_SUBJECT);
@@ -87,6 +88,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/questions', 'getSavedQuestions')->name(RouteNames::MOBILE_SAVED_QUESTIONS);
         Route::post('/toggle', 'saveToggle');
         Route::get('/search-questions', 'searchForQuestions');
+        Route::get('/search-lessons', 'searchSavedLessons');
     });
 
     // Comments

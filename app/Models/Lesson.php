@@ -138,6 +138,14 @@ class Lesson extends Model implements HasMedia
         return $query->orderBy('priority', 'asc');
     }
 
+    public function scopeFilter($query, $data)
+    {
+        return $query->when(isset($data['search']), function ($query) use ($data) {
+            $query->where('name', 'like', '%' . $data['search'] . '%')
+                ->orWhere('bio', 'like', '%' . $data['search'] . '%');
+        });
+    }
+
     public function publishedFiles(): MorphMany
     {
         return $this->files()->published();
