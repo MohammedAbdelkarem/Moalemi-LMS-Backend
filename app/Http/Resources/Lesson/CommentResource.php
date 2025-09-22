@@ -23,6 +23,7 @@ class CommentResource extends JsonResource
             'created_at' => $this->created_at,
             'user' => UserResource::make($this->whenLoaded('user')),
             'is_replayed' => is_replayed($this->id),
+            'is_own' => $this->user_id == auth()->id(),
         ];
 
         $routeName = $request->route()->getName();

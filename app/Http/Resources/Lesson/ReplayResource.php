@@ -21,6 +21,7 @@ class ReplayResource extends JsonResource
             'text' => $this->text,
             'created_at' => $this->created_at,
             'user' => UserResource::make($this->whenLoaded('user')),
+            'is_own' => $this->user_id == auth()->id(),
         ];
 
         $routeName = $request->route()->getName();
