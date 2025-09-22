@@ -81,6 +81,9 @@ class SubjectResource extends JsonResource
                 $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
                 $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
             break;
+            case RouteNames::MOBILE_HOME_SEARCH:
+                $data['course'] = CourseResource::make($this->whenLoaded('course'));
+            break;
         }
 
         return $data;

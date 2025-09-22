@@ -59,4 +59,5 @@ final class RouteNames
     const MOBILE_QUIZ_DETAILS = 'mobile.quiz.details';
     const MOBILE_COMMENTS_LIST = 'mobile.comments.list';
     const MOBILE_LESSON_DETAILS = 'mobile.lesson.details';
+    const MOBILE_HOME_SEARCH = 'mobile.home.search';
 }
