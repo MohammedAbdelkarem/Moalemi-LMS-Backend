@@ -136,10 +136,10 @@ class LessonService
 
         if($status == PublishStatusEnum::PUBLISHED->value) {
             $this->contextService->checkIfParentPublishedBeforePublish($id , Lesson::class);
-            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
+            // $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '+');
         }
         elseif($status == PublishStatusEnum::DRAFT->value) {
-            $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '-');
+            // $this->contextService->updateLessonDurationAndParentLevels($lesson, $lesson->duration , '-');
         }
 
         $this->contextService->changeWithChildsPublishStatus($id , Lesson::class , $status);
