@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mobile;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Subject\SubjectResource;
 use App\Services\StudentHomeService;
 
 class HomeController extends Controller
@@ -25,7 +26,9 @@ class HomeController extends Controller
     {
         return success(
             $this->studentHomeService->search($request->all()),
-            ApiMessages::MSG_SUCCESS
+            ApiMessages::MSG_SUCCESS,
+            SubjectResource::class,
+            $request->has('per_page')
         );
     }
 }
