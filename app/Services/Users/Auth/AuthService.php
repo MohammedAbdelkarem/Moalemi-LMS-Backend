@@ -79,7 +79,7 @@ class AuthService extends MainService
         $token = $this->generateLoginToken($student);
 
         $data = [
-            "otp"    => config("app.env") == "local" ? (string) $otp->otp : "", //TODO Check for remove
+            "otp"    => config("app.env") == "local" ? (string) $otp->otp : $otp->otp, //TODO Check for remove
             "tokens" => $token,
             "student"   => [
                 "id" => $student->id,
