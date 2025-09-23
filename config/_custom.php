@@ -170,7 +170,7 @@ return [
     */
 
     "max_media_per_product"         => 10,
-    "max_product_video_size"        => 10240, // 10MB
+    "max_product_video_size"        => 204800, // 10MB
 
     /*
     |--------------------------------------------------------------------------
