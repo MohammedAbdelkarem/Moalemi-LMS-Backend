@@ -25,7 +25,7 @@ class UpdateMediaRequest extends BaseApiRequest
             'images' => ['nullable' , 'array'],
             'images.*'                  => [
                 'nullable' ,
-                'mimes:jpeg,jpg,png,webp' ,
+                'mimes:jpeg,jpg,png,webp,svg' ,
                 'max:4096'
             ],
 
