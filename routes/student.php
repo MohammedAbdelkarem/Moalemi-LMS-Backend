@@ -30,6 +30,9 @@ Route::middleware([])->withoutMiddleware('is_student')->group(function () {
     Route::prefix('c-levels')->controller(HierarichyController::class)->group(function () {
         Route::get('/{e_level_id}', 'c_levels');
     });
+    Route::prefix('teachers')->controller(HomeController::class)->group(function () {
+        Route::get('/', 'getOnboarding');
+    });
 });
 
 //Auth Needed

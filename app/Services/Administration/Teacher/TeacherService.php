@@ -40,6 +40,10 @@ class TeacherService extends MainService
         );
     }
 
+    public function getRandom()
+    {
+        return User::where('role_id' , 3)->inRandomOrder()->get();
+    }
     public function show($id)
     {
         return User::where('role_id', 3)

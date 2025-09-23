@@ -35,7 +35,7 @@ class CreateSubUnitRequest extends BaseApiRequest
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
             'image' => [
                 'sometimes',
-                'mimes:jpeg,jpg,png,webp',
+                'mimes:svg',
                 'max:4096'
             ],
         ];
