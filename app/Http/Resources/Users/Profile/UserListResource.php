@@ -28,6 +28,7 @@ class UserListResource extends JsonResource
             "is_male"           => $this->is_male ? (bool) $this->is_male : null,
             "city_name"         => $this->city["name_" . app()->getLocale()] ?? "",
             "phone_number"      => $phone_number,
+            "role"              => $this->role->name,
             "created_at"        => Carbon::parse($this->created_at)->translatedFormat("Y-m-d g:i a"),
         ];
 
