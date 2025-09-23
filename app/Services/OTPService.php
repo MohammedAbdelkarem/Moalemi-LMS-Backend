@@ -42,7 +42,7 @@ class OTPService extends MainService
         $this->OTPAttempts(false);
         //Create new otp
         $OTP = $this->generateUniqeNumericKey(OTP::class,  "otp", min: $min, max: $max);
-        dd($OTP);
+        // dd($OTP);
         $otp = OTP::updateOrCreate(
             ['user_id' => $user_id],
             [
