@@ -16,6 +16,7 @@ use App\Services\User\UserService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Users\Profile\UserDevice;
 use App\Models\Users\Profile\ArchivedUser;
+use App\Services\Progress\ProgressService;
 
 class ProfileService extends MainService
 {
@@ -24,6 +25,7 @@ class ProfileService extends MainService
     public function __construct(
         protected JWTTokensService $jwtService,
         protected UserService $userService,
+        protected ProgressService $progressService,
     ) {}
 
     public function completeProfile($validatedData)
@@ -172,4 +174,5 @@ class ProfileService extends MainService
         $user->active_notifications = !$user->active_notifications;
         $user->save();
     }
+
 }

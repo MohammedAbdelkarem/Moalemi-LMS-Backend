@@ -40,11 +40,11 @@ class AuthRequest extends BaseApiRequest
             'parent_phone_number' => ['required', new PhoneNumberRule()],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email',  Rule::unique('users' , 'email')],
-            'birth_date' => ['sometimes', 'date'],
-            'is_male' => ['sometimes', 'bool'],
+            'birth_date' => ['nullable', 'date'],
+            'is_male' => ['nullable', 'bool'],
             'e_level_id' => ['required', 'exists:e_levels,id'],
             'c_level_id' => ['required', 'exists:c_levels,id'],
-            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
     public function loginStudentRules()

@@ -43,6 +43,13 @@ class UserResource extends JsonResource
                 $data['c_level_name'] = $this->whenLoaded('c_level')->name;
                 $data['e_level_name'] = $this->whenLoaded('e_level')->name;
             break;
+            case RouteNames::ADMIN_STUDENT_PROFILE:
+                $data['profile'] = $this->whenLoaded('profile');
+                $data['city'] = $this->whenLoaded('city');
+                $data['e_level'] = $this->whenLoaded('e_level');
+                $data['c_level'] = $this->whenLoaded('c_level');
+                $data['parent'] = $this->whenLoaded('parent');
+                $data['transactions'] = $this->whenLoaded('transactions');
         }
 
         return $data;

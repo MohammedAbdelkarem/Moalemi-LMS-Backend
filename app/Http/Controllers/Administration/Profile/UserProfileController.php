@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Administration\Profile;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Administration\Profile\UserProfileRequest;
+use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Users\Profile\ProfileResource;
 use App\Http\Resources\Users\Profile\UserListResource;
 use App\Http\Resources\Users\Profile\UserSugResource;
 use App\Services\Administration\Profile\UserProfileService;
+use App\Http\Resources\Users\Profile\StudentProfileResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -71,6 +73,23 @@ class UserProfileController extends Controller
         return success(
             $this->userProfileService->restore($request->validated()),
             ApiMessages::MSG_RESTORED,
+        );
+    }
+
+    public function getStudentProfile(string $id): JsonResponse
+    {
+        return success(
+            $this->userProfileService->getStudentProfile($id),
+            ApiMessages::MSG_SUCCESS,
+            UserResource::class
+        );
+    }
+
+    public function getStudentProgress(string $id): JsonResponse
+    {
+        return success(
+            $this->userProfileService->getStudentProgress($id),
+            ApiMessages::MSG_SUCCESS,
         );
     }
 }

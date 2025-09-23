@@ -97,6 +97,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::get("/list", "index")->name(RouteNames::USERS_LIST);
             Route::get("/profile/{id}", "show");
             Route::post("/restore", "restore");
+            Route::get("/student-profile/{id}", "getStudentProfile")->name(RouteNames::ADMIN_STUDENT_PROFILE);
+            Route::get("/student-progress/{id}", "getStudentProgress");
         });
 
         Route::prefix("ban")->controller(BanLogController::class)->group(function () {

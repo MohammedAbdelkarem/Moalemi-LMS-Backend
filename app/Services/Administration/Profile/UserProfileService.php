@@ -2,13 +2,18 @@
 
 namespace App\Services\Administration\Profile;
 
-use App\Constants\Resources;
-use App\Models\User;
-use App\Services\MainService;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Constants\Resources;
+use App\Services\MainService;
+use App\Services\Progress\ProgressService;
 
 class UserProfileService extends MainService
 {
+    public function __construct(
+        protected ProgressService $progressService,
+    ) {}
+
     public function userSugs($search, $with_deleted)
     {
         $users = $with_deleted ?  User::withTrashed() : User::query();
@@ -126,5 +131,25 @@ class UserProfileService extends MainService
         $user->phone_number = $user->archivedAccount->phone_number;
         $user->save();
         $user->archivedAccount->delete();
+    }
+
+    
+    public function getStudentProfile($id)
+    {
+        $user =  User::findByIdOrFail($id, [
+            'profile',
+            'city',
+            'e_level',
+            'c_level',
+            'parent',
+            'transactions'
+        ]);
+
+        return $user;
+    }
+
+    public function getStudentProgress($id)
+    {
+        return $this->progressService->progress($id);
     }
 }
