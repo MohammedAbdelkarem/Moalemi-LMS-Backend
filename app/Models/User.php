@@ -101,7 +101,7 @@ class User extends Authenticatable implements JWTSubject , HasMedia
 
     public function isAdmin(): bool
     {
-        return $this->role_id === 1 && $this->role_id === 2;
+        return $this->role_id === 1 || $this->role_id === 2;
     }
 
     public function isTeacher(): bool
