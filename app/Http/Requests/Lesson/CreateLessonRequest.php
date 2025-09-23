@@ -67,7 +67,7 @@ class CreateLessonRequest extends BaseApiRequest
         return [
             'images.max' => 'You can upload maximum 10 images per lesson.',
             'images.*.max' => 'Each image must be less than 4MB.',
-            'video.max' => 'Video must be less than 100MB.',
+            'video.max' => 'Video must be less than 200MB.',
         ];
     }
 }

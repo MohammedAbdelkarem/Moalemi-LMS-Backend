@@ -30,7 +30,7 @@ class UserResource extends JsonResource
 
         $routeName = $request->route()->getName();
 
-        if(auth()->user()->isStudent())
+        if(auth()->user()->isStudent() || auth()->user()->isAdmin())
             $data['balance'] = $this->balance;
 
         switch ($routeName) 
