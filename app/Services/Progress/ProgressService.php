@@ -145,6 +145,11 @@ class ProgressService
             ];
         }
 
+        // Sort by total_score in descending order
+        usort($sortedStudents, function($a, $b) {
+            return $b['total_score'] <=> $a['total_score'];
+        });
+
         return $sortedStudents;
     }
 
