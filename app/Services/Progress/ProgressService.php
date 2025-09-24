@@ -106,11 +106,13 @@ class ProgressService
         $subjectProgress = [];
 
         foreach ($unlockedSubjects as $subject) {
+            $media = $subject->getFirstMedia(MediaCollection::SUBJECT_COLLECTION);
+            $media = $media ? MediaResource::make($media) : null;
             $subjectProgress[$subject->name] = [
                 $this->numberOfWatchedLessonsInSubject($studentId, $subject->id)
                  / $this->numberOfAllLessonsInSubject($studentId, $subject->id) 
                  * 100,
-                 MediaResource::make($subject->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
+                 $media,
                  $subject->course->name,
             ];
         }
@@ -138,11 +140,15 @@ class ProgressService
         $students = User::where('role_id' , 5)->get();
 
         $sortedStudents = [];
+        $counter = 0;
         foreach ($students as $student) {
             $sortedStudents[] = [
                 'student' => UserResource::make($student),
                 'total_score' => $this->totalScore($student->id)
             ];
+
+            $counter++;
+            if($counter == 10) break;
         }
 
         // Sort by total_score in descending order
