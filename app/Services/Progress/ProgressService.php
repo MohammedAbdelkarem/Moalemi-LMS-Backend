@@ -126,7 +126,7 @@ class ProgressService
                  * 100,
                  MediaResource::make($subject->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
                  $subject->course->name,
-            ];`
+            ];
         }
 
         return [

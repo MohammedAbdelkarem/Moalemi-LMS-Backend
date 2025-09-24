@@ -75,6 +75,8 @@ class QuizService extends MainService
 
         $quiz->number_of_questions -= count($questionIds);
 
+        $quiz->one_question_degree = $quiz->degree / $quiz->number_of_questions;
+
         $quiz->save();
     }
 
