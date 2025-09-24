@@ -5,14 +5,20 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Carbon\Carbon;
+use App\Models\CLevel;
+use App\Models\ELevel;
+use App\Models\Replay;
+use App\Models\Comment;
 use App\Enums\GenderEnum;
+use App\Models\QuizResult;
 use App\Constants\Resources;
+use App\Models\SavedContext;
+use App\Models\LessonQuestion;
+use App\Models\Responsibility;
 use App\Models\System\Info\FAQ;
 use App\Models\System\Info\Tos;
 use App\Models\System\Info\City;
 use App\Models\System\Role\Role;
-use App\Models\ELevel;
-use App\Models\CLevel;
 use Spatie\MediaLibrary\HasMedia;
 use App\Constants\MediaCollection;
 use App\Models\System\Info\AboutUs;
@@ -30,6 +36,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\LoginHistory;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Scopes\LoadStudentLevelsScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\System\Notification\Notification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -40,12 +47,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\System\CustomerService\CustomerServiceCard;
-use App\Models\Responsibility;
-use App\Models\LessonQuestion;
-use App\Models\Comment;
-use App\Models\Replay;
-use App\Models\QuizResult;
-use App\Models\SavedContext;
 
 class User extends Authenticatable implements JWTSubject , HasMedia
 {
@@ -71,6 +72,14 @@ class User extends Authenticatable implements JWTSubject , HasMedia
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LoadStudentLevelsScope);
     }
 
     //JWT

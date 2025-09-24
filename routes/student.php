@@ -112,5 +112,6 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('progress')->controller(ProgressController::class)->group(function () {
         Route::get('/update-study-minutes', 'updateStudyMinutes');
         Route::get('/get', 'getProgress')->name(RouteNames::MOBILE_PROGRESS_GET);
+        Route::get('/leaderboard', 'getLeaderboard');
     });
 });

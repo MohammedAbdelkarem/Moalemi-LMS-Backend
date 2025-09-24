@@ -40,8 +40,8 @@ class UserResource extends JsonResource
                 $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
             break;
             case in_array($routeName , [RouteNames::STUDENT_HOME, RouteNames::MOBILE_PROGRESS_GET]):
-                $data['c_level_name'] = $this->whenLoaded('c_level')->name;
-                $data['e_level_name'] = $this->whenLoaded('e_level')->name;
+                $data['c_level_name'] = $this->whenLoaded('c_level')->name ?? null  ;
+                $data['e_level_name'] = $this->whenLoaded('e_level')->name ?? null;
             break;
             case RouteNames::ADMIN_STUDENT_PROFILE:
                 $data['profile'] = $this->whenLoaded('profile');

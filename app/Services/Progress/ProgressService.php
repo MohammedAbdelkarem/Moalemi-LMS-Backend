@@ -60,20 +60,6 @@ class ProgressService
 
         return $count > 0 ? $count : 1;
     }
-    private function quizzesResult($student_id)
-    {
-        $quizResults = QuizResult::where('student_id', $student_id)->get();
-
-        $quizzes = Quiz::whereIn('id', $quizResults->pluck('quiz_id')->toArray())->get();
-
-        $resultsSum = $quizResults->sum('degree');
-
-        $quizzesSum = $quizzes->sum('degree');
-
-        $quizzesSum = $quizzesSum > 0 ? $quizzesSum : 1;
-
-        return $resultsSum / $quizzesSum * 100;
-    }
 
     public function adminProgress($studentId)
     {
@@ -83,7 +69,7 @@ class ProgressService
 
         $studyHours = $profile->study_minutes / 60;
 
-        $quizzesResult = $this->quizzesResult($studentId);
+        $quizzesResult = $this->getQuizzesResult($studentId);
 
         $unlockedSubjects = Subject::whereHas('unlockedContexts', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
@@ -107,11 +93,11 @@ class ProgressService
     {
         $profile = User::findByIdOrFail($studentId , ['c_level' , 'e_level']);
 
-        $progress = $this->numberOfAllWatchedLessons($studentId) / $this->numberOfAllLessons($studentId) * 100;
+        $progress = $this->getProgress($studentId);
 
-        $studyHours = $profile->study_minutes / 60;
+        $studyHours = $this->getStudyHours($studentId);
 
-        $quizzesResult = $this->quizzesResult($studentId);
+        $quizzesResult = $this->getQuizzesResult($studentId);
 
         $unlockedSubjects = Subject::whereHas('unlockedContexts', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
@@ -136,5 +122,56 @@ class ProgressService
             'quizzesResult' => $quizzesResult,
             'subjectProgress' => $subjectProgress,
         ];
+    }
+
+    public function totalScore($studentId)
+    {
+        $quizzesResult = $this->getQuizzesResult($studentId);
+
+        $progress = $this->getProgress($studentId);
+
+        return 0.2 * $quizzesResult + 0.8 * $progress;
+    }
+
+    public function leaderboard()
+    {
+        $students = User::where('role_id' , 5)->get();
+
+        $sortedStudents = [];
+        foreach ($students as $student) {
+            $sortedStudents[] = [
+                'student' => UserResource::make($student),
+                'total_score' => $this->totalScore($student->id)
+            ];
+        }
+
+        return $sortedStudents;
+    }
+
+    private function getStudyHours($studentId)
+    {
+        $student = User::findByIdOrFail($studentId);
+
+        return $student->study_minutes / 60;
+    }
+    private function getQuizzesResult($student_id)
+    {
+        $quizResults = QuizResult::where('student_id', $student_id)->get();
+
+        $quizzes = Quiz::whereIn('id', $quizResults->pluck('quiz_id')->toArray())->get();
+
+        $resultsSum = $quizResults->sum('degree');
+
+        $quizzesSum = $quizzes->sum('degree');
+
+        $quizzesSum = $quizzesSum > 0 ? $quizzesSum : 1;
+
+        return $resultsSum / $quizzesSum * 100;
+    }
+    private function getProgress($studentId)
+    {
+        return $this->numberOfAllWatchedLessons($studentId) 
+        / $this->numberOfAllLessons($studentId) 
+        * 100;
     }
 }

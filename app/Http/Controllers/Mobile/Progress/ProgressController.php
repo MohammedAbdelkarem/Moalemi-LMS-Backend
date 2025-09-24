@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mobile\Progress;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
 use App\Services\Progress\ProgressService;
 
 class ProgressController extends Controller
@@ -25,6 +26,15 @@ class ProgressController extends Controller
         return success(
             $this->progressService->progress(auth()->id()),
             ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function getLeaderboard()
+    {
+        return success(
+            $this->progressService->leaderboard(),
+            ApiMessages::MSG_SUCCESS,
+            // UserResource::class,
         );
     }
 }
