@@ -59,4 +59,5 @@ return [
     'has_to_be_draft_before_deleting_or_updating'                        => 'لا يمكن حذف  أو تعديل هذا القسم لانه منشور',
     'can_not_delete_cuz_has_content'                        => 'لا يمكن حذف هذا القسم لانه يحتوي على محتوى',
     'can_not_delete_or_update_cuz_has_quiz'                        => 'لا يمكن حذف  أو تعديل هذا السؤال لانه  يوجد اختبارات مرتبطة به',
+    'can_not_delete_or_update_cuz_has_quiz_results'                        => 'لا يمكن حذف  أو تعديل هذا الاختبار لانه  يوجد نتائج اختبارات مرتبطة به',
 ];

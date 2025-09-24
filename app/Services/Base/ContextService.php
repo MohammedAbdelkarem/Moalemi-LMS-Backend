@@ -2,6 +2,7 @@
 
 namespace App\Services\Base;
 
+use App\Models\Quiz;
 use App\Models\Unit;
 use App\Models\CLevel;
 use App\Models\Coupon;
@@ -359,6 +360,14 @@ class ContextService
     {
         if($question->quizzes()->count() > 0)
             return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ);
+    }
+
+    public function checkIfQuizHasResults($quizId)
+    {
+        $quiz = Quiz::findByIdOrFail($quizId);
+        
+        if($quiz->quizResults()->count() > 0)
+            return forbiddenFailure([] , ExceptionMessages::MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ_RESULTS);
     }
     
     public function changeWithChildsPublishStatus($context_id , $model , $status)

@@ -59,4 +59,5 @@ return [
     'has_to_be_draft_before_deleting_or_updating'                        => 'Cannot delete or update this context because it is published',
     'can_not_delete_cuz_has_content'                        => 'Cannot delete this context because it has content',
     'can_not_delete_or_update_cuz_has_quiz'                        => 'Cannot delete or update this question because it has quiz',
+    'can_not_delete_or_update_cuz_has_quiz_results'                        => 'Cannot delete or update this quiz because it has quiz results',
 ];

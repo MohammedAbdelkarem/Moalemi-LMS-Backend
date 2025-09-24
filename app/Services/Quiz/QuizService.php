@@ -63,9 +63,26 @@ class QuizService extends MainService
         $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '+');
     }
 
+    public function detachQuestionsFromQuiz($quizId, $questionIds)
+    {
+        $quiz = Quiz::findByIdOrFail($quizId);
+
+        $this->contextService->checkIfQuizHasResults($quizId);
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($quizId , Quiz::class);
+
+        $quiz->questions()->detach($questionIds);
+
+        $quiz->number_of_questions -= count($questionIds);
+
+        $quiz->save();
+    }
+
     public function update($validatedData, $id)
     {
         $quiz = Quiz::findByIdOrFail($id);
+
+        $this->contextService->checkIfQuizHasResults($id);
 
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Quiz::class);
 
@@ -85,6 +102,8 @@ class QuizService extends MainService
     public function destroy($id)
     {
         $quiz = Quiz::findByIdOrFail($id);
+
+        $this->contextService->checkIfQuizHasResults($id);
         
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Quiz::class);
 

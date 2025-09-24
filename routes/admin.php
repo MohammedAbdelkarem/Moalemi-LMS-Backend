@@ -245,6 +245,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
         Route::post("/change-priority", "changePriority");
+        Route::get("/detach-questions/{id}", "detachQuestionsFromQuiz");
     });
 
     // Sell Points

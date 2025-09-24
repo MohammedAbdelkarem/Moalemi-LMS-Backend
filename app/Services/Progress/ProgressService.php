@@ -2,12 +2,14 @@
 
 namespace App\Services\Progress;
 
-use App\Http\Resources\User\UserResource;
 use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\QuizResult;
+use App\Constants\MediaCollection;
+use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Media\MediaResource;
 
 /**
  * Class ProgressService.
@@ -73,7 +75,7 @@ class ProgressService
         return $resultsSum / $quizzesSum * 100;
     }
 
-    public function progress($studentId)
+    public function adminProgress($studentId)
     {
         $profile = User::findByIdOrFail($studentId , ['c_level' , 'e_level']);
 
@@ -91,6 +93,40 @@ class ProgressService
 
         foreach ($unlockedSubjects as $subject) {
             $subjectProgress[$subject->name] = $this->numberOfWatchedLessonsInSubject($studentId, $subject->id) / $this->numberOfAllLessonsInSubject($studentId, $subject->id) * 100;
+        }
+
+        return [
+            'profile' => UserResource::make($profile),
+            'progress' => $progress,
+            'studyHours' => $studyHours,
+            'quizzesResult' => $quizzesResult,
+            'subjectProgress' => $subjectProgress,
+        ];
+    }
+    public function progress($studentId)
+    {
+        $profile = User::findByIdOrFail($studentId , ['c_level' , 'e_level']);
+
+        $progress = $this->numberOfAllWatchedLessons($studentId) / $this->numberOfAllLessons($studentId) * 100;
+
+        $studyHours = $profile->study_minutes / 60;
+
+        $quizzesResult = $this->quizzesResult($studentId);
+
+        $unlockedSubjects = Subject::whereHas('unlockedContexts', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })->get();
+
+        $subjectProgress = [];
+
+        foreach ($unlockedSubjects as $subject) {
+            $subjectProgress[$subject->name] = [
+                $this->numberOfWatchedLessonsInSubject($studentId, $subject->id)
+                 / $this->numberOfAllLessonsInSubject($studentId, $subject->id) 
+                 * 100,
+                 MediaResource::make($subject->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
+                 $subject->course->name,
+            ];`
         }
 
         return [

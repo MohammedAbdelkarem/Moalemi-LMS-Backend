@@ -61,5 +61,5 @@ final class RouteNames
     const MOBILE_LESSON_DETAILS = 'mobile.lesson.details';
     const MOBILE_HOME_SEARCH = 'mobile.home.search';
     const ADMIN_STUDENT_PROFILE = 'admin.student.profile';
-
+    const MOBILE_PROGRESS_GET = 'mobile.progress.get';
 }

@@ -150,6 +150,6 @@ class UserProfileService extends MainService
 
     public function getStudentProgress($id)
     {
-        return $this->progressService->progress($id);
+        return $this->progressService->adminProgress($id);
     }
 }

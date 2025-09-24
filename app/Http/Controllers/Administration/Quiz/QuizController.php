@@ -77,4 +77,12 @@ class QuizController extends Controller
         );
     }
 
+    public function detachQuestionsFromQuiz(Request $request, $id): JsonResponse
+    {
+        return success(
+            $this->quizService->detachQuestionsFromQuiz($id, $request->question_ids),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
 }
