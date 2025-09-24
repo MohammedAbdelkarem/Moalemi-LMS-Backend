@@ -12,7 +12,9 @@ use App\Services\CLevel\CLevelService;
 use App\Services\ELevel\ELevelService;
 use App\Services\Lesson\LessonService;
 use App\Http\Resources\List\ListResource;
+use App\Http\Resources\SellPointResource;
 use App\Http\Resources\Unit\UnitResource;
+use App\Services\SellPoint\SellPointService;
 use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\Lesson\LessonResource;
 use App\Services\Hierarichy\HierarichyService;
@@ -32,6 +34,7 @@ class HierarichyController extends Controller
         protected TeacherService $teacherService,
         protected ELevelService $eLevelService,
         protected CLevelService $cLevelService,
+        protected SellPointService $sellPointService,
     ) {}
 
     public function e_levels()
@@ -166,6 +169,16 @@ class HierarichyController extends Controller
             $this->lessonService->showForStudent($lesson_id),
             ApiMessages::MSG_SUCCESS,
             LessonResource::class,
+        );
+    }
+
+    public function getSellPoints(Request $request)
+    {
+        return success(
+            $this->sellPointService->getAll($request->all()),
+            ApiMessages::MSG_SUCCESS,
+            SellPointResource::class,
+            $request->has('per_page')
         );
     }
 }

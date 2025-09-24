@@ -114,4 +114,9 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/get', 'getProgress')->name(RouteNames::MOBILE_PROGRESS_GET);
         Route::get('/leaderboard', 'getLeaderboard');
     });
+
+    // Sell Points
+    Route::prefix('sell-points')->controller(HierarichyController::class)->group(function () {
+        Route::get('/', 'getSellPoints');
+    });
 });
