@@ -55,6 +55,7 @@ class HierarichyController extends Controller
             SubjectResource::class,
         );
     }
+    
 
     public function getUnit($unit_id)
     {
