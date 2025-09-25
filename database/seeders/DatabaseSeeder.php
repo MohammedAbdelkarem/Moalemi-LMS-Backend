@@ -48,6 +48,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ContactUsTableSeeder::class);
         $this->call(FAQTableSeeder::class);
 
-        $this->call(LevelSeeder::class);
+        // $this->call(LevelSeeder::class);
     }
 }
