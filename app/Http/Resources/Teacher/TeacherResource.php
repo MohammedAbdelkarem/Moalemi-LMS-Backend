@@ -35,7 +35,8 @@ class TeacherResource extends JsonResource
         {
             case in_array($routeName , [
                 RouteNames::MOBILE_HIERARICHY_TEACHER_DETAILS,
-                RouteNames::ADMIN_TEACHER_LIST
+                RouteNames::ADMIN_TEACHER_LIST,
+                RouteNames::MOBILE_TEACHER_HOME
             ]):
                 $data['bio'] = $this->bio;
                 $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));

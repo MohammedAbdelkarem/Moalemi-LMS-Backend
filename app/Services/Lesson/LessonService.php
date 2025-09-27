@@ -182,4 +182,16 @@ class LessonService
             $lesson->save();
         }
     }
+
+    public function getTeacherLessons($teacher_id, $data)
+    {
+        return getOrPaginate(
+            Lesson::published()
+            ->whereHas('unit.responsibilities', function($query) use ($teacher_id) {
+                $query->where('teacher_id', $teacher_id);
+            })
+            ->with(['subUnit', 'publishedFiles', 'publishedQuizzes' , 'existComments.existReplay' , 'lessonRates']),
+            $data
+        );
+    }
 }

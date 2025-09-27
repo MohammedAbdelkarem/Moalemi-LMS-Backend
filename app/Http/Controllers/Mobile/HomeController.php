@@ -9,12 +9,14 @@ use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Teacher\TeacherResource;
 use App\Services\Administration\Teacher\TeacherService;
 use App\Services\StudentHomeService;
+use App\Services\TeacherHomeService;
 
 class HomeController extends Controller
 {
     public function __construct(
         protected StudentHomeService $studentHomeService,
-        protected TeacherService $teacherService
+        protected TeacherService $teacherService,
+        protected TeacherHomeService $teacherHomeService
     ) {}
 
     public function home()
@@ -41,6 +43,14 @@ class HomeController extends Controller
             $this->teacherService->getRandom(),
             ApiMessages::MSG_SUCCESS,
             TeacherResource::class,
+        );
+    }
+
+    public function getTeacherHome()
+    {
+        return success(
+            $this->teacherHomeService->home(),
+            ApiMessages::MSG_SUCCESS,
         );
     }
 }

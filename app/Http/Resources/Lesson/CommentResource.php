@@ -30,7 +30,10 @@ class CommentResource extends JsonResource
 
         switch ($routeName)
         {
-            case RouteNames::MOBILE_COMMENTS_LIST:
+            case in_array($routeName , [
+                RouteNames::MOBILE_COMMENTS_LIST,
+                RouteNames::MOBILE_TEACHER_LESSONS,
+            ]):
                 $data['replay'] = ReplayResource::make($this->whenLoaded('existReplay'));
                 break;
             case RouteNames::ADMIN_LESSON_SHOW:

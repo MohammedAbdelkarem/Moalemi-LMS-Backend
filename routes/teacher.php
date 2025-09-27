@@ -3,7 +3,9 @@
 use App\Constants\RouteNames;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\Comment\CommentController;
+use App\Http\Controllers\Mobile\HomeController;
 use App\Http\Controllers\Mobile\LessonQuestion\LessonQuestionController;
+use App\Http\Controllers\Mobile\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +37,15 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('lesson-questions')->controller(LessonQuestionController::class)->group(function () {
         Route::get('/{lesson_id}', 'index');
         Route::post('/{question_id}', 'answer');
+    });
+
+    // Lessons
+    Route::prefix('lessons')->controller(TeacherController::class)->group(function () {
+        Route::get('/', 'getTeacherLessons')->name(RouteNames::MOBILE_TEACHER_LESSONS);
+    });
+
+    // Teacher Home
+    Route::prefix('home')->controller(HomeController::class)->group(function () {
+        Route::get('/', 'getTeacherHome')->name(RouteNames::MOBILE_TEACHER_HOME);
     });
 });

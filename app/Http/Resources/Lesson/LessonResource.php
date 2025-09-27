@@ -17,6 +17,7 @@ use App\Http\Resources\ELevel\ELevelResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\LessonRate\LessonRateResource;
 
 class LessonResource extends JsonResource
 {
@@ -87,6 +88,13 @@ class LessonResource extends JsonResource
             case RouteNames::MOBILE_LESSON_DETAILS:
                 $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
                 $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+            break;
+            case RouteNames::MOBILE_TEACHER_LESSONS:
+                $data['sub_unit'] = SubUnitResource::make($this->whenLoaded('subUnit'));
+                $data['files'] = FileResource::collection($this->whenLoaded('publishedFiles'));
+                $data['quizzes'] = QuizResource::collection($this->whenLoaded('publishedQuizzes'));
+                $data['comments'] = CommentResource::collection($this->whenLoaded('existComments'));
+                $data['lesson_rates'] = LessonRateResource::collection($this->whenLoaded('lessonRates'));
             break;
         }
 
