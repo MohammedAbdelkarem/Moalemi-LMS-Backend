@@ -61,4 +61,6 @@ return [
     'lesson_questions'          => 'Lesson Questions',
     'sell_point'                => 'Sell Point',
     'sell_points'               => 'Sell Points',
+    'app_version'               => 'App Version',
+    'app_versions'              => 'App Versions',
 ];

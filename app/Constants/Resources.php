@@ -57,4 +57,6 @@ final class Resources
     const RES_LESSON_QUESTIONS      = 'resources.lesson_questions';
     const SELL_POINT                = 'resources.sell_point';
     const SELL_POINTS               = 'resources.sell_points';
+    const RES_APP_VERSION           = 'resources.app_version';
+    const RES_APP_VERSIONS          = 'resources.app_versions';
 }

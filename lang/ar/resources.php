@@ -61,4 +61,6 @@ return [
     'lesson_questions'          => 'الأسئلة',
     'sell_point'                => 'نقطة البيع',
     'sell_points'               => 'نقاط البيع',
+    'app_version'               => 'إصدار التطبيق',
+    'app_versions'              => 'إصدارات التطبيق',
 ];

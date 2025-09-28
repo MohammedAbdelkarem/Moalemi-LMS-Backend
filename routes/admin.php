@@ -17,6 +17,7 @@ use App\Http\Controllers\Administration\Auth\AuthController;
 use App\Http\Controllers\Administration\File\FileController;
 use App\Http\Controllers\Administration\Quiz\QuizController;
 use App\Http\Controllers\Administration\Unit\UnitController;
+use App\Http\Controllers\Administration\AppVersionController;
 use App\Http\Controllers\Administration\Log\BanLogController;
 use App\Http\Controllers\System\Info\PrivacyPolicyController;
 use App\Http\Controllers\Administration\CLevel\CLevelController;
@@ -276,6 +277,13 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::get("/", "index")->name(RouteNames::ADMIN_TEACHER_LIST);
         Route::post("/", "store");
         Route::get("/{id}", "show");
+    });
+
+    // App Versions
+    Route::prefix("app-versions")->controller(AppVersionController::class)->group(function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+        Route::delete("/{id}", "destroy");
     });
 
     //Logs

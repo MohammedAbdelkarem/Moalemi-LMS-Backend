@@ -6,6 +6,7 @@ use App\Http\Controllers\Mobile\HomeController;
 use App\Http\Controllers\Mobile\File\FileController;
 use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\Quiz\QuizController;
+use App\Http\Controllers\Mobile\AppVersionController;
 use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Comment\CommentController;
 use App\Http\Controllers\Mobile\Progress\ProgressController;
@@ -70,6 +71,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
         Route::get('/search', 'search');
         Route::get('/filter', 'filter');
         Route::get('/purchased', 'getPurchasedFiles');
+    });
+
+    // App Versions
+    Route::prefix('app-versions')->controller(AppVersionController::class)->group(function () {
+        Route::get('/', 'index');
     });
 
     // Quizzes
