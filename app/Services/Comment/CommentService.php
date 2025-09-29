@@ -66,12 +66,22 @@ class CommentService
         $comment = Comment::findByIdOrFail($comment_id);
         $lesson = Lesson::findByIdOrFail($comment->lesson_id);
 
-        $lesson->comments()->update([
-            'is_pinned' => false,
-        ]);
-        $comment->update([
-            'is_pinned' => true,
-        ]);
+        if(! $comment->is_pinned) 
+        {
+            $lesson->comments()->update([
+                'is_pinned' => false,
+            ]);
+            $comment->update([
+                'is_pinned' => true,
+            ]);
+        }
+        else
+        {
+            $comment->update([
+                'is_pinned' => false,
+            ]);
+        }
+
 
         $lesson->save();
         $comment->save();

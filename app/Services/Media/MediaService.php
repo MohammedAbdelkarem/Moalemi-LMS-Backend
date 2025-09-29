@@ -2,11 +2,13 @@
 
 namespace App\Services\Media;
 
-use App\Constants\ExceptionMessages;
-use App\Constants\MediaCollection;
-use App\Enums\MediaStatusEnum;
+use App\Models\Lesson;
 use App\Enums\MediaTypeEnum;
+use App\Enums\MediaStatusEnum;
 use App\Enums\StoryStatusEnum;
+use App\Constants\MediaCollection;
+use App\Constants\ExceptionMessages;
+use App\Services\Lesson\LessonService;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -14,6 +16,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  */
 class MediaService
 {
+    public function __construct(
+        protected LessonService $lessonService
+    ) {}
+
     public function store($data)
     {
         $model = getModel($data['context_type']);
@@ -52,7 +58,15 @@ class MediaService
 
     public function delete($data)
     {
-        Media::whereIn('id', $data['ids'])->delete();
+        $media = Media::whereIn('id', $data['ids'])->get();
+
+        foreach($media as $item) {
+            if($item->model_type == Lesson::class) {
+                $this->lessonService->deleteDownloads($item->model_id);
+            }
+            
+            $item->delete();
+        }
     }
 
     public function changeMediaStatus($context , $mediaCollection)

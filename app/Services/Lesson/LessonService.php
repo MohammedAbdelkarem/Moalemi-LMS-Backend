@@ -5,6 +5,7 @@ namespace App\Services\Lesson;
 use App\Models\Lesson;
 use App\Enums\PublishStatusEnum;
 use App\Constants\MediaCollection;
+use App\Models\Download;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
 use App\Services\Purchase\PurchaseService;
@@ -193,5 +194,28 @@ class LessonService
             ->with(['subUnit', 'publishedFiles', 'publishedQuizzes' , 'existComments.existReplay' , 'lessonRates']),
             $data
         );
+    }
+
+    public function downloadLesson($lesson_id , $user_id)
+    {
+        $lesson = Lesson::findByIdOrFail($lesson_id);
+
+        $lesson->downloads()->create([
+            'user_id' => $user_id
+        ]);
+    }
+
+    public function deleteDownloads($lesson_id)
+    {
+        Download::where('lesson_id', $lesson_id)
+            ->delete();
+    }
+
+    public function getDownloads($user_id)
+    {
+        return Lesson::published()->whereHas('downloads', function($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })
+        ->get();
     }
 }

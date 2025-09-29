@@ -64,4 +64,5 @@ final class RouteNames
     const MOBILE_PROGRESS_GET = 'mobile.progress.get';
     const MOBILE_TEACHER_LESSONS = 'mobile.teacher.lessons';
     const MOBILE_TEACHER_HOME = 'mobile.teacher.home';
+    const MOBILE_TEACHER_DETAILS = 'mobile.teacher.details';
 }

@@ -28,6 +28,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         ApiException::class,
     ];
+    
 
     protected $dontFlash = [
         'current_password',

@@ -14,10 +14,19 @@ class AppVersionController extends Controller
         protected AppVersionService $appVersionService,
     ) {}
 
-    public function index(Request $request)
+    public function indexStudent(Request $request)
     {
         return success(
             $this->appVersionService->studentVersions($request->all()), ApiMessages::MSG_SUCCESS,
+            AppVersionResource::class,
+            $request->has('per_page')
+        );
+    }
+
+    public function indexTeacher(Request $request)
+    {
+        return success(
+            $this->appVersionService->teacherVersions($request->all()), ApiMessages::MSG_SUCCESS,
             AppVersionResource::class,
             $request->has('per_page')
         );

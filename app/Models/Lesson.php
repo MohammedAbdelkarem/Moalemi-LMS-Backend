@@ -127,6 +127,11 @@ class Lesson extends Model implements HasMedia
         return $this->hasMany(LessonRate::class, 'lesson_id');
     }
 
+    public function downloads(): HasMany
+    {
+        return $this->hasMany(Download::class, 'lesson_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

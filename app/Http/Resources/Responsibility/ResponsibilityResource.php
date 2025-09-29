@@ -50,7 +50,10 @@ class ResponsibilityResource extends JsonResource
 
         $routeName = $request->route()->getName();
         switch ($routeName) {
-            case RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID:
+            case in_array($routeName , [
+                RouteNames::MOBILE_HIERARICHY_RESPONSIBILITIES_BY_TEACHER_ID,
+                RouteNames::MOBILE_TEACHER_DETAILS
+            ]):
                 $data['e_level'] = ELevelResource::make($this->whenLoaded('publishedELevel'));
                 $data['c_level'] = CLevelResource::make($this->whenLoaded('publishedCLevel'));
                 $data['course'] = CourseResource::make($this->whenLoaded('publishedCourse'));

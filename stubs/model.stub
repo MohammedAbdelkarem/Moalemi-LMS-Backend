@@ -2,6 +2,8 @@
 
 namespace {{ namespace }};
 
+use App\Enums\GenderEnum;
+use App\Constants\Resources;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

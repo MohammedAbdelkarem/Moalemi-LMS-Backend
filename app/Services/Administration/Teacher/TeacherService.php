@@ -2,10 +2,13 @@
 
 namespace App\Services\Administration\Teacher;
 
+use App\Http\Resources\Responsibility\ResponsibilityResource;
 use App\Models\User;
 use App\Enums\LevelEnum;
 use App\Services\MainService;
 use App\Constants\MediaCollection;
+use App\Http\Resources\Teacher\TeacherResource;
+use App\Models\Responsibility;
 use App\Services\Administration\ResponsibilityService;
 
 class TeacherService extends MainService
@@ -72,5 +75,20 @@ class TeacherService extends MainService
     public function getTeacherDetails($teacher_id)  
     {
         return User::findByIdOrFail($teacher_id);
+    }
+
+    public function getTeacherDetailsForTeacherApp($teacher_id)
+    {
+        $profile = TeacherResource::make(User::findByIdOrFail($teacher_id));
+
+        $subjects = ResponsibilityResource::collection(Responsibility::where('teacher_id', $teacher_id)
+            ->whereNull('unit_id')
+            ->with('publishedELevel' , 'publishedCLevel' , 'publishedSubject')
+            ->get());
+
+        return [
+            'profile' => $profile,
+            'subjects' => $subjects,
+        ];
     }
 }

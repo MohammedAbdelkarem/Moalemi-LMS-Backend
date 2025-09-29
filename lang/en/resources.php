@@ -63,4 +63,6 @@ return [
     'sell_points'               => 'Sell Points',
     'app_version'               => 'App Version',
     'app_versions'              => 'App Versions',
+    'download'                  => 'Download',
+    'downloads'                 => 'Downloads',
 ];

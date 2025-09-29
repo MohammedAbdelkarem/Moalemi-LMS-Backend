@@ -6,6 +6,7 @@ use App\Http\Controllers\Mobile\Comment\CommentController;
 use App\Http\Controllers\Mobile\HomeController;
 use App\Http\Controllers\Mobile\LessonQuestion\LessonQuestionController;
 use App\Http\Controllers\Mobile\TeacherController;
+use App\Http\Controllers\Mobile\AppVersionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,5 +48,15 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     // Teacher Home
     Route::prefix('home')->controller(HomeController::class)->group(function () {
         Route::get('/', 'getTeacherHome')->name(RouteNames::MOBILE_TEACHER_HOME);
+    });
+
+    // Teacher Details
+    Route::prefix('details')->controller(TeacherController::class)->group(function () {
+        Route::get('/', 'getTeacherDetails')->name(RouteNames::MOBILE_TEACHER_DETAILS);
+    });
+
+    // App Versions
+    Route::prefix('app-versions')->controller(AppVersionController::class)->group(function () {
+        Route::get('/', 'indexTeacher');
     });
 });

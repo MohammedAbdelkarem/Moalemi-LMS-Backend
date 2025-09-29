@@ -63,4 +63,6 @@ return [
     'sell_points'               => 'نقاط البيع',
     'app_version'               => 'إصدار التطبيق',
     'app_versions'              => 'إصدارات التطبيق',
+    'download'                  => 'التحميل',
+    'downloads'                 => 'التحميلات',
 ];

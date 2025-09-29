@@ -48,6 +48,14 @@ class AppVersionService
         );
     }
 
+    public function teacherVersions($data)
+    {
+        return getOrPaginate(
+            AppVersion::query()->where('app_type', AppTypeEnum::TEACHER->value)->orderBy('version' , 'desc'),
+            $data
+        );
+    }
+
     public function delete($id)
     {
         $appVersion = AppVersion::findByIdOrFail($id);

@@ -59,4 +59,6 @@ final class Resources
     const SELL_POINTS               = 'resources.sell_points';
     const RES_APP_VERSION           = 'resources.app_version';
     const RES_APP_VERSIONS          = 'resources.app_versions';
+    const RES_DOWNLOAD              = 'resources.download';
+    const RES_DOWNLOADS             = 'resources.downloads';
 }

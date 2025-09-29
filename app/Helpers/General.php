@@ -26,6 +26,7 @@ use App\Enums\QuizResultEnum;
 use App\Models\UnlockedContext;
 use App\Enums\CommentStatusEnum;
 use App\Constants\MediaCollection;
+use App\Models\Download;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
 
@@ -403,5 +404,14 @@ if (!function_exists('duration')) {
         return (int)($published 
             ? $context->publishedLessons()->sum('duration') 
             : $context->lessons()->sum('duration'));
+    }
+}
+
+if (!function_exists('is_downloaded')) {
+    function is_downloaded($lesson)
+    {
+        return Download::where('lesson_id', $lesson->id)
+            ->where('user_id', auth()->id())
+            ->exists();
     }
 }

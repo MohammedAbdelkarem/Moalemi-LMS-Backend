@@ -41,6 +41,9 @@ class TeacherResource extends JsonResource
                 $data['bio'] = $this->bio;
                 $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
             break;
+            case RouteNames::MOBILE_TEACHER_DETAILS:
+                $data['bio'] = $this->bio;
+            break;
         }
 
         return $data;

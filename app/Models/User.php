@@ -367,6 +367,11 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->savedContexts()->questions();
     }
 
+    public function downloads(): HasMany
+    {
+        return $this->hasMany(Download::class, 'user_id');
+    }
+
     //Parent-Student Relationships
     public function students(): HasMany
     {

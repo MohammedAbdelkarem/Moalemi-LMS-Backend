@@ -3,6 +3,7 @@
 use App\Constants\RouteNames;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\HomeController;
+use App\Http\Controllers\Mobile\DownloadController;
 use App\Http\Controllers\Mobile\File\FileController;
 use App\Http\Controllers\Mobile\HirarichyController;
 use App\Http\Controllers\Mobile\Quiz\QuizController;
@@ -75,7 +76,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
     // App Versions
     Route::prefix('app-versions')->controller(AppVersionController::class)->group(function () {
-        Route::get('/', 'index');
+        Route::get('/', 'indexStudent');
     });
 
     // Quizzes
@@ -124,5 +125,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     // Sell Points
     Route::prefix('sell-points')->controller(HierarichyController::class)->group(function () {
         Route::get('/', 'getSellPoints');
+    });
+
+    // Downloads
+    Route::prefix('downloads')->controller(DownloadController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/download/{lesson_id}', 'download');
     });
 });
