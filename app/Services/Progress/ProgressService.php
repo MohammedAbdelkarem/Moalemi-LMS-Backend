@@ -101,7 +101,7 @@ class ProgressService
 
         $unlockedSubjects = Subject::whereHas('unlockedContexts', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
-        })->get();
+        })->with('course')->get();
 
         $subjectProgress = [];
 

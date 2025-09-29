@@ -24,7 +24,7 @@ class CreateAppVersionRequest extends BaseApiRequest
         return [
             'version' => 'required|string|max:255|unique:app_versions,version',
             'url' => 'required_without:file|string|max:255',
-            'file' => 'required_without:url|file|mimes:apk',
+            'file' => 'required_without:url|mimes:apk,zip',
             'is_force_update' => 'required|boolean',
             'app_type' => 'required|string|in:student,teacher,parent',
             'description' => 'nullable|string|max:255',
