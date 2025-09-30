@@ -25,8 +25,7 @@ class CreateQuestionRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'unit_id' => ['required', 'exists:units,id'],
-            'sub_unit_id' => ['required', 'exists:sub_units,id'],
+            'lesson_id' => ['required', 'exists:lessons,id'],
             'text' => ['required', 'string', 'min:10', 'max:1000'],
             'hint' => ['nullable', 'string', 'max:500'],
             'type' => ['required', Rule::in(QuestionTypeEnum::values())],

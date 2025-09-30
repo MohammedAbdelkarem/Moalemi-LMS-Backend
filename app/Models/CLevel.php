@@ -113,6 +113,11 @@ class CLevel extends Model implements HasMedia
         return $this->hasMany(Banner::class, 'bannerable_id')->where('bannerable_type', CLevel::class);
     }
 
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'c_level_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

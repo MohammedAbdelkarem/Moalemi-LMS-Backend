@@ -134,6 +134,11 @@ class Subject extends Model implements HasMedia
         return $this->morphMany(Coupon::class, 'context');
     }
 
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'subject_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

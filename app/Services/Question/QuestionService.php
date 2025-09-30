@@ -3,6 +3,7 @@
 namespace App\Services\Question;
 
 use App\Models\Answer;
+use App\Models\Lesson;
 use App\Models\Question;
 use App\Services\MainService;
 use App\Enums\QuestionTypeEnum;
@@ -20,14 +21,29 @@ class QuestionService extends MainService
     public function getAll($data)
     {
         $query = Question::orderBy('created_at', 'desc')
-                ->with(['unit', 'subUnit', 'answers']);
+                ->with(['lesson', 'answers']);
 
+        if (isset($data['e_level_ids'])) {
+            $query->whereIn('e_level_id', $data['e_level_ids']);
+        }
+        if (isset($data['c_level_ids'])) {
+            $query->whereIn('c_level_id', $data['c_level_ids']);
+        }
+        if (isset($data['course_ids'])) {
+            $query->whereIn('course_id', $data['course_ids']);
+        }
+        if (isset($data['subject_ids'])) {
+            $query->whereIn('subject_id', $data['subject_ids']);
+        }
         if (isset($data['unit_ids'])) {
             $query->whereIn('unit_id', $data['unit_ids']);
         }
 
         if (isset($data['sub_unit_ids'])) {
             $query->whereIn('sub_unit_id', $data['sub_unit_ids']);
+        }
+        if (isset($data['lesson_ids'])) {
+            $query->whereIn('lesson_id', $data['lesson_ids']);
         }
 
         if (isset($data['type'])) {
@@ -46,9 +62,16 @@ class QuestionService extends MainService
     {
         $this->chackeQuestionCorrectAnswersCount($validatedData);
 
+        $lesson = Lesson::findByIdOrFail($validatedData['lesson_id']);
+            
         $question = Question::create([
-            'unit_id' => $validatedData['unit_id'],
-            'sub_unit_id' => $validatedData['sub_unit_id'],
+            'e_level_id' => $lesson->e_level_id,
+            'c_level_id' => $lesson->c_level_id,
+            'course_id' => $lesson->course_id,
+            'subject_id' => $lesson->subject_id,
+            'unit_id' => $lesson->unit_id,
+            'sub_unit_id' => $lesson->sub_unit_id,
+            'lesson_id' => $validatedData['lesson_id'],
             'text' => $validatedData['text'],
             'hint' => $validatedData['hint'] ?? null,
             'type' => $validatedData['type'],

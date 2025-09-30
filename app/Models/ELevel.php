@@ -102,6 +102,11 @@ class ELevel extends Model implements HasMedia
         return $this->hasMany(Responsibility::class, 'e_level_id');
     }
 
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'e_level_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {

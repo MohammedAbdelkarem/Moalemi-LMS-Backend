@@ -117,6 +117,11 @@ class Unit extends Model implements HasMedia
         return $this->morphMany(Coupon::class, 'context');
     }
 
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'unit_id');
+    }
+
     // Scopes
     public function scopePublished($query)
     {
