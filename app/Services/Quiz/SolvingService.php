@@ -4,6 +4,7 @@ namespace App\Services\Quiz;
 
 use App\Models\Quiz;
 use App\Models\Answer;
+use App\Models\Question;
 use App\Models\QuizResult;
 use App\Enums\QuizResultEnum;
 use App\Models\StudentAnswer;
@@ -40,10 +41,16 @@ class SolvingService extends MainService
         $quizResult = QuizResult::findByIdOrFail($data['quiz_result_id']);
 
         $quiz = Quiz::findByIdOrFail($quizResult->quiz_id);
-        $quizResult->number_of_answered_questions = count($data['answers'] ?? []);
+
+        $SolvedQuestionNumber = Question::whereHas('answers', function($query) use ($data) {
+            $query->whereIn('id', $data['answers'] ?? []);
+        })->count();
+
+        $quizResult->number_of_answered_questions = $SolvedQuestionNumber;
+
         $quizResult->taken_period = $data['taken_period'];
 
-        if(isset($data['answers']) &&!empty($data['answers']))
+        if(isset($data['answers']) && !empty($data['answers']))
         {
             foreach($data['answers'] as $answer_id)
             {
@@ -56,12 +63,29 @@ class SolvingService extends MainService
                     'is_correct' => $answer->is_correct,
                 ]);
 
-                if($answer->is_correct)
-                    $quizResult->number_of_correct_answers++;
-                else
-                    $quizResult->number_of_wrong_answers++;
+                // if($answer->is_correct)
+                //     $quizResult->number_of_correct_answers++;
+                // else
+                //     $quizResult->number_of_wrong_answers++;
             }
         }
+
+        $studentAnswers = StudentAnswer::where('quiz_result_id', $data['quiz_result_id'])->get();
+
+        $correctQuestionIds = [];
+        foreach($studentAnswers as $studentAnswer)
+        {
+            if($studentAnswer->is_correct)
+                $correctQuestionIds[] = $studentAnswer->question_id;
+        }
+        // make the correct question ids unique
+        $correctQuestionIds = array_unique($correctQuestionIds);
+
+        $correctQuestionNumber = count($correctQuestionIds);
+        $wrongQuestionNumber = $SolvedQuestionNumber - $correctQuestionNumber;
+
+        $quizResult->number_of_correct_answers = $correctQuestionNumber;
+        $quizResult->number_of_wrong_answers = $wrongQuestionNumber;
 
         $result = $quiz->one_question_degree * $quizResult->number_of_correct_answers;
 
