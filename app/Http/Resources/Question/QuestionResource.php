@@ -33,8 +33,6 @@ class QuestionResource extends JsonResource
             'text' => $this->text,
             'hint' => $this->hint,
             'type' => $this->type,
-            'unit_id' => $this->unit_id,
-            'sub_unit_id' => $this->sub_unit_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'lesson' => $this->whenLoaded('lesson')->name,
