@@ -55,7 +55,7 @@ class QuestionService extends MainService
 
     public function show($id)
     {
-        return Question::findByIdOrFail($id, ['unit', 'subUnit', 'answers']);
+        return Question::findByIdOrFail($id, ['answers' , 'lesson']);
     }
 
     public function store($validatedData)

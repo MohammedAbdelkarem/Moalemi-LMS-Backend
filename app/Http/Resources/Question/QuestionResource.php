@@ -35,7 +35,7 @@ class QuestionResource extends JsonResource
             'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'lesson' => $this->whenLoaded('lesson')->name,
+            'lesson' => $this->whenLoaded('lesson'),
             // 'unit' => UnitResource::make($this->whenLoaded('unit')),
             // 'sub_unit' => SubUnitResource::make($this->whenLoaded('subUnit')),
             'answers' => AnswerResource::collection($this->whenLoaded('answers')),
