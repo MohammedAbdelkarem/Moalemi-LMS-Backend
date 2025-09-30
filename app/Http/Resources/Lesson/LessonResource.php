@@ -60,6 +60,10 @@ class LessonResource extends JsonResource
                 ? MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)) 
                 : [];
         }
+        else if(auth()->user()->isTeacher())
+        {
+            $data['is_commented'] = is_commented($this->id);
+        }
 
         $routeName = $request->route()->getName();
         switch ($routeName) 
