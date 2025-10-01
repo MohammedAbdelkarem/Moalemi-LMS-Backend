@@ -39,7 +39,10 @@ class QuizResource extends JsonResource
         $routeName = $request->route()->getName();
         switch ($routeName) 
         {
-            case RouteNames::ADMIN_QUIZ_SHOW:
+            case in_array($routeName ,[
+                RouteNames::ADMIN_QUIZ_SHOW,
+                RouteNames::ADMIN_QUIZ_LIST,
+            ]):
                 $data['publish_status'] = $this->publish_status;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
