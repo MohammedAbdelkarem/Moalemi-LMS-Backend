@@ -85,4 +85,12 @@ class QuizController extends Controller
         );
     }
 
+    public function attachQuestionsToQuiz(Request $request, $id): JsonResponse
+    {
+        return success(
+            $this->quizService->attachQuestionsToQuiz($id, $request->question_ids),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
 }

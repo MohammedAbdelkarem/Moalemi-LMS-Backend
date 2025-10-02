@@ -80,6 +80,23 @@ class QuizService extends MainService
         $quiz->save();
     }
 
+    public function attachQuestionsToQuiz($quizId, $questionIds)
+    {
+        $quiz = Quiz::findByIdOrFail($quizId);
+
+        $this->contextService->checkIfQuizHasResults($quizId);
+
+        $this->contextService->checkIfDraftBeforeDeletingOrUpdating($quizId , Quiz::class);
+
+        $quiz->questions()->attach($questionIds);
+
+        $quiz->number_of_questions += count($questionIds);
+
+        $quiz->one_question_degree = $quiz->degree / $quiz->number_of_questions;
+
+        $quiz->save();
+    }
+
     public function update($validatedData, $id)
     {
         $quiz = Quiz::findByIdOrFail($id);
