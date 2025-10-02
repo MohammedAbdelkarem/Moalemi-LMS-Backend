@@ -28,9 +28,9 @@ class UpdateQuizRequest extends BaseApiRequest
             'period' => ['required', 'integer', 'min:1', 'max:480'], // Max 8 hours
             'degree' => ['required', 'integer', 'min:1', 'max:1000'],
             'pass_degree' => ['required', 'integer', 'min:1', 'max:1000'],
-            'questions' => ['required', 'array', 'min:1'],
-            'questions.*.id' => ['required', 'integer', 'exists:questions,id'],
-            'questions.*.priority' => ['required', 'integer', 'min:0'],
+            // 'questions' => ['required', 'array', 'min:1'],
+            // 'questions.*.id' => ['required', 'integer', 'exists:questions,id'],
+            // 'questions.*.priority' => ['required', 'integer', 'min:0'],
         ];
     }
 }

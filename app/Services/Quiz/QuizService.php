@@ -107,13 +107,13 @@ class QuizService extends MainService
 
         $quiz->update($validatedData);
 
-        foreach ($validatedData['questions'] as $question) {
-            $questionData[$question['id']] = ['priority' => $question['priority']];
-        }
+        // foreach ($validatedData['questions'] as $question) {
+        //     $questionData[$question['id']] = ['priority' => $question['priority']];
+        // }
         
-        $quiz->questions()->sync($questionData);
+        // $quiz->questions()->sync($questionData);
 
-        $quiz->number_of_questions = count($validatedData['questions']);
+        // $quiz->number_of_questions = count($validatedData['questions']);
 
         $quiz->save();
     }
