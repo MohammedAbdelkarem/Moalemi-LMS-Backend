@@ -43,6 +43,7 @@ class Course extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(MediaCollection::COURSE_COLLECTION)->singleFile();
+        $this->addMediaCollection(MediaCollection::COURSE_ICON_COLLECTION)->singleFile();
     }
 
     public function delete()

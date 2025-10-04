@@ -74,7 +74,7 @@ class TeacherService extends MainService
 
     public function getTeacherDetails($teacher_id)  
     {
-        return User::findByIdOrFail($teacher_id);
+        return User::findByIdOrFail($teacher_id , ['responsibilities.publishedELevel' , 'responsibilities.publishedCLevel']);
     }
 
     public function getTeacherDetailsForTeacherApp($teacher_id)

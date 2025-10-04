@@ -33,6 +33,7 @@ class CourseResource extends JsonResource
             'price' => $this->price,
             'access_type' => $this->access_type,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
+            'icon' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_ICON_COLLECTION)),
             'teachers' => $this->relationLoaded('responsibilities') 
                 ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
                 : [],

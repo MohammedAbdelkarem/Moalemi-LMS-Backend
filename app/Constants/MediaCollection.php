@@ -27,4 +27,6 @@ final class MediaCollection
     const LESSON_QUESTION_ANSWER_COLLECTION = 'lesson_question_answer_collection';
     const SELL_POINT_COLLECTION            = 'sell_point_collection';
     const APP_VERSION_COLLECTION            = 'app_version_collection';
+    const COURSE_ICON_COLLECTION            = 'course_icon_collection';
+    const SUBJECT_ICON_COLLECTION           = 'subject_icon_collection';
 }

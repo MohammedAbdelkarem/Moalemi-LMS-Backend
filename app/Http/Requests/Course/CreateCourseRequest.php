@@ -35,6 +35,11 @@ class CreateCourseRequest extends BaseApiRequest
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
             'image' => [
                 'sometimes',
+                'mimes:png,jpg,jpeg,webp,svg',
+                'max:4096'
+            ],
+            'icon' => [
+                'sometimes',
                 'mimes:svg',
                 'max:4096'
             ],

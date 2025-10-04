@@ -44,6 +44,7 @@ class Subject extends Model implements HasMedia
     {
         $this->addMediaCollection(MediaCollection::SUBJECT_COLLECTION)->singleFile();
         $this->addMediaCollection(MediaCollection::SUBJECT_VIDEO_COLLECTION)->singleFile();
+        $this->addMediaCollection(MediaCollection::SUBJECT_ICON_COLLECTION)->singleFile();
     }
 
     public function delete()
