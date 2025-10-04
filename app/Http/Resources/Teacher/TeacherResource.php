@@ -25,6 +25,8 @@ class TeacherResource extends JsonResource
             'phone_number' => $this->phone_number,
             'image' => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             'role_id' => $this->role_id,
+            'e_level' => $this->whenLoaded('e_level')->name ?? null,
+            'c_level' => $this->whenLoaded('c_level')->name ?? null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

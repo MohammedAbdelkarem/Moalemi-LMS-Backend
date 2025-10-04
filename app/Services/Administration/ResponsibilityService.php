@@ -36,6 +36,8 @@ class ResponsibilityService extends MainService
                 $this->buildResponsibilityData($teacher, $context, $context_type , $operation);
             else
                 $this->buildResponsibilityData($teacher, $context, $context_type , $operation);
+
+            $this->updateTeacherMainLevels($teacher);
         }
     }
 
@@ -243,6 +245,21 @@ class ResponsibilityService extends MainService
             ->with($relationByContext),
             $data
         );
+    }
+
+    private function updateTeacherMainLevels($teacher)
+    {
+        $res1 = $teacher->responsibilities()->whereNotNull('e_level_id')->first();
+        $res2 = $teacher->responsibilities()->whereNotNull('c_level_id')->first();
+
+        if($res1)
+            $teacher->update([
+                'e_level_id' => $res1->e_level_id,
+        ]);
+        if($res2)
+            $teacher->update([
+                'c_level_id' => $res2->c_level_id,
+        ]);
     }
 
 }
