@@ -43,6 +43,10 @@ class CourseService
             uploadFileOnMedia($data['image'], $course, MediaCollection::COURSE_COLLECTION);
         }
 
+        if (isset($data['icon'])) {
+            uploadFileOnMedia($data['icon'], $course, MediaCollection::COURSE_ICON_COLLECTION);
+        }
+
         $course->save();
 
         // Update parent CLevel numbers
