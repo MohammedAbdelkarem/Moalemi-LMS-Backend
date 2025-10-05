@@ -30,7 +30,7 @@ class CreateELevelRequest extends BaseApiRequest
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
             'image' => [
                 'sometimes',
-                'mimes:svg',
+                'mimes:svg,png,jpg,jpeg,webp',
                 'max:4096'
             ],
         ];
