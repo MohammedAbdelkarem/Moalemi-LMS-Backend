@@ -278,6 +278,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::get("/", "index")->name(RouteNames::ADMIN_TEACHER_LIST);
         Route::post("/", "store");
         Route::get("/{id}", "show");
+        Route::put("/{id}", "update");
     });
 
     // App Versions

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Administration\Teacher\TeacherService;
 use App\Http\Requests\GetItemsRequest;
 use App\Http\Requests\Administration\Teacher\CreateTeacherRequest;
+use App\Http\Requests\Administration\Teacher\UpdateTeacherReqeust;
 use App\Http\Requests\Administration\Teacher\UpdateTeacherRequest;
 use App\Http\Resources\Teacher\TeacherResource;
 use App\Http\Resources\User\UserResource;
@@ -40,6 +41,14 @@ class TeacherController extends Controller
     {
         return createdSuccess(
             $this->teacherService->store($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function update(UpdateTeacherReqeust $request, $id)
+    {
+        return success(
+            $this->teacherService->update($request->validated(), $id),
             ApiMessages::MSG_SUCCESS,
         );
     }

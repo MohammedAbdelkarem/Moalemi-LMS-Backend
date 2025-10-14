@@ -23,6 +23,8 @@ class TeacherResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
+            'is_male' => $this->is_male,
+            'birth_date' => $this->birth_date,
             'image' => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             'role_id' => $this->role_id,
             'e_level' => $this->whenLoaded('e_level')->name ?? null,

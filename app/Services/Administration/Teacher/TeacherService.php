@@ -91,4 +91,14 @@ class TeacherService extends MainService
             'subjects' => $subjects,
         ];
     }
+
+    public function update($data , $id)
+    {
+        $teacher = User::findByIdOrFail($id);
+
+        $teacher->update($data);
+
+
+        $teacher->save();
+    }
 }
