@@ -50,7 +50,7 @@ class CreateLessonRequest extends BaseApiRequest
             'videos.*.video' => [
                 'required_with:videos',
                 'mimes:mp4,webm,mov,avi',
-                'max:204800',
+                'max:5368709120', // 5GB
             ],
             'videos.*.quality' => [
                 'required_with:videos',

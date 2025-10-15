@@ -26,7 +26,7 @@ class UploadLessonVideosRequest extends BaseApiRequest
             'video' => [
                 'required',
                 'mimes:mp4,webm,mov,avi',
-                'max:204800', // 200MB
+                'max:5368709120', // 5GB
             ],
             'quality' => [
                 'required',
