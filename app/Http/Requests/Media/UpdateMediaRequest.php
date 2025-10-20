@@ -33,7 +33,7 @@ class UpdateMediaRequest extends BaseApiRequest
             'videos.*'                      => [
                 'nullable',
                 'mimes:avi,mpeg,quicktime,mp4,mov,wmv',
-                'max:4096'
+                'max:51200'
             ],
             'files' => ['nullable' , 'array'],
             'files.*'                   => [

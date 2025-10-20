@@ -35,7 +35,7 @@ class CreateStoryRequest extends BaseApiRequest
             'video'                      => [
                 'nullable',
                 'mimes:avi,mpeg,quicktime,mp4,mov,wmv',
-                'max:4096'
+                'max:51200' //50 mb
             ],
             'image'                      => [
                 'required',
