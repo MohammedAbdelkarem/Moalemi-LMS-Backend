@@ -29,6 +29,11 @@ class UpdateTeacherReqeust extends BaseApiRequest
             'bio' => ['sometimes', 'max:6000'],
             'birth_date' => ['sometimes', 'date', 'before:today'],
             'is_male' => ['sometimes', 'boolean'],
+            'image'                      => [
+                'nullable',
+                'mimes:jpeg,jpg,png,webp',
+                'max:4096'
+            ],
         ];
     }
 }

@@ -98,6 +98,8 @@ class TeacherService extends MainService
 
         $teacher->update($data);
 
+        if(isset($data['image']))
+            uploadFileOnMedia($data['image'] , $teacher , MediaCollection::USER_COLLECTION);
 
         $teacher->save();
     }
