@@ -203,7 +203,7 @@ if (!function_exists('mediaCollectionByContxt')) {
             LevelEnum::QUIZ         => MediaCollection::QUIZ_COLLECTION,
             LevelEnum::QUESTION         => MediaCollection::QUESTION_COLLECTION,
             LevelEnum::ANSWER         => MediaCollection::ANSWER_COLLECTION,
-            LevelEnum::TEACHER         => MediaCollection::TEACHER_COLLECTION,
+            // LevelEnum::USER        => MediaCollection::USER_COLLECTION,
         ];
 
         return $data[$model_path] ?? null;
