@@ -28,7 +28,7 @@ class MediaService
 
         $context = $model::find($data['context_id']);
 
-        dd($context , $mediaCollection , $model);
+        
         if (isset($data['images']))
             uploadFilesOnMedia($data['images'], $context, $mediaCollection);
         if (isset($data['videos']))

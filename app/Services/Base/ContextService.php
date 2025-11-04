@@ -11,6 +11,7 @@ use App\Models\ELevel;
 use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\SubUnit;
+use App\Models\Download;
 use App\Constants\ModelPaths;
 use App\Enums\AccessTypeEnum;
 use App\Enums\PublishStatusEnum;
@@ -405,6 +406,12 @@ class ContextService
             $lessons = $context->lessons()->get();
             $this->changeLessonsPublishStatus($lessons , $status);
         }
+    }
+
+    public function clearDownloads($student_id)
+    {
+        Download::where('user_id', $student_id)
+            ->delete();
     }
 
     private function changeLessonsPublishStatus($lessons , $status)

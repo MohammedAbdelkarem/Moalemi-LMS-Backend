@@ -184,6 +184,9 @@ class AuthService extends MainService
         $this->jwtService->InvalidateTokenWithRelated(JWTAuth::getToken());
         if ($notiToken)
             $user->userDevices()->where('notification_token', $notiToken)->delete();
+        
+        if(auth()->user()->isStudent())
+            $this->contextService->clearDownloads(auth()->id());
     }
 
     public function logoutAllDevices()
