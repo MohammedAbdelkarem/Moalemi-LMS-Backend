@@ -36,14 +36,15 @@ class UnitResource extends JsonResource
             'subject_id' => $this->subject_id,
             'name' => $this->name,
             'bio' => $this->bio,
+            'priority' => $this->priority,
             'number_of_published_contents' => $this->number_of_published_contents,
             'price' => $this->price,
             'access_type' => $this->access_type,
             'number_of_published_quizzes' => $this->number_of_published_quizzes,
             'number_of_published_files' => $this->number_of_published_files,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::UNIT_COLLECTION)),
-            'teachers' => $this->relationLoaded('responsibilities') 
-                ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
+            'teacher' => $this->relationLoaded('responsibilities') 
+                ? UserResource::make($this->responsibilities->pluck('teacher')->unique('id')->values()->first())
                 : [],
         ];
 

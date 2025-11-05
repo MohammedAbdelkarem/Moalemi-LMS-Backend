@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Administration\SubUnit;
 
+use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Services\SubUnit\SubUnitService;
-use Illuminate\Http\Request;
 use App\Http\Resources\SubUnit\SubUnitResource;
+use App\Http\Requests\Base\ChangePriorityRequest;
 use App\Http\Requests\SubUnit\CreateSubUnitRequest;
 use App\Http\Requests\SubUnit\UpdateSubUnitRequest;
 
@@ -54,6 +55,14 @@ class SubUnitController extends Controller
     {
         return success(
             $this->subUnitService->changePublishStatus($id, $request->status),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function changePriority(ChangePriorityRequest $request)
+    {
+        return success(
+            $this->subUnitService->changePriority($request->validated()['context']),
             ApiMessages::MSG_SUCCESS
         );
     }

@@ -104,4 +104,9 @@ class SubUnitService
 
         $this->contextService->changeWithChildsPublishStatus($id , SubUnit::class , $status);
     }
+
+    public function changePriority($contextsData)
+    {
+        $this->contextService->changeContextsPriority($contextsData , SubUnit::class);
+    }
 }

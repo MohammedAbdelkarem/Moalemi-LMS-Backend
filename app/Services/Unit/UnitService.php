@@ -101,6 +101,11 @@ class UnitService
         $this->contextService->changeWithChildsPublishStatus($id , Unit::class , $status);
     }
 
+    public function changePriority($contextsData)
+    {
+        $this->contextService->changeContextsPriority($contextsData , Unit::class);
+    }
+
     public function changeAccessTypeStatus($id, $price)
     {
         $unit = Unit::findByIdOrFail($id);

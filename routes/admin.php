@@ -197,6 +197,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
         Route::patch("/{id}/change-access-type-status", "changeAccessTypeStatus");
+        Route::post("/change-priority", "changePriority");
     });
 
     Route::prefix("sub-units")->controller(SubUnitController::class)->group(function () {
@@ -205,6 +206,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::put("/{id}", "update");
         Route::delete("/{id}", "destroy");
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
+        Route::post("/change-priority", "changePriority");
     });
 
     Route::prefix("lessons")->controller(LessonController::class)->group(function () {

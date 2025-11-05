@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Administration\Unit;
 
-use App\Constants\ApiMessages;
-use App\Http\Controllers\Controller;
-use App\Services\Unit\UnitService;
 use Illuminate\Http\Request;
+use App\Constants\ApiMessages;
+use App\Services\Unit\UnitService;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Unit\UnitResource;
 use App\Http\Requests\Unit\CreateUnitRequest;
 use App\Http\Requests\Unit\UpdateUnitRequest;
+use App\Http\Requests\Base\ChangePriorityRequest;
 
 class UnitController extends Controller
 {
@@ -62,6 +63,14 @@ class UnitController extends Controller
     {
         return success(
             $this->unitService->changeAccessTypeStatus($id, $request->price ?? 0),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
+    public function changePriority(ChangePriorityRequest $request)
+    {
+        return success(
+            $this->unitService->changePriority($request->validated()['context']),
             ApiMessages::MSG_SUCCESS
         );
     }
