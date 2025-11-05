@@ -28,31 +28,35 @@ class StudentHomeService
         protected ContextService $contextService
     ) {}
 
-    public function get()
+    public function get($clevel_id = null)
     {
-        $profile = User::findByIdOrFail(auth()->id() , ['c_level' , 'e_level']);
-
+        if($clevel_id == null)
+        {
+            $profile = User::findByIdOrFail(auth()->id() , ['c_level' , 'e_level']);
+            $clevel_id = $profile->c_level_id;
+        }
+        
         $stories = Story::active()
                 ->cLevel()
-                ->where('storiable_id', $profile->c_level_id)
+                ->where('storiable_id', $clevel_id)
                 ->get();
 
         $banners = Banner::active()
                 ->cLevel()
-                ->where('bannerable_id', $profile->c_level_id)
+                ->where('bannerable_id', $clevel_id)
                 ->get();
 
         $courses = Course::published()
-            ->where('c_level_id', $profile->c_level_id)
+            ->where('c_level_id', $clevel_id)
             ->with('publishedSubjects')
             ->get();
 
-        // $subjects = Subject::published()->where('c_level_id', $profile->c_level_id)->get();
+        // $subjects = Subject::published()->where('c_level_id', $clevel_id)->get();
 
         $latestLessons = [];
 
-        $teachers = User::where('role_id', 3)->whereHas('responsibilities', function($query) use ($profile){
-            $query->where('c_level_id', $profile->c_level_id);
+        $teachers = User::where('role_id', 3)->whereHas('responsibilities', function($query) use ($clevel_id){
+            $query->where('c_level_id', $clevel_id);
         })->get();
 
         $leaderBoard = [];
@@ -62,7 +66,9 @@ class StudentHomeService
         $this->contextService->disableExpiredCopons();
 
         return [
-            'profile' => UserResource::make($profile),
+            'profile' => $clevel_id == null 
+            ? UserResource::make($profile)
+            : null,
             'stories' => StoryResource::collection($stories),
             'banners' => BannerResource::collection($banners),
             'courses' => CourseResource::collection($courses),

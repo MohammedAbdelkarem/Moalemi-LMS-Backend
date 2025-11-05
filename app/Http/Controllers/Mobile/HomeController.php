@@ -27,6 +27,15 @@ class HomeController extends Controller
         );
     }
 
+    //to get the homePage data for the other elevels and clevels
+    public function othersHome($clevel_id)
+    {
+        return success(
+            $this->studentHomeService->get($clevel_id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
+
     public function search(Request $request)
     {
         return success(

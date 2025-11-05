@@ -41,6 +41,7 @@ Route::middleware([])->withoutMiddleware('is_student')->group(function () {
 Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.active', 'user.verified']], function () {
     Route::prefix('home')->controller(HomeController::class)->group(function () {
         Route::get('/', 'home')->name(RouteNames::STUDENT_HOME);
+        Route::get('/others/{id}', 'othersHome')->name(RouteNames::STUDENT_HOME);
         Route::get('/search', 'search')->name(RouteNames::MOBILE_HOME_SEARCH);
     });
     Route::prefix('hierarichy')->controller(HierarichyController::class)->group(function () {
