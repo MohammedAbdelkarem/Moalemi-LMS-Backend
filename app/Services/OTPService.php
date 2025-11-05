@@ -62,7 +62,6 @@ class OTPService extends MainService
 
     public function userVerifyOTP($validatedData)
     {
-
         /**
          * @var \App\Models\User $user
          */
