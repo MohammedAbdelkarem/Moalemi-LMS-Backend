@@ -19,6 +19,14 @@ class Coupon extends Model
         'id'
     ];
 
+    protected $casts = [
+        'user_id' => 'integer',
+        'number_of_max_uses' => 'integer',
+        'number_of_uses' => 'integer',
+        'is_expired' => 'boolean',
+    ];
+    
+
     /**
      * @return \App\Models\Coupon
      */
@@ -44,6 +52,11 @@ class Coupon extends Model
     public function context(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function scopeFilter($query, $data)

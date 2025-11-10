@@ -15,19 +15,17 @@ class TransactionController extends Controller
         protected TransactionService $transactionService
     ) {}
 
-    public function useStudentCupon(UseCuponRequest $request)
+    public function usePointsCopon(UseCuponRequest $request)
     {
-        $transaction = $this->transactionService->useStudentCupon($request->cupon);
-        
         return success(
-            $transaction,
+            $this->transactionService->usePointsCopon($request->cupon),
             ApiMessages::MSG_SUCCESS
         );
     }
 
-    public function useContextCupon(UseCuponRequest $request)
+    public function useContextCopon(UseCuponRequest $request)
     {
-        $transaction = $this->transactionService->useContextCupon($request->cupon);
+        $transaction = $this->transactionService->useContextCopon($request->cupon);
         
         return success(
             $transaction,

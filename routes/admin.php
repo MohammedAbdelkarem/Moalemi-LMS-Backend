@@ -268,8 +268,10 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
 
     // Transactions
     Route::prefix("transactions")->controller(TransactionController::class)->group(function () {
-        Route::post("/create-student-cupon", "createStudentCupon");
-        Route::post("/create-context-cupon", "createContextCupon");
+        Route::post("/create-one-points-copon", "createOnePointsCopon");
+        Route::post("/create-many-points-copon", "createManyPointsCopon");
+        Route::post("/create-one-context-copon", "createOneContextCopon");
+        Route::post("/create-many-context-copon", "createManyContextCopon");
         Route::get('/', 'get');
         Route::get("/set-copons-as-expired", "setCoponsAsExpired");
         Route::get("/copons", "getCopons");

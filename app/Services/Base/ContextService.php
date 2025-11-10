@@ -12,8 +12,10 @@ use App\Models\Lesson;
 use App\Models\Subject;
 use App\Models\SubUnit;
 use App\Models\Download;
+use App\Models\Transaction;
 use App\Constants\ModelPaths;
 use App\Enums\AccessTypeEnum;
+use App\Models\UnlockedContext;
 use App\Enums\PublishStatusEnum;
 use App\Constants\ExceptionMessages;
 
@@ -28,6 +30,21 @@ class ContextService
         whereNotNull('expired_at')
             ->where('expired_at', '<', now())
                 ->update(['is_expired' => 1]);
+    }
+
+    public function lockTemporarlyContexts()
+    {
+        $coponIds = Coupon::whereNotNull('context_expired_at')
+            ->where('context_expired_at', '<', now())
+            ->pluck('id')
+            ->toArray();
+
+        $unlockedContextIds = Transaction::whereIn('coupon_id', $coponIds)
+            ->pluck('unlocked_context_id')
+            ->toArray();
+
+        UnlockedContext::whereIn('id', $unlockedContextIds)
+            ->delete();
     }
     /**
      * Change publish status for any content model with publish_status field

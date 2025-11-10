@@ -184,6 +184,10 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     }
 
     //Relations
+    public function pointsCoupons(): HasMany
+    {
+        return $this->hasMany(Coupon::class, 'user_id');
+    }
 
     //Account Relations
 

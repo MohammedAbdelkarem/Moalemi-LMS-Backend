@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
 
     // Transactions
     Route::prefix('transactions')->controller(TransactionController::class)->group(function () {
-        Route::post('/use-student-cupon', 'useStudentCupon');
+        Route::post('/use-points-cupon', 'usePointsCopon');
         Route::post('/use-context-cupon', 'useContextCupon');
         Route::post('/direct-purchase', 'directPurchase');
         Route::get('/get', 'getStudentTransactions');

@@ -59,4 +59,5 @@ final class ExceptionMessages
     const MSG_CAN_NOT_DELETE_CUZ_HAS_CONTENT                        = 'exception_messages.can_not_delete_cuz_has_content';
     const MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ                          = 'exception_messages.can_not_delete_or_update_cuz_has_quiz';
     const MSG_CAN_NOT_DELETE_OR_UPDATE_CUZ_HAS_QUIZ_RESULTS                  = 'exception_messages.can_not_delete_or_update_cuz_has_quiz_results';
+    const MSG_CANNOT_DELETE_CUZ_HAS_USED                                    = 'exception_messages.cannot_delete_cuz_has_used';
 }

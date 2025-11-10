@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Administration\Transaction;
 use Illuminate\Http\Request;
 use App\Constants\ApiMessages;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Copon\CreateManyContextCoponRequest;
+use App\Http\Requests\Copon\CreateManyPointsCoponRequest;
+use App\Http\Requests\Copon\CreateOneContextCoponRequest;
+use App\Http\Requests\Copon\CreateOnePointsCoponRequest;
 use App\Services\Transaction\TransactionService;
 use App\Http\Requests\Transaction\CreateCuponRequest;
 use App\Http\Resources\Transaction\TransactionResource;
@@ -28,25 +32,41 @@ class TransactionController extends Controller
             $request->has('per_page')
         );
     }
-    public function createStudentCupon(CreateCuponRequest $request)
-    {
-        $this->coponService->createStudentCupon($request->validated());
-        
+    public function createOnePointsCopon(CreateOnePointsCoponRequest $request)
+    {   
         return success(
-            [],
-            ApiMessages::MSG_SUCCESS
+            $this->coponService->createOnePointsCupon($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+            CopnoResource::class,
         );
     }
 
-    public function createContextCupon(CreateContextCuponRequest $request)
+    public function createManyPointsCopon(CreateManyPointsCoponRequest $request)
     {
-        $cupon = $this->coponService->createContextCupon($request->validated());
-        
         return success(
-            $cupon,
-            ApiMessages::MSG_SUCCESS
+            $this->coponService->createManyPointsCupon($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+            CopnoResource::class,
+        );   
+    }
+    public function createOneContextCopon(CreateOneContextCoponRequest $request)
+    {
+        return success(
+            $this->coponService->createOneContextCupon($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+            CopnoResource::class,
+        );   
+    }
+
+    public function createManyContextCopon(CreateManyContextCoponRequest $request)
+    {
+        return success(
+            $this->coponService->createManyContextCupon($request->validated()),
+            ApiMessages::MSG_SUCCESS,
+            CopnoResource::class,
         );
     }
+        
 
     public function setCoponsAsExpired(Request $request)
     {   

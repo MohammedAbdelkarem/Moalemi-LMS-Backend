@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Transaction;
+namespace App\Http\Requests\Copon;
 
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseApiRequest;
 
-class CreateContextCuponRequest extends BaseApiRequest
+class CreateOneContextCoponRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,10 @@ class CreateContextCuponRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'context_id' => ['required', 'integer'],
-            'context_type' => ['required', 'string', Rule::in('Course', 'Subject', 'Unit')],
-            'expired_at' => ['required', 'date'],
+            'context_id' => ['required'],
+            'context_type' => ['required', 'string' , Rule::in('Subject', 'Course')],
+            'user_id' => ['required', 'exists:users,id'],
+            'context_expired_at' => ['nullable', 'date'],
         ];
     }
 }

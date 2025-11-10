@@ -64,6 +64,7 @@ class StudentHomeService
         $quizzes = [];
                 
         $this->contextService->disableExpiredCopons();
+        $this->contextService->lockTemporarlyContexts();
 
         return [
             'profile' => $clevel_id == null 

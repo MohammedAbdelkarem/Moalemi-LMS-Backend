@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transaction;
+namespace App\Http\Requests\Copon;
 
-use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseApiRequest;
 
-class CreateCuponRequest extends BaseApiRequest
+class CreateOnePointsCoponRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +23,7 @@ class CreateCuponRequest extends BaseApiRequest
     {
         return [
             'amount' => ['required', 'integer', 'min:1' , 'max:5000000'],
-            'number_of_copons' => ['required', 'integer', 'min:1' , 'max:1000'],
+            'user_id' => ['required', 'exists:users,id'],
         ];
     }
 }

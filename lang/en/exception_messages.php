@@ -60,4 +60,5 @@ return [
     'can_not_delete_cuz_has_content'                        => 'Cannot delete this context because it has content',
     'can_not_delete_or_update_cuz_has_quiz'                        => 'Cannot delete or update this question because it has quiz',
     'can_not_delete_or_update_cuz_has_quiz_results'                        => 'Cannot delete or update this quiz because it has quiz results',
+    'cannot_delete_cuz_has_used'                        => 'Cannot delete this coupon because it has been used',
 ];
