@@ -76,7 +76,7 @@ class LessonService
         $lesson->save();
 
         // Update parent SubUnit numbers
-        $this->contextService->updateParentNumberOfContents($lesson, '+');
+        // $this->contextService->updateParentNumberOfContents($lesson, '+');
     }
 
     public function showForStudent($lesson_id)
@@ -123,10 +123,12 @@ class LessonService
         $lesson = Lesson::findByIdOrFail($id);
         
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Lesson::class);
-        $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Lesson::class);
+        // $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Lesson::class);
 
         // Update parent SubUnit numbers before deletion
-        $this->contextService->updateParentNumberOfContents($lesson, '-');
+        // $this->contextService->updateParentNumberOfContents($lesson, '-');
+
+        $this->purchaseService->deleteUnlockOthersWhenDeleting(Lesson::class , $id);
 
         $lesson->delete();
     }

@@ -92,9 +92,19 @@ class Lesson extends Model implements HasMedia
         return $this->morphMany(Quiz::class, 'context');
     }
 
+    public function publishedQuizzes()
+    {
+        return $this->quizzes()->published();
+    }
+
     public function files()
     {
         return $this->morphMany(File::class, 'context');
+    }
+
+    public function publishedFiles()
+    {
+        return $this->files()->published();
     }
 
     public function lessonQuestions(): HasMany
@@ -156,16 +166,6 @@ class Lesson extends Model implements HasMedia
         });
     }
 
-    public function publishedFiles(): MorphMany
-    {
-        return $this->files()->published();
-    }
-
-    public function publishedQuizzes(): MorphMany
-    {
-        return $this->quizzes()->published();
-    }
-
     public function viewers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'lesson_student', 'lesson_id', 'student_id')
@@ -176,5 +176,25 @@ class Lesson extends Model implements HasMedia
     public function savedByStudents(): MorphMany
     {
         return $this->morphMany(SavedContext::class, 'context');
+    }
+
+    public function filesCounts()
+    {
+        return $this->files()->count();
+    }
+
+    public function publishedFilesCounts()
+    {
+        return $this->publishedFiles()->count();
+    }
+
+    public function quizzesCounts()
+    {
+        return $this->quizzes()->count();
+    }
+
+    public function publishedQuizzesCounts()
+    {
+        return $this->publishedQuizzes()->count();
     }
 }

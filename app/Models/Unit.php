@@ -79,7 +79,7 @@ class Unit extends Model implements HasMedia
 
     public function publishedSubUnits(): HasMany
     {
-        return $this->subUnits()->published();
+        return $this->subUnits()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function lessons(): HasMany
@@ -97,9 +97,19 @@ class Unit extends Model implements HasMedia
         return $this->morphMany(File::class, 'context');
     }
 
+    public function publishedFiles()
+    {
+        return $this->files()->published();
+    }
+
     public function quizzes()
     {
         return $this->morphMany(Quiz::class, 'context');
+    }
+
+    public function publishedQuizzes()
+    {
+        return $this->quizzes()->published();
     }
 
     public function responsibilities(): HasMany
@@ -137,21 +147,41 @@ class Unit extends Model implements HasMedia
         return $this->lessons()->published()->count();
     }
 
-    public function publishedFiles(): MorphMany
-    {
-        return $this->files()->published();
-    }
-
-    public function publishedQuizzes(): MorphMany
-    {
-        return $this->quizzes()->published();
-    }
-
     public function scopeFilter($query, $data)
     {
         return $query->when(isset($data['search']), function ($query) use ($data) {
             $query->where('name', 'like', '%' . $data['search'] . '%')
                 ->orWhere('bio', 'like', '%' . $data['search'] . '%');
         });
+    }
+
+    public function childsCounts()
+    {
+        return $this->subUnits()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedSubUnits()->count();
+    }
+
+    public function filesCounts()
+    {
+        return $this->files()->count();
+    }
+
+    public function publishedFilesCounts()
+    {
+        return $this->publishedFiles()->count();
+    }
+
+    public function quizzesCounts()
+    {
+        return $this->quizzes()->count();
+    }
+
+    public function publishedQuizzesCounts()
+    {
+        return $this->publishedQuizzes()->count();
     }
 }

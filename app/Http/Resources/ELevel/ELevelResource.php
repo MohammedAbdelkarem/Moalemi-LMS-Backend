@@ -25,7 +25,7 @@ class ELevelResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'number_of_published_contents' => $this->number_of_published_contents,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::E_LEVEL_COLLECTION)),
             'teachers' => $this->relationLoaded('responsibilities') 
                 ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
@@ -41,7 +41,7 @@ class ELevelResource extends JsonResource
         {
             case RouteNames::ADMIN_E_LEVEL_LIST:
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_contents'] = $this->childsCounts();
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));

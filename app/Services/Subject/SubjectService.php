@@ -63,7 +63,7 @@ class SubjectService
         $subject->save();
 
         // Update parent Course numbers
-        $this->contextService->updateParentNumberOfContents($subject, '+');
+        // $this->contextService->updateParentNumberOfContents($subject, '+');
     }
 
     public function update($data, $id)
@@ -86,7 +86,7 @@ class SubjectService
         $this->contextService->checkIfHasContentBeforeDeleting($id , Subject::class);
 
         // Update parent Course numbers before deletion
-        $this->contextService->updateParentNumberOfContents($subject, '-');
+        // $this->contextService->updateParentNumberOfContents($subject, '-');
         
         $subject->delete();
     }

@@ -36,9 +36,9 @@ class SubUnitResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'priority' => $this->priority,
-            'number_of_published_contents' => $this->number_of_published_contents,
-            'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_published_files' => $this->number_of_published_files,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
+            'number_of_published_quizzes' => $this->publishedQuizzesCounts(),
+            'number_of_published_files' => $this->publishedFilesCounts(),
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUB_UNIT_COLLECTION)),
         ];
 
@@ -49,15 +49,17 @@ class SubUnitResource extends JsonResource
             ? duration($this)
             : duration($this, true);
 
+        if(auth()->user()->isAdmin())
+            $data['publish_status'] = $this->publish_status;
 
         $routeName = $request->route()->getName();
         switch ($routeName) 
         {
             case RouteNames::ADMIN_SUB_UNIT_LIST:
-                $data['number_of_quizzes'] = $this->number_of_quizzes;
-                $data['number_of_files'] = $this->number_of_files;
+                $data['number_of_quizzes'] = $this->quizzesCounts();
+                $data['number_of_files'] = $this->filesCounts();
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_contents'] = $this->childsCounts();
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['unit'] = UnitResource::make($this->whenLoaded('unit'));

@@ -45,7 +45,7 @@ class FileService
         if(isset($data['file']))
             uploadFileOnMedia($data['file'] , $file , MediaCollection::FILE_COLLECTION);
 
-        $this->contextService->updateParentNumberOfFiles($file , $file->context_id , '+');
+        // $this->contextService->updateParentNumberOfFiles($file , $file->context_id , '+');
 
         $file->save();
     }
@@ -65,7 +65,7 @@ class FileService
 
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , File::class);
 
-        $this->contextService->updateParentNumberOfFiles($file , $file->context_id , '-');
+        // $this->contextService->updateParentNumberOfFiles($file , $file->context_id , '-');
 
         $file->delete();
     }

@@ -131,6 +131,13 @@ class PurchaseService
         }
         
     }
+
+    public function deleteUnlockOthersWhenDeleting($model , $context_id)
+    {
+        $context = $model::findByIdOrFail($context_id);
+
+        $context->unlockedContexts()->delete();
+    }
     private function incrementPurchasedStudents($context)
     {
         $context->increment('number_of_purchased_students');

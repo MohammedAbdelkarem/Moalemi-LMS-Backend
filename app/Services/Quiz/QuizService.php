@@ -60,7 +60,7 @@ class QuizService extends MainService
 
         $quiz->save();
 
-        $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '+');
+        // $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '+');
     }
 
     public function detachQuestionsFromQuiz($quizId, $questionIds)
@@ -127,7 +127,7 @@ class QuizService extends MainService
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Quiz::class);
 
         // Update parent context quiz count before deletion
-        $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '-');
+        // $this->contextService->updateParentNumberOfQuizzes($quiz, $quiz->context_id, '-');
         
         $quiz->delete();
     }

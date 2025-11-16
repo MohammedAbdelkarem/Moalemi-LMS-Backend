@@ -84,7 +84,7 @@ class SubUnit extends Model implements HasMedia
     
     public function publishedLessons(): HasMany
     {
-        return $this->lessons()->published();
+        return $this->lessons()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function files()
@@ -92,9 +92,19 @@ class SubUnit extends Model implements HasMedia
         return $this->morphMany(File::class, 'context');
     }
 
+    public function publishedFiles()
+    {
+        return $this->files()->published();
+    }
+
     public function quizzes()
     {
         return $this->morphMany(Quiz::class, 'context');
+    }
+
+    public function publishedQuizzes()
+    {
+        return $this->quizzes()->published();
     }
 
     public function responsibilities(): HasMany
@@ -117,16 +127,6 @@ class SubUnit extends Model implements HasMedia
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
-    
-    public function publishedFiles(): MorphMany
-    {
-        return $this->files()->published();
-    }
-
-    public function publishedQuizzes(): MorphMany
-    {
-        return $this->quizzes()->published();
-    }
 
     public function scopeFilter($query, $data)
     {
@@ -134,5 +134,35 @@ class SubUnit extends Model implements HasMedia
             $query->where('name', 'like', '%' . $data['search'] . '%')
                 ->orWhere('bio', 'like', '%' . $data['search'] . '%');
         });
+    }
+
+    public function childsCounts()
+    {
+        return $this->lessons()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedLessons()->count();
+    }
+
+    public function filesCounts()
+    {
+        return $this->files()->count();
+    }
+
+    public function publishedFilesCounts()
+    {
+        return $this->publishedFiles()->count();
+    }
+
+    public function quizzesCounts()
+    {
+        return $this->quizzes()->count();
+    }
+
+    public function publishedQuizzesCounts()
+    {
+        return $this->publishedQuizzes()->count();
     }
 }

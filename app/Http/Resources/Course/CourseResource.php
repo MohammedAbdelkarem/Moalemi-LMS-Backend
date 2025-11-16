@@ -29,7 +29,7 @@ class CourseResource extends JsonResource
             'c_level_id' => $this->c_level_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'number_of_published_contents' => $this->number_of_published_contents,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
             'price' => $this->price,
             'access_type' => $this->access_type,
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::COURSE_COLLECTION)),
@@ -52,7 +52,7 @@ class CourseResource extends JsonResource
         {
             case RouteNames::ADMIN_COURSE_LIST:
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_contents'] = $this->childsCounts();
                 $data['number_of_purchased_students'] = $this->number_of_purchased_students;
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;

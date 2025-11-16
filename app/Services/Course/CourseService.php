@@ -7,11 +7,13 @@ use App\Enums\PublishStatusEnum;
 use App\Constants\MediaCollection;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
+use App\Services\Purchase\PurchaseService;
 
 class CourseService
 {
     public function __construct(
-        protected ContextService $contextService
+        protected ContextService $contextService,
+        protected PurchaseService $purchaseService
     ) {}
 
     /**
@@ -50,7 +52,7 @@ class CourseService
         $course->save();
 
         // Update parent CLevel numbers
-        $this->contextService->updateParentNumberOfContents($course, '+');
+        // $this->contextService->updateParentNumberOfContents($course, '+');
     }
 
     public function update($data, $id)
@@ -73,8 +75,10 @@ class CourseService
         $this->contextService->checkIfHasContentBeforeDeleting($id , Course::class);
         
         // Update parent CLevel numbers before deletion
-        $this->contextService->updateParentNumberOfContents($course, '-');
+        // $this->contextService->updateParentNumberOfContents($course, '-');
         
+        $this->purchaseService->deleteUnlockOthersWhenDeleting(Course::class , $id);
+
         $course->delete();
     }
 

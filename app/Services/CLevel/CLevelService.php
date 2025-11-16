@@ -46,7 +46,7 @@ class CLevelService
         $cLevel->save();
 
         // Update parent ELevel numbers
-        $this->contextService->updateParentNumberOfContents($cLevel, '+');
+        // $this->contextService->updateParentNumberOfContents($cLevel, '+');
     }
 
     public function update($data, $id)
@@ -69,7 +69,7 @@ class CLevelService
         $this->contextService->checkIfHasContentBeforeDeleting($id , CLevel::class);
 
         // Update parent ELevel numbers before deletion
-        $this->contextService->updateParentNumberOfContents($cLevel, '-');
+        // $this->contextService->updateParentNumberOfContents($cLevel, '-');
         
         $cLevel->delete();
     }

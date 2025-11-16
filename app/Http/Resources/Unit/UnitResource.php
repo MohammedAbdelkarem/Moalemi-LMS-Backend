@@ -37,11 +37,11 @@ class UnitResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'priority' => $this->priority,
-            'number_of_published_contents' => $this->number_of_published_contents,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
             'price' => $this->price,
             'access_type' => $this->access_type,
-            'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_published_files' => $this->number_of_published_files,
+            'number_of_published_quizzes' => $this->publishedQuizzesCounts(),
+            'number_of_published_files' => $this->publishedFilesCounts(),
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::UNIT_COLLECTION)),
             'teacher' => $this->relationLoaded('responsibilities') 
                 ? UserResource::make($this->responsibilities->pluck('teacher')->unique('id')->values()->first())
@@ -62,9 +62,9 @@ class UnitResource extends JsonResource
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
-                $data['number_of_quizzes'] = $this->number_of_quizzes;
-                $data['number_of_files'] = $this->number_of_files;
+                $data['number_of_contents'] = $this->childsCounts();
+                $data['number_of_quizzes'] = $this->quizzesCounts();
+                $data['number_of_files'] = $this->filesCounts();
                 // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));
                 $data['subject'] = SubjectResource::make($this->whenLoaded('subject'));
                 $data['sub_units'] = SubUnitResource::collection($this->whenLoaded('subUnits'));

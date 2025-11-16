@@ -70,7 +70,7 @@ class Course extends Model implements HasMedia
 
     public function publishedSubjects(): HasMany
     {
-        return $this->subjects()->published();
+        return $this->subjects()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function units(): HasMany
@@ -134,5 +134,15 @@ class Course extends Model implements HasMedia
             $query->where('name', 'like', '%' . $data['search'] . '%')
                 ->orWhere('bio', 'like', '%' . $data['search'] . '%');
         });
+    }
+
+    public function childsCounts()
+    {
+        return $this->subjects()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedSubjects()->count();
     }
 }

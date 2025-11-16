@@ -26,7 +26,7 @@ class CLevelResource extends JsonResource
             'e_level_id' => $this->e_level_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'number_of_published_contents' => $this->number_of_published_contents,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::C_LEVEL_COLLECTION)),
             'teachers' => $this->relationLoaded('responsibilities') 
                 ? UserResource::collection($this->responsibilities->pluck('teacher')->unique('id')->values())
@@ -41,9 +41,9 @@ class CLevelResource extends JsonResource
         switch ($routeName) 
         {
             case RouteNames::ADMIN_C_LEVEL_LIST:
-                $data['number_of_lessons'] = $this->number_of_lessons;
+                $data['number_of_lessons'] = $this->lessonsCounts();
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_contents'] = $this->childsCounts();
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));

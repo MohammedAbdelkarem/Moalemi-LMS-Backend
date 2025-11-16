@@ -41,8 +41,8 @@ class LessonResource extends JsonResource
             'duration' => $this->duration,
             'priority' => $this->priority,
             'total_rate' => $this->total_rate,
-            'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_published_files' => $this->number_of_published_files,
+            'number_of_published_quizzes' => $this->publishedQuizzesCounts(),
+            'number_of_published_files' => $this->publishedFilesCounts(),
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
@@ -74,8 +74,8 @@ class LessonResource extends JsonResource
                 RouteNames::ADMIN_LESSON_SHOW,
             ]):
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_quizzes'] = $this->number_of_quizzes;
-                $data['number_of_files'] = $this->number_of_files;
+                $data['number_of_quizzes'] = $this->quizzesCounts();
+                $data['number_of_files'] = $this->filesCounts();
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 $data['quizzes'] = QuizResource::collection($this->whenLoaded('quizzes'));

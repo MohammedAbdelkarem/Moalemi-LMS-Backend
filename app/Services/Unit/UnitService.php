@@ -60,7 +60,7 @@ class UnitService
         $unit->save();
 
         // Update parent Subject numbers
-        $this->contextService->updateParentNumberOfContents($unit, '+');
+        // $this->contextService->updateParentNumberOfContents($unit, '+');
     }
 
     public function update($data, $id)
@@ -79,12 +79,14 @@ class UnitService
         $unit = Unit::findByIdOrFail($id);
         
         $this->contextService->checkIfDraftBeforeDeletingOrUpdating($id , Unit::class);
-        $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Unit::class);
-        $this->contextService->checkIfHasContentBeforeDeleting($id , Unit::class);
+        // $this->contextService->checkIfHasPurchasedStudentsBeforeDeleting($id , Unit::class);
+        // $this->contextService->checkIfHasContentBeforeDeleting($id , Unit::class);
 
         // Update parent Subject numbers before deletion
-        $this->contextService->updateParentNumberOfContents($unit, '-');
+        // $this->contextService->updateParentNumberOfContents($unit, '-');
         
+        $this->purchaseService->deleteUnlockOthersWhenDeleting(Unit::class , $id);
+
         $unit->delete();
     }
 

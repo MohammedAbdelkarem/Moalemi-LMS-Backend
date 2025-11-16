@@ -63,6 +63,11 @@ class CLevel extends Model implements HasMedia
         return $this->hasMany(Course::class, 'c_level_id');
     }
 
+    public function publishedCourses(): HasMany
+    {
+        return $this->courses()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
     public function subjects(): HasMany
     {
         return $this->hasMany(Subject::class, 'c_level_id');
@@ -71,6 +76,11 @@ class CLevel extends Model implements HasMedia
     public function units(): HasMany
     {
         return $this->hasMany(Unit::class, 'c_level_id');
+    }
+
+    public function publishedUnits(): HasMany
+    {
+        return $this->units()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function subUnits(): HasMany
@@ -122,5 +132,20 @@ class CLevel extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
+    public function childsCounts()
+    {
+        return $this->courses()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedCourses()->count();
+    }
+
+    public function lessonsCounts()
+    {
+        return $this->lessons()->count();
     }
 }

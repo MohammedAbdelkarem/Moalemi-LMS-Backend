@@ -77,7 +77,7 @@ class Subject extends Model implements HasMedia
 
     public function publishedUnits(): HasMany
     {
-        return $this->units()->published();
+        return $this->units()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
     }
 
     public function subUnits(): HasMany
@@ -165,5 +165,35 @@ class Subject extends Model implements HasMedia
                         ->orWhere('bio', 'like', '%' . $data['search'] . '%');
                 });
         });
+    }
+
+    public function childsCounts()
+    {
+        return $this->units()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedUnits()->count();
+    }
+
+    public function filesCounts()
+    {
+        return $this->files()->count();
+    }
+
+    public function publishedFilesCounts()
+    {
+        return $this->publishedFiles()->count();
+    }
+
+    public function quizzesCounts()
+    {
+        return $this->quizzes()->count();
+    }
+
+    public function publishedQuizzesCounts()
+    {
+        return $this->publishedQuizzes()->count();
     }
 }

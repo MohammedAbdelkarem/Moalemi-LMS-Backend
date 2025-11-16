@@ -57,6 +57,11 @@ class ELevel extends Model implements HasMedia
         return $this->hasMany(CLevel::class, 'e_level_id');
     }
 
+    public function publishedCLevels(): HasMany
+    {
+        return $this->cLevels()->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'e_level_id');
@@ -111,5 +116,15 @@ class ELevel extends Model implements HasMedia
     public function scopePublished($query)
     {
         return $query->where('publish_status', PublishStatusEnum::PUBLISHED->value);
+    }
+
+    public function childsCounts()
+    {
+        return $this->cLevels()->count();
+    }
+
+    public function childsPublishedCounts()
+    {
+        return $this->publishedCLevels()->count();
     }
 }

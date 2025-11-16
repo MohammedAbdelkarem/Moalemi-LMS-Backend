@@ -34,12 +34,12 @@ class SubjectResource extends JsonResource
             'course_id' => $this->course_id,
             'name' => $this->name,
             'bio' => $this->bio,
-            'number_of_published_contents' => $this->number_of_published_contents,
+            'number_of_published_contents' => $this->childsPublishedCounts(),
             'price' => $this->price,
             'access_type' => $this->access_type,
             'number_of_published_lessons' => $this->numberOfPublishedLessons() ?? 0,
-            'number_of_published_quizzes' => $this->number_of_published_quizzes,
-            'number_of_published_files' => $this->number_of_published_files,
+            'number_of_published_quizzes' => $this->publishedQuizzesCounts(),
+            'number_of_published_files' => $this->publishedFilesCounts(),
             'media' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_COLLECTION)),
             'icon' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_ICON_COLLECTION)),
             'video' => MediaResource::make($this->getFirstMedia(MediaCollection::SUBJECT_VIDEO_COLLECTION)),
@@ -60,11 +60,11 @@ class SubjectResource extends JsonResource
         switch ($routeName) 
         {
             case RouteNames::ADMIN_SUBJECT_LIST:
-                $data['number_of_quizzes'] = $this->number_of_quizzes;
-                $data['number_of_files'] = $this->number_of_files;
+                $data['number_of_quizzes'] = $this->quizzesCounts();
+                $data['number_of_files'] = $this->filesCounts();
                 $data['number_of_purchased_students'] = $this->number_of_purchased_students;
                 $data['publish_status'] = $this->publish_status;
-                $data['number_of_contents'] = $this->number_of_contents;
+                $data['number_of_contents'] = $this->childsCounts();
                 $data['created_at'] = $this->created_at;
                 $data['updated_at'] = $this->updated_at;
                 // $data['responsibilities'] = ResponsibilityResource::collection($this->whenLoaded('responsibilities'));

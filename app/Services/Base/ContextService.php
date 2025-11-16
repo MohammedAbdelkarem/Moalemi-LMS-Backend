@@ -58,12 +58,12 @@ class ContextService
 
         $operation = $status === PublishStatusEnum::PUBLISHED->value ? '+' : '-';
         
-        if($type == 'content')
-            $this->updateParentNumberOfContents($context, $operation, true);
-        elseif($type == 'file')
-            $this->updateParentNumberOfFiles($context, $context->context_id , $operation , true);
-        elseif($type == 'quiz')
-            $this->updateParentNumberOfQuizzes($context, $context->context_id , $operation , true);
+        // if($type == 'content')
+        //     $this->updateParentNumberOfContents($context, $operation, true);
+        // elseif($type == 'file')
+        //     $this->updateParentNumberOfFiles($context, $context->context_id , $operation , true);
+        // elseif($type == 'quiz')
+        //     $this->updateParentNumberOfQuizzes($context, $context->context_id , $operation , true);
     }
 
     /**
@@ -127,44 +127,44 @@ class ContextService
      * @param mixed $context The model instance
      * @param string $operation '+' for increment, '-' for decrement
      */
-    public function updateParentNumberOfContents($context, $operation , $published = false)
-    {
-        $class = get_class($context);
-        $operation = ($operation == '+' ? 'increment' : 'decrement');
+    // public function updateParentNumberOfContents($context, $operation , $published = false)
+    // {
+    //     $class = get_class($context);
+    //     $operation = ($operation == '+' ? 'increment' : 'decrement');
 
-        $field = $published ? 'number_of_published_contents' : 'number_of_contents';
+    //     $field = $published ? 'number_of_published_contents' : 'number_of_contents';
 
-        switch($class)
-        {
-            case ModelPaths::ELevel:
-                // ELevel is the top level, no parent to update
-                break;
-            case ModelPaths::CLevel:
-                $context->load('eLevel');
-                $context->eLevel->$operation($field);
-                break;
-            case ModelPaths::Course:
-                $context->load('cLevel');
-                $context->cLevel->$operation($field);
-                break;
-            case ModelPaths::Subject:
-                $context->load('course');
-                $context->course->$operation($field);
-                break;
-            case ModelPaths::Unit:
-                $context->load('subject');
-                $context->subject->$operation($field);
-                break;
-            case ModelPaths::SubUnit:
-                $context->load('unit');
-                $context->unit->$operation($field);
-                break;
-            case ModelPaths::Lesson:
-                $context->load('subUnit');
-                $context->subUnit->$operation($field);
-                break;
-        }
-    }
+    //     switch($class)
+    //     {
+    //         case ModelPaths::ELevel:
+    //             // ELevel is the top level, no parent to update
+    //             break;
+    //         case ModelPaths::CLevel:
+    //             $context->load('eLevel');
+    //             $context->eLevel->$operation($field);
+    //             break;
+    //         case ModelPaths::Course:
+    //             $context->load('cLevel');
+    //             $context->cLevel->$operation($field);
+    //             break;
+    //         case ModelPaths::Subject:
+    //             $context->load('course');
+    //             $context->course->$operation($field);
+    //             break;
+    //         case ModelPaths::Unit:
+    //             $context->load('subject');
+    //             $context->subject->$operation($field);
+    //             break;
+    //         case ModelPaths::SubUnit:
+    //             $context->load('unit');
+    //             $context->unit->$operation($field);
+    //             break;
+    //         case ModelPaths::Lesson:
+    //             $context->load('subUnit');
+    //             $context->subUnit->$operation($field);
+    //             break;
+    //     }
+    // }
 
     public function changeContextsPriority($contextsData , $model)
     {
@@ -179,64 +179,64 @@ class ContextService
         }
     }
 
-    public function updateParentNumberOfFiles($context , $id , $operation , $published = false)
-    {
-        // Update context number of files
-        $class = $context->context_type;
+    // public function updateParentNumberOfFiles($context , $id , $operation , $published = false)
+    // {
+    //     // Update context number of files
+    //     $class = $context->context_type;
 
-        $operation = ($operation == '+' ? 'increment' : 'decrement');
+    //     $operation = ($operation == '+' ? 'increment' : 'decrement');
 
-        $field = $published ? 'number_of_published_files' : 'number_of_files';
+    //     $field = $published ? 'number_of_published_files' : 'number_of_files';
 
-        switch($class)
-        {
-            case ModelPaths::Subject:
-                $subject = Subject::find($id);
-                $subject->$operation($field);
-                break;
-            case ModelPaths::Unit:
-                $unit = Unit::find($id);
-                $unit->$operation($field);
-                break;
-            case ModelPaths::SubUnit:
-                $subUnit = SubUnit::find($id);
-                $subUnit->$operation($field);
-                break;
-            case ModelPaths::Lesson:
-                $lesson = Lesson::find($id);
-                $lesson->$operation($field);
-                break;
-        }
-    }
-    public function updateParentNumberOfQuizzes($context , $id , $operation , $published = false)
-    {
-        // Update context number of files
-        $class = $context->context_type;
+    //     switch($class)
+    //     {
+    //         case ModelPaths::Subject:
+    //             $subject = Subject::find($id);
+    //             $subject->$operation($field);
+    //             break;
+    //         case ModelPaths::Unit:
+    //             $unit = Unit::find($id);
+    //             $unit->$operation($field);
+    //             break;
+    //         case ModelPaths::SubUnit:
+    //             $subUnit = SubUnit::find($id);
+    //             $subUnit->$operation($field);
+    //             break;
+    //         case ModelPaths::Lesson:
+    //             $lesson = Lesson::find($id);
+    //             $lesson->$operation($field);
+    //             break;
+    //     }
+    // }
+    // public function updateParentNumberOfQuizzes($context , $id , $operation , $published = false)
+    // {
+    //     // Update context number of files
+    //     $class = $context->context_type;
 
-        $operation = ($operation == '+' ? 'increment' : 'decrement');
+    //     $operation = ($operation == '+' ? 'increment' : 'decrement');
 
-        $field = $published ? 'number_of_published_quizzes' : 'number_of_quizzes';
+    //     $field = $published ? 'number_of_published_quizzes' : 'number_of_quizzes';
 
-        switch($class)
-        {
-            case ModelPaths::Subject:
-                $subject = Subject::find($id);
-                $subject->$operation($field);
-                break;
-            case ModelPaths::Unit:
-                $unit = Unit::find($id);
-                $unit->$operation($field);
-                break;
-            case ModelPaths::SubUnit:
-                $subUnit = SubUnit::find($id);
-                $subUnit->$operation($field);
-                break;
-            case ModelPaths::Lesson:
-                $lesson = Lesson::find($id);
-                $lesson->$operation($field);
-                break;
-        }
-    }
+    //     switch($class)
+    //     {
+    //         case ModelPaths::Subject:
+    //             $subject = Subject::find($id);
+    //             $subject->$operation($field);
+    //             break;
+    //         case ModelPaths::Unit:
+    //             $unit = Unit::find($id);
+    //             $unit->$operation($field);
+    //             break;
+    //         case ModelPaths::SubUnit:
+    //             $subUnit = SubUnit::find($id);
+    //             $subUnit->$operation($field);
+    //             break;
+    //         case ModelPaths::Lesson:
+    //             $lesson = Lesson::find($id);
+    //             $lesson->$operation($field);
+    //             break;
+    //     }
+    // }
     public function getPurchasedCourses($student_id)
     {
         $courses = Course::whereHas('unlockedContexts', function($query) use ($student_id) {
