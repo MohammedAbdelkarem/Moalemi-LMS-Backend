@@ -331,7 +331,7 @@ if (!function_exists('generateUniqueCoupon')) {
 if (!function_exists('generateRandomCoupon')) {
     function generateRandomCoupon(int $length = 10): string
     {
-        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $coupon = '';
         
         for ($i = 0; $i < $length; $i++) {
