@@ -23,7 +23,7 @@ class TransactionController extends Controller
         );
     }
 
-    public function useContextCopon(UseCuponRequest $request)
+    public function useContextCupon(UseCuponRequest $request)
     {
         $transaction = $this->transactionService->useContextCopon($request->cupon);
         
