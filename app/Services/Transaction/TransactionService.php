@@ -104,7 +104,7 @@ class TransactionService
     {
         $cupon = Coupon::where('coupon', $cupon)
             ->where('is_expired', 0)
-            ->where('type', CouponTypeEnum::CONTEXT_MANY_TIMES->value)
+            ->whereIn('type', [CouponTypeEnum::CONTEXT_MANY_TIMES->value, CouponTypeEnum::CONTEXT_ONE_TIME->value])
             ->first();
 
         if(!$cupon)
