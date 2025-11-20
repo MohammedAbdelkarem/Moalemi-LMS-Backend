@@ -39,9 +39,71 @@ class ContextService
             ->pluck('id')
             ->toArray();
 
+            // dd($coponIds);
         $unlockedContextIds = Transaction::whereIn('coupon_id', $coponIds)
             ->pluck('unlocked_context_id')
             ->toArray();
+
+        $usersIds = Transaction::whereIn('coupon_id', $coponIds)
+            ->pluck('user_id')
+            ->toArray();
+
+        foreach($unlockedContextIds as $unlockedContextId)
+        {
+            $unlockedContext = UnlockedContext::find($unlockedContextId);
+
+            if($unlockedContext->context_type == Course::class)
+            {
+                $course = Course::find($unlockedContext->context_id);
+                $subjectIds = Subject::where('course_id', $course->id)->pluck('id')->toArray();
+                $unitIds = Unit::whereIn('subject_id', $subjectIds)->pluck('id')->toArray();
+                $subUnitIds = SubUnit::whereIn('unit_id', $unitIds)->pluck('id')->toArray();
+                $lessonIds = Lesson::whereIn('sub_unit_id', $subUnitIds)->pluck('id')->toArray();
+
+                foreach($usersIds as $userId)
+                {
+                    UnlockedContext::whereIn('context_id', $subjectIds)
+                        ->where('context_type', Subject::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                    UnlockedContext::whereIn('context_id', $unitIds)
+                        ->where('context_type', Unit::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                    UnlockedContext::whereIn('context_id', $subUnitIds)
+                        ->where('context_type', SubUnit::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                    UnlockedContext::whereIn('context_id', $lessonIds)
+                        ->where('context_type', Lesson::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                }
+            }
+            else if($unlockedContext->context_type == Subject::class)
+            {
+                $subject = Subject::find($unlockedContext->context_id);
+                $unitIds = Unit::where('subject_id', $subject->id)->pluck('id')->toArray();
+                $subUnitIds = SubUnit::whereIn('unit_id', $unitIds)->pluck('id')->toArray();
+                $lessonIds = Lesson::whereIn('sub_unit_id', $subUnitIds)->pluck('id')->toArray();
+
+                foreach($usersIds as $userId)
+                {
+                    UnlockedContext::whereIn('context_id', $unitIds)
+                        ->where('context_type', Unit::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                    UnlockedContext::whereIn('context_id', $subUnitIds)
+                        ->where('context_type', SubUnit::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                    UnlockedContext::whereIn('context_id', $lessonIds)
+                        ->where('context_type', Lesson::class)
+                        ->where('user_id', $userId)
+                        ->delete();
+                }
+            }
+        }
 
         UnlockedContext::whereIn('id', $unlockedContextIds)
             ->delete();
