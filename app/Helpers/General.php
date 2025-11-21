@@ -419,3 +419,17 @@ if (!function_exists('is_downloaded')) {
             ->exists();
     }
 }
+
+if (!function_exists('isFromFirstsInSubUnit')) {
+    function isFromFirstsInSubUnit($lesson)
+    {
+        $firstLessonsArray = Lesson::where('sub_unit_id' , $lesson->sub_unit_id)
+            ->published()
+            ->orderBy('priority' , 'asc')
+            ->limit(2)
+            ->pluck('id')
+            ->toArray();
+
+        return in_array($lesson->id , $firstLessonsArray);
+    }
+}

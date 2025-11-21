@@ -50,13 +50,15 @@ class LessonResource extends JsonResource
         if(auth()->user()->isStudent())
         {
             $is_purchased = is_purchased($this->id, LevelEnum::LESSON , auth()->id());
+            $is_first = isFromFirstsInSubUnit($this);
+
             $data['is_watched'] = watched($this);
             $data['is_commented'] = is_commented($this->id);
             $data['is_rated'] = is_rated($this->id);
             $data['is_purchased'] = $is_purchased;
             $data['is_saved'] = is_saved($this->id, LevelEnum::LESSON , auth()->id());
             $data['is_downloaded'] = is_downloaded($this);
-            $data['video'] = $is_purchased 
+            $data['video'] = ($is_purchased || $is_first) 
                 ? MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)) 
                 : [];
         }
