@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class DefaultMediaResource extends JsonResource
 {
+    //for lesson video , coming soon only
     /**
      * Transform the resource into an array.
      *
@@ -18,9 +19,9 @@ class DefaultMediaResource extends JsonResource
     {
         return [
             'id'    => 0,
-            'url'   => config('app.url') . '/' . config('_custom.user_default_image'),
-            'type'  => MediaTypeEnum::IMAGE,
-            'title'  => null
+            'url'   => config('app.url') . '/' . config('_custom.lesson_default_video'),
+            'type'  => MediaTypeEnum::VIDEO,
+            'quality'  => "720"
         ];
     }
 }

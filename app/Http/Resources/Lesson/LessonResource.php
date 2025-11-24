@@ -17,6 +17,7 @@ use App\Http\Resources\ELevel\ELevelResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\SubUnit\SubUnitResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Media\DefaultMediaResource;
 use App\Http\Resources\LessonRate\LessonRateResource;
 
 class LessonResource extends JsonResource
@@ -61,6 +62,12 @@ class LessonResource extends JsonResource
             $data['video'] = ($is_purchased || $is_first) 
                 ? MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)) 
                 : [];
+
+            if (($is_purchased || $is_first) && $this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)->isEmpty()) {
+                $data['video'] = [DefaultMediaResource::make(1)->toArray($request)];
+                $data['is_downloaded'] = true;
+                $data['is_rated'] = true;
+            }
         }
         else if(auth()->user()->isTeacher())
         {

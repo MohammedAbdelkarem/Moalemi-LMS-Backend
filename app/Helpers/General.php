@@ -430,6 +430,7 @@ if (!function_exists('isFromFirstsInSubUnit')) {
             ->pluck('id')
             ->toArray();
 
+            // dd($firstLessonsArray);
         return in_array($lesson->id , $firstLessonsArray);
     }
 }

@@ -22,6 +22,7 @@ return [
     */
 
     "user_default_image"    => "storage/assets/defaults/default_user.jpg",
+    "lesson_default_video"    => "storage/assets/defaults/coming_soon.mp4",
 
     /*
     |--------------------------------------------------------------------------
