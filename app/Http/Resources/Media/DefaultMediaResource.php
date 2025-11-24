@@ -17,6 +17,7 @@ class DefaultMediaResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        
         return [
             'id'    => 0,
             'url'   => config('app.url') . '/' . config('_custom.lesson_default_video'),
