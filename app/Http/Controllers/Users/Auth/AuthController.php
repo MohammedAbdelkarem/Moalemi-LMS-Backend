@@ -66,6 +66,14 @@ class AuthController extends Controller
         );
     }
 
+    public function adminTerminationAllTokens(Request $request): JsonResponse
+    {
+        return Success(
+            $this->authService->adminTerminationAllTokens($request->user_ids),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
     public function logout(Request $request): JsonResponse
     {
         return Success(

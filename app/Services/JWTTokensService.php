@@ -68,6 +68,21 @@ class JWTTokensService
         JWTPersonalTokens::where('user_id', $user_id)->delete();
     }
 
+    public function terminateAllTokensByUserId($user_ids)
+    {
+        JWTPersonalTokens::whereIn("user_id", $user_ids)->chunk(20, function ($tokens) {
+            foreach ($tokens as $token) {
+
+                $tokenToInvalidate = JWTAuth::setToken($token->token)->getToken();
+                
+                JWTAuth::invalidate($tokenToInvalidate);
+            }
+        });
+
+        //In one query
+        JWTPersonalTokens::whereIn('user_id', $user_ids)->delete();
+    }
+
     public function invalidateSessionByDevice($ids)
     {
         $tokensQuery = JWTPersonalTokens::query()

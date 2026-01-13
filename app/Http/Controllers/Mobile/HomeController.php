@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Teacher\TeacherResource;
 use App\Services\Administration\Teacher\TeacherService;
+use App\Services\Base\ContextService;
 use App\Services\StudentHomeService;
 use App\Services\TeacherHomeService;
 
@@ -16,9 +17,17 @@ class HomeController extends Controller
     public function __construct(
         protected StudentHomeService $studentHomeService,
         protected TeacherService $teacherService,
-        protected TeacherHomeService $teacherHomeService
+        protected TeacherHomeService $teacherHomeService,
+        protected ContextService $contextService
     ) {}
 
+    public function showBugStudents()
+    {
+        return success(
+            $this->contextService->getUnlockedBugContextStudents(),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
     public function home()
     {
         return success(

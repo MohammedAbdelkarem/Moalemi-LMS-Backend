@@ -34,6 +34,7 @@ class CreateLessonRequest extends BaseApiRequest
             'name' => ['required', 'string', 'min:2', 'max:255', Rule::unique('lessons')->where('sub_unit_id', request('sub_unit_id'))],
             'bio' => ['sometimes', 'string'],
             'duration' => ['required', 'integer', 'min:1'],
+            'url' => ['nullable' , 'url'],
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
             "images" => ['nullable' , 'array'],
             "images.*.image" => [

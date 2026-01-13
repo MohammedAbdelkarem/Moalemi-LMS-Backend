@@ -40,6 +40,7 @@ class LessonResource extends JsonResource
             'name' => $this->name,
             'bio' => $this->bio,
             'duration' => $this->duration,
+            'url' => $this->url,
             'priority' => $this->priority,
             'total_rate' => $this->total_rate,
             'number_of_published_quizzes' => $this->publishedQuizzesCounts(),

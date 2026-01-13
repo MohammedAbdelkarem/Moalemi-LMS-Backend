@@ -174,6 +174,12 @@ class AuthService extends MainService
         $this->jwtService->invalidateSessionByDevice($ids);
     }
 
+    public function adminTerminationAllTokens($user_ids)
+    {
+        // dd($user_ids);
+        $this->jwtService->terminateAllTokensByUserId($user_ids);
+    }
+
     public function logout($notiToken)
     {
         /**

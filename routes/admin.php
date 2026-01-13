@@ -35,8 +35,7 @@ use App\Http\Controllers\Administration\Profile\AdminProfileController;
 use App\Http\Controllers\Administration\Transaction\TransactionController;
 use App\Http\Controllers\Administration\Responsibility\ResponsibilityController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
-
-
+use App\Http\Controllers\Users\Auth\AuthController as AuthAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +56,11 @@ Route::middleware([])->group(function () {
 //Auth Needed
 Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user.active', 'user.verified']], function () {
 
+    //Scripts
+    Route::controller(AuthAuthController::class)->group(function () {
+        Route::post("/admin-termination-all-tokens", "adminTerminationAllTokens");
+    });
+    
     // Auth
     Route::controller(AuthController::class)->group(function () {
         Route::get("/active-session", "activeSessions");

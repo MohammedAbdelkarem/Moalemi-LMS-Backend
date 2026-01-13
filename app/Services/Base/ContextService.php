@@ -4,6 +4,7 @@ namespace App\Services\Base;
 
 use App\Models\Quiz;
 use App\Models\Unit;
+use App\Models\User;
 use App\Models\CLevel;
 use App\Models\Coupon;
 use App\Models\Course;
@@ -30,6 +31,80 @@ class ContextService
         whereNotNull('expired_at')
             ->where('expired_at', '<', now())
                 ->update(['is_expired' => 1]);
+    }
+
+    public function getUnlockedBugContextStudents()
+    {
+        $copons = Coupon::whereNotNull('context_expired_at')
+            ->whereDate('context_expired_at', '<=', '2025-11-21')
+            ->where('context_type' , Course::class)
+            ->get();
+
+        $data = [];
+        $total_ids = [];
+        
+        foreach($copons as $cupon)
+        {   
+            $courseId = $cupon->context_id;
+            
+            // Get all subjects for this course
+            $subjectIds = Subject::where('course_id', $courseId)
+                ->pluck('id')->toArray();
+
+            if (empty($subjectIds)) {
+                continue;
+            }
+
+            // Get users who have unlocked subjects
+            $usersWithUnlockedSubjects = UnlockedContext::whereIn('context_id', $subjectIds)
+                ->where('context_type', Subject::class)
+                ->whereDate('created_at', '<=', $cupon->context_expired_at)
+                ->whereDoesntHave('transactions')
+                ->pluck('user_id')
+                ->unique()
+                ->toArray();
+
+            // Get users who have unlocked the course
+            $usersWithUnlockedCourse = UnlockedContext::where('context_id', $courseId)
+                ->where('context_type', Course::class)
+                ->whereDate('created_at', '<=', $cupon->context_expired_at)
+                ->pluck('user_id')
+                ->toArray();
+
+            // Get users who have unlocked subjects but NOT the course
+            $studentIds = array_diff($usersWithUnlockedSubjects, $usersWithUnlockedCourse);
+
+            $data[$cupon->id] = [
+                // 'subjects_count' => count($subjects_count),
+                'copon_number_of_uses' => $cupon->number_of_uses,
+                'context_expired_at' => $cupon->context_expired_at
+            ];
+
+            $total_ids = array_merge($total_ids, $studentIds);
+        }
+        
+        // Remove duplicates and re-index array
+        $total_ids = array_values(array_unique($total_ids));
+        $numbersAndNames = [];
+        foreach($total_ids as $id)
+        {
+            $user = User::find($id);
+            $numbersAndNames[] = [
+                'id' => $user->id,
+                'number' => $user->phone_number,
+                'name' => $user->name,
+                'study_hours' => $user->study_minutes / 60,
+            ];
+        }
+        $records = UnlockedContext::whereIn('user_id', $total_ids)
+            ->whereDate('created_at', '<=', '2025-11-20')
+            ->get();
+        return [
+            'data' => $data,
+            'students_count' => count($total_ids),
+            'numbersAndNames' => $numbersAndNames,
+            'count' => count($records)
+        ];
     }
 
     public function lockTemporarlyContexts()

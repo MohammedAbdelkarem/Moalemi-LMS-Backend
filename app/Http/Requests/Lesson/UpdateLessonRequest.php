@@ -27,6 +27,7 @@ class UpdateLessonRequest extends BaseApiRequest
         return [
             'name' => ['sometimes', 'string', 'min:2', 'max:255', Rule::unique('lessons')->where('sub_unit_id', request('sub_unit_id'))->ignore($this->route('id'))],
             'bio' => ['sometimes', 'string'],
+            'url' => ['nullable' , 'url'],
             // 'publish_status' => ['sometimes', Rule::in(PublishStatusEnum::values())],
         ];
     }

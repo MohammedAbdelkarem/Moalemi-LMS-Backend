@@ -29,6 +29,7 @@ class CopnoResource extends JsonResource
             'number_of_max_uses' => $this->number_of_max_uses,
             'context_expired_at' => $this->context_expired_at,
             'used_at' => $this->used_at,
+            'created_at' => $this->created_at,
         ];
 
         $routeName = $request->route()->getName();
