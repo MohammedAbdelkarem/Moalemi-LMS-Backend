@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Copon;
+namespace App\Http\Requests\ScreenShot;
 
+use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseApiRequest;
 
-class CreateOnePointsCoponRequest extends BaseApiRequest
+class ScreenShotRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +23,8 @@ class CreateOnePointsCoponRequest extends BaseApiRequest
     public function rules(): array
     {
         return [
-            'amount' => ['required', 'integer', 'min:1' , 'max:5000000'],
-            'user_id' => ['required', 'exists:users,id'],
-            'direct_activate' => ['required', 'boolean'],
+            'user_id' => ['required', Rule::exists('users', 'id')->where('role_id', 5)],
+            'total_number_allowed' => ['required', 'integer', 'min:1' , 'max:30'],
         ];
     }
 }

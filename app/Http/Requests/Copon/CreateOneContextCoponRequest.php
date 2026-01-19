@@ -27,6 +27,7 @@ class CreateOneContextCoponRequest extends BaseApiRequest
             'context_type' => ['required', 'string' , Rule::in('Subject', 'Course')],
             'user_id' => ['required', 'exists:users,id'],
             'context_expired_at' => ['nullable', 'date'],
+            'direct_activate' => ['required', 'boolean'],
         ];
     }
 }

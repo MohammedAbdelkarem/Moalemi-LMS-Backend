@@ -65,4 +65,5 @@ final class RouteNames
     const MOBILE_TEACHER_LESSONS = 'mobile.teacher.lessons';
     const MOBILE_TEACHER_HOME = 'mobile.teacher.home';
     const MOBILE_TEACHER_DETAILS = 'mobile.teacher.details';
+    const ADMIN_COPONS_GET = 'admin.copons.get';
 }

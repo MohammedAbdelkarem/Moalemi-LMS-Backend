@@ -12,6 +12,7 @@ use App\Http\Controllers\Mobile\HierarichyController;
 use App\Http\Controllers\Mobile\Comment\CommentController;
 use App\Http\Controllers\Mobile\Progress\ProgressController;
 use App\Http\Controllers\Mobile\Saved\SavedContextController;
+use App\Http\Controllers\Mobile\ScreenShot\ScreenShotController;
 use App\Http\Controllers\Mobile\Transaction\TransactionController;
 use App\Http\Controllers\Mobile\LessonQuestion\LessonQuestionController;
 
@@ -133,5 +134,11 @@ Route::group(['middleware' => ['auth:api', "is_user", 'token.access_api', 'user.
     Route::prefix('downloads')->controller(DownloadController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/download/{lesson_id}', 'download');
+    });
+
+    // Screen Shots
+    Route::prefix('screen-shots')->controller(ScreenShotController::class)->group(function () {
+        Route::post("/take-shots", "takeShot");
+        Route::get("/available-number-of-shots", "getAvailableNumberOfShots");
     });
 });

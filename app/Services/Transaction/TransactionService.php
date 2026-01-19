@@ -2,7 +2,9 @@
 
 namespace App\Services\Transaction;
 
+use App\Models\User;
 use App\Models\Coupon;
+use App\Models\CoponLog;
 use App\Models\Transaction;
 use App\Enums\AccessTypeEnum;
 use App\Enums\CouponTypeEnum;
@@ -32,8 +34,10 @@ class TransactionService
         else
             return $this->useManyPointsCopon($copon_code);
     }
-    public function useOnePointsCopon($cupon)
+    public function useOnePointsCopon($cupon , $user_id = null)
     {
+        $final_user_id = $user_id ?? auth()->id();
+
         $cupon = Coupon::where('coupon', $cupon)
             ->where('is_expired', 0)
             ->where('type', CouponTypeEnum::STUDENT_ONE_TIME->value)
@@ -42,21 +46,25 @@ class TransactionService
         if(!$cupon)
             return notFoundFailure([] , ExceptionMessages::MSG_CUPON_NOT_FOUND);
         
-        if($cupon->user_id != auth()->id())
+        if($cupon->user_id != $final_user_id)
             return forbiddenFailure([] , ExceptionMessages::MSG_CUPON_NOT_FOUND);
 
         $cupon->update([
             'number_of_uses' => $cupon->number_of_uses + 1,
             'is_expired' => 1,
             'used_at' => now(),
+            'activated_by' => ($user_id == null) ? 'student' : 'admin',
         ]);
 
-        auth()->user()->balance += $cupon->amount;
-        auth()->user()->save();
+        $this->createCoponLog($cupon->id, $final_user_id);
+
+        $user = User::findByIdOrFail($final_user_id);
+        $user->balance += $cupon->amount;
+        $user->save();
 
         $transaction = Transaction::create([
             'amount' => $cupon->amount,
-            'user_id' => auth()->id(),
+            'user_id' => $final_user_id,
             'coupon_id' => $cupon->id,
             'transaction_type' => TransactionTypeEnum::COUPON_CHARGE->value,
         ]);
@@ -87,6 +95,8 @@ class TransactionService
             ]);
         }
 
+        $this->createCoponLog($cupon->id, auth()->id());
+
         auth()->user()->balance += $cupon->amount;
         auth()->user()->save();
 
@@ -100,22 +110,25 @@ class TransactionService
         return $transaction;
     }
 
-    public function useContextCopon($cupon)
+    public function useContextCopon($cupon , $user_id = null)
     {
+        $final_user_id = $user_id ?? auth()->id();
+        
         $cupon = Coupon::where('coupon', $cupon)
             ->where('is_expired', 0)
             ->whereIn('type', [CouponTypeEnum::CONTEXT_MANY_TIMES->value, CouponTypeEnum::CONTEXT_ONE_TIME->value])
             ->first();
 
-        if(!$cupon)
+        if(!$cupon || !isFromMyHierarichy($cupon->context_id, $cupon->context_type, $final_user_id))
             return notFoundFailure([] , ExceptionMessages::MSG_CUPON_NOT_FOUND);
 
-        $this->checkIflreadyUnlockedForCupon($cupon);
+        $this->checkIflreadyUnlockedForCupon($cupon, $final_user_id);
 
-        $unlockedContext = $this->purchaseService->unlockContexts($cupon->context_id, getModelByPath($cupon->context_type) , auth()->id());
+        $unlockedContext = $this->purchaseService->unlockContexts($cupon->context_id, getModelByPath($cupon->context_type) , $final_user_id);
         
         $cupon->update([
             'number_of_uses' => $cupon->number_of_uses + 1,
+            'activated_by' => ($user_id == null) ? 'student' : 'admin',
         ]);
 
         if($cupon->number_of_uses >= $cupon->number_of_max_uses)
@@ -124,9 +137,11 @@ class TransactionService
                 'is_expired' => 1
             ]);
         }
+
+        $this->createCoponLog($cupon->id, $final_user_id);
             
         $transaction = Transaction::create([
-            'user_id' => auth()->id(),
+            'user_id' => $final_user_id,
             'coupon_id' => $cupon->id,
             'transaction_type' => TransactionTypeEnum::COUPON_PURCHASE->value,
             'unlocked_context_id' => $unlockedContext->id,
@@ -183,9 +198,9 @@ class TransactionService
         );
     }
 
-    private function checkIflreadyUnlockedForCupon($cupon)
+    private function checkIflreadyUnlockedForCupon($cupon , $user_id)
     {
-        $alreadyUnlocked = UnlockedContext::where('user_id', auth()->id())
+        $alreadyUnlocked = UnlockedContext::where('user_id', $user_id)
             ->where('context_id', $cupon->context_id)
             ->where('context_type', $cupon->context_type)
             ->first();
@@ -210,5 +225,13 @@ class TransactionService
         $hasBeenUsed = $cupon->transactions()->where('user_id', auth()->id())->exists();
         if($hasBeenUsed)
             return forbiddenFailure([] , ExceptionMessages::MSG_CUPON_NOT_FOUND);
+    }
+
+    private function createCoponLog($cupon_id , $user_id)
+    {
+        CoponLog::create([
+            'coupon_id' => $cupon_id,
+            'user_id' => $user_id,
+        ]);
     }
 }

@@ -47,6 +47,8 @@ return [
     'files'                     => 'الملفات',
     'coupon'                    => 'الكوبون',
     'coupons'                   => 'الكوبونات',
+    'copon_log'                 => 'سجل الكوبون',
+    'copon_logs'                => 'سجلات الكوبونات',
     'quiz_result'               => 'نتيجة الاختبار',
     'quiz_results'              => 'نتائج الاختبارات',
     'saved_context'             => 'المحتوى المحفوظ',
@@ -65,4 +67,6 @@ return [
     'app_versions'              => 'إصدارات التطبيق',
     'download'                  => 'التحميل',
     'downloads'                 => 'التحميلات',
+    'screen_shot'               => 'لقطة الشاشة',
+    'screen_shots'              => 'لقطات الشاشة',
 ];

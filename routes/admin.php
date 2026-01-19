@@ -32,10 +32,11 @@ use App\Http\Controllers\System\Notification\NotificationController;
 use App\Http\Controllers\Administration\Profile\UserProfileController;
 use App\Http\Controllers\Administration\SellPoint\SellPointController;
 use App\Http\Controllers\Administration\Profile\AdminProfileController;
+use App\Http\Controllers\Administration\ScreenShot\ScreenShotController;
+use App\Http\Controllers\Users\Auth\AuthController as AuthAuthController;
 use App\Http\Controllers\Administration\Transaction\TransactionController;
 use App\Http\Controllers\Administration\Responsibility\ResponsibilityController;
 use App\Http\Controllers\System\CustomerServiceCard\CustomerServiceCardController;
-use App\Http\Controllers\Users\Auth\AuthController as AuthAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -278,7 +279,14 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::post("/create-many-context-copon", "createManyContextCopon");
         Route::get('/', 'get');
         Route::get("/set-copons-as-expired", "setCoponsAsExpired");
-        Route::get("/copons", "getCopons");
+        Route::get("/copons", "getCopons")->name(RouteNames::ADMIN_COPONS_GET);
+    });
+
+    // Screen Shots
+    Route::prefix("screen-shots")->controller(ScreenShotController::class)->group(function () {
+        Route::get("/{user_id}", "index");
+        Route::post("/create", "store");
+        Route::post("/disable/{id}", "disable");
     });
 
     // Teachers

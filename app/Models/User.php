@@ -47,6 +47,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\System\CustomerService\CustomerServiceCard;
+use App\Models\CoponLog;
 
 class User extends Authenticatable implements JWTSubject , HasMedia
 {
@@ -187,6 +188,11 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function pointsCoupons(): HasMany
     {
         return $this->hasMany(Coupon::class, 'user_id');
+    }
+
+    public function coponLogs(): HasMany
+    {
+        return $this->hasMany(CoponLog::class, 'user_id');
     }
 
     //Account Relations
@@ -374,6 +380,11 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     public function downloads(): HasMany
     {
         return $this->hasMany(Download::class, 'user_id');
+    }
+
+    public function screenShots(): HasMany
+    {
+        return $this->hasMany(ScreenShot::class, 'user_id');
     }
 
     //Parent-Student Relationships

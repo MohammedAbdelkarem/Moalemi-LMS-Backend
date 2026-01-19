@@ -47,6 +47,8 @@ final class Resources
     const QUESTIONS                 = 'resources.questions';
     const COUPON                    = 'resources.coupon';
     const COUPONS                   = 'resources.coupons';
+    const COPON_LOG                 = 'resources.copon_log';
+    const COPON_LOGS                = 'resources.copon_logs';
     const SAVED_CONTEXT             = 'resources.saved_context';
     const SAVED_CONTEXTS            = 'resources.saved_contexts';
     const RES_COMMENT               = 'resources.comment';
@@ -61,4 +63,6 @@ final class Resources
     const RES_APP_VERSIONS          = 'resources.app_versions';
     const RES_DOWNLOAD              = 'resources.download';
     const RES_DOWNLOADS             = 'resources.downloads';
+    const RES_SCREEN_SHOT           = 'resources.screen_shot';
+    const RES_SCREEN_SHOTS          = 'resources.screen_shots';
 }

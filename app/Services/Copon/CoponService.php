@@ -6,21 +6,34 @@ use App\Enums\CouponTypeEnum;
 use App\Enums\AccessTypeEnum;
 use App\Constants\ExceptionMessages;
 use App\Models\Coupon;
+use App\Services\Transaction\TransactionService;
 
 /**
  * Class CoponService.
  */
 class CoponService
 {
+
+    public function __construct(
+        protected TransactionService $transactionService
+    ){}
     public function createOnePointsCupon($data)
     {
-        // dd($data['user_id']);
         $copon = Coupon::create([
             'coupon' => generateUniqueCoupon(),
             'type' => CouponTypeEnum::STUDENT_ONE_TIME,
             'amount' => $data['amount'],
             'user_id' => $data['user_id'],
         ]);
+
+        if($data['direct_activate']){
+            $transaction = $this->transactionService->useOnePointsCopon($copon->fresh()->coupon, $data['user_id']);
+
+            return [
+                'copon' => $copon->fresh(),
+                'transaction' => $transaction,
+            ];
+        }
 
         return $copon->fresh();
     }
@@ -51,6 +64,15 @@ class CoponService
             'context_type' => getModel($data['context_type']),
             'context_expired_at' => $data['context_expired_at'],
         ]);
+
+        if($data['direct_activate']){
+            $transaction = $this->transactionService->useContextCopon($cupon->fresh()->coupon, $data['user_id']);
+
+            return [
+                'copon' => $cupon->fresh(),
+                'transaction' => $transaction,
+            ];
+        }
 
         return $cupon->fresh();
     }

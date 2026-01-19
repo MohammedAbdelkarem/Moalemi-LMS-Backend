@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources\Copon;
 
-use App\Constants\RouteNames;
 use Illuminate\Http\Request;
+use App\Constants\RouteNames;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CopnoResource extends JsonResource
@@ -19,6 +20,7 @@ class CopnoResource extends JsonResource
             'id' => $this->id,
             'coupon' => $this->coupon,
             'amount' => $this->amount,
+            'activated_by' => $this->activated_by,
             'type' => $this->type,
             'number_of_uses' => $this->number_of_uses,
             'is_expired' => $this->is_expired,
@@ -33,6 +35,15 @@ class CopnoResource extends JsonResource
         ];
 
         $routeName = $request->route()->getName();
+
+        
+        switch ($routeName)
+        {
+            case RouteNames::ADMIN_COPONS_GET:
+                
+                $data['logs'] = CoponLogResource::collection($this->whenLoaded('coponLogs'));
+            break;
+        }
 
 
         return $data;

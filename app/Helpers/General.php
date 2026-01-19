@@ -17,16 +17,17 @@ use App\Models\Subject;
 use App\Models\SubUnit;
 use Nette\Utils\Random;
 use App\Enums\LevelEnum;
+use App\Models\Download;
 use App\Models\Question;
 use App\Models\LessonRate;
 use App\Models\QuizResult;
+use App\Models\ScreenShot;
 use App\Enums\MediaTypeEnum;
 use App\Constants\ModelPaths;
 use App\Enums\QuizResultEnum;
 use App\Models\UnlockedContext;
 use App\Enums\CommentStatusEnum;
 use App\Constants\MediaCollection;
-use App\Models\Download;
 use Illuminate\Support\Facades\Config;
 use App\Services\System\SystemSettingService;
 
@@ -432,5 +433,39 @@ if (!function_exists('isFromFirstsInSubUnit')) {
 
             // dd($firstLessonsArray);
         return in_array($lesson->id , $firstLessonsArray);
+    }
+}
+
+if (!function_exists('isFromMyHierarichy')) {
+    function isFromMyHierarichy($context_id , $context_type , $user_id)
+    {
+
+        $user = User::findByIdOrFail($user_id);
+
+        $actual_clevel_id = $user->c_level_id;
+        $current_c_level = null;
+
+        if($context_type == ModelPaths::Course)
+        {
+            $course = Course::find($context_id);
+            $current_c_level = $course->c_level_id;
+        }
+        elseif($context_type == ModelPaths::Subject)
+        {
+            $subject = Subject::find($context_id);
+            $current_c_level = $subject->c_level_id;
+        }
+
+        return $actual_clevel_id == $current_c_level;
+    }
+}
+
+if (!function_exists('able_to_take_shots')) {
+    function able_to_take_shots($user_id)
+    {
+        return ScreenShot::where('user_id', $user_id)
+                ->whereColumn('total_number_used', '<', 'total_number_allowed')
+                ->notDisabled()
+                ->exists();
     }
 }

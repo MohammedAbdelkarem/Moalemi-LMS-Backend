@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\CoponLog;
+use App\Models\Scopes\LoadUserIfExistsScope;
 
 class Coupon extends Model
 {
@@ -25,7 +27,14 @@ class Coupon extends Model
         'number_of_uses' => 'integer',
         'is_expired' => 'boolean',
     ];
-    
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LoadUserIfExistsScope);
+    }
 
     /**
      * @return \App\Models\Coupon
@@ -57,6 +66,11 @@ class Coupon extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function coponLogs(): HasMany
+    {
+        return $this->hasMany(CoponLog::class, 'coupon_id');
     }
 
     public function scopeFilter($query, $data)

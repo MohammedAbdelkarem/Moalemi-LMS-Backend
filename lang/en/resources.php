@@ -47,6 +47,8 @@ return [
     'questions'                 => 'Questions',
     'coupon'                    => 'Coupon',
     'coupons'                   => 'Coupons',
+    'copon_log'                 => 'Copon Log',
+    'copon_logs'                => 'Copon Logs',
     'quiz_result'               => 'Quiz Result',
     'quiz_results'              => 'Quiz Results',
     'saved_context'             => 'Saved Context',
@@ -65,4 +67,7 @@ return [
     'app_versions'              => 'App Versions',
     'download'                  => 'Download',
     'downloads'                 => 'Downloads',
+    'screen_shot'               => 'Screen Shot',
+    'screen_shots'              => 'Screen Shots',
+    'can_not_take_shots'        => 'You cannot take screenshots because you have reached the maximum number of screenshots',
 ];
