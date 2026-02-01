@@ -18,7 +18,9 @@ use App\Constants\ModelPaths;
 use App\Enums\AccessTypeEnum;
 use App\Models\UnlockedContext;
 use App\Enums\PublishStatusEnum;
+use App\Models\JWTPersonalTokens;
 use App\Constants\ExceptionMessages;
+use App\Models\Users\Profile\UserDevice;
 
 /**
  * Class ContextService.
@@ -646,5 +648,24 @@ class ContextService
     {
         foreach($files as $file)
             $this->changePublishStatus($file, 'file' , $status);
+    }
+
+    public function deleteUserDevicesIfTokenExpired()
+    {
+        $tokens = JWTPersonalTokens::where('expire_at', '<', now())->with('user.userDevices')->get();
+
+        foreach($tokens as $token)
+        {
+            $user = $token->user;
+            if($user->userDevices)
+            {
+                $userDevices = $user->userDevices;
+                foreach($userDevices as $device)
+                {
+                    $device->delete();
+                }
+            }
+        }
+        // $tokens->delete();
     }
 }

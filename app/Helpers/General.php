@@ -469,3 +469,15 @@ if (!function_exists('able_to_take_shots')) {
                 ->exists();
     }
 }
+
+if (!function_exists('next_lesson_name_for_notifications')) {
+    function next_lesson_name_for_notifications($lesson)
+    {
+        $next_lesson = Lesson::where('subject_id', $lesson->subject_id)
+            ->where('priority', '>', $lesson->priority)
+            ->orderBy('priority' , 'asc')
+            ->first();
+
+        return ($next_lesson) ? $next_lesson->name : "لا يوجد درس اخر في هذا البحث";
+    }
+}

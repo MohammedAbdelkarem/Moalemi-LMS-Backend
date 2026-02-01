@@ -70,4 +70,5 @@ return [
     'screen_shot'               => 'Screen Shot',
     'screen_shots'              => 'Screen Shots',
     'can_not_take_shots'        => 'You cannot take screenshots because you have reached the maximum number of screenshots',
+    'allowed_devices'           => 'Allowed Devices',
 ];

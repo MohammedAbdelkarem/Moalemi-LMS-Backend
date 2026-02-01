@@ -9,12 +9,14 @@ use App\Models\Download;
 use Illuminate\Support\Facades\DB;
 use App\Services\Base\ContextService;
 use App\Services\Purchase\PurchaseService;
+use App\Services\MoaalemiNotificationService;
 
 class LessonService
 {
     public function __construct(
         protected ContextService $contextService,
-        protected PurchaseService $purchaseService
+        protected PurchaseService $purchaseService,
+        protected MoaalemiNotificationService $moaalemiNotificationService
     ) {}
 
     /**
@@ -146,6 +148,11 @@ class LessonService
         }
 
         $this->contextService->changeWithChildsPublishStatus($id , Lesson::class , $status);
+
+        $new_status = $lesson::find($id)->publish_status;
+
+        if($new_status == PublishStatusEnum::PUBLISHED->value) 
+            $this->moaalemiNotificationService->notifyForNewLesson($lesson);
     }
 
     public function changePriority($contextsData)
@@ -167,6 +174,8 @@ class LessonService
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+
+            $this->moaalemiNotificationService->notifyForCompleteLesson($lesson);
         }
     }
 
@@ -219,5 +228,11 @@ class LessonService
             $query->where('user_id', $user_id);
         })
         ->get();
+    }
+    public function changeLockStatus($id)
+    {
+        $lesson = Lesson::findByIdOrFail($id);
+        $lesson->is_locked = !$lesson->is_locked;
+        $lesson->save();
     }
 }

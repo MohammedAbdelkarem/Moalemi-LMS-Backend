@@ -2,10 +2,17 @@
 
 namespace App\Services\Copon;
 
-use App\Enums\CouponTypeEnum;
-use App\Enums\AccessTypeEnum;
-use App\Constants\ExceptionMessages;
+use App\Models\Unit;
 use App\Models\Coupon;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Subject;
+use App\Models\SubUnit;
+use App\Models\Transaction;
+use App\Enums\AccessTypeEnum;
+use App\Enums\CouponTypeEnum;
+use App\Models\UnlockedContext;
+use App\Constants\ExceptionMessages;
 use App\Services\Transaction\TransactionService;
 
 /**
@@ -118,5 +125,69 @@ class CoponService
             return forbiddenFailure([] , ExceptionMessages::MSG_CANNOT_DELETE_CUZ_HAS_USED);
 
         $copon->delete();
+    }
+
+    public function lockForStudentByCopon($copon_id , $userId)
+    {
+        $copon = Coupon::findByIdOrFail($copon_id);
+
+        $transactions = Transaction::where('coupon_id', $copon->id)
+            ->where('user_id', $userId)
+            ->get();
+
+        $unlockedContextIds = $transactions->pluck('unlocked_context_id')->toArray();
+
+        foreach($unlockedContextIds as $unlockedContextId)
+        {
+            $unlockedContext = UnlockedContext::find($unlockedContextId);
+            
+            if($unlockedContext->context_type == Course::class)
+            {
+                $course = Course::find($unlockedContext->context_id);
+                $subjectIds = Subject::where('course_id', $course->id)->pluck('id')->toArray();
+                $unitIds = Unit::whereIn('subject_id', $subjectIds)->pluck('id')->toArray();
+                $subUnitIds = SubUnit::whereIn('unit_id', $unitIds)->pluck('id')->toArray();
+                $lessonIds = Lesson::whereIn('sub_unit_id', $subUnitIds)->pluck('id')->toArray();
+
+                UnlockedContext::whereIn('context_id', $subjectIds)
+                    ->where('context_type', Subject::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+                UnlockedContext::whereIn('context_id', $unitIds)
+                    ->where('context_type', Unit::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+                UnlockedContext::whereIn('context_id', $subUnitIds)
+                    ->where('context_type', SubUnit::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+                UnlockedContext::whereIn('context_id', $lessonIds)
+                    ->where('context_type', Lesson::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+            }
+            else if($unlockedContext->context_type == Subject::class)
+            {
+                $subject = Subject::find($unlockedContext->context_id);
+                $unitIds = Unit::where('subject_id', $subject->id)->pluck('id')->toArray();
+                $subUnitIds = SubUnit::whereIn('unit_id', $unitIds)->pluck('id')->toArray();
+                $lessonIds = Lesson::whereIn('sub_unit_id', $subUnitIds)->pluck('id')->toArray();
+
+                UnlockedContext::whereIn('context_id', $unitIds)
+                    ->where('context_type', Unit::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+                UnlockedContext::whereIn('context_id', $subUnitIds)
+                    ->where('context_type', SubUnit::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+                UnlockedContext::whereIn('context_id', $lessonIds)
+                    ->where('context_type', Lesson::class)
+                    ->where('user_id', $userId)
+                    ->delete();
+            }
+            UnlockedContext::whereIn('id', $unlockedContextIds)
+                ->delete();
+        }
     }
 }

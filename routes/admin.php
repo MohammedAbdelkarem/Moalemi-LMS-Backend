@@ -105,6 +105,8 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
             Route::post("/restore", "restore");
             Route::get("/student-profile/{id}", "getStudentProfile")->name(RouteNames::ADMIN_STUDENT_PROFILE);
             Route::get("/student-progress/{id}", "getStudentProgress");
+            Route::get("/reset-device-ids/{userId}", "resetDeviceIds");
+            Route::delete("/delete-user/{userId}", "deleteUser");
         });
 
         Route::prefix("ban")->controller(BanLogController::class)->group(function () {
@@ -224,6 +226,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::patch("/{id}/change-publish-status", "changePublishStatus");
         Route::post("/change-priority", "changePriority");
         Route::delete("/comments/{id}", "deleteComment");
+        Route::put("/change-lock-status/{id}", "changeLockStatus");
     });
 
     Route::prefix("files")->controller(FileController::class)->group(function () {
@@ -280,6 +283,7 @@ Route::group(['middleware' => ['auth:api', "is_admin", 'token.access_api', 'user
         Route::get('/', 'get');
         Route::get("/set-copons-as-expired", "setCoponsAsExpired");
         Route::get("/copons", "getCopons")->name(RouteNames::ADMIN_COPONS_GET);
+        Route::delete("/lock-for-student/{userId}/by-copon/{coponId}", "lockForStudentByCopon");
     });
 
     // Screen Shots

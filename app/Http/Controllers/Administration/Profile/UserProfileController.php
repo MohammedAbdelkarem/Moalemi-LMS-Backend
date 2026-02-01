@@ -92,4 +92,20 @@ class UserProfileController extends Controller
             ApiMessages::MSG_SUCCESS,
         );
     }
+
+    public function resetDeviceIds(string $userId): JsonResponse
+    {
+        return success(
+            $this->userProfileService->resetDeviceIds($userId),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
+
+    public function deleteUser($userId): JsonResponse
+    {
+        return success(
+            $this->userProfileService->deleteUser($userId),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
 }

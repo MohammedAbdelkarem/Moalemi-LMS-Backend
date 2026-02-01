@@ -18,6 +18,7 @@ use App\Http\Resources\Course\CourseResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Teacher\TeacherResource;
 use App\Services\Base\ContextService;
+use App\Services\MoaalemiNotificationService;
 
 /**
  * Class StudentHomeService.
@@ -25,7 +26,8 @@ use App\Services\Base\ContextService;
 class StudentHomeService
 {
     public function __construct(
-        protected ContextService $contextService
+        protected ContextService $contextService,
+        protected MoaalemiNotificationService $moaalemiNotificationService
     ) {}
 
     public function get($clevel_id = null)
@@ -65,6 +67,8 @@ class StudentHomeService
                 
         $this->contextService->disableExpiredCopons();
         $this->contextService->lockTemporarlyContexts();
+        $this->contextService->deleteUserDevicesIfTokenExpired();
+        $this->moaalemiNotificationService->notifyForLowActivity();
 
         return [
             'profile' => $clevel_id == null 

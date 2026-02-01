@@ -3,15 +3,19 @@
 namespace App\Services\Quiz;
 
 use App\Models\Quiz;
+use App\Models\Subject;
 use App\Services\MainService;
-use App\Services\Base\ContextService;
+use App\Enums\PublishStatusEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\ContextService;
+use App\Services\MoaalemiNotificationService;
 
 class QuizService extends MainService
 {
     public function __construct(
         protected ContextService $contextService,
+        protected MoaalemiNotificationService $moaalemiNotificationService
     ) {}
 
     public function getAll($data)
@@ -137,6 +141,14 @@ class QuizService extends MainService
         $quiz = Quiz::findByIdOrFail($id);
         
         $this->contextService->changePublishStatus($quiz, 'quiz', $status);
+
+        $new_status = $quiz::find($id)->publish_status;
+
+        if($new_status == PublishStatusEnum::PUBLISHED->value && $quiz->context_type == Subject::class) 
+        {
+            $subject = Subject::find($quiz->context_id);
+            $this->moaalemiNotificationService->notifyForNewQuiz($quiz, $subject);
+        }
     }
 
     public function changePriority($contextsData)

@@ -326,6 +326,14 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     {
         return $this->hasMany(UnlockedContext::class, 'user_id');
     }
+    public function unlockedContextsCourses(): HasMany
+    {
+        return $this->unlockedContexts()->where('context_type' ,Course::class);
+    }
+    public function unlockedContextsSubjects(): HasMany
+    {
+        return $this->unlockedContexts()->where('context_type' ,Subject::class);
+    }
 
     //E-Learning Transactions
     public function transactions(): HasMany

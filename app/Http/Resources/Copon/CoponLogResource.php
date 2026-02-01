@@ -30,6 +30,9 @@ class CoponLogResource extends JsonResource
             case RouteNames::ADMIN_COPONS_GET:
                 $data['user'] = UserResource::make($this->whenLoaded('user'));
             break;
+            case RouteNames::ADMIN_STUDENT_PROFILE:
+                $data['coupon'] = CopnoResource::make($this->whenLoaded('coupon'));
+            break;
         }
 
         return $data;

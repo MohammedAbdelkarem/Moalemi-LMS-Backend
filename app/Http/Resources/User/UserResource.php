@@ -5,8 +5,11 @@ namespace App\Http\Resources\User;
 use Illuminate\Http\Request;
 use App\Constants\RouteNames;
 use App\Constants\MediaCollection;
+use App\Http\Resources\Copon\CopnoResource;
 use App\Http\Resources\Media\MediaResource;
+use App\Http\Resources\Copon\CoponLogResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Context\UnlockedContextResource;
 use App\Http\Resources\Responsibility\ResponsibilityResource;
 
 class UserResource extends JsonResource
@@ -22,6 +25,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'phone_number' => $this->phone_number,
             'image' => MediaResource::make($this->getFirstMedia(MediaCollection::USER_COLLECTION)),
             'role_id' => $this->role_id,
             'created_at' => $this->created_at,
@@ -50,6 +54,9 @@ class UserResource extends JsonResource
                 $data['c_level'] = $this->whenLoaded('c_level');
                 $data['parent'] = $this->whenLoaded('parent');
                 $data['transactions'] = $this->whenLoaded('transactions');
+                $data['unlockedContextsCourses'] = UnlockedContextResource::collection($this->whenLoaded('unlockedContextsCourses'));
+                $data['unlockedContextsSubjects'] = UnlockedContextResource::collection($this->whenLoaded('unlockedContextsSubjects'));
+                $data['coponLogs'] = CoponLogResource::collection($this->whenLoaded('coponLogs'));
         }
 
         return $data;

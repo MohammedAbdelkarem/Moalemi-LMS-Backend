@@ -6,12 +6,19 @@ use App\Models\Lesson;
 use App\Models\Replay;
 use App\Models\Comment;
 use App\Enums\CommentStatusEnum;
+use App\Services\MoaalemiNotificationService;
 
 /**
  * Class CommentService.
  */
 class CommentService
 {
+
+    public function __construct(
+        protected MoaalemiNotificationService $moaalemiNotificationService
+    )
+    {}
+        
     public function getForMobile($data , $lesson_id)
     {
         $comments =  Comment::exist()->where('lesson_id', $lesson_id)
@@ -51,6 +58,12 @@ class CommentService
                 'user_id' => auth()->id(),
                 'text' => $data['text'],
             ]);
+
+            $comment = Comment::findByIdOrFail($comment_id , ['lesson']);
+
+            $lesson = $comment->lesson;
+
+            $this->moaalemiNotificationService->notifyForCommentReply($lesson , $comment);
         }
     }
 

@@ -7,21 +7,22 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Services\OTPService;
 use App\Services\MainService;
+use App\Models\AllowedDevices;
+use App\Enums\PublishStatusEnum;
 use App\Exceptions\ApiException;
 use App\Models\JWTPersonalTokens;
 use App\Constants\MediaCollection;
 use App\Services\JWTTokensService;
+use App\Services\Plan\PlanService;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Constants\ExceptionMessages;
-use App\Enums\PublishStatusEnum;
+use App\Services\Base\ContextService;
 use App\Models\NotificationManagement;
 use App\Services\Doctor\DoctorService;
 use App\Models\Users\Profile\UserDevice;
 use App\Models\Users\Profile\ArchivedUser;
 use App\Models\Users\Profile\LoginHistory;
-use App\Services\Base\ContextService;
-use App\Services\Plan\PlanService;
 
 /**
  * Class AuthService.
@@ -94,6 +95,11 @@ class AuthService extends MainService
 
         $user = User::where('phone_number' , $validatedData['phone_number'])
                         ->where('role_id' , 5)->first();
+        
+        if(!isset($validatedData['pass']))
+        {
+            $this->checkIfDeviceLoggedInBefor($user->id);
+        }
         
         //Send otp
         $otp = $this->OTPService->createOTP($user->id, $validatedData['phone_number']);
@@ -191,8 +197,8 @@ class AuthService extends MainService
         if ($notiToken)
             $user->userDevices()->where('notification_token', $notiToken)->delete();
         
-        if(auth()->user()->isStudent())
-            $this->contextService->clearDownloads(auth()->id());
+        // if(auth()->user()->isStudent())
+        //     $this->contextService->clearDownloads(auth()->id());
     }
 
     public function logoutAllDevices()
@@ -260,5 +266,16 @@ class AuthService extends MainService
             "access_token"      => $accessToken,
             "access_expire_in"  => $accessExpireIn,
         ];
+    }
+
+
+    private function checkIfDeviceLoggedInBefor($user_id)
+    {
+
+        $exist = UserDevice::where('user_id', $user_id)
+            ->exists();
+            
+        if($exist)
+            return forbiddenFailure([] , ExceptionMessages::MSG_DEVICE_NOT_ALLOWED_LOGIN_DIFFERENT_DEVICE);
     }
 }

@@ -94,4 +94,12 @@ class LessonController extends Controller
             ApiMessages::MSG_SUCCESS
         );
     }
+
+    public function changeLockStatus($id)
+    {
+        return success(
+            $this->lessonService->changeLockStatus($id),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }

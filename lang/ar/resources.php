@@ -69,4 +69,5 @@ return [
     'downloads'                 => 'التحميلات',
     'screen_shot'               => 'لقطة الشاشة',
     'screen_shots'              => 'لقطات الشاشة',
+    'allowed_devices'           => 'الأجهزة المسموح بها',
 ];

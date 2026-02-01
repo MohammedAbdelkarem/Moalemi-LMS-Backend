@@ -5,12 +5,18 @@ namespace App\Services\Lesson;
 use App\Models\Lesson;
 use App\Models\LessonQuestion;
 use App\Constants\MediaCollection;
+use App\Services\MoaalemiNotificationService;
 
 /**
  * Class LessonQuestionService.
  */
 class LessonQuestionService
 {
+    public function __construct(
+        protected MoaalemiNotificationService $moaalemiNotificationService
+    )
+    {
+    }
     public function get($data , $lesson_id)
     {
         $questions = LessonQuestion::where('lesson_id', $lesson_id)
@@ -43,12 +49,14 @@ class LessonQuestionService
 
     public function answer($data , $question_id)
     {
-        $question = LessonQuestion::findByIdOrFail($question_id);
+        $question = LessonQuestion::findByIdOrFail($question_id , ['teacher' , 'lesson' , 'student']);
         $question->answer = $data['text'];
         $question->save();
 
         if(isset($data['images']))
             uploadFilesOnMedia($data['images'] , $question , MediaCollection::LESSON_QUESTION_ANSWER_COLLECTION);
+
+        $this->moaalemiNotificationService->notifyForLessonQuestionAnswer($question);
     }
 
     public function getPurchasedleLessons($student_id)

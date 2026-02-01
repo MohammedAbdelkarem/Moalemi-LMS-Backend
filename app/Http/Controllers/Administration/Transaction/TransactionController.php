@@ -85,4 +85,12 @@ class TransactionController extends Controller
             $request->has('per_page')
         );
     }
+
+    public function lockForStudentByCopon($userId, $coponId)
+    {
+        return success(
+            $this->coponService->lockForStudentByCopon($coponId, $userId),
+            ApiMessages::MSG_SUCCESS
+        );
+    }
 }

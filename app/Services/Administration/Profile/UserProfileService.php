@@ -7,12 +7,27 @@ use App\Models\User;
 use App\Constants\Resources;
 use App\Services\MainService;
 use App\Services\Progress\ProgressService;
+use App\Models\Users\Profile\UserDevice;
+use App\Models\JWTPersonalTokens;
 
 class UserProfileService extends MainService
 {
     public function __construct(
         protected ProgressService $progressService,
     ) {}
+
+    
+    public function resetDeviceIds($userId)
+    {
+        UserDevice::where('user_id', $userId)->delete();
+        JWTPersonalTokens::where('user_id', $userId)->delete();
+        
+    }
+
+    public function deleteUser($userId)
+    {
+        User::findByIdOrFail($userId)->forceDelete();
+    }
 
     public function userSugs($search, $with_deleted)
     {
@@ -142,7 +157,10 @@ class UserProfileService extends MainService
             'e_level',
             'c_level',
             'parent',
-            'transactions'
+            'transactions',
+            'unlockedContextsCourses.context',
+            'unlockedContextsSubjects.context',
+            'coponLogs.coupon'
         ]);
 
         return $user;

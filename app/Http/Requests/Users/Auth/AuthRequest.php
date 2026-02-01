@@ -51,6 +51,7 @@ class AuthRequest extends BaseApiRequest
     {
         return [
              "phone_number" => ['required', new PhoneNumberRule() , Rule::exists('users' , 'phone_number')->where('role_id' , 5)],
+             "pass" => ['nullable' , 'boolean']
         ];
     }
     public function loginParentRules()

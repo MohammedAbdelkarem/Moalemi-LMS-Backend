@@ -83,9 +83,6 @@ trait NotificationHelper
     public function getTokens($targeted_user_id): array
     {
         $tokens = UserDevice::query()->where('user_id', $targeted_user_id)
-            ->whereHas("user", function ($query) {
-                $query->where('active_notifications', true);
-            })
             ->pluck('notification_token')
             ->toArray();
 

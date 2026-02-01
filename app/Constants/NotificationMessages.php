@@ -22,4 +22,20 @@ final class NotificationMessages
     const WELCOME_BACK_BODY                        = 'welcome_back_body';
     const DEVICE_LOGIN_TITLE                       = 'device_login_title';
     const DEVICE_LOGIN_BODY                        = 'device_login_body';
+
+    //Education
+    const NEW_LESSON_TITLE                         = 'new_lesson_title';
+    const NEW_LESSON_BODY                          = 'new_lesson_body';
+    const INCOMPLETE_LESSON_TITLE                  = 'incomplete_lesson_title';
+    const INCOMPLETE_LESSON_BODY                   = 'incomplete_lesson_body';
+    const COMPLETE_LESSON_TITLE                    = 'complete_lesson_title';
+    const COMPLETE_LESSON_BODY                     = 'complete_lesson_body';
+    const NEW_QUIZ_TITLE                           = 'new_quiz_title';
+    const NEW_QUIZ_BODY                            = 'new_quiz_body';
+    const LOW_ACTIVITY_TITLE                       = 'low_activity_title';
+    const LOW_ACTIVITY_BODY                        = 'low_activity_body';
+    const COMMENT_REPLY_TITLE                      = 'comment_reply_title';
+    const COMMENT_REPLY_BODY                       = 'comment_reply_body';
+    const QUESTION_ANSWER_TITLE                    = 'question_answer_title';
+    const QUESTION_ANSWER_BODY                     = 'question_answer_body';
 }

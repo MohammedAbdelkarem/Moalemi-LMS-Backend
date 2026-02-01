@@ -64,4 +64,12 @@ class AuthController extends Controller
             ApiMessages::MSG_SUCCESS,
         );
     }
+
+    public function resetDeviceIds($userId): JsonResponse
+    {
+        return Success(
+            $this->authService->resetDeviceIds($userId),
+            ApiMessages::MSG_SUCCESS,
+        );
+    }
 }

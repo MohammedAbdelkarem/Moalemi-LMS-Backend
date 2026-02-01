@@ -234,11 +234,6 @@ class NotificationService extends MainService
             ->where('role_id', 4)
             ->whereNull('deactive_at')
             ->where('active_notifications', true)
-            ->when($notification_management, function ($q) use ($string) {
-                $q->whereHas('notification_management', function ($q2) use ($string) {
-                    $q2->where($string . '_notification', 1);
-                });
-            })
             ->pluck('id')
             ->toArray();
     }

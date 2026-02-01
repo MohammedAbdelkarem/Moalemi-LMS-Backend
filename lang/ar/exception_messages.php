@@ -22,7 +22,7 @@ return [
     'language_not_supported'            => 'اللغة غير مدعومة',
     'not_registered'                    => 'لا يوجد حساب مسجل يطابق رقم الهاتف هذا',
     'entity_already_purchased'                          => 'لقد قمت بشراء هذا بالفعل',
-    'device_not_allowed_login_different_device'         => 'تحاول تسجيل الدخول من جهاز مختلف عن الجهاز المسجل به الحساب',
+    'device_not_allowed_login_different_device'         => 'تحاول تسجيل الدخول من جهاز مختلف عن الجهاز المسجل به الحساب, يرجى تسجيل الدخول من الجهاز المسجل به الحساب',
     'frozen_account'                                    => 'حسابك مجمد لا يمكنك تسجيل الدخول أو الاستفادة من خدمات التطبيق',
     'banned_account'                                    => 'حسابك محظور من الاستفادة من هذه الخدمة حتى تاريخ :time',
     'item_not_found'                                    => 'العنصر غير موجود',

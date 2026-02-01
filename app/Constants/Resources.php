@@ -65,4 +65,5 @@ final class Resources
     const RES_DOWNLOADS             = 'resources.downloads';
     const RES_SCREEN_SHOT           = 'resources.screen_shot';
     const RES_SCREEN_SHOTS          = 'resources.screen_shots';
+    const ALLOWED_DEVICES           = 'resources.allowed_devices';
 }

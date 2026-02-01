@@ -66,6 +66,9 @@ class CourseResource extends JsonResource
             case RouteNames::STUDENT_HOME:
                 $data['subjects'] = SubjectResource::collection($this->whenLoaded('publishedSubjects'));
             break;
+            case RouteNames::ADMIN_SUBJECT_LIST:
+                $data['c_level'] = CLevelResource::make($this->whenLoaded('cLevel'));
+            break;
         }
 
         return $data;

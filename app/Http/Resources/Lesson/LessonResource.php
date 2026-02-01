@@ -46,13 +46,17 @@ class LessonResource extends JsonResource
             'number_of_published_quizzes' => $this->publishedQuizzesCounts(),
             'number_of_published_files' => $this->publishedFilesCounts(),
             'media' => MediaResource::collection($this->getMedia(MediaCollection::LESSON_COLLECTION)),
+            'is_locked' => $this->is_locked,
             // 'responsibilities' => $this->whenLoaded('responsibilities'),
         ];
 
         if(auth()->user()->isStudent())
         {
             $is_purchased = is_purchased($this->id, LevelEnum::LESSON , auth()->id());
-            $is_first = isFromFirstsInSubUnit($this);
+            $is_locked = $this->is_locked;
+
+            // if the lesson is not locked by the admin, then the student can watch the lesson
+            $is_purchased = $is_purchased || !$is_locked;
 
             $data['is_watched'] = watched($this);
             $data['is_commented'] = is_commented($this->id);
@@ -60,11 +64,11 @@ class LessonResource extends JsonResource
             $data['is_purchased'] = $is_purchased;
             $data['is_saved'] = is_saved($this->id, LevelEnum::LESSON , auth()->id());
             $data['is_downloaded'] = is_downloaded($this);
-            $data['video'] = ($is_purchased || $is_first) 
+            $data['video'] = ($is_purchased) 
                 ? MediaResource::collection($this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)) 
                 : [];
 
-            if (($is_purchased || $is_first) && $this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)->isEmpty()) {
+            if (($is_purchased) && $this->getMedia(MediaCollection::LESSON_VIDEO_COLLECTION)->isEmpty()) {
                 $data['video'] = [DefaultMediaResource::make(1)->toArray($request)];
                 $data['is_downloaded'] = true;
                 $data['is_rated'] = true;

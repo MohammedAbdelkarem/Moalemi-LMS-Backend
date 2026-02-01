@@ -12,11 +12,5 @@ use App\Traits\StorageHelper;
 class UserService
 {
     use StorageHelper;
-    public function getPatients($data)
-    {
-        return getOrPaginate(
-            User::where('role_id' , 4)->with(['city', 'profile', 'archivedAccount'])->filter($data),
-            $data
-        );
-    }
+    
 }
